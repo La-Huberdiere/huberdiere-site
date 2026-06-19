@@ -1,0 +1,93 @@
+# Configuration Pages CMS (https://pagescms.org)
+# Définit ce que Patrick & Lodo peuvent éditer, sans toucher au code.
+# Connexion : app.pagescms.org → se connecter avec GitHub → choisir le dépôt.
+
+media:
+  input: src/assets
+  output: /src/assets
+
+content:
+  - name: homepage
+    label: Page d'accueil
+    type: file
+    path: src/data/homepage.json
+    fields:
+      - name: hero
+        label: Hero (bandeau du haut)
+        type: object
+        fields:
+          - { name: eyebrow, label: Sur-titre, type: string }
+          - { name: titleLine1, label: Titre — ligne 1, type: string }
+          - { name: titleLine2Italic, label: Titre — ligne 2 (en italique), type: string }
+          - { name: lead, label: Texte d'accroche, type: text }
+          - { name: ctaPrimary, label: Bouton principal, type: string }
+          - { name: ctaSecondary, label: Bouton secondaire, type: string }
+      - name: intro
+        label: Section « L'esprit du lieu »
+        type: object
+        fields:
+          - { name: eyebrow, label: Sur-titre, type: string }
+          - { name: titleLine1, label: Titre — ligne 1, type: string }
+          - { name: titleLine2Italic, label: Titre — ligne 2 (en italique), type: string }
+          - { name: paragraphs, label: Paragraphes, type: text, list: true }
+          - { name: sign, label: Signature, type: string }
+      - name: activitiesHead
+        label: Activités — en-tête
+        type: object
+        fields:
+          - { name: eyebrow, label: Sur-titre, type: string }
+          - { name: titlePlain, label: Titre (début), type: string }
+          - { name: titleItalic, label: Titre (fin, en italique), type: string }
+          - { name: intro, label: Texte d'introduction, type: text }
+      - name: activities
+        label: Activités
+        type: object
+        list: true
+        fields:
+          - { name: num, label: Numéro / catégorie, type: string }
+          - { name: titlePlain, label: Titre (début), type: string }
+          - { name: titleItalic, label: Titre (fin, en italique), type: string }
+          - { name: text, label: Description, type: text }
+          - { name: points, label: Points clés, type: string, list: true }
+          - { name: linkLabel, label: Texte du lien, type: string }
+          - { name: linkHref, label: Cible du lien, type: string }
+      - name: quote
+        label: Citation
+        type: object
+        fields:
+          - { name: text, label: Texte de la citation, type: text }
+          - { name: cite, label: Signature, type: string }
+      - name: galleryHead
+        label: Galerie — en-tête
+        type: object
+        fields:
+          - { name: eyebrow, label: Sur-titre, type: string }
+          - { name: titlePlain, label: Titre (début), type: string }
+          - { name: titleItalic, label: Titre (fin, en italique), type: string }
+      - name: location
+        label: Section « Situation »
+        type: object
+        fields:
+          - { name: eyebrow, label: Sur-titre, type: string }
+          - { name: titleLine1Plain, label: Titre ligne 1 (début), type: string }
+          - { name: titleLine1Italic, label: Titre ligne 1 (italique), type: string }
+          - { name: titleLine2, label: Titre — ligne 2, type: string }
+          - { name: paragraphs, label: Paragraphes, type: text, list: true }
+          - name: pins
+            label: Chiffres clés
+            type: object
+            list: true
+            fields:
+              - { name: big, label: Chiffre, type: string }
+              - { name: lbl, label: Légende, type: string }
+      - name: final
+        label: Section contact (bas de page)
+        type: object
+        fields:
+          - { name: eyebrow, label: Sur-titre, type: string }
+          - { name: titleLine1, label: Titre — ligne 1, type: string }
+          - { name: titleLine2Italic, label: Titre — ligne 2 (en italique), type: string }
+          - { name: text, label: Texte, type: text }
+          - { name: ctaPrimary, label: Bouton principal, type: string }
+          - { name: ctaSecondary, label: Bouton secondaire, type: string }
+          - { name: responseLine, label: Ligne « réponse sous 24h », type: string }

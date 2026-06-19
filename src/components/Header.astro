@@ -1,0 +1,20 @@
+---
+const nav = [
+  { label: "Séjour", href: "/#sejour" },
+  { label: "Mariage", href: "/mariage" },
+  { label: "Séminaire", href: "/#seminaire" },
+  { label: "Famille", href: "/#famille" },
+  { label: "Retraite", href: "/#retraite" },
+  { label: "Contact", href: "/#final" },
+];
+---
+<header class="site-header" id="siteHeader">
+  <a href="/" class="brand">
+    <span class="name">Château de la Huberdière</span>
+    <span class="sub">Touraine · Châteaux de la Loire</span>
+  </a>
+  <nav class="nav">
+    {nav.map((n) => <a href={n.href}>{n.label}</a>)}
+    <a href="/#final" class="book">Réserver</a>
+  </nav>
+</header>
