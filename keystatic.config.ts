@@ -1,22 +1,73 @@
 import { config, singleton, collection, fields } from "@keystatic/core";
 
-// Config Keystatic (test ergonomie vs Pages CMS) — branche keystatic-test.
-// Éditeur accessible sur /keystatic en local. Mode "local" : écrit dans les
-// fichiers du dépôt, comme Pages CMS le ferait via GitHub.
-//
-// La homepage reprend le même schéma que .pages.yml / src/data/homepage.json.
-// La collection Articles montre l'éditeur de contenu riche de Keystatic.
+// Config Keystatic — édition complète du site sans code.
+// Éditeur : /keystatic. Mode "local" : écrit dans les fichiers du dépôt.
+// Chaque singleton est stocké dans {path}/index.json, lu tel quel par le site.
 
 export default config({
   storage: { kind: "local" },
   ui: {
     brand: { name: "Château de la Huberdière" },
+    navigation: {
+      Pages: ["homepage", "mariage", "pages"],
+      Contenu: ["articles"],
+      Réglages: ["settings"],
+    },
   },
   singletons: {
+    settings: singleton({
+      label: "Réglages du site (header & footer)",
+      path: "src/data/settings",
+      format: { data: "json" },
+      schema: {
+        brandName: fields.text({ label: "Nom (header)" }),
+        brandSub: fields.text({ label: "Sous-titre (header)" }),
+        reserveLabel: fields.text({ label: "Bouton « Réserver » — texte" }),
+        reserveHref: fields.text({ label: "Bouton « Réserver » — lien" }),
+        nav: fields.array(
+          fields.object({
+            label: fields.text({ label: "Libellé" }),
+            href: fields.text({ label: "Lien" }),
+          }),
+          { label: "Menu (header)", itemLabel: (p) => p.fields.label.value || "Lien" }
+        ),
+        footer: fields.object(
+          {
+            name: fields.text({ label: "Nom" }),
+            addressLine1: fields.text({ label: "Adresse — ligne 1" }),
+            addressLine2: fields.text({ label: "Adresse — ligne 2" }),
+            phone: fields.text({ label: "Téléphone (affiché)" }),
+            phoneHref: fields.text({ label: "Téléphone (lien tel:)" }),
+            email: fields.text({ label: "Email" }),
+            col2Title: fields.text({ label: "Colonne 2 — titre" }),
+            col2Links: fields.array(
+              fields.object({
+                label: fields.text({ label: "Libellé" }),
+                href: fields.text({ label: "Lien" }),
+              }),
+              { label: "Colonne 2 — liens", itemLabel: (p) => p.fields.label.value || "Lien" }
+            ),
+            col3Title: fields.text({ label: "Colonne 3 — titre" }),
+            col3Links: fields.array(
+              fields.object({
+                label: fields.text({ label: "Libellé" }),
+                href: fields.text({ label: "Lien" }),
+              }),
+              { label: "Colonne 3 — liens", itemLabel: (p) => p.fields.label.value || "Lien" }
+            ),
+            bottomLeft: fields.text({ label: "Bas de page — gauche" }),
+            bottomRight: fields.text({ label: "Bas de page — droite" }),
+          },
+          { label: "Footer" }
+        ),
+      },
+    }),
+
     homepage: singleton({
       label: "Page d'accueil",
       path: "src/data/homepage",
       format: { data: "json" },
+      previewUrl: "/",
       schema: {
         hero: fields.object(
           {
@@ -112,23 +163,95 @@ export default config({
         ),
       },
     }),
+
+    mariage: singleton({
+      label: "Page Mariage",
+      path: "src/data/mariage",
+      format: { data: "json" },
+      previewUrl: "/mariage",
+      schema: {
+        title: fields.text({ label: "Titre de l'onglet (SEO)" }),
+        description: fields.text({ label: "Méta description (SEO)", multiline: true }),
+        hero: fields.object(
+          {
+            eyebrow: fields.text({ label: "Sur-titre" }),
+            titleLine1: fields.text({ label: "Titre — ligne 1" }),
+            titleLine2Italic: fields.text({ label: "Titre — ligne 2 (italique)" }),
+            lead: fields.text({ label: "Texte d'accroche", multiline: true }),
+          },
+          { label: "Hero" }
+        ),
+        intro: fields.array(fields.text({ label: "Paragraphe", multiline: true }), {
+          label: "Introduction",
+          itemLabel: (p) => p.value.slice(0, 40) || "Paragraphe",
+        }),
+        cards: fields.array(
+          fields.object({
+            num: fields.text({ label: "Numéro" }),
+            title: fields.text({ label: "Titre" }),
+            text: fields.text({ label: "Texte", multiline: true }),
+          }),
+          { label: "Les 3 piliers", itemLabel: (p) => p.fields.title.value || "Pilier" }
+        ),
+        final: fields.object(
+          {
+            eyebrow: fields.text({ label: "Sur-titre" }),
+            titleLine1: fields.text({ label: "Titre — ligne 1" }),
+            titleLine2Italic: fields.text({ label: "Titre — ligne 2 (italique)" }),
+            text: fields.text({ label: "Texte", multiline: true }),
+            submitLabel: fields.text({ label: "Bouton du formulaire" }),
+            responseLine: fields.text({ label: "Ligne « réponse sous 24h »" }),
+          },
+          { label: "Section contact" }
+        ),
+      },
+    }),
   },
+
   collections: {
+    pages: collection({
+      label: "Pages libres",
+      slugField: "title",
+      path: "src/content/pages/*",
+      format: { contentField: "body" },
+      previewUrl: "/{slug}",
+      schema: {
+        title: fields.slug({
+          name: { label: "Titre de la page" },
+          slug: { label: "Adresse (URL)", description: "L'adresse de la page, ex. « tarifs » → /tarifs" },
+        }),
+        description: fields.text({ label: "Méta description (SEO)", multiline: true }),
+        heroImage: fields.image({
+          label: "Image de bandeau (optionnelle)",
+          directory: "public/images/pages",
+          publicPath: "/images/pages/",
+        }),
+        body: fields.markdoc({
+          label: "Contenu de la page",
+          options: { image: { directory: "public/images/pages", publicPath: "/images/pages/" } },
+        }),
+      },
+    }),
+
     articles: collection({
       label: "Articles (blog SEO)",
       slugField: "title",
       path: "src/content/articles/*",
       format: { contentField: "body" },
+      previewUrl: "/blog/{slug}",
       schema: {
         title: fields.slug({ name: { label: "Titre" } }),
         description: fields.text({ label: "Méta description (SEO)", multiline: true }),
         publishedAt: fields.date({ label: "Date de publication" }),
         cover: fields.image({
           label: "Image de couverture",
-          directory: "src/assets/articles",
-          publicPath: "/src/assets/articles/",
+          directory: "public/images/articles",
+          publicPath: "/images/articles/",
         }),
-        body: fields.markdoc({ label: "Contenu de l'article" }),
+        body: fields.markdoc({
+          label: "Contenu de l'article",
+          options: { image: { directory: "public/images/articles", publicPath: "/images/articles/" } },
+        }),
       },
     }),
   },

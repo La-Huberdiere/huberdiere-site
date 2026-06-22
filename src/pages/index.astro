@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import Base from "../layouts/Base.astro";
-import c from "../data/homepage.json";
+import c from "../data/homepage/index.json";
 
 import hero from "../assets/SD_2.jpg";
 import intro from "../assets/SD_1.jpg";
@@ -18,8 +18,8 @@ import g5 from "../assets/BD_1.jpg";
 import g6 from "../assets/SD_5.jpg";
 import loc from "../assets/BD_5.jpg";
 
-// Les images restent dans le code (mise en page fixe) ; les textes viennent de
-// src/data/homepage.json, éditable par le client via Pages CMS.
+// Les images de mise en page restent dans le code (optimisées) ; les textes
+// viennent de src/data/homepage/index.json, éditable dans Keystatic (/keystatic).
 const actImages = [actSejour, actMariage, actSeminaire, actFamille, actRetraite];
 const actAlts = [
   "Chambre du château aux murs poudrés",

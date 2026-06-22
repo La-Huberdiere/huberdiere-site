@@ -1,20 +1,14 @@
 ---
-const nav = [
-  { label: "Séjour", href: "/#sejour" },
-  { label: "Mariage", href: "/mariage" },
-  { label: "Séminaire", href: "/#seminaire" },
-  { label: "Famille", href: "/#famille" },
-  { label: "Retraite", href: "/#retraite" },
-  { label: "Contact", href: "/#final" },
-];
+import s from "../data/settings/index.json";
+const nav = s.nav;
 ---
 <header class="site-header" id="siteHeader">
   <a href="/" class="brand">
-    <span class="name">Château de la Huberdière</span>
-    <span class="sub">Touraine · Châteaux de la Loire</span>
+    <span class="name">{s.brandName}</span>
+    <span class="sub">{s.brandSub}</span>
   </a>
   <nav class="nav">
     {nav.map((n) => <a href={n.href}>{n.label}</a>)}
-    <a href="/#final" class="book">Réserver</a>
+    <a href={s.reserveHref} class="book">{s.reserveLabel}</a>
   </nav>
 </header>
