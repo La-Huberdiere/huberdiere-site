@@ -13,4 +13,14 @@ export default defineConfig({
   adapter: vercel(),
   integrations: [react(), keystatic()],
   build: { inlineStylesheets: "auto" },
+  // Sans ça, Astro ignore l'en-tête x-forwarded-host derrière le proxy Vercel et
+  // reconstruit request.url en https://localhost → Keystatic génère un mauvais
+  // redirect_uri OAuth GitHub. On autorise les domaines Vercel + le domaine final.
+  security: {
+    allowedDomains: [
+      { hostname: "**.vercel.app", protocol: "https" },
+      { hostname: "www.chateaudelahuberdiere.com", protocol: "https" },
+      { hostname: "chateaudelahuberdiere.com", protocol: "https" },
+    ],
+  },
 });
