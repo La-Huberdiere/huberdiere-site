@@ -49,7 +49,7 @@ case "${1:-}" in
     echo "   KEYSTATIC_GITHUB_CLIENT_ID et KEYSTATIC_GITHUB_CLIENT_SECRET dans .env."
     echo "3) Quand c'est fait, Ctrl+C, puis :  ./scripts/setup-keystatic-github.sh vercel"
     echo
-    KEYSTATIC_STORAGE=github npm run dev
+    VITE_KEYSTATIC_STORAGE=github npm run dev
     ;;
 
   vercel)

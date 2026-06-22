@@ -8,10 +8,12 @@ import { config, singleton, collection, fields } from "@keystatic/core";
 // Singletons : le slash final du `path` force le stockage en {path}/index.json,
 // que le site lit directement (sinon Keystatic lit le fichier plat {path}.json).
 
-// GitHub en prod (Vercel), ou en local si on force KEYSTATIC_STORAGE=github
+// GitHub en prod (Vercel), ou en local si on force VITE_KEYSTATIC_STORAGE=github
 // (utile pour lancer une fois le wizard de création de l'app GitHub).
+// NB : on utilise import.meta.env (et pas process.env) car ce fichier est aussi
+// chargé dans le navigateur par l'UI Keystatic, où process.env n'existe pas.
 const useGithub =
-  process.env.NODE_ENV === "production" || process.env.KEYSTATIC_STORAGE === "github";
+  import.meta.env.PROD || import.meta.env.VITE_KEYSTATIC_STORAGE === "github";
 
 export default config({
   storage: useGithub
