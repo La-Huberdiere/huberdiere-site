@@ -1,4 +1,6 @@
 ---
+import { Image } from "astro:assets";
+import logo from "../assets/logo.png";
 // Réglages + langue passés par Base. On préfixe les liens internes selon la langue
 // (FR sans préfixe, EN/IT préfixés), et on affiche le sélecteur de langue.
 // En dessous de 1200px, le menu passe en burger (styles dans global.css).
@@ -13,9 +15,8 @@ const localize = (href: string) => {
 const homeHref = lang === "fr" ? "/" : `/${lang}`;
 ---
 <header class="site-header" id="siteHeader">
-  <a href={homeHref} class="brand">
-    <span class="name">{s.brandName}</span>
-    <span class="sub">{s.brandSub}</span>
+  <a href={homeHref} class="brand" aria-label={s.brandName}>
+    <Image src={logo} alt={s.brandName} class="brand-logo" widths={[180, 360]} sizes="180px" loading="eager" />
   </a>
   <button class="menu-toggle" id="menuToggle" aria-label="Menu" aria-expanded="false" aria-controls="siteNav">
     <span></span><span></span><span></span>
