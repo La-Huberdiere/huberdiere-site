@@ -5,7 +5,7 @@
   "reserveHref": "/#final",
   "nav": [
     {
-      "label": "Living room",
+      "label": "Stay",
       "href": "/#sejour"
     },
     {
@@ -21,7 +21,7 @@
       "href": "/#famille"
     },
     {
-      "label": "Retirement",
+      "label": "Retreat",
       "href": "/#retraite"
     },
     {

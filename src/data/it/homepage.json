@@ -112,15 +112,15 @@
     "pins": [
       {
         "big": "2 h",
-        "lbl": "di Parigi"
+        "lbl": "da Parigi"
       },
       {
         "big": "10'",
-        "lbl": "di Amboise"
+        "lbl": "da Amboise"
       },
       {
         "big": "12 ha",
-        "lbl": "di un parco privato"
+        "lbl": "parco privato"
       }
     ]
   },
