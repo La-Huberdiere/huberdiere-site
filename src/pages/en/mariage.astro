@@ -1,0 +1,8 @@
+---
+import Base from "../../layouts/Base.astro";
+import MariagePage from "../../components/MariagePage.astro";
+import m from "../../data/en/mariage.json";
+---
+<Base title={m.title} description={m.description} lang="en" path="/mariage">
+  <MariagePage m={m} thanksPath="/merci-mariage" />
+</Base>

@@ -1,14 +1,46 @@
 ---
-import s from "../data/settings/index.json";
-const nav = s.nav;
+// Réglages + langue passés par Base. On préfixe les liens internes selon la langue
+// (FR sans préfixe, EN/IT préfixés), et on affiche le sélecteur de langue.
+const { settings: s, lang = "fr", langs = [] } = Astro.props;
+
+const localize = (href: string) => {
+  if (lang === "fr" || !href || !href.startsWith("/")) return href;
+  if (href === "/") return `/${lang}`;
+  if (href.startsWith("/#")) return `/${lang}${href.slice(1)}`;
+  return `/${lang}${href}`;
+};
+const homeHref = lang === "fr" ? "/" : `/${lang}`;
 ---
 <header class="site-header" id="siteHeader">
-  <a href="/" class="brand">
+  <a href={homeHref} class="brand">
     <span class="name">{s.brandName}</span>
     <span class="sub">{s.brandSub}</span>
   </a>
   <nav class="nav">
-    {nav.map((n) => <a href={n.href}>{n.label}</a>)}
-    <a href={s.reserveHref} class="book">{s.reserveLabel}</a>
+    {s.nav.map((n) => <a href={localize(n.href)}>{n.label}</a>)}
+    <a href={localize(s.reserveHref)} class="book">{s.reserveLabel}</a>
+    <span class="lang-switch">
+      {langs.map((l, i) => (
+        <>
+          {i > 0 && <span class="sep">·</span>}
+          <a href={l.href} class={l.code === lang ? "active" : ""} hreflang={l.code}>{l.label}</a>
+        </>
+      ))}
+    </span>
   </nav>
 </header>
+
+<style>
+  .lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 18px;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+  }
+  .lang-switch a { opacity: 0.6; text-decoration: none; color: inherit; }
+  .lang-switch a.active { opacity: 1; font-weight: 600; }
+  .lang-switch a:hover { opacity: 1; }
+  .lang-switch .sep { opacity: 0.35; }
+</style>

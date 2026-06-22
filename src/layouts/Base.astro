@@ -2,22 +2,53 @@
 import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import settingsFr from "../data/fr/settings.json";
+import settingsEn from "../data/en/settings.json";
+import settingsIt from "../data/it/settings.json";
 
 interface Props {
   title?: string;
   description?: string;
+  lang?: "fr" | "en" | "it";
+  path?: string; // chemin sans préfixe de langue, ex. "/" ou "/mariage"
 }
-const {
-  title = "Château de la Huberdière — Touraine, Châteaux de la Loire",
-  description = "Une demeure du XVIᵉ siècle au cœur des Châteaux de la Loire. Mariages, chambres d'hôtes, séminaires et événements privés, à deux heures de Paris.",
-} = Astro.props;
+const { title, description, lang = "fr", path = "/" } = Astro.props;
 
-// Schema corrigé (audit SEO) : NAP cohérent, GPS justes, avis exposés.
+const settingsByLang = { fr: settingsFr, en: settingsEn, it: settingsIt } as const;
+const s = settingsByLang[lang];
+
+const defaults = {
+  fr: {
+    title: "Château de la Huberdière — Touraine, Châteaux de la Loire",
+    description: "Une demeure du XVIᵉ siècle au cœur des Châteaux de la Loire. Mariages, chambres d'hôtes, séminaires et événements privés, à deux heures de Paris.",
+  },
+  en: {
+    title: "Château de la Huberdière — Loire Valley, France",
+    description: "A 16th-century estate in the heart of the Loire Valley castles. Weddings, bed & breakfast, corporate retreats and private events, two hours from Paris.",
+  },
+  it: {
+    title: "Château de la Huberdière — Valle della Loira, Francia",
+    description: "Una dimora del XVI secolo nel cuore dei castelli della Loira. Matrimoni, camere, seminari ed eventi privati, a due ore da Parigi.",
+  },
+};
+const metaTitle = title ?? defaults[lang].title;
+const metaDescription = description ?? defaults[lang].description;
+
+// URLs par langue pour le même contenu (FR sans préfixe, EN/IT préfixés).
+const localePath = (l: string) => (l === "fr" ? path : `/${l}${path === "/" ? "" : path}`);
+const langs = [
+  { code: "fr", label: "FR", href: localePath("fr") },
+  { code: "en", label: "EN", href: localePath("en") },
+  { code: "it", label: "IT", href: localePath("it") },
+];
+const hreflangMap: Record<string, string> = { fr: "fr-fr", en: "en-gb", it: "it-it" };
+
+const htmlLang = lang === "en" ? "en-GB" : lang === "it" ? "it-IT" : "fr-FR";
 const schema = {
   "@context": "https://schema.org",
   "@type": "LodgingBusiness",
   name: "Château de la Huberdière",
-  description,
+  description: metaDescription,
   url: "https://www.chateaudelahuberdiere.com",
   telephone: "+33247575292",
   address: {
@@ -34,16 +65,20 @@ const schema = {
 };
 ---
 <!doctype html>
-<html lang="fr">
+<html lang={htmlLang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <title>{metaTitle}</title>
+    <meta name="description" content={metaDescription} />
+    <meta property="og:title" content={metaTitle} />
+    <meta property="og:description" content={metaDescription} />
     <meta property="og:type" content="website" />
+    {langs.map((l) => (
+      <link rel="alternate" hreflang={hreflangMap[l.code]} href={new URL(l.href, Astro.site).href} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={new URL(localePath("fr"), Astro.site).href} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -53,21 +88,18 @@ const schema = {
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   </head>
   <body>
-    <Header />
+    <Header settings={s} lang={lang} langs={langs} />
     <slot />
-    <Footer />
+    <Footer settings={s} lang={lang} />
     <script>
-      // header : transparent au-dessus d'un hero sombre, plein partout ailleurs
       const header = document.getElementById("siteHeader");
       const hasHero = !!document.querySelector(".hero, .page-hero");
       const onScroll = () => header?.classList.toggle("solid", !hasHero || window.scrollY > 40);
       onScroll();
       window.addEventListener("scroll", onScroll, { passive: true });
 
-      // hero : zoom doux au chargement
       document.getElementById("hero")?.classList.add("loaded");
 
-      // apparition au scroll
       const io = new IntersectionObserver(
         (entries) => {
           entries.forEach((e) => {

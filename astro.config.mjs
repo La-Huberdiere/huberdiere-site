@@ -12,6 +12,13 @@ export default defineConfig({
   output: "static",
   adapter: vercel(),
   integrations: [react(), keystatic()],
+  // Multilingue calé sur le site Wix actuel : FR par défaut (sans préfixe),
+  // EN sur /en, IT sur /it.
+  i18n: {
+    locales: ["fr", "en", "it"],
+    defaultLocale: "fr",
+    routing: { prefixDefaultLocale: false },
+  },
   build: { inlineStylesheets: "auto" },
   // Sans ça, Astro ignore l'en-tête x-forwarded-host derrière le proxy Vercel et
   // reconstruit request.url en https://localhost → Keystatic génère un mauvais

@@ -1,0 +1,38 @@
+{
+  "brandName": "Château de la Huberdière",
+  "brandSub": "Touraine · Châteaux de la Loire",
+  "reserveLabel": "Réserver",
+  "reserveHref": "/#final",
+  "nav": [
+    { "label": "Séjour", "href": "/#sejour" },
+    { "label": "Mariage", "href": "/mariage" },
+    { "label": "Séminaire", "href": "/#seminaire" },
+    { "label": "Famille", "href": "/#famille" },
+    { "label": "Retraite", "href": "/#retraite" },
+    { "label": "Contact", "href": "/#final" }
+  ],
+  "footer": {
+    "name": "Château de la Huberdière",
+    "addressLine1": "Vallée de Vaugadeland",
+    "addressLine2": "37530 Nazelles-Négron, Indre-et-Loire",
+    "phone": "+33 2 47 57 52 92",
+    "phoneHref": "+33247575292",
+    "email": "contact@chateaudelahuberdiere.com",
+    "col2Title": "Le château",
+    "col2Links": [
+      { "label": "Chambres d'hôtes", "href": "/#sejour" },
+      { "label": "Mariage", "href": "/mariage" },
+      { "label": "Séminaire", "href": "/#seminaire" },
+      { "label": "Réunions de famille", "href": "/#famille" },
+      { "label": "Retraites & ateliers", "href": "/#retraite" }
+    ],
+    "col3Title": "Découvrir",
+    "col3Links": [
+      { "label": "Galerie", "href": "/#galerie" },
+      { "label": "Accès & situation", "href": "/#location" },
+      { "label": "Demander une proposition", "href": "/#final" }
+    ],
+    "bottomLeft": "© 2026 Château de la Huberdière · Touraine, Val de Loire",
+    "bottomRight": "À 2 h de Paris · entre Amboise et Chambord"
+  }
+}

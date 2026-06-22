@@ -1,20 +1,216 @@
 import { config, singleton, collection, fields } from "@keystatic/core";
 
-// Config Keystatic — édition complète du site sans code.
-// Éditeur : /keystatic.
-// - En dev (local) : écrit directement dans les fichiers du dépôt.
-// - En prod (Vercel) : mode GitHub, les modifs sont commitées sur le dépôt
-//   via l'app GitHub Keystatic, ce qui redéploie le site automatiquement.
-// Singletons : le slash final du `path` force le stockage en {path}/index.json,
-// que le site lit directement (sinon Keystatic lit le fichier plat {path}.json).
+// Config Keystatic — édition multilingue du site (FR / EN / IT) sans code.
+// Éditeur : /keystatic. GitHub en prod, local en dev (cf. PUBLIC_KEYSTATIC_STORAGE).
+// Chaque page existe en 3 langues : src/data/{fr,en,it}/{page}.json (fichier plat,
+// path sans slash final). Les schémas sont factorisés et réutilisés par langue.
 
-// GitHub en prod (Vercel), ou en local si on force PUBLIC_KEYSTATIC_STORAGE=github
-// (utile pour lancer une fois le wizard de création de l'app GitHub).
-// NB : import.meta.env (pas process.env), car ce fichier est aussi chargé dans le
-// navigateur par l'UI Keystatic. Et préfixe PUBLIC_ : Astro n'expose au client QUE
-// les variables PUBLIC_ (pas VITE_), sinon la valeur est vide côté navigateur.
 const useGithub =
   import.meta.env.PROD || import.meta.env.PUBLIC_KEYSTATIC_STORAGE === "github";
+
+// ---- Schémas (identiques pour les 3 langues) ----
+
+const settingsSchema = {
+  brandName: fields.text({ label: "Nom (header)" }),
+  brandSub: fields.text({ label: "Sous-titre (header)" }),
+  reserveLabel: fields.text({ label: "Bouton « Réserver » — texte" }),
+  reserveHref: fields.text({ label: "Bouton « Réserver » — lien" }),
+  nav: fields.array(
+    fields.object({
+      label: fields.text({ label: "Libellé" }),
+      href: fields.text({ label: "Lien" }),
+    }),
+    { label: "Menu (header)", itemLabel: (p) => p.fields.label.value || "Lien" }
+  ),
+  footer: fields.object(
+    {
+      name: fields.text({ label: "Nom" }),
+      addressLine1: fields.text({ label: "Adresse — ligne 1" }),
+      addressLine2: fields.text({ label: "Adresse — ligne 2" }),
+      phone: fields.text({ label: "Téléphone (affiché)" }),
+      phoneHref: fields.text({ label: "Téléphone (lien tel:)" }),
+      email: fields.text({ label: "Email" }),
+      col2Title: fields.text({ label: "Colonne 2 — titre" }),
+      col2Links: fields.array(
+        fields.object({
+          label: fields.text({ label: "Libellé" }),
+          href: fields.text({ label: "Lien" }),
+        }),
+        { label: "Colonne 2 — liens", itemLabel: (p) => p.fields.label.value || "Lien" }
+      ),
+      col3Title: fields.text({ label: "Colonne 3 — titre" }),
+      col3Links: fields.array(
+        fields.object({
+          label: fields.text({ label: "Libellé" }),
+          href: fields.text({ label: "Lien" }),
+        }),
+        { label: "Colonne 3 — liens", itemLabel: (p) => p.fields.label.value || "Lien" }
+      ),
+      bottomLeft: fields.text({ label: "Bas de page — gauche" }),
+      bottomRight: fields.text({ label: "Bas de page — droite" }),
+    },
+    { label: "Footer" }
+  ),
+};
+
+const homepageSchema = {
+  hero: fields.object(
+    {
+      eyebrow: fields.text({ label: "Sur-titre" }),
+      titleLine1: fields.text({ label: "Titre — ligne 1" }),
+      titleLine2Italic: fields.text({ label: "Titre — ligne 2 (italique)" }),
+      lead: fields.text({ label: "Texte d'accroche", multiline: true }),
+      ctaPrimary: fields.text({ label: "Bouton principal" }),
+      ctaSecondary: fields.text({ label: "Bouton secondaire" }),
+    },
+    { label: "Hero (bandeau du haut)" }
+  ),
+  intro: fields.object(
+    {
+      eyebrow: fields.text({ label: "Sur-titre" }),
+      titleLine1: fields.text({ label: "Titre — ligne 1" }),
+      titleLine2Italic: fields.text({ label: "Titre — ligne 2 (italique)" }),
+      paragraphs: fields.array(fields.text({ label: "Paragraphe", multiline: true }), {
+        label: "Paragraphes",
+        itemLabel: (p) => p.value.slice(0, 40) || "Paragraphe",
+      }),
+      sign: fields.text({ label: "Signature" }),
+    },
+    { label: "Section « L'esprit du lieu »" }
+  ),
+  activitiesHead: fields.object(
+    {
+      eyebrow: fields.text({ label: "Sur-titre" }),
+      titlePlain: fields.text({ label: "Titre (début)" }),
+      titleItalic: fields.text({ label: "Titre (fin, italique)" }),
+      intro: fields.text({ label: "Texte d'introduction", multiline: true }),
+    },
+    { label: "Activités — en-tête" }
+  ),
+  activities: fields.array(
+    fields.object({
+      num: fields.text({ label: "Numéro / catégorie" }),
+      titlePlain: fields.text({ label: "Titre (début)" }),
+      titleItalic: fields.text({ label: "Titre (fin, italique)" }),
+      text: fields.text({ label: "Description", multiline: true }),
+      points: fields.array(fields.text({ label: "Point" }), { label: "Points clés" }),
+      linkLabel: fields.text({ label: "Texte du lien" }),
+      linkHref: fields.text({ label: "Cible du lien" }),
+    }),
+    { label: "Activités", itemLabel: (p) => p.fields.num.value || "Activité" }
+  ),
+  quote: fields.object(
+    {
+      text: fields.text({ label: "Texte de la citation", multiline: true }),
+      cite: fields.text({ label: "Signature" }),
+    },
+    { label: "Citation" }
+  ),
+  galleryHead: fields.object(
+    {
+      eyebrow: fields.text({ label: "Sur-titre" }),
+      titlePlain: fields.text({ label: "Titre (début)" }),
+      titleItalic: fields.text({ label: "Titre (fin, italique)" }),
+    },
+    { label: "Galerie — en-tête" }
+  ),
+  location: fields.object(
+    {
+      eyebrow: fields.text({ label: "Sur-titre" }),
+      titleLine1Plain: fields.text({ label: "Titre ligne 1 (début)" }),
+      titleLine1Italic: fields.text({ label: "Titre ligne 1 (italique)" }),
+      titleLine2: fields.text({ label: "Titre — ligne 2" }),
+      paragraphs: fields.array(fields.text({ label: "Paragraphe", multiline: true }), {
+        label: "Paragraphes",
+        itemLabel: (p) => p.value.slice(0, 40) || "Paragraphe",
+      }),
+      pins: fields.array(
+        fields.object({
+          big: fields.text({ label: "Chiffre" }),
+          lbl: fields.text({ label: "Légende" }),
+        }),
+        { label: "Chiffres clés", itemLabel: (p) => p.fields.big.value || "Chiffre" }
+      ),
+    },
+    { label: "Section « Situation »" }
+  ),
+  final: fields.object(
+    {
+      eyebrow: fields.text({ label: "Sur-titre" }),
+      titleLine1: fields.text({ label: "Titre — ligne 1" }),
+      titleLine2Italic: fields.text({ label: "Titre — ligne 2 (italique)" }),
+      text: fields.text({ label: "Texte", multiline: true }),
+      ctaPrimary: fields.text({ label: "Bouton principal" }),
+      ctaSecondary: fields.text({ label: "Bouton secondaire" }),
+      responseLine: fields.text({ label: "Ligne « réponse sous 24h »" }),
+    },
+    { label: "Section contact (bas de page)" }
+  ),
+};
+
+const mariageSchema = {
+  title: fields.text({ label: "Titre de l'onglet (SEO)" }),
+  description: fields.text({ label: "Méta description (SEO)", multiline: true }),
+  hero: fields.object(
+    {
+      eyebrow: fields.text({ label: "Sur-titre" }),
+      titleLine1: fields.text({ label: "Titre — ligne 1" }),
+      titleLine2Italic: fields.text({ label: "Titre — ligne 2 (italique)" }),
+      lead: fields.text({ label: "Texte d'accroche", multiline: true }),
+    },
+    { label: "Hero" }
+  ),
+  intro: fields.array(fields.text({ label: "Paragraphe", multiline: true }), {
+    label: "Introduction",
+    itemLabel: (p) => p.value.slice(0, 40) || "Paragraphe",
+  }),
+  cards: fields.array(
+    fields.object({
+      num: fields.text({ label: "Numéro" }),
+      title: fields.text({ label: "Titre" }),
+      text: fields.text({ label: "Texte", multiline: true }),
+    }),
+    { label: "Les 3 piliers", itemLabel: (p) => p.fields.title.value || "Pilier" }
+  ),
+  final: fields.object(
+    {
+      eyebrow: fields.text({ label: "Sur-titre" }),
+      titleLine1: fields.text({ label: "Titre — ligne 1" }),
+      titleLine2Italic: fields.text({ label: "Titre — ligne 2 (italique)" }),
+      text: fields.text({ label: "Texte", multiline: true }),
+      submitLabel: fields.text({ label: "Bouton du formulaire" }),
+      responseLine: fields.text({ label: "Ligne « réponse sous 24h »" }),
+    },
+    { label: "Section contact" }
+  ),
+};
+
+// ---- Singletons par langue ----
+
+function localeSingletons(locale: string, label: string, prefix: string) {
+  return {
+    [`homepage_${locale}`]: singleton({
+      label: `Accueil (${label})`,
+      path: `src/data/${locale}/homepage`,
+      format: { data: "json" },
+      previewUrl: prefix || "/",
+      schema: homepageSchema,
+    }),
+    [`mariage_${locale}`]: singleton({
+      label: `Mariage (${label})`,
+      path: `src/data/${locale}/mariage`,
+      format: { data: "json" },
+      previewUrl: `${prefix}/mariage`,
+      schema: mariageSchema,
+    }),
+    [`settings_${locale}`]: singleton({
+      label: `Réglages header & footer (${label})`,
+      path: `src/data/${locale}/settings`,
+      format: { data: "json" },
+      schema: settingsSchema,
+    }),
+  };
+}
 
 export default config({
   storage: useGithub
@@ -23,205 +219,17 @@ export default config({
   ui: {
     brand: { name: "Château de la Huberdière" },
     navigation: {
-      Pages: ["homepage", "mariage", "pages"],
-      Contenu: ["articles"],
-      Réglages: ["settings"],
+      Français: ["homepage_fr", "mariage_fr", "settings_fr"],
+      English: ["homepage_en", "mariage_en", "settings_en"],
+      Italiano: ["homepage_it", "mariage_it", "settings_it"],
+      Contenu: ["pages", "articles"],
     },
   },
   singletons: {
-    settings: singleton({
-      label: "Réglages du site (header & footer)",
-      path: "src/data/settings/",
-      format: { data: "json" },
-      schema: {
-        brandName: fields.text({ label: "Nom (header)" }),
-        brandSub: fields.text({ label: "Sous-titre (header)" }),
-        reserveLabel: fields.text({ label: "Bouton « Réserver » — texte" }),
-        reserveHref: fields.text({ label: "Bouton « Réserver » — lien" }),
-        nav: fields.array(
-          fields.object({
-            label: fields.text({ label: "Libellé" }),
-            href: fields.text({ label: "Lien" }),
-          }),
-          { label: "Menu (header)", itemLabel: (p) => p.fields.label.value || "Lien" }
-        ),
-        footer: fields.object(
-          {
-            name: fields.text({ label: "Nom" }),
-            addressLine1: fields.text({ label: "Adresse — ligne 1" }),
-            addressLine2: fields.text({ label: "Adresse — ligne 2" }),
-            phone: fields.text({ label: "Téléphone (affiché)" }),
-            phoneHref: fields.text({ label: "Téléphone (lien tel:)" }),
-            email: fields.text({ label: "Email" }),
-            col2Title: fields.text({ label: "Colonne 2 — titre" }),
-            col2Links: fields.array(
-              fields.object({
-                label: fields.text({ label: "Libellé" }),
-                href: fields.text({ label: "Lien" }),
-              }),
-              { label: "Colonne 2 — liens", itemLabel: (p) => p.fields.label.value || "Lien" }
-            ),
-            col3Title: fields.text({ label: "Colonne 3 — titre" }),
-            col3Links: fields.array(
-              fields.object({
-                label: fields.text({ label: "Libellé" }),
-                href: fields.text({ label: "Lien" }),
-              }),
-              { label: "Colonne 3 — liens", itemLabel: (p) => p.fields.label.value || "Lien" }
-            ),
-            bottomLeft: fields.text({ label: "Bas de page — gauche" }),
-            bottomRight: fields.text({ label: "Bas de page — droite" }),
-          },
-          { label: "Footer" }
-        ),
-      },
-    }),
-
-    homepage: singleton({
-      label: "Page d'accueil",
-      path: "src/data/homepage/",
-      format: { data: "json" },
-      previewUrl: "/",
-      schema: {
-        hero: fields.object(
-          {
-            eyebrow: fields.text({ label: "Sur-titre" }),
-            titleLine1: fields.text({ label: "Titre — ligne 1" }),
-            titleLine2Italic: fields.text({ label: "Titre — ligne 2 (italique)" }),
-            lead: fields.text({ label: "Texte d'accroche", multiline: true }),
-            ctaPrimary: fields.text({ label: "Bouton principal" }),
-            ctaSecondary: fields.text({ label: "Bouton secondaire" }),
-          },
-          { label: "Hero (bandeau du haut)" }
-        ),
-        intro: fields.object(
-          {
-            eyebrow: fields.text({ label: "Sur-titre" }),
-            titleLine1: fields.text({ label: "Titre — ligne 1" }),
-            titleLine2Italic: fields.text({ label: "Titre — ligne 2 (italique)" }),
-            paragraphs: fields.array(fields.text({ label: "Paragraphe", multiline: true }), {
-              label: "Paragraphes",
-              itemLabel: (p) => p.value.slice(0, 40) || "Paragraphe",
-            }),
-            sign: fields.text({ label: "Signature" }),
-          },
-          { label: "Section « L'esprit du lieu »" }
-        ),
-        activitiesHead: fields.object(
-          {
-            eyebrow: fields.text({ label: "Sur-titre" }),
-            titlePlain: fields.text({ label: "Titre (début)" }),
-            titleItalic: fields.text({ label: "Titre (fin, italique)" }),
-            intro: fields.text({ label: "Texte d'introduction", multiline: true }),
-          },
-          { label: "Activités — en-tête" }
-        ),
-        activities: fields.array(
-          fields.object({
-            num: fields.text({ label: "Numéro / catégorie" }),
-            titlePlain: fields.text({ label: "Titre (début)" }),
-            titleItalic: fields.text({ label: "Titre (fin, italique)" }),
-            text: fields.text({ label: "Description", multiline: true }),
-            points: fields.array(fields.text({ label: "Point" }), { label: "Points clés" }),
-            linkLabel: fields.text({ label: "Texte du lien" }),
-            linkHref: fields.text({ label: "Cible du lien" }),
-          }),
-          { label: "Activités", itemLabel: (p) => p.fields.num.value || "Activité" }
-        ),
-        quote: fields.object(
-          {
-            text: fields.text({ label: "Texte de la citation", multiline: true }),
-            cite: fields.text({ label: "Signature" }),
-          },
-          { label: "Citation" }
-        ),
-        galleryHead: fields.object(
-          {
-            eyebrow: fields.text({ label: "Sur-titre" }),
-            titlePlain: fields.text({ label: "Titre (début)" }),
-            titleItalic: fields.text({ label: "Titre (fin, italique)" }),
-          },
-          { label: "Galerie — en-tête" }
-        ),
-        location: fields.object(
-          {
-            eyebrow: fields.text({ label: "Sur-titre" }),
-            titleLine1Plain: fields.text({ label: "Titre ligne 1 (début)" }),
-            titleLine1Italic: fields.text({ label: "Titre ligne 1 (italique)" }),
-            titleLine2: fields.text({ label: "Titre — ligne 2" }),
-            paragraphs: fields.array(fields.text({ label: "Paragraphe", multiline: true }), {
-              label: "Paragraphes",
-              itemLabel: (p) => p.value.slice(0, 40) || "Paragraphe",
-            }),
-            pins: fields.array(
-              fields.object({
-                big: fields.text({ label: "Chiffre" }),
-                lbl: fields.text({ label: "Légende" }),
-              }),
-              { label: "Chiffres clés", itemLabel: (p) => p.fields.big.value || "Chiffre" }
-            ),
-          },
-          { label: "Section « Situation »" }
-        ),
-        final: fields.object(
-          {
-            eyebrow: fields.text({ label: "Sur-titre" }),
-            titleLine1: fields.text({ label: "Titre — ligne 1" }),
-            titleLine2Italic: fields.text({ label: "Titre — ligne 2 (italique)" }),
-            text: fields.text({ label: "Texte", multiline: true }),
-            ctaPrimary: fields.text({ label: "Bouton principal" }),
-            ctaSecondary: fields.text({ label: "Bouton secondaire" }),
-            responseLine: fields.text({ label: "Ligne « réponse sous 24h »" }),
-          },
-          { label: "Section contact (bas de page)" }
-        ),
-      },
-    }),
-
-    mariage: singleton({
-      label: "Page Mariage",
-      path: "src/data/mariage/",
-      format: { data: "json" },
-      previewUrl: "/mariage",
-      schema: {
-        title: fields.text({ label: "Titre de l'onglet (SEO)" }),
-        description: fields.text({ label: "Méta description (SEO)", multiline: true }),
-        hero: fields.object(
-          {
-            eyebrow: fields.text({ label: "Sur-titre" }),
-            titleLine1: fields.text({ label: "Titre — ligne 1" }),
-            titleLine2Italic: fields.text({ label: "Titre — ligne 2 (italique)" }),
-            lead: fields.text({ label: "Texte d'accroche", multiline: true }),
-          },
-          { label: "Hero" }
-        ),
-        intro: fields.array(fields.text({ label: "Paragraphe", multiline: true }), {
-          label: "Introduction",
-          itemLabel: (p) => p.value.slice(0, 40) || "Paragraphe",
-        }),
-        cards: fields.array(
-          fields.object({
-            num: fields.text({ label: "Numéro" }),
-            title: fields.text({ label: "Titre" }),
-            text: fields.text({ label: "Texte", multiline: true }),
-          }),
-          { label: "Les 3 piliers", itemLabel: (p) => p.fields.title.value || "Pilier" }
-        ),
-        final: fields.object(
-          {
-            eyebrow: fields.text({ label: "Sur-titre" }),
-            titleLine1: fields.text({ label: "Titre — ligne 1" }),
-            titleLine2Italic: fields.text({ label: "Titre — ligne 2 (italique)" }),
-            text: fields.text({ label: "Texte", multiline: true }),
-            submitLabel: fields.text({ label: "Bouton du formulaire" }),
-            responseLine: fields.text({ label: "Ligne « réponse sous 24h »" }),
-          },
-          { label: "Section contact" }
-        ),
-      },
-    }),
+    ...localeSingletons("fr", "FR", ""),
+    ...localeSingletons("en", "EN", "/en"),
+    ...localeSingletons("it", "IT", "/it"),
   },
-
   collections: {
     pages: collection({
       label: "Pages libres",
@@ -246,7 +254,6 @@ export default config({
         }),
       },
     }),
-
     articles: collection({
       label: "Articles (blog SEO)",
       slugField: "title",

@@ -1,8 +1,14 @@
 ---
-// Contenu éditable dans Keystatic → Réglages du site (header & footer).
-// NAP canonique (corrigé dans l'audit SEO) : un seul bloc cohérent.
-import s from "../data/settings/index.json";
+// Réglages + langue passés par Base. NAP canonique (corrigé dans l'audit SEO).
+const { settings: s, lang = "fr" } = Astro.props;
 const f = s.footer;
+
+const localize = (href: string) => {
+  if (lang === "fr" || !href || !href.startsWith("/")) return href;
+  if (href === "/") return `/${lang}`;
+  if (href.startsWith("/#")) return `/${lang}${href.slice(1)}`;
+  return `/${lang}${href}`;
+};
 ---
 <footer class="site-footer">
   <div class="footer-grid">
@@ -16,13 +22,13 @@ const f = s.footer;
     <div>
       <h4>{f.col2Title}</h4>
       <ul>
-        {f.col2Links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+        {f.col2Links.map((l) => <li><a href={localize(l.href)}>{l.label}</a></li>)}
       </ul>
     </div>
     <div>
       <h4>{f.col3Title}</h4>
       <ul>
-        {f.col3Links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+        {f.col3Links.map((l) => <li><a href={localize(l.href)}>{l.label}</a></li>)}
       </ul>
     </div>
   </div>
