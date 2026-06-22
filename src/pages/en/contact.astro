@@ -1,0 +1,11 @@
+---
+import Base from "../../layouts/Base.astro";
+import ContactPage from "../../components/ContactPage.astro";
+import contact from "../../data/contact.json";
+import settings from "../../data/settings.json";
+const c = contact.en;
+const s = settings.en;
+---
+<Base title={c.title} description={c.description} lang="en" path="/contact">
+  <ContactPage c={c} settings={s} cible="contact" thanksPath="/merci-mariage" />
+</Base>

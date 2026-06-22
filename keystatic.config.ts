@@ -185,6 +185,25 @@ const mariageSchema = {
   ),
 };
 
+const contactSchema = {
+  title: fields.text({ label: "Titre de l'onglet (SEO)" }),
+  description: fields.text({ label: "Méta description (SEO)", multiline: true }),
+  hero: fields.object(
+    {
+      eyebrow: fields.text({ label: "Sur-titre" }),
+      titleLine1: fields.text({ label: "Titre — ligne 1" }),
+      titleLine2Italic: fields.text({ label: "Titre — ligne 2 (italique)" }),
+      lead: fields.text({ label: "Texte d'accroche", multiline: true }),
+    },
+    { label: "Hero" }
+  ),
+  infoTitle: fields.text({ label: "Coordonnées — titre" }),
+  infoNote: fields.text({ label: "Coordonnées — note", multiline: true }),
+  formIntro: fields.text({ label: "Intro du formulaire", multiline: true }),
+  submitLabel: fields.text({ label: "Bouton du formulaire" }),
+  responseLine: fields.text({ label: "Ligne « réponse sous 24h »" }),
+};
+
 // ---- Singletons : une entrée par page, contenu nesté par langue ----
 // Sections Français / English / Italiano dans le même écran d'édition : on édite
 // la page d'accueil et on voit/corrige directement le wording IT en dessous.
@@ -201,7 +220,7 @@ export default config({
   ui: {
     brand: { name: "Château de la Huberdière" },
     navigation: {
-      Pages: ["homepage", "mariage", "seminaire", "famille", "retraite", "sejour", "restauration"],
+      Pages: ["homepage", "mariage", "seminaire", "famille", "retraite", "sejour", "restauration", "contact"],
       Réglages: ["settings"],
       Contenu: ["pages", "articles"],
     },
@@ -255,6 +274,13 @@ export default config({
       format: { data: "json" },
       previewUrl: "/restauration",
       schema: langSections(mariageSchema),
+    }),
+    contact: singleton({
+      label: "Page Contact (FR · EN · IT)",
+      path: "src/data/contact",
+      format: { data: "json" },
+      previewUrl: "/contact",
+      schema: langSections(contactSchema),
     }),
     settings: singleton({
       label: "Réglages header & footer (FR · EN · IT)",
