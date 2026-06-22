@@ -33,6 +33,9 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
   color:#fff;
 }
 .site-header.solid{background:var(--bg);color:var(--ink);padding:14px 48px;box-shadow:0 1px 0 var(--line-soft)}
+/* Scrim sombre derrière le header transparent : garantit la lisibilité de la nav
+   blanche au-dessus des hero clairs (ex. page Mariage, image piscine). */
+.site-header:not(.solid){background:linear-gradient(180deg,rgba(0,0,0,.42),rgba(0,0,0,0))}
 .brand{display:flex;flex-direction:column;line-height:1.05}
 .brand .name{font-family:'Playfair Display',serif;font-size:19px;letter-spacing:.02em}
 .brand .sub{font-family:'Montserrat',sans-serif;font-size:8.5px;letter-spacing:.42em;text-transform:uppercase;opacity:.8;margin-top:3px}
