@@ -172,6 +172,27 @@ const mariageSchema = {
     }),
     { label: "Les 3 piliers", itemLabel: (p) => p.fields.title.value || "Pilier" }
   ),
+  stats: fields.array(
+    fields.object({
+      big: fields.text({ label: "Chiffre" }),
+      lbl: fields.text({ label: "Légende" }),
+    }),
+    { label: "Chiffres clés (bande sous le hero)", itemLabel: (p) => p.fields.big.value || "Chiffre" }
+  ),
+  extrasHead: fields.object(
+    {
+      eyebrow: fields.text({ label: "Sur-titre" }),
+      title: fields.text({ label: "Titre de la section" }),
+    },
+    { label: "Section « activités / extras » — en-tête" }
+  ),
+  extras: fields.array(
+    fields.object({
+      title: fields.text({ label: "Titre" }),
+      text: fields.text({ label: "Texte", multiline: true }),
+    }),
+    { label: "Section « activités / extras » — items", itemLabel: (p) => p.fields.title.value || "Item" }
+  ),
   final: fields.object(
     {
       eyebrow: fields.text({ label: "Sur-titre" }),

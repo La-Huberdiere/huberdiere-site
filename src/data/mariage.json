@@ -36,7 +36,39 @@
       "text": "Dites-nous votre date, le nombre d'invités, l'esprit que vous imaginez. Nous vous adressons une proposition sur mesure.",
       "submitLabel": "Recevoir une proposition",
       "responseLine": "Réponse sous 24 heures"
-    }
+    },
+    "stats": [
+      {
+        "big": "21",
+        "lbl": "couchages, jusqu'à 150 convives"
+      },
+      {
+        "big": "15 ha",
+        "lbl": "de parc séculaire privatisé"
+      },
+      {
+        "big": "2 h",
+        "lbl": "de Paris"
+      }
+    ],
+    "extrasHead": {
+      "eyebrow": "L'art de recevoir",
+      "title": "Tout pour votre grand jour"
+    },
+    "extras": [
+      {
+        "title": "L'hébergement de prestige",
+        "text": "Vingt et un couchages sur place dans les suites du château, pour que vos proches se réveillent là où la fête s'est terminée."
+      },
+      {
+        "title": "Le parc",
+        "text": "Quinze hectares de bois, d'étangs et de prairies pour vos cérémonies, et l'Orangerie ou les salons en repli élégant si la météo se montre capricieuse."
+      },
+      {
+        "title": "Un interlocuteur dédié",
+        "text": "Lodovica apporte la chaleur de ses racines italiennes, Patrick veille à chaque détail logistique, du premier rendez-vous au lendemain de la fête."
+      }
+    ]
   },
   "en": {
     "title": "Wedding at a château in Touraine — Château de la Huberdière",
@@ -49,7 +81,7 @@
     },
     "intro": [
       "Imagine a non-religious ceremony beneath centuries-old trees, a reception on the terrace as the sun sets, dinner in the grand vaulted hall, followed by a party that goes on late into the night under the stars. In the morning, your loved ones wake up right there, in the château’s guest rooms.",
-      "La Huberdière is available for exclusive hire, just for you and your guests. Whether you’re hosting 30 or 150 guests, you’ll have the château, the grounds and the swimming pool all to yourselves, with a dedicated point of contact from your first enquiry right through to the day after the event."
+      "La Huberdière is available for exclusive hire, just for you and your guests. Whether you’re hosting 30 or 150 guests, you’ll have the château, the grounds and the swimming pool all to yourselves, with a dedicated point of contact from your first meeting right through to the day after the event."
     ],
     "cards": [
       {
@@ -60,7 +92,7 @@
       {
         "num": "II",
         "title": "Accommodation",
-        "text": "The rooms in the château are for immediate family, with accommodation nearby for all the guests. Everyone stays either on site or very close by."
+        "text": "The rooms in the château are for immediate family, with accommodation nearby for all the guests. Everyone stays on site or very close by."
       },
       {
         "num": "III",
@@ -73,9 +105,41 @@
       "titleLine1": "Let’s talk about your",
       "titleLine2Italic": "the loveliest day.",
       "text": "Let us know your date, the number of guests and the sort of atmosphere you’re envisaging. We’ll send you a bespoke proposal.",
-      "submitLabel": "Receive a quote",
+      "submitLabel": "Receive a proposal",
       "responseLine": "We’ll get back to you within 24 hours"
-    }
+    },
+    "stats": [
+      {
+        "big": "21",
+        "lbl": "accommodation for up to 150 guests"
+      },
+      {
+        "big": "15 ha",
+        "lbl": "a centuries-old park that has been privatised"
+      },
+      {
+        "big": "2 h",
+        "lbl": "in Paris"
+      }
+    ],
+    "extrasHead": {
+      "eyebrow": "The Art of Hospitality",
+      "title": "Everything you need for your big day"
+    },
+    "extras": [
+      {
+        "title": "Luxury accommodation",
+        "text": "There are 21 beds available on site in the château’s suites, so your loved ones can wake up right where the party ended."
+      },
+      {
+        "title": "The park",
+        "text": "Fifteen hectares of woodland, ponds and meadows for your events, and the Orangery or the elegant indoor reception rooms should the weather turn unsettled."
+      },
+      {
+        "title": "A dedicated contact person",
+        "text": "Lodovica brings the warmth of her Italian heritage, whilst Patrick takes care of every logistical detail, from the first meeting right through to the day after the party."
+      }
+    ]
   },
   "it": {
     "title": "Matrimonio in un castello in Touraine — Castello di La Huberdière",
@@ -114,6 +178,38 @@
       "text": "Comunicateci la data, il numero di invitati e lo stile che avete in mente. Vi invieremo una proposta su misura.",
       "submitLabel": "Ricevere un'offerta",
       "responseLine": "Risposta entro 24 ore"
-    }
+    },
+    "stats": [
+      {
+        "big": "21",
+        "lbl": "posti letto, fino a 150 ospiti"
+      },
+      {
+        "big": "15 ha",
+        "lbl": "di un parco secolare privatizzato"
+      },
+      {
+        "big": "2 h",
+        "lbl": "di Parigi"
+      }
+    ],
+    "extrasHead": {
+      "eyebrow": "L'arte di ricevere gli ospiti",
+      "title": "Tutto per il vostro grande giorno"
+    },
+    "extras": [
+      {
+        "title": "Alloggi di lusso",
+        "text": "Ventuno posti letto in loco nelle suite del castello, affinché i vostri cari possano svegliarsi proprio dove si è conclusa la festa."
+      },
+      {
+        "title": "Il parco",
+        "text": "Quindici ettari di boschi, laghetti e prati per le vostre cerimonie, e l’Orangerie o gli eleganti saloni come riparo in caso di maltempo."
+      },
+      {
+        "title": "Un referente dedicato",
+        "text": "Lodovica infonde il calore delle sue origini italiane, mentre Patrick cura ogni minimo dettaglio logistico, dal primo incontro fino al giorno dopo la festa."
+      }
+    ]
   }
 }

@@ -36,7 +36,43 @@
       "text": "Dites-nous vos dates, votre discipline et le nombre de participants. Nous vous adressons une proposition sur mesure.",
       "submitLabel": "Recevoir une proposition",
       "responseLine": "Réponse sous 24 heures"
-    }
+    },
+    "stats": [
+      {
+        "big": "20",
+        "lbl": "participants logés"
+      },
+      {
+        "big": "15 ha",
+        "lbl": "de domaine naturel"
+      },
+      {
+        "big": "2 h",
+        "lbl": "de Paris"
+      }
+    ],
+    "extrasHead": {
+      "eyebrow": "Le domaine",
+      "title": "Des espaces pensés pour la transmission"
+    },
+    "extras": [
+      {
+        "title": "L'espace de travail",
+        "text": "L'Orangerie, 200 m² baignés de lumière et entièrement modulables (yoga, méditation, ateliers créatifs), et quatre salons plus intimistes pour vos sous-groupes."
+      },
+      {
+        "title": "Le parc inspirant",
+        "text": "Quinze hectares de bois, d'étangs et de prairies pour marches méditatives, yoga au lever du soleil ou cercles de parole en pleine nature."
+      },
+      {
+        "title": "Hébergement & intimité",
+        "text": "Dix suites de luxe avec salle de bain privative, en occupation single ou partagée selon l'esprit de votre retraite."
+      },
+      {
+        "title": "Accessibilité & logistique",
+        "text": "À une heure de Paris (TGV Saint-Pierre-des-Corps) puis trente minutes de voiture, ou via l'A10. Une arrivée fluide pour vos participants."
+      }
+    ]
   },
   "en": {
     "title": "Retreats, courses and workshops at the château in Touraine — Château de la Huberdière",
@@ -48,7 +84,7 @@
       "lead": "A haven of tranquillity, entirely private, offering your participants an immersive experience that combines nature, comfort and inspiration."
     },
     "intro": [
-      "Yoga courses, creative retreats, writing or meditation workshops: just five kilometres from Amboise, the estate can be hired exclusively for groups of up to 20 people. Ten luxurious suites, each with an en-suite bathroom, make this an ideal venue for high-end retreats.",
+      "Yoga courses, creative retreats, writing or meditation workshops: just five kilometres from Amboise, the estate can be hired exclusively for your groups of up to 20 participants. Ten luxurious suites, each with an en-suite bathroom, make this an ideal choice for high-end retreats.",
       "Fifteen hectares of natural settings for outdoor activities, four versatile function rooms for your sessions, and seamless logistics: you focus on sharing your expertise, and we’ll take care of the rest."
     ],
     "cards": [
@@ -75,10 +111,46 @@
       "text": "Please let us know your dates, your discipline and the number of participants. We will send you a bespoke proposal.",
       "submitLabel": "Receive a proposal",
       "responseLine": "We’ll get back to you within 24 hours"
-    }
+    },
+    "stats": [
+      {
+        "big": "20",
+        "lbl": "participants provided with accommodation"
+      },
+      {
+        "big": "15 ha",
+        "lbl": "natural environment"
+      },
+      {
+        "big": "2 h",
+        "lbl": "in Paris"
+      }
+    ],
+    "extrasHead": {
+      "eyebrow": "The estate",
+      "title": "Spaces designed to foster learning"
+    },
+    "extras": [
+      {
+        "title": "The workspace",
+        "text": "The Orangerie, a 200 m² space bathed in light and fully adaptable (for yoga, meditation and creative workshops), and four more intimate lounges for your smaller groups."
+      },
+      {
+        "title": "The inspiring park",
+        "text": "Fifteen hectares of woodland, ponds and meadows, perfect for meditative walks, sunrise yoga or talking circles in the heart of nature."
+      },
+      {
+        "title": "Accommodation & privacy",
+        "text": "Ten luxury suites with en-suite bathrooms, available for single or shared occupancy depending on the nature of your retreat."
+      },
+      {
+        "title": "Accessibility & logistics",
+        "text": "An hour from Paris (TGV to Saint-Pierre-des-Corps) followed by a thirty-minute drive, or via the A10. A hassle-free journey for your participants."
+      }
+    ]
   },
   "it": {
-    "title": "Corsi, stage e laboratori al castello in Touraine — Castello di La Huberdière",
+    "title": "Corsi di formazione, stage e laboratori al castello in Touraine — Castello di La Huberdière",
     "description": "Organizzate il vostro ritiro o il vostro corso in un castello in esclusiva nella Valle della Loira: 20 partecipanti, 15 ettari, 4 sale modulabili. A 5 km da Amboise, a 2 ore da Parigi.",
     "hero": {
       "eyebrow": "Corsi e laboratori · Valle della Loira",
@@ -114,6 +186,42 @@
       "text": "Comunicateci le date, la vostra disciplina e il numero di partecipanti. Vi invieremo una proposta su misura.",
       "submitLabel": "Ricevere un'offerta",
       "responseLine": "Risposta entro 24 ore"
-    }
+    },
+    "stats": [
+      {
+        "big": "20",
+        "lbl": "partecipanti alloggiati"
+      },
+      {
+        "big": "15 ha",
+        "lbl": "di area naturale"
+      },
+      {
+        "big": "2 h",
+        "lbl": "di Parigi"
+      }
+    ],
+    "extrasHead": {
+      "eyebrow": "La tenuta",
+      "title": "Spazi pensati per la trasmissione"
+    },
+    "extras": [
+      {
+        "title": "L'area di lavoro",
+        "text": "L'Orangerie, 200 m² inondati di luce e completamente modulabili (yoga, meditazione, laboratori creativi), e quattro saloni più intimi per i vostri sottogruppi."
+      },
+      {
+        "title": "Il parco che ispira",
+        "text": "Quindici ettari di boschi, laghetti e prati per passeggiate meditative, yoga all’alba o incontri di condivisione immersi nella natura."
+      },
+      {
+        "title": "Alloggio e privacy",
+        "text": "Dieci suite di lusso con bagno privato, con occupazione singola o condivisa a seconda dello spirito del vostro soggiorno."
+      },
+      {
+        "title": "Accessibilità e logistica",
+        "text": "A un'ora da Parigi (TGV Saint-Pierre-des-Corps) e poi trenta minuti in auto, oppure tramite l'A10. Un arrivo senza intoppi per i vostri partecipanti."
+      }
+    ]
   }
 }

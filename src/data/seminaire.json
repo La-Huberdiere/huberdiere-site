@@ -10,7 +10,8 @@
     },
     "intro": [
       "Privatisez un domaine préservé pour vos comités de direction, masters classes et journées de cohésion. Dix suites raffinées avec salles de bain privatives accueillent jusqu'à 20 collaborateurs, et quatre salons modulables s'adaptent à vos formats de travail.",
-      "Quatorze hectares de parc boisé pour les activités de team-building en plein air, un couloir de nage chauffé d'avril à octobre, une cuisine italienne saine et gourmande : tout est pensé pour alterner sessions productives et vrais moments de respiration."
+      "Quatorze hectares de parc boisé pour les activités de team-building en plein air, un couloir de nage chauffé d'avril à octobre, une cuisine italienne saine et gourmande : tout est pensé pour alterner sessions productives et vrais moments de respiration.",
+      "Côté travail, quatre salons modulables et l'Orangerie permettent des plénières jusqu'à 100 personnes, équipés vidéoprojecteur et paperboard, tandis que le parc se prête aux sessions en plein air."
     ],
     "cards": [
       {
@@ -36,7 +37,51 @@
       "text": "Dites-nous vos dates, le nombre de participants et vos objectifs. Nous vous adressons une proposition sur mesure.",
       "submitLabel": "Recevoir une proposition",
       "responseLine": "Réponse sous 24 heures"
-    }
+    },
+    "stats": [
+      {
+        "big": "10",
+        "lbl": "suites, jusqu'à 20 collaborateurs"
+      },
+      {
+        "big": "14 ha",
+        "lbl": "de parc boisé"
+      },
+      {
+        "big": "2 h",
+        "lbl": "de Paris"
+      }
+    ],
+    "extrasHead": {
+      "eyebrow": "Sur place",
+      "title": "Les activités pour votre séminaire"
+    },
+    "extras": [
+      {
+        "title": "Bien-être & farniente",
+        "text": "Un couloir de nage de 16 mètres chauffé d'avril à octobre et sa pool house, pour les pauses entre deux réunions."
+      },
+      {
+        "title": "Relaxation & harmonie",
+        "text": "Massages professionnels sur rendez-vous ou séances de yoga organisées sur demande."
+      },
+      {
+        "title": "Loisirs & musique",
+        "text": "Instruments et jeux de société en libre-service, parties de pétanque ou de ping-pong dans le parc."
+      },
+      {
+        "title": "Cohésion gourmande",
+        "text": "Renforcez les liens par la gourmandise, avec des cours de cuisine italienne ou des ateliers animés par un chef étoilé."
+      },
+      {
+        "title": "Envol en montgolfière",
+        "text": "Un départ depuis le parc du château pour survoler les joyaux du Val de Loire."
+      },
+      {
+        "title": "Patrimoine & châteaux",
+        "text": "Chenonceau, Amboise, Blois ou Chambord, à quelques minutes du domaine."
+      }
+    ]
   },
   "en": {
     "title": "Corporate seminar in Touraine — Château de la Huberdière",
@@ -49,7 +94,8 @@
     },
     "intro": [
       "Exclusively book this unspoilt estate for your board meetings, masterclasses and team-building days. Ten elegant suites with en-suite bathrooms can accommodate up to 20 staff members, and four versatile function rooms can be adapted to suit your working requirements.",
-      "Fourteen hectares of wooded grounds for outdoor team-building activities, a swimming pool heated from April to October, and wholesome, gourmet Italian cuisine: everything has been designed to ensure a balance between productive sessions and genuine moments of relaxation."
+      "Fourteen hectares of wooded grounds for outdoor team-building activities, a swimming pool heated from April to October, and wholesome, gourmet Italian cuisine: everything is designed to ensure a balance between productive sessions and genuine moments of relaxation.",
+      "For business events, four versatile function rooms and the Orangery can accommodate plenary sessions for up to 100 people, equipped with a projector and flipchart, whilst the grounds are ideal for outdoor sessions."
     ],
     "cards": [
       {
@@ -75,7 +121,51 @@
       "text": "Please let us know your dates, the number of participants and your objectives. We will send you a bespoke proposal.",
       "submitLabel": "Receive a proposal",
       "responseLine": "We’ll get back to you within 24 hours"
-    }
+    },
+    "stats": [
+      {
+        "big": "10",
+        "lbl": "suites, for up to 20 staff members"
+      },
+      {
+        "big": "14 ha",
+        "lbl": "wooded park"
+      },
+      {
+        "big": "2 h",
+        "lbl": "in Paris"
+      }
+    ],
+    "extrasHead": {
+      "eyebrow": "On site",
+      "title": "Activities for your seminar"
+    },
+    "extras": [
+      {
+        "title": "Wellbeing & relaxation",
+        "text": "A 16-metre swimming lane, heated from April to October, and its pool house, for breaks between meetings."
+      },
+      {
+        "title": "Relaxation & harmony",
+        "text": "Professional massages by appointment or yoga sessions organised on request."
+      },
+      {
+        "title": "Leisure & music",
+        "text": "Self-service musical instruments and board games, as well as games of pétanque or table tennis in the park."
+      },
+      {
+        "title": "A culinary bond",
+        "text": "Strengthen your bonds through good food, with Italian cookery classes or workshops led by a Michelin-starred chef."
+      },
+      {
+        "title": "Hot-air balloon ride",
+        "text": "A flight from the castle grounds, taking in the highlights of the Loire Valley."
+      },
+      {
+        "title": "Heritage & castles",
+        "text": "Chenonceau, Amboise, Blois or Chambord, just a few minutes’ drive from the estate."
+      }
+    ]
   },
   "it": {
     "title": "Seminario aziendale in Touraine — Castello di La Huberdière",
@@ -88,7 +178,8 @@
     },
     "intro": [
       "Riservate una tenuta incontaminata per le vostre riunioni del consiglio di amministrazione, i corsi di perfezionamento e le giornate di team building. Dieci raffinate suite con bagno privato possono ospitare fino a 20 collaboratori, mentre quattro sale modulabili si adattano alle vostre esigenze lavorative.",
-      "Quattordici ettari di parco alberato per attività di team building all’aria aperta, una piscina riscaldata da aprile a ottobre, una cucina italiana sana e gustosa: tutto è pensato per alternare sessioni produttive a veri momenti di relax."
+      "Quattordici ettari di parco alberato per attività di team building all’aria aperta, una piscina riscaldata da aprile a ottobre, una cucina italiana sana e gustosa: tutto è pensato per alternare sessioni produttive a veri momenti di relax.",
+      "Per quanto riguarda gli spazi di lavoro, quattro sale modulabili e l’Orangerie consentono di ospitare riunioni plenarie fino a 100 persone, dotate di videoproiettore e lavagna a fogli mobili, mentre il parco si presta perfettamente alle sessioni all’aperto."
     ],
     "cards": [
       {
@@ -104,7 +195,7 @@
       {
         "num": "III",
         "title": "Energia creativa",
-        "text": "Una cucina italiana semplice e raffinata, pensata per regalare energia sana e gustosa per tutta la giornata."
+        "text": "Una cucina italiana semplice e raffinata, pensata per infondere energia sana e golosa per tutta la giornata."
       }
     ],
     "final": {
@@ -114,6 +205,50 @@
       "text": "Comunicateci le date, il numero di partecipanti e i vostri obiettivi. Vi invieremo una proposta su misura.",
       "submitLabel": "Ricevere un'offerta",
       "responseLine": "Risposta entro 24 ore"
-    }
+    },
+    "stats": [
+      {
+        "big": "10",
+        "lbl": "suite, fino a 20 collaboratori"
+      },
+      {
+        "big": "14 ha",
+        "lbl": "di un parco boscoso"
+      },
+      {
+        "big": "2 h",
+        "lbl": "di Parigi"
+      }
+    ],
+    "extrasHead": {
+      "eyebrow": "Sul posto",
+      "title": "Le attività per il vostro seminario"
+    },
+    "extras": [
+      {
+        "title": "Benessere e relax",
+        "text": "Una corsia da nuoto di 16 metri, riscaldata da aprile a ottobre, con annessa pool house, per le pause tra una riunione e l’altra."
+      },
+      {
+        "title": "Rilassamento e armonia",
+        "text": "Massaggi professionali su appuntamento o sessioni di yoga organizzate su richiesta."
+      },
+      {
+        "title": "Tempo libero e musica",
+        "text": "Strumenti musicali e giochi da tavolo a disposizione degli ospiti, partite di bocce o di ping-pong nel parco."
+      },
+      {
+        "title": "Coesione gastronomica",
+        "text": "Rafforzate i legami attraverso il piacere della buona tavola, con corsi di cucina italiana o laboratori tenuti da uno chef stellato."
+      },
+      {
+        "title": "Volo in mongolfiera",
+        "text": "Partenza dal parco del castello per sorvolare i gioielli della Valle della Loira."
+      },
+      {
+        "title": "Patrimonio e castelli",
+        "text": "Chenonceau, Amboise, Blois o Chambord, a pochi minuti dalla tenuta."
+      }
+    ]
   }
 }

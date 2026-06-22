@@ -36,7 +36,51 @@
       "text": "Dites-nous vos dates et le nombre de convives. Nous imaginons votre week-end sur mesure.",
       "submitLabel": "Recevoir une proposition",
       "responseLine": "Réponse sous 24 heures"
-    }
+    },
+    "stats": [
+      {
+        "big": "21",
+        "lbl": "couchages en 10 suites"
+      },
+      {
+        "big": "14 ha",
+        "lbl": "de parc boisé"
+      },
+      {
+        "big": "2 h",
+        "lbl": "de Paris"
+      }
+    ],
+    "extrasHead": {
+      "eyebrow": "Détente, cohésion, évasion",
+      "title": "De quoi occuper toutes les générations"
+    },
+    "extras": [
+      {
+        "title": "Bien-être & farniente",
+        "text": "Un couloir de nage de 16 mètres chauffé d'avril à octobre et sa pool house, pour les moments de détente en famille."
+      },
+      {
+        "title": "Relaxation",
+        "text": "Massages professionnels sur rendez-vous ou séances de yoga organisées sur demande."
+      },
+      {
+        "title": "Loisirs & musique",
+        "text": "Instruments et jeux de société en libre-service dans les salons du château."
+      },
+      {
+        "title": "Ateliers gourmands",
+        "text": "Cours de cuisine italienne ou ateliers animés par un chef étoilé, pour créer des souvenirs autour de la table."
+      },
+      {
+        "title": "Montgolfière & châteaux",
+        "text": "Un envol depuis le parc pour survoler le Val de Loire, Chenonceau et Amboise à quelques minutes."
+      },
+      {
+        "title": "Vignobles & nature",
+        "text": "Balades dans les vignes et les forêts, visites et dégustations dans les caves locales."
+      }
+    ]
   },
   "en": {
     "title": "Family reunion at the château in Touraine — Château de la Huberdière",
@@ -48,7 +92,7 @@
       "lead": "Bring together all generations in a unique setting to create lasting memories and share moments that transcend time."
     },
     "intro": [
-      "Located between Amboise and Chenonceau, the château is available for your group’s exclusive use. It sleeps twenty-one guests in ten luxury suites, each with its own en-suite bathroom: a taste of château life, without compromising on your privacy.",
+      "Located between Amboise and Chenonceau, the château is available for your group’s exclusive use. It sleeps 21 guests in ten luxury suites, each with its own en-suite bathroom: a taste of château life, without compromising on your privacy.",
       "Fourteen hectares of woodland, ponds and meadows, perfect for walks and cycle rides through the vineyards, and a generous home-cooked table d’hôte where Lodovica brings the warmth of her Italian heritage to create generous, convivial buffets."
     ],
     "cards": [
@@ -75,7 +119,51 @@
       "text": "Let us know your dates and the number of guests. We’ll put together a bespoke weekend for you.",
       "submitLabel": "Receive a proposal",
       "responseLine": "We’ll get back to you within 24 hours"
-    }
+    },
+    "stats": [
+      {
+        "big": "21",
+        "lbl": "accommodation in 10 suites"
+      },
+      {
+        "big": "14 ha",
+        "lbl": "wooded park"
+      },
+      {
+        "big": "2 h",
+        "lbl": "in Paris"
+      }
+    ],
+    "extrasHead": {
+      "eyebrow": "Relaxation, team spirit, a change of scenery",
+      "title": "Something to keep all generations entertained"
+    },
+    "extras": [
+      {
+        "title": "Wellbeing & relaxation",
+        "text": "A 16-metre swimming lane, heated from April to October, and its pool house, for relaxing moments with the family."
+      },
+      {
+        "title": "Relaxation",
+        "text": "Professional massages by appointment or yoga sessions organised on request."
+      },
+      {
+        "title": "Leisure & music",
+        "text": "Self-service musical instruments and board games in the château’s reception rooms."
+      },
+      {
+        "title": "Culinary workshops",
+        "text": "Italian cookery classes or workshops led by a Michelin-starred chef, to create memories around the table."
+      },
+      {
+        "title": "Hot-air balloon & castles",
+        "text": "Take off from the park and fly over the Loire Valley, Chenonceau and Amboise in just a few minutes."
+      },
+      {
+        "title": "Vineyards & nature",
+        "text": "Walks through the vineyards and forests, tours and tastings at local wineries."
+      }
+    ]
   },
   "it": {
     "title": "Riunione di famiglia al castello in Touraine — Castello di La Huberdière",
@@ -87,7 +175,7 @@
       "lead": "Riunite tutte le generazioni in un ambiente unico per creare ricordi indimenticabili e condividere momenti fuori dal tempo."
     },
     "intro": [
-      "Tra Amboise e Chenonceau, il castello viene riservato interamente alla vostra famiglia. Ventuno posti letto in dieci suite di prestigio, ciascuna con bagno privato: la vita da castello, senza rinunciare alla vostra privacy.",
+      "Tra Amboise e Chenonceau, il castello viene interamente riservato alla vostra comitiva. Ventuno posti letto in dieci suite di prestigio, ciascuna con bagno privato: la vita da castello, senza rinunciare alla vostra privacy.",
       "Quattordici ettari di boschi, laghetti e prati per passeggiate e gite in bicicletta tra i vigneti, e un’ampia tavola degli ospiti dove Lodovica infonde il calore delle sue origini italiane in generosi buffet all’insegna della convivialità."
     ],
     "cards": [
@@ -114,6 +202,50 @@
       "text": "Comunicateci le date e il numero di ospiti. Organizzeremo per voi un weekend su misura.",
       "submitLabel": "Ricevere un'offerta",
       "responseLine": "Risposta entro 24 ore"
-    }
+    },
+    "stats": [
+      {
+        "big": "21",
+        "lbl": "posti letto in 10 suite"
+      },
+      {
+        "big": "14 ha",
+        "lbl": "di un parco boscoso"
+      },
+      {
+        "big": "2 h",
+        "lbl": "di Parigi"
+      }
+    ],
+    "extrasHead": {
+      "eyebrow": "Relax, coesione, evasione",
+      "title": "C'è qualcosa per tutte le generazioni"
+    },
+    "extras": [
+      {
+        "title": "Benessere e relax",
+        "text": "Una corsia da nuoto di 16 metri, riscaldata da aprile a ottobre, con annessa pool house, per momenti di relax in famiglia."
+      },
+      {
+        "title": "Rilassamento",
+        "text": "Massaggi professionali su appuntamento o sessioni di yoga organizzate su richiesta."
+      },
+      {
+        "title": "Tempo libero e musica",
+        "text": "Strumenti e giochi da tavolo a disposizione degli ospiti nelle sale del castello."
+      },
+      {
+        "title": "Laboratori gastronomici",
+        "text": "Corsi di cucina italiana o laboratori tenuti da uno chef stellato, per creare ricordi intorno alla tavola."
+      },
+      {
+        "title": "Mongolfiera e castelli",
+        "text": "Un decollo dal parco per sorvolare la Valle della Loira, Chenonceau e Amboise in pochi minuti."
+      },
+      {
+        "title": "Vigneti e natura",
+        "text": "Passeggiate tra i vigneti e nei boschi, visite e degustazioni nelle cantine locali."
+      }
+    ]
   }
 }

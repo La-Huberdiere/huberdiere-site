@@ -36,7 +36,39 @@
       "text": "Pour réserver vos repas ou en savoir plus, écrivez-nous. Nous adaptons nos propositions à vos envies.",
       "submitLabel": "Nous écrire",
       "responseLine": "Réponse sous 24 heures"
-    }
+    },
+    "stats": [
+      {
+        "big": "100%",
+        "lbl": "fait maison, sur place"
+      },
+      {
+        "big": "Bio",
+        "lbl": "& circuit court"
+      },
+      {
+        "big": "20h",
+        "lbl": "dîner italien le jeudi"
+      }
+    ],
+    "extrasHead": {
+      "eyebrow": "Notre table",
+      "title": "Une cuisine sincère et locale"
+    },
+    "extras": [
+      {
+        "title": "Le potager & les producteurs",
+        "text": "Légumes du potager, fromages et charcuteries de Touraine : une cuisine sincère, loin des formules industrielles."
+      },
+      {
+        "title": "L'âme italienne",
+        "text": "Les saveurs méditerranéennes de Lodovica dans chaque assiette, du petit-déjeuner au dîner."
+      },
+      {
+        "title": "Pour vos événements",
+        "text": "Buffets, dîners servis ou table d'hôtes, adaptés à vos mariages, séminaires et réunions."
+      }
+    ]
   },
   "en": {
     "title": "Catering and table d’hôte meals at the château in Touraine — Château de la Huberdière",
@@ -48,7 +80,7 @@
       "lead": "Authentic cuisine prepared on the premises using produce from our vegetable garden and local producers in Touraine."
     },
     "intro": [
-      "From gourmet breakfasts to refined dinners, all meals are prepared on the premises using fresh ingredients, with a focus on organic produce and local quality. A genuine approach to home-cooked meals, a far cry from mass-produced options.",
+      "From gourmet breakfasts to refined dinners, all meals are prepared on the premises using fresh ingredients, with a focus on organic produce and local quality. A genuine approach to table d’hôte dining, a far cry from mass-produced options.",
       "The menus showcase Mediterranean and regional flavours, and the château’s welcoming atmosphere turns every meal into a relaxing experience, especially during dinners served under the stars on the terrace."
     ],
     "cards": [
@@ -75,10 +107,42 @@
       "text": "To book your meals or find out more, please write to us. We’ll tailor our suggestions to suit your preferences.",
       "submitLabel": "Contact us",
       "responseLine": "We’ll get back to you within 24 hours"
-    }
+    },
+    "stats": [
+      {
+        "big": "100%",
+        "lbl": "homemade, on the premises"
+      },
+      {
+        "big": "Bio",
+        "lbl": "& short supply chain"
+      },
+      {
+        "big": "20h",
+        "lbl": "Italian dinner on Thursday"
+      }
+    ],
+    "extrasHead": {
+      "eyebrow": "Our table",
+      "title": "Authentic, locally sourced cuisine"
+    },
+    "extras": [
+      {
+        "title": "The vegetable garden & the growers",
+        "text": "Vegetables from the kitchen garden, cheeses and cured meats from Touraine: authentic cuisine, a far cry from mass-produced fare."
+      },
+      {
+        "title": "The Italian spirit",
+        "text": "Lodovica’s Mediterranean flavours on every plate, from breakfast to dinner."
+      },
+      {
+        "title": "For your events",
+        "text": "Buffets, sit-down dinners or set menus, tailored to your weddings, seminars and meetings."
+      }
+    ]
   },
   "it": {
-    "title": "Ristorazione e cena presso il castello in Touraine — Castello di La Huberdière",
+    "title": "Ristorazione e cena presso il castello in Touraine — Château de la Huberdière",
     "description": "Una cucina casalinga dai sapori italiani e di Tours, preparata con i prodotti dell’orto e dei produttori locali. Colazione, cene sotto le stelle, piatti da condividere.",
     "hero": {
       "eyebrow": "Ristorazione · Cena in famiglia",
@@ -94,7 +158,7 @@
       {
         "num": "I",
         "title": "Colazione inclusa",
-        "text": "Bevande calde, frutta fresca, dolci e specialità della casa, serviti dalle 8:30 alle 10:30. Incluso nel prezzo della camera."
+        "text": "Bevande calde, frutta fresca, dolci da fornaio e specialità della casa, serviti dalle 8:30 alle 10:30. Incluso nel prezzo della camera."
       },
       {
         "num": "II",
@@ -104,7 +168,7 @@
       {
         "num": "III",
         "title": "Piatti da condividere",
-        "text": "Insalate, formaggi locali, salumi pregiati e verdure alla griglia, serviti dalle 18:00 alle 20:30."
+        "text": "Insalate, formaggi locali, salumi pregiati e verdure grigliate, serviti dalle 18:00 alle 20:30."
       }
     ],
     "final": {
@@ -114,6 +178,38 @@
       "text": "Per prenotare i vostri pasti o per saperne di più, scriveteci. Adattiamo le nostre proposte alle vostre esigenze.",
       "submitLabel": "Contattaci",
       "responseLine": "Risposta entro 24 ore"
-    }
+    },
+    "stats": [
+      {
+        "big": "100%",
+        "lbl": "fatto in casa, sul posto"
+      },
+      {
+        "big": "Bio",
+        "lbl": "& filiera corta"
+      },
+      {
+        "big": "20h",
+        "lbl": "cena italiana il giovedì"
+      }
+    ],
+    "extrasHead": {
+      "eyebrow": "Il nostro tavolo",
+      "title": "Una cucina genuina e a km zero"
+    },
+    "extras": [
+      {
+        "title": "L'orto e i produttori",
+        "text": "Verdure dell'orto, formaggi e salumi della Touraine: una cucina genuina, lontana dalle formule industriali."
+      },
+      {
+        "title": "L'anima italiana",
+        "text": "I sapori mediterranei di Lodovica in ogni piatto, dalla colazione alla cena."
+      },
+      {
+        "title": "Per i vostri eventi",
+        "text": "Buffet, cene servite o menu fisso, adatti a matrimoni, seminari e riunioni."
+      }
+    ]
   }
 }

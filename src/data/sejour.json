@@ -36,7 +36,43 @@
       "text": "Dites-nous vos dates et le nombre de personnes. Nous vous répondons avec plaisir.",
       "submitLabel": "Recevoir une proposition",
       "responseLine": "Réponse sous 24 heures"
-    }
+    },
+    "stats": [
+      {
+        "big": "5",
+        "lbl": "chambres d'exception"
+      },
+      {
+        "big": "14 ha",
+        "lbl": "de parc privé"
+      },
+      {
+        "big": "16 m",
+        "lbl": "de couloir de nage"
+      }
+    ],
+    "extrasHead": {
+      "eyebrow": "Le domaine",
+      "title": "Bien plus qu'une chambre"
+    },
+    "extras": [
+      {
+        "title": "Le parc",
+        "text": "Quatorze hectares, des terrasses, un grand étang et un couloir de nage de 16 mètres chauffé d'avril à octobre, avec sa pool house."
+      },
+      {
+        "title": "Les espaces de réception",
+        "text": "Une salle à manger jusqu'à 22 convives et une bibliothèque au parquet Versailles, transformable en piste de danse."
+      },
+      {
+        "title": "Un domaine engagé",
+        "text": "Approvisionnement en circuit court et bio, produits d'entretien biologiques, chauffage à la biomasse."
+      },
+      {
+        "title": "Aux portes des châteaux",
+        "text": "Amboise et le Clos Lucé à dix minutes ; Chenonceau, Villandry et Chambord à moins d'une heure."
+      }
+    ]
   },
   "en": {
     "title": "Charming guest rooms in a château in Touraine — Château de la Huberdière",
@@ -49,7 +85,7 @@
     },
     "intro": [
       "The château offers beautifully decorated rooms, each with its own character and private bathroom, all air-conditioned and situated on the second floor. All rooms can be booked exclusively for your events.",
-      "A 14-hectare park with terraces, a large pond and a 16-metre swimming lane heated from April to October, a dining room seating up to 22 guests, and a library with Versailles-style parquet flooring that can be converted into a dance floor."
+      "A 14-hectare park featuring terraces, a large pond and a 16-metre swimming lane heated from April to October, a dining room that can seat up to 22 guests, and a library with Versailles-style parquet flooring that can be converted into a dance floor."
     ],
     "cards": [
       {
@@ -75,10 +111,46 @@
       "text": "Please let us know your dates and the number of people. We’ll be happy to get back to you.",
       "submitLabel": "Receive a proposal",
       "responseLine": "We’ll get back to you within 24 hours"
-    }
+    },
+    "stats": [
+      {
+        "big": "5",
+        "lbl": "exceptional rooms"
+      },
+      {
+        "big": "14 ha",
+        "lbl": "private park"
+      },
+      {
+        "big": "16 m",
+        "lbl": "swimming lane"
+      }
+    ],
+    "extrasHead": {
+      "eyebrow": "The estate",
+      "title": "Much more than just a bedroom"
+    },
+    "extras": [
+      {
+        "title": "The park",
+        "text": "Fourteen hectares, terraces, a large pond and a 16-metre swimming lane heated from April to October, complete with a pool house."
+      },
+      {
+        "title": "Reception areas",
+        "text": "A dining room that can seat up to 22 guests and a library with Versailles-style parquet flooring, which can be converted into a dance floor."
+      },
+      {
+        "title": "A committed estate",
+        "text": "Local and organic produce, organic cleaning products, biomass heating."
+      },
+      {
+        "title": "At the gates of the castles",
+        "text": "Amboise and the Clos Lucé are ten minutes away; Chenonceau, Villandry and Chambord are less than an hour away."
+      }
+    ]
   },
   "it": {
-    "title": "Affascinanti camere per ospiti nel castello in Touraine — Château de la Huberdière",
+    "title": "Affascinanti camere per ospiti nel castello della Touraine — Château de la Huberdière",
     "description": "Soggiornate al castello di La Huberdière, in Touraine: camere d'eccezione dotate di aria condizionata, parco di 14 ettari, piscina a corsie, cucina casalinga. A 10 minuti da Amboise.",
     "hero": {
       "eyebrow": "Bed & Breakfast · Valle della Loira",
@@ -98,13 +170,13 @@
       },
       {
         "num": "II",
-        "title": "Raffica di pioggia",
+        "title": "Rovosa",
         "text": "Atmosfera in stile marino e aeronautico, letto king-size, esposizione a sud e vista sul parco."
       },
       {
         "num": "III",
         "title": "Un parco di 14 ettari",
-        "text": "Lago, terrazze e corsia di nuoto di 16x3 m con pool house. Una tenuta attenta all’ambiente: filiera corta, prodotti biologici e riscaldamento a biomassa."
+        "text": "Lago artificiale, terrazze e corsia di nuoto di 16x3 m con pool house. Una tenuta attenta all’ambiente: filiera corta, prodotti biologici e riscaldamento a biomassa."
       }
     ],
     "final": {
@@ -114,6 +186,42 @@
       "text": "Comunicateci le date e il numero di persone. Saremo lieti di rispondervi.",
       "submitLabel": "Ricevere un'offerta",
       "responseLine": "Risposta entro 24 ore"
-    }
+    },
+    "stats": [
+      {
+        "big": "5",
+        "lbl": "camere d'eccezione"
+      },
+      {
+        "big": "14 ha",
+        "lbl": "di un parco privato"
+      },
+      {
+        "big": "16 m",
+        "lbl": "corsia di nuoto"
+      }
+    ],
+    "extrasHead": {
+      "eyebrow": "La tenuta",
+      "title": "Molto più di una semplice camera"
+    },
+    "extras": [
+      {
+        "title": "Il parco",
+        "text": "Quattordici ettari, terrazze, un grande laghetto e una corsia da nuoto di 16 metri riscaldata da aprile a ottobre, con annessa pool house."
+      },
+      {
+        "title": "Gli spazi di accoglienza",
+        "text": "Una sala da pranzo che può ospitare fino a 22 commensali e una biblioteca con pavimento in parquet Versailles, trasformabile in pista da ballo."
+      },
+      {
+        "title": "Un'azienda agricola impegnata",
+        "text": "Approvvigionamento a filiera corta e biologico, prodotti per la pulizia biologici, riscaldamento a biomassa."
+      },
+      {
+        "title": "Alle porte dei castelli",
+        "text": "Amboise e il Clos Lucé a dieci minuti; Chenonceau, Villandry e Chambord a meno di un'ora."
+      }
+    ]
   }
 }
