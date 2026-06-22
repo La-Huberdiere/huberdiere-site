@@ -1,38 +1,80 @@
 {
   "brandName": "Château de la Huberdière",
-  "brandSub": "Touraine · Châteaux de la Loire",
-  "reserveLabel": "Réserver",
+  "brandSub": "Touraine · Châteaux of the Loire Valley",
+  "reserveLabel": "Book",
   "reserveHref": "/#final",
   "nav": [
-    { "label": "Séjour", "href": "/#sejour" },
-    { "label": "Mariage", "href": "/mariage" },
-    { "label": "Séminaire", "href": "/#seminaire" },
-    { "label": "Famille", "href": "/#famille" },
-    { "label": "Retraite", "href": "/#retraite" },
-    { "label": "Contact", "href": "/#final" }
+    {
+      "label": "Living room",
+      "href": "/#sejour"
+    },
+    {
+      "label": "Wedding",
+      "href": "/mariage"
+    },
+    {
+      "label": "Seminar",
+      "href": "/#seminaire"
+    },
+    {
+      "label": "Family",
+      "href": "/#famille"
+    },
+    {
+      "label": "Retirement",
+      "href": "/#retraite"
+    },
+    {
+      "label": "Contact",
+      "href": "/#final"
+    }
   ],
   "footer": {
     "name": "Château de la Huberdière",
-    "addressLine1": "Vallée de Vaugadeland",
+    "addressLine1": "Vaugadeland Valley",
     "addressLine2": "37530 Nazelles-Négron, Indre-et-Loire",
     "phone": "+33 2 47 57 52 92",
     "phoneHref": "+33247575292",
     "email": "contact@chateaudelahuberdiere.com",
-    "col2Title": "Le château",
+    "col2Title": "The castle",
     "col2Links": [
-      { "label": "Chambres d'hôtes", "href": "/#sejour" },
-      { "label": "Mariage", "href": "/mariage" },
-      { "label": "Séminaire", "href": "/#seminaire" },
-      { "label": "Réunions de famille", "href": "/#famille" },
-      { "label": "Retraites & ateliers", "href": "/#retraite" }
+      {
+        "label": "Bed and Breakfast",
+        "href": "/#sejour"
+      },
+      {
+        "label": "Wedding",
+        "href": "/mariage"
+      },
+      {
+        "label": "Seminar",
+        "href": "/#seminaire"
+      },
+      {
+        "label": "Family gatherings",
+        "href": "/#famille"
+      },
+      {
+        "label": "Retreats & workshops",
+        "href": "/#retraite"
+      }
     ],
-    "col3Title": "Découvrir",
+    "col3Title": "Discover",
     "col3Links": [
-      { "label": "Galerie", "href": "/#galerie" },
-      { "label": "Accès & situation", "href": "/#location" },
-      { "label": "Demander une proposition", "href": "/#final" }
+      {
+        "label": "Gallery",
+        "href": "/#galerie"
+      },
+      {
+        "label": "Access & location",
+        "href": "/#location"
+      },
+      {
+        "label": "Request a quote",
+        "href": "/#final"
+      }
     ],
-    "bottomLeft": "© 2026 Château de la Huberdière · Touraine, Val de Loire",
-    "bottomRight": "À 2 h de Paris · entre Amboise et Chambord"
+    "bottomLeft": "© 2026 Château de la Huberdière · Touraine, Loire Valley",
+    "bottomRight": "2 hours from Paris · between Amboise and Chambord"
   }
 }

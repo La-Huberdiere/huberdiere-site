@@ -1,127 +1,136 @@
 {
   "hero": {
-    "eyebrow": "Touraine · Châteaux de la Loire",
-    "titleLine1": "Le Château",
+    "eyebrow": "Touraine · Châteaux of the Loire Valley",
+    "titleLine1": "The Castle",
     "titleLine2Italic": "de la Huberdière",
-    "lead": "Une demeure du XVIᵉ siècle, au cœur des Châteaux de la Loire. Pour vos mariages, vos séjours, vos séminaires et vos plus beaux moments, à deux heures de Paris.",
-    "ctaPrimary": "Recevoir une proposition",
-    "ctaSecondary": "Découvrir le château"
+    "lead": "A 16th-century manor house in the heart of the Loire Valley. Perfect for weddings, holidays, seminars and your most memorable moments, just two hours from Paris.",
+    "ctaPrimary": "Receive a proposal",
+    "ctaSecondary": "Explore the castle"
   },
   "intro": {
-    "eyebrow": "L'esprit du lieu",
-    "titleLine1": "Une demeure de famille,",
-    "titleLine2Italic": "vivante depuis cinq siècles.",
+    "eyebrow": "The spirit of the place",
+    "titleLine1": "A family home,",
+    "titleLine2Italic": "which has been in existence for five centuries.",
     "paragraphs": [
-      "Édifié au XVIᵉ siècle, à dix minutes du château royal d'Amboise et du Clos Lucé, le Château de la Huberdière n'est ni un hôtel, ni un musée. C'est une maison habitée, où l'on reçoit comme on l'a toujours fait ici, avec attention et discrétion.",
-      "Cinq siècles de pierre de tuffeau, de boiseries patinées, de cheminées de marbre. Et un parti pris : préserver l'âme du lieu, sans jamais la figer.",
-      "Au cœur d'un parc de douze hectares, entre Azay-le-Rideau, Chenonceau et Chambord, la Huberdière vous accueille pour une nuit, un séminaire, un mariage, ou le temps d'un déjeuner."
+      "Built in the 16th century, ten minutes from the Royal Château of Amboise and the Clos Lucé, the Château de la Huberdière is neither a hotel nor a museum. It is a private residence, where guests are welcomed as they always have been here, with care and discretion.",
+      "Five centuries of tuffeau stone, weathered wood panelling and marble fireplaces. And a clear commitment: to preserve the spirit of the place, without ever allowing it to become static.",
+      "Set in the heart of a twelve-hectare park, between Azay-le-Rideau, Chenonceau and Chambord, La Huberdière welcomes you for an overnight stay, a seminar, a wedding or simply for lunch."
     ],
-    "sign": "À deux heures de Paris."
+    "sign": "Two hours from Paris."
   },
   "activitiesHead": {
-    "eyebrow": "Toutes vos occasions",
-    "titlePlain": "Un château, ",
-    "titleItalic": "cinq façons d'y être reçu.",
-    "intro": "Chambres d'hôtes, mariage, séminaire d'entreprise, réunion de famille, retraite ou atelier : chaque séjour est imaginé avec vous, et pour vous seul."
+    "eyebrow": "For all your occasions",
+    "titlePlain": "A castle, ",
+    "titleItalic": "five ways to be admitted there.",
+    "intro": "Bed and breakfast, weddings, corporate seminars, family gatherings, retreats or workshops: every stay is tailored with you in mind, and just for you."
   },
   "activities": [
     {
-      "num": "I — Chambres d'hôtes",
-      "titlePlain": "Séjourner ",
-      "titleItalic": "au château.",
-      "text": "Cinq chambres d'exception, toutes différentes. Tentures d'époque, lit à baldaquin, cheminée d'origine, salle de bain refaite avec soin. Petit-déjeuner servi en terrasse aux beaux jours, dans la grande salle quand le ciel le décide autrement.",
+      "num": "I — Bed and Breakfasts",
+      "titlePlain": "To stay ",
+      "titleItalic": "at the castle.",
+      "text": "Five exceptional rooms, each one different. Period drapes, a four-poster bed, an original fireplace, and a bathroom that has been carefully refurbished. Breakfast is served on the terrace in fine weather, or in the large dining room if the weather is inclement.",
       "points": [
-        "5 chambres, 2 à 14 personnes en privatisation",
-        "Petit-déjeuner inclus, table d'hôtes sur réservation",
-        "Accès au parc et à la piscine privative"
+        "5 bedrooms, sleeps 2 to 14 people (exclusive use)",
+        "Breakfast included; set menu available upon booking",
+        "Access to the park and the private swimming pool"
       ],
-      "linkLabel": "Réserver un séjour",
+      "linkLabel": "Book a holiday",
       "linkHref": "#final"
     },
     {
-      "num": "II — Mariage",
-      "titlePlain": "Célébrer son mariage ",
-      "titleItalic": "en Touraine.",
-      "text": "Cérémonie laïque sous les arbres centenaires, dîner dans la grande salle voûtée, soirée sur la terrasse, nuit au château. Privatisation complète des lieux, de 30 à 150 convives. Un interlocuteur dédié, du premier rendez-vous au lendemain de la fête.",
+      "num": "II — Marriage",
+      "titlePlain": "Celebrating your wedding ",
+      "titleItalic": "in Touraine.",
+      "text": "A secular ceremony beneath century-old trees, dinner in the grand vaulted hall, an evening on the terrace, and an overnight stay at the château. Exclusive use of the venue, for 30 to 150 guests. A dedicated point of contact, from the first meeting right through to the day after the celebration.",
       "points": [
-        "Privatisation exclusive du château et du parc",
-        "Hébergement de la famille proche sur place",
-        "Cérémonie laïque, vin d'honneur, dîner, soirée dansante"
+        "Exclusive private hire of the château and grounds",
+        "Accommodation for close family members on site",
+        "Secular ceremony, reception, dinner, dance"
       ],
-      "linkLabel": "Voir l'offre mariage",
+      "linkLabel": "View the wedding package",
       "linkHref": "/mariage"
     },
     {
-      "num": "III — Séminaire d'entreprise",
-      "titlePlain": "Travailler ",
-      "titleItalic": "dans un cadre rare.",
-      "text": "Comités de direction, masters classes, séminaires stratégiques, journées de cohésion. Une salle boisée pour réfléchir, douze hectares de parc pour marcher, une piscine pour clore la journée. Confidentialité totale garantie par la privatisation des lieux.",
+      "num": "III — In-house seminar",
+      "titlePlain": "Work ",
+      "titleItalic": "in a unique setting.",
+      "text": "Executive committees, masterclasses, strategic seminars, team-building days. A wood-panelled room for reflection, twelve hectares of grounds for a stroll, and a swimming pool to round off the day. Complete confidentiality guaranteed as the venue is exclusively yours.",
       "points": [
-        "Salle plénière équipée, salles de sous-commission",
-        "De 8 à 40 collaborateurs, en privatisation",
-        "Repas signature, activités team-building sur mesure"
+        "Fully equipped plenary hall, sub-committee rooms",
+        "From 8 to 40 staff, in the privatisation sector",
+        "Signature dining, bespoke team-building activities"
       ],
-      "linkLabel": "Demander un devis",
+      "linkLabel": "Request a quote",
       "linkHref": "#final"
     },
     {
-      "num": "IV — Réunions de famille",
-      "titlePlain": "Réunir les siens, ",
-      "titleItalic": "le temps d'un week-end.",
-      "text": "Anniversaires marquants, fêtes de famille élargie, baptêmes, retrouvailles entre générations. Le château ouvre ses salons, prépare ses chambres, dresse les tables sous les marronniers. Vous arrivez, vous êtes chez vous.",
+      "num": "IV — Family gatherings",
+      "titlePlain": "Bringing the family together, ",
+      "titleItalic": "for a weekend.",
+      "text": "Memorable birthdays, extended family gatherings, christenings, and reunions across the generations. The château opens its drawing rooms, prepares its guest rooms and sets the tables beneath the chestnut trees. The moment you arrive, you’ll feel right at home.",
       "points": [
-        "Privatisation complète sur 2 à 4 jours",
-        "Hébergement de 14 à 30 personnes avec couchages d'appoint",
-        "Service traiteur ou table d'hôtes selon vos envies"
+        "Exclusive use for 2 to 4 days",
+        "Accommodation for 14 to 30 people, with extra beds available",
+        "Catering service or table d’hôtes, whichever you prefer"
       ],
-      "linkLabel": "Voir l'offre famille",
+      "linkLabel": "View the family offer",
       "linkHref": "#final"
     },
     {
-      "num": "V — Retraites & ateliers",
-      "titlePlain": "Stages, retraites, ",
-      "titleItalic": "moments suspendus.",
-      "text": "Stages de yoga, retraites créatives, ateliers d'écriture, sessions de méditation. La Huberdière prête ses pièces inondées de lumière, ses jardins, son silence, pour des groupes de 6 à 25 personnes en immersion.",
+      "num": "V — Retreats & workshops",
+      "titlePlain": "Workshops, retreats, ",
+      "titleItalic": "moments frozen in time.",
+      "text": "Yoga courses, creative retreats, writing workshops, meditation sessions. La Huberdière offers its light-filled rooms, gardens and tranquillity to groups of 6 to 25 people for immersive experiences.",
       "points": [
-        "Salons lumineux et espaces extérieurs à disposition",
-        "Cuisine de saison, accommodante (végétarien, sans gluten)",
-        "Forfait journée ou résidentiel de 2 à 7 jours"
+        "Bright lounges and outdoor areas available",
+        "Seasonal cuisine, with options to suit all tastes (vegetarian, gluten-free)",
+        "Day package or residential stay of 2 to 7 days"
       ],
-      "linkLabel": "Voir l'offre retraite",
+      "linkLabel": "View the pension scheme",
       "linkHref": "#final"
     }
   ],
   "quote": {
-    "text": "Ici, la musique rivalise avec le silence, et c'est, souvent, le silence qui l'emporte.",
-    "cite": "L'esprit Huberdière"
+    "text": "Here, music vies with silence, and it is often silence that prevails.",
+    "cite": "The Huberdière spirit"
   },
   "galleryHead": {
-    "eyebrow": "Le château en images",
+    "eyebrow": "The castle in pictures",
     "titlePlain": "Fragments ",
-    "titleItalic": "du lieu."
+    "titleItalic": "of the place."
   },
   "location": {
-    "eyebrow": "Au cœur de la Touraine",
-    "titleLine1Plain": "Entre Amboise ",
-    "titleLine1Italic": "et Chambord,",
-    "titleLine2": "à deux heures de Paris.",
+    "eyebrow": "In the heart of Touraine",
+    "titleLine1Plain": "Between Amboise ",
+    "titleLine1Italic": "and Chambord,",
+    "titleLine2": "two hours from Paris.",
     "paragraphs": [
-      "La Huberdière se cache dans la campagne tourangelle, à dix minutes du château royal d'Amboise et du Clos Lucé, dernière demeure de Léonard de Vinci. Azay-le-Rideau, Chenonceau, Villandry et Chambord à moins d'une heure.",
-      "Depuis Paris : TGV en 1 h 05 jusqu'à Tours, puis vingt minutes en voiture. Liaisons directes également depuis Bordeaux, Lyon et Nantes."
+      "La Huberdière is tucked away in the countryside around Tours, ten minutes from the Royal Castle of Amboise and the Clos Lucé, Leonardo da Vinci’s final resting place. Azay-le-Rideau, Chenonceau, Villandry and Chambord are all less than an hour away.",
+      "From Paris: a 1 hour 5-minute TGV journey to Tours, followed by a twenty-minute drive. There are also direct connections from Bordeaux, Lyon and Nantes."
     ],
     "pins": [
-      { "big": "2 h", "lbl": "de Paris" },
-      { "big": "10'", "lbl": "d'Amboise" },
-      { "big": "12 ha", "lbl": "de parc privé" }
+      {
+        "big": "2 h",
+        "lbl": "in Paris"
+      },
+      {
+        "big": "10'",
+        "lbl": "d'Amboise"
+      },
+      {
+        "big": "12 ha",
+        "lbl": "private park"
+      }
     ]
   },
   "final": {
     "eyebrow": "Contact",
-    "titleLine1": "Imaginons votre séjour",
-    "titleLine2Italic": "à la Huberdière.",
-    "text": "Un week-end, un mariage, un séminaire, une retraite : racontez-nous votre projet, nous vous écrirons en retour.",
-    "ctaPrimary": "Recevoir une proposition",
-    "ctaSecondary": "Nous appeler",
-    "responseLine": "Réponse sous 24 heures"
+    "titleLine1": "Let’s imagine your stay",
+    "titleLine2Italic": "at La Huberdière.",
+    "text": "A weekend away, a wedding, a seminar, a retreat: tell us about your plans and we’ll get back to you.",
+    "ctaPrimary": "Receive a proposal",
+    "ctaSecondary": "Call us",
+    "responseLine": "We’ll get back to you within 24 hours"
   }
 }

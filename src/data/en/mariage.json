@@ -1,39 +1,39 @@
 {
-  "title": "Mariage au château en Touraine — Château de la Huberdière",
-  "description": "Célébrez votre mariage dans un château du XVIᵉ siècle au cœur des Châteaux de la Loire. Privatisation exclusive, parc de 12 hectares, de 30 à 150 convives, à 2 h de Paris.",
+  "title": "Wedding at a château in Touraine — Château de la Huberdière",
+  "description": "Celebrate your wedding in a 16th-century château in the heart of the Loire Valley. Exclusive use of the venue, 12-hectare grounds, accommodating 30 to 150 guests, just 2 hours from Paris.",
   "hero": {
-    "eyebrow": "Mariage · Val de Loire",
-    "titleLine1": "Se marier au château",
+    "eyebrow": "Wedding · Loire Valley",
+    "titleLine1": "Getting married at the château",
     "titleLine2Italic": "de la Huberdière.",
-    "lead": "Une privatisation exclusive, un parc de douze hectares, et l'art de recevoir d'une maison de famille. À deux heures de Paris."
+    "lead": "Exclusive private use, a twelve-hectare estate, and the warm hospitality of a family home. Just two hours from Paris."
   },
   "intro": [
-    "Imaginez une cérémonie laïque sous les arbres centenaires, un vin d'honneur sur la terrasse au soleil couchant, un dîner dans la grande salle voûtée, puis la fête qui se prolonge sous les étoiles. Au matin, vos proches se réveillent sur place, dans les chambres du château.",
-    "La Huberdière se privatise entièrement, pour vous et vos invités seuls. De 30 à 150 convives, vous disposez du château, du parc et de la piscine, avec un interlocuteur dédié du premier rendez-vous au lendemain de la fête."
+    "Imagine a non-religious ceremony beneath centuries-old trees, a reception on the terrace as the sun sets, dinner in the grand vaulted hall, followed by a party that goes on late into the night under the stars. In the morning, your loved ones wake up right there, in the château’s guest rooms.",
+    "La Huberdière is available for exclusive hire, just for you and your guests. Whether you’re hosting 30 or 150 guests, you’ll have the château, the grounds and the swimming pool all to yourselves, with a dedicated point of contact from your first enquiry right through to the day after the event."
   ],
   "cards": [
     {
       "num": "I",
-      "title": "Le lieu",
-      "text": "Château du XVIᵉ siècle, parc clos de 12 hectares, terrasse, grande salle voûtée et orangerie. Décor naturel, sans superflu."
+      "title": "The venue",
+      "text": "A 16th-century château, set in 12 hectares of enclosed grounds, with a terrace, a large vaulted hall and an orangery. A natural setting, free from excess."
     },
     {
       "num": "II",
-      "title": "L'hébergement",
-      "text": "Les chambres du château pour la famille proche, et des solutions à proximité pour l'ensemble des invités. Tout le monde dort sur place ou tout près."
+      "title": "Accommodation",
+      "text": "The rooms in the château are for immediate family, with accommodation nearby for all the guests. Everyone stays either on site or very close by."
     },
     {
       "num": "III",
-      "title": "L'accompagnement",
-      "text": "Un interlocuteur unique, des prestataires de confiance, une organisation sur mesure. Vous profitez, nous orchestrons."
+      "title": "Support",
+      "text": "A single point of contact, trusted service providers, a bespoke organisation. You enjoy the experience; we take care of the arrangements."
     }
   ],
   "final": {
-    "eyebrow": "Votre mariage",
-    "titleLine1": "Parlons de votre",
-    "titleLine2Italic": "plus beau jour.",
-    "text": "Dites-nous votre date, le nombre d'invités, l'esprit que vous imaginez. Nous vous adressons une proposition sur mesure.",
-    "submitLabel": "Recevoir une proposition",
-    "responseLine": "Réponse sous 24 heures"
+    "eyebrow": "Your wedding",
+    "titleLine1": "Let’s talk about your",
+    "titleLine2Italic": "the loveliest day.",
+    "text": "Let us know your date, the number of guests and the sort of atmosphere you’re envisaging. We’ll send you a bespoke proposal.",
+    "submitLabel": "Receive a quote",
+    "responseLine": "We’ll get back to you within 24 hours"
   }
 }
