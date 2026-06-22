@@ -1,11 +1,22 @@
 import { config, singleton, collection, fields } from "@keystatic/core";
 
 // Config Keystatic — édition complète du site sans code.
-// Éditeur : /keystatic. Mode "local" : écrit dans les fichiers du dépôt.
-// Chaque singleton est stocké dans {path}/index.json, lu tel quel par le site.
+// Éditeur : /keystatic.
+// - En dev (local) : écrit directement dans les fichiers du dépôt.
+// - En prod (Vercel) : mode GitHub, les modifs sont commitées sur le dépôt
+//   via l'app GitHub Keystatic, ce qui redéploie le site automatiquement.
+// Singletons : le slash final du `path` force le stockage en {path}/index.json,
+// que le site lit directement (sinon Keystatic lit le fichier plat {path}.json).
+
+// GitHub en prod (Vercel), ou en local si on force KEYSTATIC_STORAGE=github
+// (utile pour lancer une fois le wizard de création de l'app GitHub).
+const useGithub =
+  process.env.NODE_ENV === "production" || process.env.KEYSTATIC_STORAGE === "github";
 
 export default config({
-  storage: { kind: "local" },
+  storage: useGithub
+    ? { kind: "github", repo: { owner: "alexis-morain", name: "huberdiere-site" } }
+    : { kind: "local" },
   ui: {
     brand: { name: "Château de la Huberdière" },
     navigation: {
@@ -17,7 +28,7 @@ export default config({
   singletons: {
     settings: singleton({
       label: "Réglages du site (header & footer)",
-      path: "src/data/settings",
+      path: "src/data/settings/",
       format: { data: "json" },
       schema: {
         brandName: fields.text({ label: "Nom (header)" }),
@@ -65,7 +76,7 @@ export default config({
 
     homepage: singleton({
       label: "Page d'accueil",
-      path: "src/data/homepage",
+      path: "src/data/homepage/",
       format: { data: "json" },
       previewUrl: "/",
       schema: {
@@ -166,7 +177,7 @@ export default config({
 
     mariage: singleton({
       label: "Page Mariage",
-      path: "src/data/mariage",
+      path: "src/data/mariage/",
       format: { data: "json" },
       previewUrl: "/mariage",
       schema: {
