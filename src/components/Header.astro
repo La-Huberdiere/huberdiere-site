@@ -1,6 +1,7 @@
 ---
 // Réglages + langue passés par Base. On préfixe les liens internes selon la langue
 // (FR sans préfixe, EN/IT préfixés), et on affiche le sélecteur de langue.
+// En dessous de 1200px, le menu passe en burger (styles dans global.css).
 const { settings: s, lang = "fr", langs = [] } = Astro.props;
 
 const localize = (href: string) => {
@@ -16,7 +17,10 @@ const homeHref = lang === "fr" ? "/" : `/${lang}`;
     <span class="name">{s.brandName}</span>
     <span class="sub">{s.brandSub}</span>
   </a>
-  <nav class="nav">
+  <button class="menu-toggle" id="menuToggle" aria-label="Menu" aria-expanded="false" aria-controls="siteNav">
+    <span></span><span></span><span></span>
+  </button>
+  <nav class="nav" id="siteNav">
     {s.nav.map((n) => <a href={localize(n.href)}>{n.label}</a>)}
     <a href={localize(s.reserveHref)} class="book">{s.reserveLabel}</a>
     <span class="lang-switch">
@@ -30,17 +34,19 @@ const homeHref = lang === "fr" ? "/" : `/${lang}`;
   </nav>
 </header>
 
-<style>
-  .lang-switch {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-left: 18px;
-    font-size: 0.8rem;
-    letter-spacing: 0.04em;
-  }
-  .lang-switch a { opacity: 0.6; text-decoration: none; color: inherit; }
-  .lang-switch a.active { opacity: 1; font-weight: 600; }
-  .lang-switch a:hover { opacity: 1; }
-  .lang-switch .sep { opacity: 0.35; }
-</style>
+<script>
+  const toggle = document.getElementById("menuToggle");
+  const nav = document.getElementById("siteNav");
+  toggle?.addEventListener("click", () => {
+    const open = nav?.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", String(!!open));
+    document.getElementById("siteHeader")?.classList.toggle("nav-open", !!open);
+  });
+  nav?.querySelectorAll("a").forEach((a) =>
+    a.addEventListener("click", () => {
+      nav.classList.remove("open");
+      toggle?.setAttribute("aria-expanded", "false");
+      document.getElementById("siteHeader")?.classList.remove("nav-open");
+    })
+  );
+</script>

@@ -39,7 +39,12 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
 .brand{display:flex;flex-direction:column;line-height:1.05}
 .brand .name{font-family:'Playfair Display',serif;font-size:19px;letter-spacing:.02em}
 .brand .sub{font-family:'Montserrat',sans-serif;font-size:8.5px;letter-spacing:.42em;text-transform:uppercase;opacity:.8;margin-top:3px}
-.nav{display:flex;align-items:center;gap:30px}
+.nav{display:flex;align-items:center;gap:24px}
+.lang-switch{display:inline-flex;align-items:center;gap:6px;margin-left:14px;font-size:.78rem;letter-spacing:.04em}
+.lang-switch a{opacity:.6;text-decoration:none;color:inherit}
+.lang-switch a.active{opacity:1;font-weight:600}
+.lang-switch a:hover{opacity:1}
+.lang-switch .sep{opacity:.35}
 .nav a{font-family:'Montserrat',sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:400;opacity:.92;transition:opacity .3s}
 .nav a:hover{opacity:1;color:var(--burgundy)}
 .nav .book{
@@ -48,10 +53,30 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
 }
 .site-header.solid .nav .book:hover{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
 .nav .book:hover{background:#fff;color:var(--ink);border-color:#fff}
-.menu-toggle{display:none}
-@media(max-width:880px){
+.menu-toggle{display:none;background:none;border:0;cursor:pointer;padding:8px;flex-direction:column;gap:5px;color:inherit;z-index:60}
+.menu-toggle span{display:block;width:24px;height:2px;background:currentColor;transition:transform .3s,opacity .3s}
+.site-header.nav-open .menu-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.site-header.nav-open .menu-toggle span:nth-child(2){opacity:0}
+.site-header.nav-open .menu-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+/* Sous 1200px, le menu déroule en panneau (le nav desktop devenait trop large
+   et chevauchait le logo). Le burger ouvre/ferme. */
+@media(max-width:1200px){
   .site-header{padding:16px 22px}
-  .nav{display:none}
+  .site-header.nav-open{background:var(--bg);color:var(--ink)}
+  .menu-toggle{display:flex}
+  .nav{
+    position:absolute;top:100%;left:0;right:0;
+    flex-direction:column;align-items:flex-start;gap:18px;
+    background:var(--bg);color:var(--ink);
+    padding:24px 22px 30px;border-top:1px solid var(--line-soft);
+    box-shadow:0 12px 28px rgba(0,0,0,.12);display:none;
+  }
+  .nav.open{display:flex}
+  .nav a{color:var(--ink);opacity:.85}
+  .nav .book{align-self:flex-start;border-color:var(--ink)}
+  .nav .book:hover{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
+  .lang-switch{margin-left:0;margin-top:4px;font-size:.85rem}
+  .lang-switch a{color:var(--ink)}
 }
 
 /* ---------- HERO ---------- */
