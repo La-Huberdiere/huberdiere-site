@@ -185,32 +185,14 @@ const mariageSchema = {
   ),
 };
 
-// ---- Singletons par langue ----
-
-function localeSingletons(locale: string, label: string, prefix: string) {
-  return {
-    [`homepage_${locale}`]: singleton({
-      label: `Accueil (${label})`,
-      path: `src/data/${locale}/homepage`,
-      format: { data: "json" },
-      previewUrl: prefix || "/",
-      schema: homepageSchema,
-    }),
-    [`mariage_${locale}`]: singleton({
-      label: `Mariage (${label})`,
-      path: `src/data/${locale}/mariage`,
-      format: { data: "json" },
-      previewUrl: `${prefix}/mariage`,
-      schema: mariageSchema,
-    }),
-    [`settings_${locale}`]: singleton({
-      label: `Réglages header & footer (${label})`,
-      path: `src/data/${locale}/settings`,
-      format: { data: "json" },
-      schema: settingsSchema,
-    }),
-  };
-}
+// ---- Singletons : une entrée par page, contenu nesté par langue ----
+// Sections Français / English / Italiano dans le même écran d'édition : on édite
+// la page d'accueil et on voit/corrige directement le wording IT en dessous.
+const langSections = (schema: any) => ({
+  fr: fields.object(schema, { label: "Français" }),
+  en: fields.object(schema, { label: "English" }),
+  it: fields.object(schema, { label: "Italiano" }),
+});
 
 export default config({
   storage: useGithub
@@ -219,16 +201,32 @@ export default config({
   ui: {
     brand: { name: "Château de la Huberdière" },
     navigation: {
-      Français: ["homepage_fr", "mariage_fr", "settings_fr"],
-      English: ["homepage_en", "mariage_en", "settings_en"],
-      Italiano: ["homepage_it", "mariage_it", "settings_it"],
+      Pages: ["homepage", "mariage"],
+      Réglages: ["settings"],
       Contenu: ["pages", "articles"],
     },
   },
   singletons: {
-    ...localeSingletons("fr", "FR", ""),
-    ...localeSingletons("en", "EN", "/en"),
-    ...localeSingletons("it", "IT", "/it"),
+    homepage: singleton({
+      label: "Page d'accueil (FR · EN · IT)",
+      path: "src/data/homepage",
+      format: { data: "json" },
+      previewUrl: "/",
+      schema: langSections(homepageSchema),
+    }),
+    mariage: singleton({
+      label: "Page Mariage (FR · EN · IT)",
+      path: "src/data/mariage",
+      format: { data: "json" },
+      previewUrl: "/mariage",
+      schema: langSections(mariageSchema),
+    }),
+    settings: singleton({
+      label: "Réglages header & footer (FR · EN · IT)",
+      path: "src/data/settings",
+      format: { data: "json" },
+      schema: langSections(settingsSchema),
+    }),
   },
   collections: {
     pages: collection({

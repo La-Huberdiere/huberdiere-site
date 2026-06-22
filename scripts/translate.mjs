@@ -68,17 +68,20 @@ async function deepl(texts, target) {
   return out;
 }
 
+// Données nestées par langue : src/data/{page}.json = { fr, en, it }.
+// On lit le FR, on traduit, on réécrit en/it dans le même fichier.
 for (const page of PAGES) {
-  const src = JSON.parse(readFileSync(join(ROOT, "src/data/fr", `${page}.json`), "utf8"));
+  const file = join(ROOT, "src/data", `${page}.json`);
+  const all = JSON.parse(readFileSync(file, "utf8"));
   for (const { code, deepl: target } of TARGETS) {
-    const clone = JSON.parse(JSON.stringify(src));
+    const clone = JSON.parse(JSON.stringify(all.fr));
     const jobs = [];
     collect(clone, "", jobs);
     const translated = await deepl(jobs.map((j) => j.text), target);
     jobs.forEach((j, i) => j.set(translated[i]));
-    const dest = join(ROOT, "src/data", code, `${page}.json`);
-    writeFileSync(dest, JSON.stringify(clone, null, 2) + "\n");
+    all[code] = clone;
     console.log(`✓ ${page} → ${code} (${jobs.length} chaînes)`);
   }
+  writeFileSync(file, JSON.stringify(all, null, 2) + "\n");
 }
 console.log("Terminé. Relis dans Keystatic avant de déployer.");
