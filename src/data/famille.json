@@ -1,0 +1,119 @@
+{
+  "fr": {
+    "title": "Réunion de famille au château en Touraine — Château de la Huberdière",
+    "description": "Réunissez les générations dans un château du Val de Loire : 21 couchages en 10 suites privatives, parc de 14 hectares, table d'hôtes maison. À 2 h de Paris.",
+    "hero": {
+      "eyebrow": "Réunions de famille · Val de Loire",
+      "titleLine1": "Réunir les siens",
+      "titleLine2Italic": "au château.",
+      "lead": "Réunissez toutes les générations dans un cadre unique pour créer des souvenirs impérissables et partager des moments hors du temps."
+    },
+    "intro": [
+      "Entre Amboise et Chenonceau, le château se privatise entièrement pour votre tribu. Vingt et un couchages dans dix suites de prestige, chacune avec sa salle de bain privative : la vie de château, sans compromis sur votre intimité.",
+      "Quatorze hectares de bois, d'étangs et de prairies pour les promenades et le vélo dans les vignes, et une grande table d'hôtes maison où Lodovica apporte la chaleur de ses racines italiennes pour de généreux buffets conviviaux."
+    ],
+    "cards": [
+      {
+        "num": "I",
+        "title": "Liberté & nature",
+        "text": "14 hectares de bois, d'étangs et de prairies. Randonnées et vélo dans les vignes, dans un calme absolu bercé par le chant des oiseaux."
+      },
+      {
+        "num": "II",
+        "title": "Intimité & confort",
+        "text": "La vie de château sans compromis : 10 suites de prestige, chacune avec sa salle de bain privative."
+      },
+      {
+        "num": "III",
+        "title": "Partage & gastronomie",
+        "text": "Le cœur de la réunion bat autour de la table : une cuisine maison généreuse, idéale pour de grands buffets conviviaux."
+      }
+    ],
+    "final": {
+      "eyebrow": "Votre réunion de famille",
+      "titleLine1": "Réunissons votre",
+      "titleLine2Italic": "famille au château.",
+      "text": "Dites-nous vos dates et le nombre de convives. Nous imaginons votre week-end sur mesure.",
+      "submitLabel": "Recevoir une proposition",
+      "responseLine": "Réponse sous 24 heures"
+    }
+  },
+  "en": {
+    "title": "Family reunion at the château in Touraine — Château de la Huberdière",
+    "description": "Bring the whole family together at a château in the Loire Valley: sleeps 21 in 10 private suites, set in 14-hectare grounds, with home-cooked meals. Just 2 hours from Paris.",
+    "hero": {
+      "eyebrow": "Family gatherings · Loire Valley",
+      "titleLine1": "Bringing the family together",
+      "titleLine2Italic": "at the castle.",
+      "lead": "Bring together all generations in a unique setting to create lasting memories and share moments that transcend time."
+    },
+    "intro": [
+      "Located between Amboise and Chenonceau, the château is available for your group’s exclusive use. It sleeps twenty-one guests in ten luxury suites, each with its own en-suite bathroom: a taste of château life, without compromising on your privacy.",
+      "Fourteen hectares of woodland, ponds and meadows, perfect for walks and cycle rides through the vineyards, and a generous home-cooked table d’hôte where Lodovica brings the warmth of her Italian heritage to create generous, convivial buffets."
+    ],
+    "cards": [
+      {
+        "num": "I",
+        "title": "Freedom & nature",
+        "text": "14 hectares of woodland, ponds and meadows. Walking and cycling through the vineyards, in complete tranquillity, lulled by birdsong."
+      },
+      {
+        "num": "II",
+        "title": "Privacy & comfort",
+        "text": "Castle living without compromise: 10 luxury suites, each with its own en-suite bathroom."
+      },
+      {
+        "num": "III",
+        "title": "Sharing & fine dining",
+        "text": "The heart of the gathering beats around the table: generous home-cooked food, ideal for large, convivial buffets."
+      }
+    ],
+    "final": {
+      "eyebrow": "Your family gathering",
+      "titleLine1": "Let’s bring together your",
+      "titleLine2Italic": "family at the castle.",
+      "text": "Let us know your dates and the number of guests. We’ll put together a bespoke weekend for you.",
+      "submitLabel": "Receive a proposal",
+      "responseLine": "We’ll get back to you within 24 hours"
+    }
+  },
+  "it": {
+    "title": "Riunione di famiglia al castello in Touraine — Castello di La Huberdière",
+    "description": "Riunite tutte le generazioni in un castello della Valle della Loira: 21 posti letto distribuiti in 10 suite private, un parco di 14 ettari, cucina casalinga. A 2 ore da Parigi.",
+    "hero": {
+      "eyebrow": "Riunioni di famiglia · Valle della Loira",
+      "titleLine1": "Riunire la propria famiglia",
+      "titleLine2Italic": "al castello.",
+      "lead": "Riunite tutte le generazioni in un ambiente unico per creare ricordi indimenticabili e condividere momenti fuori dal tempo."
+    },
+    "intro": [
+      "Tra Amboise e Chenonceau, il castello viene riservato interamente alla vostra famiglia. Ventuno posti letto in dieci suite di prestigio, ciascuna con bagno privato: la vita da castello, senza rinunciare alla vostra privacy.",
+      "Quattordici ettari di boschi, laghetti e prati per passeggiate e gite in bicicletta tra i vigneti, e un’ampia tavola degli ospiti dove Lodovica infonde il calore delle sue origini italiane in generosi buffet all’insegna della convivialità."
+    ],
+    "cards": [
+      {
+        "num": "I",
+        "title": "Libertà e natura",
+        "text": "14 ettari di boschi, laghetti e prati. Escursioni a piedi e in bicicletta tra i vigneti, in un silenzio assoluto cullati dal canto degli uccelli."
+      },
+      {
+        "num": "II",
+        "title": "Privacy e comfort",
+        "text": "Una vita da principe senza compromessi: 10 suite di lusso, ciascuna con bagno privato."
+      },
+      {
+        "num": "III",
+        "title": "Condivisione e gastronomia",
+        "text": "Il cuore dell'incontro batte attorno al tavolo: una cucina casalinga abbondante, ideale per grandi buffet in compagnia."
+      }
+    ],
+    "final": {
+      "eyebrow": "La vostra riunione di famiglia",
+      "titleLine1": "Mettiamo insieme il vostro",
+      "titleLine2Italic": "famiglia al castello.",
+      "text": "Comunicateci le date e il numero di ospiti. Organizzeremo per voi un weekend su misura.",
+      "submitLabel": "Ricevere un'offerta",
+      "responseLine": "Risposta entro 24 ore"
+    }
+  }
+}

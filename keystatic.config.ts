@@ -201,7 +201,7 @@ export default config({
   ui: {
     brand: { name: "Château de la Huberdière" },
     navigation: {
-      Pages: ["homepage", "mariage"],
+      Pages: ["homepage", "mariage", "seminaire", "famille", "retraite", "sejour", "restauration"],
       Réglages: ["settings"],
       Contenu: ["pages", "articles"],
     },
@@ -219,6 +219,41 @@ export default config({
       path: "src/data/mariage",
       format: { data: "json" },
       previewUrl: "/mariage",
+      schema: langSections(mariageSchema),
+    }),
+    seminaire: singleton({
+      label: "Page Séminaire (FR · EN · IT)",
+      path: "src/data/seminaire",
+      format: { data: "json" },
+      previewUrl: "/seminaire",
+      schema: langSections(mariageSchema),
+    }),
+    famille: singleton({
+      label: "Page Réunions de famille (FR · EN · IT)",
+      path: "src/data/famille",
+      format: { data: "json" },
+      previewUrl: "/famille",
+      schema: langSections(mariageSchema),
+    }),
+    retraite: singleton({
+      label: "Page Retraites & ateliers (FR · EN · IT)",
+      path: "src/data/retraite",
+      format: { data: "json" },
+      previewUrl: "/retraite",
+      schema: langSections(mariageSchema),
+    }),
+    sejour: singleton({
+      label: "Page Chambres d'hôtes / séjour (FR · EN · IT)",
+      path: "src/data/sejour",
+      format: { data: "json" },
+      previewUrl: "/sejour",
+      schema: langSections(mariageSchema),
+    }),
+    restauration: singleton({
+      label: "Page Restauration (FR · EN · IT)",
+      path: "src/data/restauration",
+      format: { data: "json" },
+      previewUrl: "/restauration",
       schema: langSections(mariageSchema),
     }),
     settings: singleton({

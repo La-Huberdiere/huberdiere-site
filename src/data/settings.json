@@ -7,7 +7,7 @@
     "nav": [
       {
         "label": "Séjour",
-        "href": "/#sejour"
+        "href": "/sejour"
       },
       {
         "label": "Mariage",
@@ -15,15 +15,19 @@
       },
       {
         "label": "Séminaire",
-        "href": "/#seminaire"
+        "href": "/seminaire"
       },
       {
         "label": "Famille",
-        "href": "/#famille"
+        "href": "/famille"
       },
       {
         "label": "Retraite",
-        "href": "/#retraite"
+        "href": "/retraite"
+      },
+      {
+        "label": "Restauration",
+        "href": "/restauration"
       },
       {
         "label": "Contact",
@@ -41,7 +45,7 @@
       "col2Links": [
         {
           "label": "Chambres d'hôtes",
-          "href": "/#sejour"
+          "href": "/sejour"
         },
         {
           "label": "Mariage",
@@ -49,15 +53,19 @@
         },
         {
           "label": "Séminaire",
-          "href": "/#seminaire"
+          "href": "/seminaire"
         },
         {
           "label": "Réunions de famille",
-          "href": "/#famille"
+          "href": "/famille"
         },
         {
           "label": "Retraites & ateliers",
-          "href": "/#retraite"
+          "href": "/retraite"
+        },
+        {
+          "label": "Restauration",
+          "href": "/restauration"
         }
       ],
       "col3Title": "Découvrir",
@@ -87,7 +95,7 @@
     "nav": [
       {
         "label": "Stay",
-        "href": "/#sejour"
+        "href": "/sejour"
       },
       {
         "label": "Wedding",
@@ -95,15 +103,19 @@
       },
       {
         "label": "Seminar",
-        "href": "/#seminaire"
+        "href": "/seminaire"
       },
       {
         "label": "Family",
-        "href": "/#famille"
+        "href": "/famille"
       },
       {
         "label": "Retreat",
-        "href": "/#retraite"
+        "href": "/retraite"
+      },
+      {
+        "label": "Dining",
+        "href": "/restauration"
       },
       {
         "label": "Contact",
@@ -121,7 +133,7 @@
       "col2Links": [
         {
           "label": "Bed and Breakfast",
-          "href": "/#sejour"
+          "href": "/sejour"
         },
         {
           "label": "Wedding",
@@ -129,15 +141,19 @@
         },
         {
           "label": "Seminar",
-          "href": "/#seminaire"
+          "href": "/seminaire"
         },
         {
           "label": "Family gatherings",
-          "href": "/#famille"
+          "href": "/famille"
         },
         {
           "label": "Retreats & workshops",
-          "href": "/#retraite"
+          "href": "/retraite"
+        },
+        {
+          "label": "Dining",
+          "href": "/restauration"
         }
       ],
       "col3Title": "Discover",
@@ -167,7 +183,7 @@
     "nav": [
       {
         "label": "Soggiorno",
-        "href": "/#sejour"
+        "href": "/sejour"
       },
       {
         "label": "Matrimonio",
@@ -175,15 +191,19 @@
       },
       {
         "label": "Seminario",
-        "href": "/#seminaire"
+        "href": "/seminaire"
       },
       {
         "label": "Famiglia",
-        "href": "/#famille"
+        "href": "/famille"
       },
       {
         "label": "Ritiro",
-        "href": "/#retraite"
+        "href": "/retraite"
+      },
+      {
+        "label": "Ristorazione",
+        "href": "/restauration"
       },
       {
         "label": "Contatti",
@@ -201,7 +221,7 @@
       "col2Links": [
         {
           "label": "Camere per ospiti",
-          "href": "/#sejour"
+          "href": "/sejour"
         },
         {
           "label": "Matrimonio",
@@ -209,15 +229,19 @@
         },
         {
           "label": "Seminario",
-          "href": "/#seminaire"
+          "href": "/seminaire"
         },
         {
           "label": "Riunioni di famiglia",
-          "href": "/#famille"
+          "href": "/famille"
         },
         {
           "label": "Ritiri e laboratori",
-          "href": "/#retraite"
+          "href": "/retraite"
+        },
+        {
+          "label": "Ristorazione",
+          "href": "/restauration"
         }
       ],
       "col3Title": "Scopri",

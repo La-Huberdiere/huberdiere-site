@@ -1,0 +1,119 @@
+{
+  "fr": {
+    "title": "Retraites, stages et ateliers au château en Touraine — Château de la Huberdière",
+    "description": "Organisez votre retraite ou votre stage dans un château privatisé du Val de Loire : 20 participants, 15 hectares, 4 salons modulables. À 5 km d'Amboise, 2 h de Paris.",
+    "hero": {
+      "eyebrow": "Retraites & ateliers · Val de Loire",
+      "titleLine1": "Votre retraite au château",
+      "titleLine2Italic": "de la Huberdière.",
+      "lead": "Un écrin de sérénité entièrement privatisé pour offrir à vos participants une expérience immersive, entre nature, confort et inspiration."
+    },
+    "intro": [
+      "Stages de yoga, retraites créatives, ateliers d'écriture ou de méditation : à cinq kilomètres d'Amboise, le domaine se privatise pour vos groupes jusqu'à 20 participants. Dix suites luxueuses, chacune avec salle de bain privative, un vrai atout pour les retraites haut de gamme.",
+      "Quinze hectares d'écrins naturels pour les pratiques en plein air, quatre salons modulables pour vos sessions, et une logistique invisible : vous vous concentrez sur votre transmission, nous gérons le reste."
+    ],
+    "cards": [
+      {
+        "num": "I",
+        "title": "Déconnexion profonde",
+        "text": "Une véritable bulle de calme pour favoriser le lâcher-prise, avec une multitude d'espaces naturels pour vos pratiques en plein air."
+      },
+      {
+        "num": "II",
+        "title": "Confort premium",
+        "text": "Une expérience résidentielle d'exception : 10 suites luxueuses, chacune avec l'intimité d'une salle de bain privative."
+      },
+      {
+        "num": "III",
+        "title": "Logistique invisible",
+        "text": "4 salons modulables et un accueil chaleureux assurent la fluidité de votre événement. Concentrez-vous sur l'essentiel."
+      }
+    ],
+    "final": {
+      "eyebrow": "Votre retraite",
+      "titleLine1": "Imaginons votre",
+      "titleLine2Italic": "stage au château.",
+      "text": "Dites-nous vos dates, votre discipline et le nombre de participants. Nous vous adressons une proposition sur mesure.",
+      "submitLabel": "Recevoir une proposition",
+      "responseLine": "Réponse sous 24 heures"
+    }
+  },
+  "en": {
+    "title": "Retreats, courses and workshops at the château in Touraine — Château de la Huberdière",
+    "description": "Organise your retreat or training course in an exclusively hired château in the Loire Valley: 20 participants, 15 hectares, 4 versatile function rooms. 5 km from Amboise, 2 hours from Paris.",
+    "hero": {
+      "eyebrow": "Retreats & workshops · Loire Valley",
+      "titleLine1": "Your retreat at the château",
+      "titleLine2Italic": "de la Huberdière.",
+      "lead": "A haven of tranquillity, entirely private, offering your participants an immersive experience that combines nature, comfort and inspiration."
+    },
+    "intro": [
+      "Yoga courses, creative retreats, writing or meditation workshops: just five kilometres from Amboise, the estate can be hired exclusively for groups of up to 20 people. Ten luxurious suites, each with an en-suite bathroom, make this an ideal venue for high-end retreats.",
+      "Fifteen hectares of natural settings for outdoor activities, four versatile function rooms for your sessions, and seamless logistics: you focus on sharing your expertise, and we’ll take care of the rest."
+    ],
+    "cards": [
+      {
+        "num": "I",
+        "title": "Deep disconnection",
+        "text": "A true haven of tranquillity to help you unwind, with a wealth of natural spaces for your outdoor activities."
+      },
+      {
+        "num": "II",
+        "title": "Premium comfort",
+        "text": "An exceptional residential experience: 10 luxurious suites, each with the privacy of an en-suite bathroom."
+      },
+      {
+        "num": "III",
+        "title": "Invisible logistics",
+        "text": "Four versatile function rooms and a warm welcome ensure your event runs smoothly. Focus on what matters most."
+      }
+    ],
+    "final": {
+      "eyebrow": "Your retreat",
+      "titleLine1": "Let’s imagine your",
+      "titleLine2Italic": "retreat at the château.",
+      "text": "Please let us know your dates, your discipline and the number of participants. We will send you a bespoke proposal.",
+      "submitLabel": "Receive a proposal",
+      "responseLine": "We’ll get back to you within 24 hours"
+    }
+  },
+  "it": {
+    "title": "Corsi, stage e laboratori al castello in Touraine — Castello di La Huberdière",
+    "description": "Organizzate il vostro ritiro o il vostro corso in un castello in esclusiva nella Valle della Loira: 20 partecipanti, 15 ettari, 4 sale modulabili. A 5 km da Amboise, a 2 ore da Parigi.",
+    "hero": {
+      "eyebrow": "Corsi e laboratori · Valle della Loira",
+      "titleLine1": "Il vostro ritiro al castello",
+      "titleLine2Italic": "di Huberdière.",
+      "lead": "Un oasi di serenità interamente riservata per offrire ai vostri partecipanti un'esperienza coinvolgente, tra natura, comfort e ispirazione."
+    },
+    "intro": [
+      "Corsi di yoga, ritiri creativi, laboratori di scrittura o di meditazione: a cinque chilometri da Amboise, la tenuta è disponibile in esclusiva per i vostri gruppi fino a 20 partecipanti. Dieci lussuose suite, ciascuna con bagno privato, un vero punto di forza per i ritiri di alto livello.",
+      "Quindici ettari di scenari naturali per le attività all'aria aperta, quattro sale modulabili per le vostre sessioni e una logistica discreta: voi vi concentrate sulla vostra formazione, al resto pensiamo noi."
+    ],
+    "cards": [
+      {
+        "num": "I",
+        "title": "Disconnessione profonda",
+        "text": "Una vera e propria oasi di tranquillità che favorisce il rilassamento, con una moltitudine di spazi naturali per le vostre attività all'aria aperta."
+      },
+      {
+        "num": "II",
+        "title": "Comfort di alta classe",
+        "text": "Un'esperienza di soggiorno eccezionale: 10 suite di lusso, ognuna con la privacy di un bagno privato."
+      },
+      {
+        "num": "III",
+        "title": "Logistica invisibile",
+        "text": "4 sale modulabili e un'accoglienza calorosa garantiscono il perfetto svolgimento del vostro evento. Concentratevi sull'essenziale."
+      }
+    ],
+    "final": {
+      "eyebrow": "Il vostro ritiro",
+      "titleLine1": "Immaginiamo il vostro",
+      "titleLine2Italic": "ritiro al castello.",
+      "text": "Comunicateci le date, la vostra disciplina e il numero di partecipanti. Vi invieremo una proposta su misura.",
+      "submitLabel": "Ricevere un'offerta",
+      "responseLine": "Risposta entro 24 ore"
+    }
+  }
+}

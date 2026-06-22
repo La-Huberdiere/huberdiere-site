@@ -4,12 +4,13 @@ import pHero from "../assets/SD_5.jpg";
 import v1 from "../assets/SD_6.jpg";
 import v2 from "../assets/SD_9.jpg";
 
-// Textes en props selon la langue ; images et formulaire partagés.
-const { m, thanksPath = "/merci-mariage" } = Astro.props;
+// Textes en props selon la langue ; image de hero variable par activité.
+const { m, cible = "mariage", thanksPath = "/merci-mariage", heroImg } = Astro.props;
+const hero = heroImg ?? pHero;
 ---
 
 <section class="page-hero">
-  <Image src={pHero} alt="Le parc du château pour une cérémonie de mariage" widths={[768, 1280, 1920]} sizes="100vw" loading="eager" fetchpriority="high" />
+  <Image src={hero} alt={m.hero.titleLine1} widths={[768, 1280, 1920]} sizes="100vw" loading="eager" fetchpriority="high" />
   <div class="inner">
     <div class="eyebrow">{m.hero.eyebrow}</div>
     <h1>{m.hero.titleLine1}<br /><span class="italic">{m.hero.titleLine2Italic}</span></h1>
@@ -48,7 +49,7 @@ const { m, thanksPath = "/merci-mariage" } = Astro.props;
   <p class="reveal">{m.final.text}</p>
 
   <form class="lead-form reveal" id="leadForm" novalidate>
-    <input type="hidden" name="cible" value="mariage" />
+    <input type="hidden" name="cible" value={cible} />
     <input type="hidden" name="utm_source" id="utmSource" />
     <input type="hidden" name="utm_campaign" id="utmCampaign" />
     <input type="text" name="website" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />

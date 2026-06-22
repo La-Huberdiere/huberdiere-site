@@ -1,0 +1,119 @@
+{
+  "fr": {
+    "title": "Restauration et table d'hôtes au château en Touraine — Château de la Huberdière",
+    "description": "Une cuisine maison aux saveurs italiennes et tourangelles, préparée avec les produits du potager et des producteurs locaux. Petit-déjeuner, dîners sous les étoiles, assiettes à partager.",
+    "hero": {
+      "eyebrow": "Restauration · Table d'hôtes",
+      "titleLine1": "À table",
+      "titleLine2Italic": "au château.",
+      "lead": "Une gastronomie authentique préparée sur place avec les produits du potager et des producteurs locaux de Touraine."
+    },
+    "intro": [
+      "Du petit-déjeuner gourmand aux dîners raffinés, tous les repas sont préparés sur place avec des ingrédients frais, en privilégiant le bio et la qualité locale. Une approche sincère de la table d'hôtes, loin des formules industrielles.",
+      "Les menus mettent à l'honneur les saveurs méditerranéennes et régionales, et l'ambiance conviviale du château transforme chaque repas en moment de détente, surtout lors des dîners servis sous les étoiles en terrasse."
+    ],
+    "cards": [
+      {
+        "num": "I",
+        "title": "Petit-déjeuner inclus",
+        "text": "Boissons chaudes, fruits frais, viennoiseries et spécialités maison, servis de 8h30 à 10h30. Inclus dans la chambre."
+      },
+      {
+        "num": "II",
+        "title": "Dîner italien sous les étoiles",
+        "text": "Le jeudi soir, un menu fixe servi en terrasse à 20h. Une vraie dolce vita tourangelle."
+      },
+      {
+        "num": "III",
+        "title": "Assiettes à partager",
+        "text": "Salades, fromages locaux, charcuteries fines et légumes grillés, servis de 18h à 20h30."
+      }
+    ],
+    "final": {
+      "eyebrow": "À table",
+      "titleLine1": "Réservez votre",
+      "titleLine2Italic": "table au château.",
+      "text": "Pour réserver vos repas ou en savoir plus, écrivez-nous. Nous adaptons nos propositions à vos envies.",
+      "submitLabel": "Nous écrire",
+      "responseLine": "Réponse sous 24 heures"
+    }
+  },
+  "en": {
+    "title": "Catering and table d’hôte meals at the château in Touraine — Château de la Huberdière",
+    "description": "Home-cooked meals combining Italian and Tours-style flavours, prepared using produce from the vegetable garden and local growers. Breakfast, dinners under the stars, dishes to share.",
+    "hero": {
+      "eyebrow": "Catering · Table d'hôtes",
+      "titleLine1": "Let’s eat",
+      "titleLine2Italic": "at the castle.",
+      "lead": "Authentic cuisine prepared on the premises using produce from our vegetable garden and local producers in Touraine."
+    },
+    "intro": [
+      "From gourmet breakfasts to refined dinners, all meals are prepared on the premises using fresh ingredients, with a focus on organic produce and local quality. A genuine approach to home-cooked meals, a far cry from mass-produced options.",
+      "The menus showcase Mediterranean and regional flavours, and the château’s welcoming atmosphere turns every meal into a relaxing experience, especially during dinners served under the stars on the terrace."
+    ],
+    "cards": [
+      {
+        "num": "I",
+        "title": "Breakfast included",
+        "text": "Hot drinks, fresh fruit, pastries and homemade specialities, served from 8.30 am to 10.30 am. Included in the room rate."
+      },
+      {
+        "num": "II",
+        "title": "An Italian dinner under the stars",
+        "text": "On Thursday evenings, a set menu is served on the terrace at 8 pm. A real taste of the ‘dolce vita’ in Tours."
+      },
+      {
+        "num": "III",
+        "title": "Plates for sharing",
+        "text": "Salads, local cheeses, fine charcuterie and grilled vegetables, served from 6.00 pm to 8.30 pm."
+      }
+    ],
+    "final": {
+      "eyebrow": "Let’s eat",
+      "titleLine1": "Book your",
+      "titleLine2Italic": "dinner at the château.",
+      "text": "To book your meals or find out more, please write to us. We’ll tailor our suggestions to suit your preferences.",
+      "submitLabel": "Contact us",
+      "responseLine": "We’ll get back to you within 24 hours"
+    }
+  },
+  "it": {
+    "title": "Ristorazione e cena presso il castello in Touraine — Castello di La Huberdière",
+    "description": "Una cucina casalinga dai sapori italiani e di Tours, preparata con i prodotti dell’orto e dei produttori locali. Colazione, cene sotto le stelle, piatti da condividere.",
+    "hero": {
+      "eyebrow": "Ristorazione · Cena in famiglia",
+      "titleLine1": "A tavola",
+      "titleLine2Italic": "al castello.",
+      "lead": "Una cucina autentica, preparata in loco con i prodotti dell'orto e dei produttori locali della Touraine."
+    },
+    "intro": [
+      "Dalla colazione gourmet alle cene raffinate, tutti i pasti sono preparati in loco con ingredienti freschi, privilegiando i prodotti biologici e di provenienza locale. Un approccio genuino alla cucina casalinga, lontano dalle formule industriali.",
+      "I menù esaltano i sapori mediterranei e regionali, e l'atmosfera accogliente del castello trasforma ogni pasto in un momento di relax, soprattutto durante le cene servite sotto le stelle sulla terrazza."
+    ],
+    "cards": [
+      {
+        "num": "I",
+        "title": "Colazione inclusa",
+        "text": "Bevande calde, frutta fresca, dolci e specialità della casa, serviti dalle 8:30 alle 10:30. Incluso nel prezzo della camera."
+      },
+      {
+        "num": "II",
+        "title": "Cena italiana sotto le stelle",
+        "text": "Il giovedì sera, un menu fisso servito sulla terrazza alle 20:00. Una vera “dolce vita” alla maniera di Tours."
+      },
+      {
+        "num": "III",
+        "title": "Piatti da condividere",
+        "text": "Insalate, formaggi locali, salumi pregiati e verdure alla griglia, serviti dalle 18:00 alle 20:30."
+      }
+    ],
+    "final": {
+      "eyebrow": "A tavola",
+      "titleLine1": "Prenota il tuo",
+      "titleLine2Italic": "cena al castello.",
+      "text": "Per prenotare i vostri pasti o per saperne di più, scriveteci. Adattiamo le nostre proposte alle vostre esigenze.",
+      "submitLabel": "Contattaci",
+      "responseLine": "Risposta entro 24 ore"
+    }
+  }
+}

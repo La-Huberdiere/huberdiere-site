@@ -1,0 +1,119 @@
+{
+  "fr": {
+    "title": "Séminaire d'entreprise en Touraine — Château de la Huberdière",
+    "description": "Organisez votre séminaire d'entreprise dans un château du Val de Loire : 10 suites privatisables jusqu'à 20 collaborateurs, parc de 14 hectares, à 2 h de Paris.",
+    "hero": {
+      "eyebrow": "Séminaire · Val de Loire",
+      "titleLine1": "Votre séminaire au château",
+      "titleLine2Italic": "de la Huberdière.",
+      "lead": "Conjuguez travail, cohésion et sérénité dans un cadre unique pour inspirer durablement vos équipes. À deux heures de Paris."
+    },
+    "intro": [
+      "Privatisez un domaine préservé pour vos comités de direction, masters classes et journées de cohésion. Dix suites raffinées avec salles de bain privatives accueillent jusqu'à 20 collaborateurs, et quatre salons modulables s'adaptent à vos formats de travail.",
+      "Quatorze hectares de parc boisé pour les activités de team-building en plein air, un couloir de nage chauffé d'avril à octobre, une cuisine italienne saine et gourmande : tout est pensé pour alterner sessions productives et vrais moments de respiration."
+    ],
+    "cards": [
+      {
+        "num": "I",
+        "title": "Immersion naturelle",
+        "text": "Le calme de la nature environnante pour travailler en sérénité et favoriser la déconnexion de vos collaborateurs."
+      },
+      {
+        "num": "II",
+        "title": "Décor raffiné",
+        "text": "De l'élégance de nos 10 suites au confort de nos 4 salons, chaque détail offre un cadre de travail prestigieux."
+      },
+      {
+        "num": "III",
+        "title": "Énergie créative",
+        "text": "Une cuisine italienne simple et raffinée, pensée pour apporter une énergie saine et gourmande tout au long de la journée."
+      }
+    ],
+    "final": {
+      "eyebrow": "Votre séminaire",
+      "titleLine1": "Parlons de votre",
+      "titleLine2Italic": "prochain séminaire.",
+      "text": "Dites-nous vos dates, le nombre de participants et vos objectifs. Nous vous adressons une proposition sur mesure.",
+      "submitLabel": "Recevoir une proposition",
+      "responseLine": "Réponse sous 24 heures"
+    }
+  },
+  "en": {
+    "title": "Corporate seminar in Touraine — Château de la Huberdière",
+    "description": "Organise your corporate seminar at a château in the Loire Valley: 10 suites that can be booked for private use, accommodating up to 20 staff members, set in 14-hectare grounds, just 2 hours from Paris.",
+    "hero": {
+      "eyebrow": "Seminar · Loire Valley",
+      "titleLine1": "Your seminar at the château",
+      "titleLine2Italic": "de la Huberdière.",
+      "lead": "Combine work, team spirit and peace of mind in a unique setting to provide lasting inspiration for your teams. Just two hours from Paris."
+    },
+    "intro": [
+      "Exclusively book this unspoilt estate for your board meetings, masterclasses and team-building days. Ten elegant suites with en-suite bathrooms can accommodate up to 20 staff members, and four versatile function rooms can be adapted to suit your working requirements.",
+      "Fourteen hectares of wooded grounds for outdoor team-building activities, a swimming pool heated from April to October, and wholesome, gourmet Italian cuisine: everything has been designed to ensure a balance between productive sessions and genuine moments of relaxation."
+    ],
+    "cards": [
+      {
+        "num": "I",
+        "title": "Natural immersion",
+        "text": "The tranquillity of the surrounding countryside allows you to work in peace and helps your staff switch off."
+      },
+      {
+        "num": "II",
+        "title": "Elegant décor",
+        "text": "From the elegance of our 10 suites to the comfort of our 4 lounges, every detail provides a prestigious working environment."
+      },
+      {
+        "num": "III",
+        "title": "Creative energy",
+        "text": "Simple yet refined Italian cuisine, designed to provide healthy, delicious energy throughout the day."
+      }
+    ],
+    "final": {
+      "eyebrow": "Your seminar",
+      "titleLine1": "Let’s talk about your",
+      "titleLine2Italic": "next seminar.",
+      "text": "Please let us know your dates, the number of participants and your objectives. We will send you a bespoke proposal.",
+      "submitLabel": "Receive a proposal",
+      "responseLine": "We’ll get back to you within 24 hours"
+    }
+  },
+  "it": {
+    "title": "Seminario aziendale in Touraine — Castello di La Huberdière",
+    "description": "Organizzate il vostro seminario aziendale in un castello della Valle della Loira: 10 suite privatizzabili per un massimo di 20 collaboratori, un parco di 14 ettari, a 2 ore da Parigi.",
+    "hero": {
+      "eyebrow": "Seminario · Valle della Loira",
+      "titleLine1": "Il vostro seminario al castello",
+      "titleLine2Italic": "di Huberdière.",
+      "lead": "Coniugate lavoro, coesione e serenità in un ambiente unico per ispirare i vostri team in modo duraturo. A due ore da Parigi."
+    },
+    "intro": [
+      "Riservate una tenuta incontaminata per le vostre riunioni del consiglio di amministrazione, i corsi di perfezionamento e le giornate di team building. Dieci raffinate suite con bagno privato possono ospitare fino a 20 collaboratori, mentre quattro sale modulabili si adattano alle vostre esigenze lavorative.",
+      "Quattordici ettari di parco alberato per attività di team building all’aria aperta, una piscina riscaldata da aprile a ottobre, una cucina italiana sana e gustosa: tutto è pensato per alternare sessioni produttive a veri momenti di relax."
+    ],
+    "cards": [
+      {
+        "num": "I",
+        "title": "Immersione naturale",
+        "text": "La tranquillità della natura circostante per lavorare in tutta serenità e favorire il distacco dalla routine lavorativa dei vostri collaboratori."
+      },
+      {
+        "num": "II",
+        "title": "Arredamento raffinato",
+        "text": "Dall'eleganza delle nostre 10 suite al comfort delle nostre 4 sale, ogni dettaglio offre un ambiente di lavoro prestigioso."
+      },
+      {
+        "num": "III",
+        "title": "Energia creativa",
+        "text": "Una cucina italiana semplice e raffinata, pensata per regalare energia sana e gustosa per tutta la giornata."
+      }
+    ],
+    "final": {
+      "eyebrow": "Il vostro seminario",
+      "titleLine1": "Parliamo del vostro",
+      "titleLine2Italic": "prossimo seminario.",
+      "text": "Comunicateci le date, il numero di partecipanti e i vostri obiettivi. Vi invieremo una proposta su misura.",
+      "submitLabel": "Ricevere un'offerta",
+      "responseLine": "Risposta entro 24 ore"
+    }
+  }
+}

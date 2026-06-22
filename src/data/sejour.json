@@ -1,0 +1,119 @@
+{
+  "fr": {
+    "title": "Chambres d'hôtes de charme au château en Touraine — Château de la Huberdière",
+    "description": "Séjournez au château de la Huberdière, en Touraine : chambres d'exception climatisées, parc de 14 hectares, couloir de nage, table d'hôtes. À 10 min d'Amboise.",
+    "hero": {
+      "eyebrow": "Chambres d'hôtes · Val de Loire",
+      "titleLine1": "Séjourner",
+      "titleLine2Italic": "au château.",
+      "lead": "Des chambres de prestige dans un cadre d'exception, au cœur des Châteaux de la Loire. La dolce vita en Vallée de la Loire."
+    },
+    "intro": [
+      "Le château propose des chambres délicieusement décorées, chacune avec sa personnalité et sa salle de bain privée, climatisées au second étage. Toutes peuvent être privatisées pour vos événements.",
+      "Un parc de 14 hectares avec ses terrasses, son grand étang et son couloir de nage de 16 mètres chauffé d'avril à octobre, une salle à manger jusqu'à 22 convives et une bibliothèque au parquet Versailles transformable en piste de danse."
+    ],
+    "cards": [
+      {
+        "num": "I",
+        "title": "Paradis Sauvage",
+        "text": "Chambre nuptiale avec lit à baldaquin, double exposition sud-ouest et baignoire, pour les moments d'exception."
+      },
+      {
+        "num": "II",
+        "title": "Giboulée",
+        "text": "Ambiance marine et aéronautique, lit king-size, orientation sud et vue sur le parc."
+      },
+      {
+        "num": "III",
+        "title": "Un parc de 14 hectares",
+        "text": "Étang, terrasses et couloir de nage 16x3 m avec pool house. Un domaine engagé : circuit court, bio et chauffage biomasse."
+      }
+    ],
+    "final": {
+      "eyebrow": "Votre séjour",
+      "titleLine1": "Réservez votre",
+      "titleLine2Italic": "séjour au château.",
+      "text": "Dites-nous vos dates et le nombre de personnes. Nous vous répondons avec plaisir.",
+      "submitLabel": "Recevoir une proposition",
+      "responseLine": "Réponse sous 24 heures"
+    }
+  },
+  "en": {
+    "title": "Charming guest rooms in a château in Touraine — Château de la Huberdière",
+    "description": "Stay at the Château de la Huberdière in Touraine: exceptional air-conditioned rooms, 14-hectare grounds, a lap pool and table d’hôtes. 10 minutes from Amboise.",
+    "hero": {
+      "eyebrow": "Bed and Breakfasts · Loire Valley",
+      "titleLine1": "To stay",
+      "titleLine2Italic": "at the castle.",
+      "lead": "Luxury rooms in an exceptional setting, in the heart of the Loire Valley. La dolce vita in the Loire Valley."
+    },
+    "intro": [
+      "The château offers beautifully decorated rooms, each with its own character and private bathroom, all air-conditioned and situated on the second floor. All rooms can be booked exclusively for your events.",
+      "A 14-hectare park with terraces, a large pond and a 16-metre swimming lane heated from April to October, a dining room seating up to 22 guests, and a library with Versailles-style parquet flooring that can be converted into a dance floor."
+    ],
+    "cards": [
+      {
+        "num": "I",
+        "title": "Wild Paradise",
+        "text": "A bridal suite with a four-poster bed, double south-west-facing windows and a bath, for those special moments."
+      },
+      {
+        "num": "II",
+        "title": "Shower",
+        "text": "A nautical and aviation-themed décor, a king-size bed, south-facing and with a view of the park."
+      },
+      {
+        "num": "III",
+        "title": "A 14-hectare park",
+        "text": "Pond, terraces and a 16x3 m swimming lane with a pool house. A committed estate: locally sourced produce, organic farming and biomass heating."
+      }
+    ],
+    "final": {
+      "eyebrow": "Your stay",
+      "titleLine1": "Book your",
+      "titleLine2Italic": "stay at the castle.",
+      "text": "Please let us know your dates and the number of people. We’ll be happy to get back to you.",
+      "submitLabel": "Receive a proposal",
+      "responseLine": "We’ll get back to you within 24 hours"
+    }
+  },
+  "it": {
+    "title": "Affascinanti camere per ospiti nel castello in Touraine — Château de la Huberdière",
+    "description": "Soggiornate al castello di La Huberdière, in Touraine: camere d'eccezione dotate di aria condizionata, parco di 14 ettari, piscina a corsie, cucina casalinga. A 10 minuti da Amboise.",
+    "hero": {
+      "eyebrow": "Bed & Breakfast · Valle della Loira",
+      "titleLine1": "Soggiornare",
+      "titleLine2Italic": "al castello.",
+      "lead": "Camere di prestigio in una cornice d'eccezione, nel cuore dei Castelli della Loira. La dolce vita nella Valle della Loira."
+    },
+    "intro": [
+      "Il castello offre camere arredate con gusto, ognuna con la propria personalità e il bagno privato, tutte climatizzate e situate al secondo piano. Tutte possono essere riservate in esclusiva per i vostri eventi.",
+      "Un parco di 14 ettari con terrazze, un grande laghetto e una piscina da 16 metri riscaldata da aprile a ottobre, una sala da pranzo che può ospitare fino a 22 commensali e una biblioteca con pavimento in parquet stile Versailles trasformabile in pista da ballo."
+    ],
+    "cards": [
+      {
+        "num": "I",
+        "title": "Paradiso selvaggio",
+        "text": "Camera nuziale con letto a baldacchino, doppia esposizione a sud-ovest e vasca da bagno, per momenti davvero speciali."
+      },
+      {
+        "num": "II",
+        "title": "Raffica di pioggia",
+        "text": "Atmosfera in stile marino e aeronautico, letto king-size, esposizione a sud e vista sul parco."
+      },
+      {
+        "num": "III",
+        "title": "Un parco di 14 ettari",
+        "text": "Lago, terrazze e corsia di nuoto di 16x3 m con pool house. Una tenuta attenta all’ambiente: filiera corta, prodotti biologici e riscaldamento a biomassa."
+      }
+    ],
+    "final": {
+      "eyebrow": "Il vostro soggiorno",
+      "titleLine1": "Prenota il tuo",
+      "titleLine2Italic": "soggiorno al castello.",
+      "text": "Comunicateci le date e il numero di persone. Saremo lieti di rispondervi.",
+      "submitLabel": "Ricevere un'offerta",
+      "responseLine": "Risposta entro 24 ore"
+    }
+  }
+}

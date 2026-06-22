@@ -1,0 +1,16 @@
+---
+import Base from "../layouts/Base.astro";
+import MariagePage from "../components/MariagePage.astro";
+import { activities } from "../lib/activities";
+
+export function getStaticPaths() {
+  return Object.keys(activities).map((activity) => ({ params: { activity } }));
+}
+
+const { activity } = Astro.params;
+const a = activities[activity as string];
+const m = a.data.fr;
+---
+<Base title={m.title} description={m.description} lang="fr" path={`/${activity}`}>
+  <MariagePage m={m} cible={activity} heroImg={a.hero} thanksPath="/merci-mariage" />
+</Base>
