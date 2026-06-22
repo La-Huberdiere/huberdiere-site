@@ -43,11 +43,14 @@ case "${1:-}" in
   wizard)
     echo "Lancement du serveur en mode GitHub pour créer l'app GitHub Keystatic."
     echo
-    echo "1) Une fois le serveur prêt, ouvre :  http://localhost:4321/keystatic"
-    echo "2) Suis l'assistant « Create GitHub App » : il crée l'app sur ton compte,"
-    echo "   l'installe sur le dépôt ${REPO_OWNER}/${REPO_NAME}, et écrit"
+    echo "1) Une fois le serveur prêt, ouvre cette adresse EXACTE (pas /keystatic seul) :"
+    echo "      http://localhost:4321/keystatic/setup"
+    echo "2) Dans « Deployed App URL », mets : ${PROD_URL}"
+    echo "   (laisse « GitHub organization » vide, c'est un dépôt perso)."
+    echo "3) Clique « Create GitHub App », autorise sur GitHub, et installe l'app"
+    echo "   sur le dépôt ${REPO_OWNER}/${REPO_NAME}. Keystatic écrit alors"
     echo "   KEYSTATIC_GITHUB_CLIENT_ID et KEYSTATIC_GITHUB_CLIENT_SECRET dans .env."
-    echo "3) Quand c'est fait, Ctrl+C, puis :  ./scripts/setup-keystatic-github.sh vercel"
+    echo "4) Quand c'est fait, Ctrl+C, puis :  ./scripts/setup-keystatic-github.sh vercel"
     echo
     VITE_KEYSTATIC_STORAGE=github npm run dev
     ;;
