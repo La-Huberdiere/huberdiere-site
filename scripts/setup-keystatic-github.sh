@@ -62,7 +62,7 @@ case "${1:-}" in
     command -v vercel >/dev/null 2>&1 || export PATH="$HOME/.bun/bin:$PATH"
     command -v vercel >/dev/null 2>&1 || { echo "vercel CLI introuvable (bun)."; exit 1; }
 
-    for KEY in KEYSTATIC_GITHUB_CLIENT_ID KEYSTATIC_GITHUB_CLIENT_SECRET KEYSTATIC_SECRET; do
+    for KEY in KEYSTATIC_GITHUB_CLIENT_ID KEYSTATIC_GITHUB_CLIENT_SECRET KEYSTATIC_SECRET PUBLIC_KEYSTATIC_GITHUB_APP_SLUG; do
       VAL="$(get_env_var "$KEY")"
       if [ -z "$VAL" ]; then
         echo "✗ $KEY est vide dans .env. Lance d'abord 'secret' puis 'wizard'."; exit 1
