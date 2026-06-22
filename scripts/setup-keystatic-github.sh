@@ -41,18 +41,21 @@ case "${1:-}" in
     ;;
 
   wizard)
-    echo "Lancement du serveur en mode GitHub pour créer l'app GitHub Keystatic."
-    echo
-    echo "1) Une fois le serveur prêt, ouvre cette adresse EXACTE (pas /keystatic seul) :"
+    # Active le mode GitHub en local via .env. NB : Astro n'expose au navigateur
+    # que les variables préfixées PUBLIC_ (pas VITE_), d'où ce préfixe.
+    grep -q '^PUBLIC_KEYSTATIC_STORAGE=github' "$ENV_FILE" 2>/dev/null \
+      || printf '\nPUBLIC_KEYSTATIC_STORAGE=github\n' >> "$ENV_FILE"
+    # Au Ctrl+C : on retire le toggle pour revenir en mode local (édition directe des fichiers).
+    cleanup() { sed -i '' '/^PUBLIC_KEYSTATIC_STORAGE=github$/d' "$ENV_FILE" 2>/dev/null || true; echo; echo "Mode local rétabli."; }
+    trap cleanup EXIT
+    echo "1) Ouvre cette adresse EXACTE (avec /setup à la fin) :"
     echo "      http://localhost:4321/keystatic/setup"
-    echo "2) Dans « Deployed App URL », mets : ${PROD_URL}"
-    echo "   (laisse « GitHub organization » vide, c'est un dépôt perso)."
-    echo "3) Clique « Create GitHub App », autorise sur GitHub, et installe l'app"
-    echo "   sur le dépôt ${REPO_OWNER}/${REPO_NAME}. Keystatic écrit alors"
-    echo "   KEYSTATIC_GITHUB_CLIENT_ID et KEYSTATIC_GITHUB_CLIENT_SECRET dans .env."
-    echo "4) Quand c'est fait, Ctrl+C, puis :  ./scripts/setup-keystatic-github.sh vercel"
+    echo "2) « Deployed App URL » : ${PROD_URL}   |   « GitHub organization » : laisse vide"
+    echo "3) Clique « Create GitHub App », autorise sur GitHub, installe l'app sur"
+    echo "   ${REPO_OWNER}/${REPO_NAME}. Keystatic écrit CLIENT_ID/SECRET dans .env."
+    echo "4) Ctrl+C, puis :  ./scripts/setup-keystatic-github.sh vercel"
     echo
-    VITE_KEYSTATIC_STORAGE=github npm run dev
+    npm run dev
     ;;
 
   vercel)

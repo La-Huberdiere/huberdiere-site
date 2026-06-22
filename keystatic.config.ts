@@ -8,12 +8,13 @@ import { config, singleton, collection, fields } from "@keystatic/core";
 // Singletons : le slash final du `path` force le stockage en {path}/index.json,
 // que le site lit directement (sinon Keystatic lit le fichier plat {path}.json).
 
-// GitHub en prod (Vercel), ou en local si on force VITE_KEYSTATIC_STORAGE=github
+// GitHub en prod (Vercel), ou en local si on force PUBLIC_KEYSTATIC_STORAGE=github
 // (utile pour lancer une fois le wizard de création de l'app GitHub).
-// NB : on utilise import.meta.env (et pas process.env) car ce fichier est aussi
-// chargé dans le navigateur par l'UI Keystatic, où process.env n'existe pas.
+// NB : import.meta.env (pas process.env), car ce fichier est aussi chargé dans le
+// navigateur par l'UI Keystatic. Et préfixe PUBLIC_ : Astro n'expose au client QUE
+// les variables PUBLIC_ (pas VITE_), sinon la valeur est vide côté navigateur.
 const useGithub =
-  import.meta.env.PROD || import.meta.env.VITE_KEYSTATIC_STORAGE === "github";
+  import.meta.env.PROD || import.meta.env.PUBLIC_KEYSTATIC_STORAGE === "github";
 
 export default config({
   storage: useGithub
