@@ -3,7 +3,18 @@
     "brandName": "Château de la Huberdière",
     "brandSub": "Touraine · Châteaux de la Loire",
     "reserveLabel": "Réserver",
-    "reserveHref": "/#final",
+    "reserveHref": "/reservation",
+    "booking": {
+      "eyebrow": "Réservation directe",
+      "title": "Réservez votre séjour",
+      "intro": "Vérifiez nos disponibilités et réservez en direct, au meilleur tarif, sans intermédiaire.",
+      "checkin": "Arrivée",
+      "checkout": "Départ",
+      "guests": "Voyageurs",
+      "submit": "Réserver",
+      "fallbackPre": "Le moteur ne se charge pas ? ",
+      "fallbackLink": "Ouvrir la réservation dans un nouvel onglet"
+    },
     "nav": [
       {
         "label": "Séjour",
@@ -91,7 +102,18 @@
     "brandName": "Château de la Huberdière",
     "brandSub": "Touraine · Châteaux of the Loire Valley",
     "reserveLabel": "Book",
-    "reserveHref": "/#final",
+    "reserveHref": "/reservation",
+    "booking": {
+      "eyebrow": "Direct booking",
+      "title": "Book your stay",
+      "intro": "Check our availability and book directly, at the best rate, with no middleman.",
+      "checkin": "Check-in",
+      "checkout": "Check-out",
+      "guests": "Guests",
+      "submit": "Book",
+      "fallbackPre": "Engine not loading? ",
+      "fallbackLink": "Open the booking in a new tab"
+    },
     "nav": [
       {
         "label": "Stay",
@@ -179,7 +201,18 @@
     "brandName": "Château de la Huberdière",
     "brandSub": "Touraine · Castelli della Loira",
     "reserveLabel": "Prenota",
-    "reserveHref": "/#final",
+    "reserveHref": "/reservation",
+    "booking": {
+      "eyebrow": "Prenotazione diretta",
+      "title": "Prenota il tuo soggiorno",
+      "intro": "Verifica la disponibilità e prenota direttamente, al miglior prezzo, senza intermediari.",
+      "checkin": "Arrivo",
+      "checkout": "Partenza",
+      "guests": "Ospiti",
+      "submit": "Prenota",
+      "fallbackPre": "Il motore non si carica? ",
+      "fallbackLink": "Apri la prenotazione in una nuova scheda"
+    },
     "nav": [
       {
         "label": "Soggiorno",

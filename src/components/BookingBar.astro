@@ -1,0 +1,502 @@
+---
+// WIDGET OFFICIEL OCTORATE (barre de recherche), récupéré dans le back-office le
+// 2026-06-24. Script JS hébergé sur resx.octorate.com qui injecte la barre
+// (Arrivée / Départ / Adultes / Recherche) dans la page : PAS une iframe.
+// Les dates saisies sont reprises par le moteur. Langue = Automatique (FR/EN/IT)
+// réglée côté Octorate (widget id 31013, data-sitekey ci-dessous).
+//
+// La structure injectée par Octorate (pour mémoire, sert au ciblage CSS) :
+//   .octobook > form > .octobook-date.octobookcheckin (label + .textdate visible)
+//                    > .octobook-date.octobookcheckout
+//                    > .octobookpax (label + select)
+//                    > .octobooksubmit (label vide + input[submit])
+// Les libellés Octorate sont gris foncé : on pose donc la barre sur une carte
+// claire (verre dépoli) pour les rendre lisibles sur le hero sombre, et on
+// réaligne / élargit tout le reste ci-dessous.
+const { lang = "fr" } = Astro.props;
+const warnMsg = {
+  fr: "Votre séjour comprend une ou plusieurs nuits non disponibles. Modifiez vos dates pour réserver en ligne.",
+  en: "Your stay includes one or more unavailable nights. Please adjust your dates to book online.",
+  it: "Il tuo soggiorno include una o più notti non disponibili. Modifica le date per prenotare online.",
+}[lang] || "Votre séjour comprend une ou plusieurs nuits non disponibles. Modifiez vos dates pour réserver en ligne.";
+---
+<div class="octorate-widget">
+  <script
+    is:inline
+    type="text/javascript"
+    src="https://resx.octorate.com/octobook/resources/widget/js/form.js"
+    data-sitekey="cfa59f3552d511c8205e1a2bf27d6662"
+    data-lang={lang}
+  ></script>
+</div>
+
+<!-- Alerte en amont : la plage choisie inclut des nuits indisponibles (avant le clic Recherche). -->
+<p id="bbAvailWarn" class="bb-avail-warn" role="alert">{warnMsg}</p>
+
+<script is:inline>
+  (function () {
+    var pad = function (n) { return String(n).padStart(2, "0"); };
+    var key = function (y, m, d) { return y + "-" + pad(m) + "-" + pad(d); }; // m 1-based
+    var closedNights = new Set(), noArrival = new Set(), noDeparture = new Set();
+    function harvest() {
+      document.querySelectorAll(".ui-datepicker td[data-month]").forEach(function (td) {
+        var toks = td.className.split(/\s+/);
+        var y = td.getAttribute("data-year");
+        var m = parseInt(td.getAttribute("data-month"), 10) + 1;
+        var el = td.querySelector("a,span"); if (!el) return;
+        var d = parseInt(el.textContent.trim(), 10); if (!d || !y) return;
+        var k = key(y, m, d);
+        if (toks.indexOf("closed") > -1) closedNights.add(k);
+        if (toks.indexOf("cta") > -1) noArrival.add(k);
+        if (toks.indexOf("ctd") > -1) noDeparture.add(k);
+      });
+    }
+    function parseFr(v) {
+      if (!v) return null;
+      var p = v.split("/"); if (p.length !== 3) return null;
+      var d = new Date(+p[2], +p[1] - 1, +p[0]);
+      return isNaN(d.getTime()) ? null : d;
+    }
+    function kd(d) { return key(d.getFullYear(), d.getMonth() + 1, d.getDate()); }
+    function getVal(name) {
+      var i = document.querySelector('.octobook form input[name="' + name + '"]');
+      return i ? i.value : "";
+    }
+    // Libellés localisés (la langue de la page = fr-FR / en-GB / it-IT).
+    var MONTHS = {
+      fr: ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"],
+      en: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+      it: ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"]
+    };
+    var TPL = {
+      fr: { one: "Le {list} n'est pas disponible. Modifiez vos dates pour réserver en ligne.",
+            many: "Les {list} ne sont pas disponibles. Modifiez vos dates pour réserver en ligne." },
+      en: { one: "{list} is not available. Please adjust your dates to book online.",
+            many: "{list} are not available. Please adjust your dates to book online." },
+      it: { one: "Il {list} non è disponibile. Modifica le date per prenotare online.",
+            many: "I giorni {list} non sono disponibili. Modifica le date per prenotare online." }
+    };
+    // Séjour maximum réservable en ligne (réglage Octorate, vérifié = 6 nuits).
+    // À ajuster ici si la politique change (Octorate ne l'expose pas côté widget).
+    var MAX_STAY = 6;
+    // {contact} = lien vers la page Contact (localisée).
+    var MAXSTAY_TPL = {
+      fr: "{contact} en direct pour un séjour de plus de {max} nuits chez nous.",
+      en: "{contact} directly for a stay of more than {max} nights with us.",
+      it: "{contact} direttamente per un soggiorno di più di {max} notti da noi."
+    };
+    var CONTACT_LABEL = { fr: "Contactez-nous", en: "Contact us", it: "Contattaci" };
+    var LANG = (document.documentElement.lang || "fr").slice(0, 2).toLowerCase();
+    if (!MONTHS[LANG]) LANG = "fr";
+    function fmt(d) { return d.getDate() + " " + MONTHS[LANG][d.getMonth()]; }
+    function joinDates(arr) {
+      var sep = LANG === "en" ? " and " : LANG === "it" ? " e " : " et ";
+      var glue = function (parts) {
+        return parts.length <= 1 ? parts.join("") : parts.slice(0, -1).join(", ") + sep + parts[parts.length - 1];
+      };
+      // Même mois : on ne répète pas le mois ("11 et 12 juillet").
+      var sameMonth = arr.every(function (d) {
+        return d.getMonth() === arr[0].getMonth() && d.getFullYear() === arr[0].getFullYear();
+      });
+      if (sameMonth) {
+        return glue(arr.map(function (d) { return String(d.getDate()); })) + " " + MONTHS[LANG][arr[0].getMonth()];
+      }
+      return glue(arr.map(fmt));
+    }
+    var warnEl;
+    function setWarn(msg) {
+      if (!warnEl) warnEl = document.getElementById("bbAvailWarn");
+      if (!warnEl) return;
+      if (msg) { warnEl.textContent = msg; warnEl.classList.add("show"); }
+      else warnEl.classList.remove("show");
+    }
+    function setWarnHtml(html) {
+      if (!warnEl) warnEl = document.getElementById("bbAvailWarn");
+      if (!warnEl) return;
+      warnEl.innerHTML = html; warnEl.classList.add("show");
+    }
+    function validate() {
+      harvest();
+      var a = parseFr(getVal("checkin")), b = parseFr(getVal("checkout"));
+      if (!a || !b || b <= a) { setWarn(null); return; }
+      // 1) Nuits fermées dans la plage + restriction arrivée/départ → priorité.
+      var conflicts = [];
+      var push = function (d) {
+        var t = d.getTime();
+        if (!conflicts.some(function (x) { return x.getTime() === t; })) conflicts.push(new Date(d));
+      };
+      if (noArrival.has(kd(a))) push(a);
+      for (var d = new Date(a); d < b; d.setDate(d.getDate() + 1)) {
+        if (closedNights.has(kd(d))) push(d);
+      }
+      if (noDeparture.has(kd(b))) push(b);
+      conflicts.sort(function (x, y) { return x - y; });
+      if (conflicts.length) {
+        setWarn(TPL[LANG][conflicts.length === 1 ? "one" : "many"].replace("{list}", joinDates(conflicts)));
+        return;
+      }
+      // 2) Séjour trop long (durée max réservable en ligne).
+      var nights = Math.round((b - a) / 86400000);
+      if (nights > MAX_STAY) {
+        var href = LANG === "fr" ? "/contact" : "/" + LANG + "/contact";
+        var link = '<a href="' + href + '">' + CONTACT_LABEL[LANG] + "</a>";
+        setWarnHtml(MAXSTAY_TPL[LANG].replace("{contact}", link).replace("{max}", MAX_STAY));
+        return;
+      }
+      setWarn(null);
+    }
+    // Recalcul après chaque clic dans le calendrier + filet de sécurité par polling.
+    document.addEventListener("click", function (e) {
+      if (e.target.closest && e.target.closest(".ui-datepicker")) setTimeout(validate, 120);
+    });
+    var lastCi = "", lastCo = "";
+    setInterval(function () {
+      var ci = getVal("checkin"), co = getVal("checkout");
+      if (ci !== lastCi || co !== lastCo) { lastCi = ci; lastCo = co; validate(); }
+    }, 600);
+  })();
+</script>
+
+<!-- Calendrier du widget : style global (jQuery UI Octorate injecté dans le <body>,
+     hors de notre wrapper, donc CSS non scopé). Inspiré d'Airbnb/Booking :
+     dispo en pastille, sélection/plage en bordeaux, indispo barrées, légende. -->
+<style is:global>
+  .ui-datepicker.ui-datepicker {
+    background: #fff;
+    border: 0;
+    border-radius: 14px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, .3);
+    padding: 16px 18px 6px;
+    font-family: "Montserrat", sans-serif;
+    z-index: 99999;
+    width: auto !important;
+  }
+  .ui-datepicker.ui-datepicker-multi { width: auto !important; white-space: nowrap; }
+  .ui-datepicker .ui-datepicker-group {
+    display: inline-block !important;
+    float: none !important;
+    vertical-align: top;
+    white-space: normal;
+    width: auto !important;
+    padding: 0;
+  }
+  .ui-datepicker .ui-datepicker-group-last { margin-left: 24px; }
+  .ui-datepicker .ui-datepicker-row-break { display: none; }
+  .ui-datepicker .ui-datepicker-calendar { width: auto; }
+  .ui-datepicker .ui-datepicker-header {
+    background: transparent;
+    border: 0;
+    padding: 4px 0 14px;
+  }
+  .ui-datepicker .ui-datepicker-title {
+    color: #212121;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: .03em;
+  }
+  .ui-datepicker .ui-datepicker-year { color: #8a8a8a; font-weight: 400; margin-left: 5px; }
+  /* Flèches mois */
+  .ui-datepicker .ui-datepicker-prev,
+  .ui-datepicker .ui-datepicker-next {
+    cursor: pointer; top: 6px;
+  }
+  .ui-datepicker .ui-datepicker-prev { left: 6px; }
+  .ui-datepicker .ui-datepicker-next { right: 6px; }
+  .ui-datepicker .ui-datepicker-prev:hover,
+  .ui-datepicker .ui-datepicker-next:hover {
+    background: rgba(139, 0, 0, .08); border: 0;
+  }
+  /* Noms des jours (Lu Ma Me...) */
+  .ui-datepicker thead th {
+    color: #9a9a9a;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding-bottom: 8px;
+  }
+  /* Cellules + jours */
+  .ui-datepicker td { padding: 1px; text-align: center; border: 0; }
+  .ui-datepicker td a,
+  .ui-datepicker td span {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 38px; height: 38px; margin: 0 auto;
+    border: 0;
+    background: transparent;
+    border-radius: 50%;
+    font-size: 13px;
+    color: #2a2a2a;
+    text-decoration: none;
+    transition: background .15s, color .15s;
+  }
+  /* Disponible : hover en pastille bordeaux clair (façon Airbnb) */
+  .ui-datepicker td a.ui-state-default:hover,
+  .ui-datepicker td.ui-datepicker-days-cell-over a {
+    background: rgba(139, 0, 0, .10);
+    color: #8B0000;
+  }
+  /* Sélectionné / plage active : bordeaux plein */
+  .ui-datepicker td.ui-datepicker-current-day a,
+  .ui-datepicker td a.ui-state-active,
+  .ui-datepicker td a.ui-state-highlight {
+    background: #8B0000 !important;
+    color: #fff !important;
+  }
+  /* Aujourd'hui : anneau bordeaux */
+  .ui-datepicker td.ui-datepicker-today a {
+    box-shadow: inset 0 0 0 1.5px rgba(139, 0, 0, .5);
+  }
+  /* Passé / non sélectionnable : estompé discret */
+  .ui-datepicker td.ui-state-disabled span,
+  .ui-datepicker td.ui-state-disabled a {
+    color: #d2cdc6;
+    cursor: not-allowed;
+    background: transparent !important;
+  }
+  /* COMPLET (arrêt ventes) : barré + teinte rouge claire */
+  .ui-datepicker td.closed a,
+  .ui-datepicker td.closed span {
+    color: #c98a8a !important;
+    text-decoration: line-through !important;
+    text-decoration-thickness: 1.5px !important;
+    cursor: not-allowed !important;
+    background: rgba(139, 0, 0, .07) !important;
+  }
+  /* Restreint à l'arrivée / au départ : barre diagonale discrète */
+  .ui-datepicker td.cta a,
+  .ui-datepicker td.ctd a {
+    background-image: linear-gradient(to top right, transparent calc(50% - .8px), #d9b4b4 calc(50% - .8px), #d9b4b4 calc(50% + .8px), transparent calc(50% + .8px));
+    color: #8a8a8a;
+  }
+  /* Légende sous le calendrier */
+  .ui-datepicker.ui-datepicker::after {
+    content: "Dates en rouge ou grisées : complètes ou non réservables en ligne." !important;
+    display: block !important;
+    clear: both;
+    white-space: normal;
+    text-align: center;
+    font-size: 10px;
+    color: #9a9a9a;
+    letter-spacing: .03em;
+    border-top: 1px solid #eee;
+    margin-top: 6px;
+    padding: 9px 4px 4px;
+  }
+</style>
+
+<style>
+  /* ---- Alerte "dates indisponibles" sous la barre ---- */
+  .bb-avail-warn {
+    display: none;
+    max-width: 720px;
+    margin: 16px auto 36px;
+    padding: 12px 18px;
+    background: rgba(139, 0, 0, .92);
+    color: #fff;
+    border-radius: 6px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: center;
+    letter-spacing: .02em;
+    box-shadow: 0 14px 36px rgba(0, 0, 0, .3);
+  }
+  .bb-avail-warn.show { display: block; }
+  .bb-avail-warn :global(a) {
+    color: #fff;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .bb-avail-warn :global(a:hover) { opacity: .85; }
+
+  /* ---- Carte claire (verre dépoli) qui porte la barre ---- */
+  .octorate-widget {
+    max-width: 720px;
+    margin: 44px auto 0;
+    position: relative;
+    z-index: 4;
+    background: rgba(255, 255, 255, .96);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, .5);
+    border-radius: 8px;
+    box-shadow: 0 28px 70px rgba(0, 0, 0, .42);
+    padding: 20px 22px;
+  }
+
+  /* ---- Neutraliser l'ancrage flottant + rangée en flex CENTRÉE ---- */
+  .octorate-widget :global(.octobook) {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+  }
+  .octorate-widget :global(.octobook > form) {
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    gap: 14px !important;
+    flex-wrap: wrap !important;
+    margin: 0 !important;
+  }
+
+  /* ---- Colonnes : largeur ajustée au contenu (plus de vide) ---- */
+  .octorate-widget :global(.octobook-date) {
+    flex: 0 0 auto !important;
+    min-width: 0 !important;
+    float: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .octorate-widget :global(.octobookpax) {
+    flex: 0 0 110px !important;
+    float: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .octorate-widget :global(.octobooksubmit) {
+    flex: 0 0 auto !important;
+    float: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* ---- Libellés lisibles sur la carte claire ---- */
+  .octorate-widget :global(.octobook label) {
+    display: block !important;
+    color: #646464 !important;
+    font-family: "Montserrat", sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    letter-spacing: .18em !important;
+    text-transform: uppercase !important;
+    text-align: left !important;
+    margin: 0 0 9px 2px !important;
+    line-height: 1 !important;
+  }
+
+  /* ---- Champ date : UNE seule boîte propre (on supprime l'imbrication) ---- */
+  .octorate-widget :global(.textdate),
+  .octorate-widget :global(.octobookpax select) {
+    height: 54px !important;
+    background: #fff !important;
+    border: 1px solid rgba(33, 33, 33, .2) !important;
+    border-radius: 5px !important;
+    box-shadow: none !important;
+    box-sizing: border-box !important;
+  }
+  /* Champ date dimensionné au contenu (plus de grand vide à droite) */
+  .octorate-widget :global(.textdate) {
+    width: auto !important;
+    min-width: 142px !important;
+    max-width: 180px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding: 0 14px !important;
+    cursor: pointer !important;
+    overflow: hidden !important;
+  }
+  .octorate-widget :global(.octobookpax select) {
+    width: 100% !important;
+  }
+  /* Tuer la "boîte interne" qu'Octorate dessine autour du tableau de date
+     (fond blanc + bord) pour n'avoir qu'UNE seule boîte propre. */
+  .octorate-widget :global(.octobookcheckin) table,
+  .octorate-widget :global(.octobookcheckout) table,
+  .octorate-widget :global(.textdate) table,
+  .octorate-widget :global(.textdate) tbody,
+  .octorate-widget :global(.textdate) tr,
+  .octorate-widget :global(.textdate) td,
+  .octorate-widget :global(.textdate) > div {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+  /* Le contenu interne (div + table) ne doit PAS former de seconde boîte */
+  .octorate-widget :global(.textdate) > div {
+    width: 100% !important;
+  }
+  .octorate-widget :global(.textdate) div,
+  .octorate-widget :global(.textdate) table,
+  .octorate-widget :global(.textdate) td {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    vertical-align: middle !important;
+  }
+  .octorate-widget :global(.textdate) table {
+    width: 100% !important;
+    height: auto !important;
+  }
+  .octorate-widget :global(.textdate) * {
+    color: #212121 !important;
+    font-family: "Montserrat", sans-serif !important;
+    font-size: 14px !important;
+  }
+  .octorate-widget :global(.octobookpax select) {
+    padding: 0 12px !important;
+    color: #212121 !important;
+    font-family: "Montserrat", sans-serif !important;
+    font-size: 15px !important;
+    cursor: pointer !important;
+    appearance: auto !important;
+    -webkit-appearance: menulist !important;
+  }
+
+  /* ---- Bouton Recherche ---- */
+  .octorate-widget :global(.octobooksubmit label) {
+    display: none !important;
+  }
+  .octorate-widget :global(.octobooksubmit input) {
+    width: auto !important;
+    min-width: 168px !important;
+    height: 54px !important;
+    padding: 0 34px !important;
+    background: #8B0000 !important;
+    color: #fff !important;
+    border: 0 !important;
+    border-radius: 5px !important;
+    font-family: "Montserrat", sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 11px !important;
+    letter-spacing: .22em !important;
+    text-transform: uppercase !important;
+    cursor: pointer !important;
+    white-space: nowrap !important;
+    transition: background .3s !important;
+  }
+  .octorate-widget :global(.octobooksubmit input:hover) {
+    background: #79253d !important;
+  }
+
+  /* ---- Mobile : tout en colonne, champs et bouton pleine largeur ---- */
+  @media (max-width: 640px) {
+    .octorate-widget {
+      max-width: 380px;
+      padding: 18px;
+    }
+    .octorate-widget :global(.octobook > form) {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 12px !important;
+    }
+    .octorate-widget :global(.octobook-date),
+    .octorate-widget :global(.octobookpax),
+    .octorate-widget :global(.octobooksubmit) {
+      flex: 1 1 auto !important;
+      width: 100% !important;
+    }
+    .octorate-widget :global(.octobooksubmit input) {
+      width: 100% !important;
+    }
+  }
+</style>

@@ -1,5 +1,7 @@
 ---
 import { Image } from "astro:assets";
+import BookingBar from "./BookingBar.astro";
+import settings from "../data/settings.json";
 import hero from "../assets/SD_2.jpg";
 import intro from "../assets/SD_1.jpg";
 import actSejour from "../assets/SD_23.jpg";
@@ -16,7 +18,8 @@ import g6 from "../assets/SD_5.jpg";
 import loc from "../assets/BD_5.jpg";
 
 // Contenu (textes) passé en props selon la langue ; images partagées et optimisées.
-const { c } = Astro.props;
+const { c, lang = "fr" } = Astro.props;
+const booking = settings[lang].booking;
 const actImages = [actSejour, actMariage, actSeminaire, actFamille, actRetraite];
 const actAlts = [
   "Chambre du château aux murs poudrés",
@@ -39,8 +42,8 @@ const actIds = ["sejour", "mariage", "seminaire", "famille", "retraite"];
       <a class="btn-primary" href="#final">{c.hero.ctaPrimary}</a>
       <a class="btn-ghost" href="#acts">{c.hero.ctaSecondary}</a>
     </div>
+    <BookingBar booking={booking} lang={lang} />
   </div>
-  <div class="scroll-hint">{c.hero.ctaSecondary}</div>
 </section>
 
 <!-- INTRO -->

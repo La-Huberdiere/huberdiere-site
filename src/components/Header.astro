@@ -1,10 +1,15 @@
 ---
 import { Image } from "astro:assets";
 import logo from "../assets/logo.png";
+import { octorateUrl } from "../lib/octorate";
 // Réglages + langue passés par Base. On préfixe les liens internes selon la langue
 // (FR sans préfixe, EN/IT préfixés), et on affiche le sélecteur de langue.
 // En dessous de 1200px, le menu passe en burger (styles dans global.css).
 const { settings: s, lang = "fr", langs = [] } = Astro.props;
+
+// Le bouton « Réserver » ouvre le moteur Octorate dans un nouvel onglet
+// (l'embed iframe est refusé par Octorate, cf. src/lib/octorate.ts).
+const reserveLink = octorateUrl();
 
 const localize = (href: string) => {
   if (lang === "fr" || !href || !href.startsWith("/")) return href;
@@ -23,7 +28,7 @@ const homeHref = lang === "fr" ? "/" : `/${lang}`;
   </button>
   <nav class="nav" id="siteNav">
     {s.nav.map((n) => <a href={localize(n.href)}>{n.label}</a>)}
-    <a href={localize(s.reserveHref)} class="book">{s.reserveLabel}</a>
+    <a href={reserveLink} class="book" target="_blank" rel="noopener">{s.reserveLabel}</a>
     <span class="lang-switch">
       {langs.map((l, i) => (
         <>

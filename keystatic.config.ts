@@ -15,6 +15,20 @@ const settingsSchema = {
   brandSub: fields.text({ label: "Sous-titre (header)" }),
   reserveLabel: fields.text({ label: "Bouton « Réserver » — texte" }),
   reserveHref: fields.text({ label: "Bouton « Réserver » — lien" }),
+  booking: fields.object(
+    {
+      eyebrow: fields.text({ label: "Sur-titre (page réservation)" }),
+      title: fields.text({ label: "Titre (page réservation)" }),
+      intro: fields.text({ label: "Intro (page réservation)", multiline: true }),
+      checkin: fields.text({ label: "Libellé Arrivée" }),
+      checkout: fields.text({ label: "Libellé Départ" }),
+      guests: fields.text({ label: "Libellé Voyageurs" }),
+      submit: fields.text({ label: "Bouton barre de recherche" }),
+      fallbackPre: fields.text({ label: "Texte avant lien de secours" }),
+      fallbackLink: fields.text({ label: "Lien de secours" }),
+    },
+    { label: "Réservation (barre + page)" }
+  ),
   nav: fields.array(
     fields.object({
       label: fields.text({ label: "Libellé" }),
