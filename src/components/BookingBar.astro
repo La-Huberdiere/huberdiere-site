@@ -135,14 +135,9 @@ const warnMsg = {
         setWarn(TPL[LANG][conflicts.length === 1 ? "one" : "many"].replace("{list}", joinDates(conflicts)));
         return;
       }
-      // 2) Séjour trop long (durée max réservable en ligne).
-      var nights = Math.round((b - a) / 86400000);
-      if (nights > MAX_STAY) {
-        var href = LANG === "fr" ? "/contact" : "/" + LANG + "/contact";
-        var link = '<a href="' + href + '">' + CONTACT_LABEL[LANG] + "</a>";
-        setWarnHtml(MAXSTAY_TPL[LANG].replace("{contact}", link).replace("{max}", MAX_STAY));
-        return;
-      }
+      // NB : pas de garde "durée max" — vérifié, des séjours de 7 nuits passent
+      // (ex. 13→20 juil.). Les refus type 20→24 viennent de nuits déjà réservées
+      // (inventaire), que le calendrier widget n'expose pas. Source de vérité = moteur.
       setWarn(null);
     }
     // Recalcul après chaque clic dans le calendrier + filet de sécurité par polling.
