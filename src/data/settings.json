@@ -92,6 +92,10 @@
         {
           "label": "Demander une proposition",
           "href": "/#final"
+        },
+        {
+          "label": "Le Journal",
+          "href": "/blog"
         }
       ],
       "bottomLeft": "© 2026 Château de la Huberdière · Touraine, Val de Loire",
@@ -191,6 +195,10 @@
         {
           "label": "Request a quote",
           "href": "/#final"
+        },
+        {
+          "label": "Journal (FR)",
+          "href": "/blog"
         }
       ],
       "bottomLeft": "© 2026 Château de la Huberdière · Touraine, Loire Valley",
@@ -290,6 +298,10 @@
         {
           "label": "Richiedi un preventivo",
           "href": "/#final"
+        },
+        {
+          "label": "Diario (FR)",
+          "href": "/blog"
         }
       ],
       "bottomLeft": "© 2026 Château de la Huberdière · Touraine, Valle della Loira",

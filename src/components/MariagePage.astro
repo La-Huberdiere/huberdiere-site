@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import pHero from "../assets/SD_5.jpg";
 import v1 from "../assets/SD_6.jpg";
 import v2 from "../assets/SD_9.jpg";
+import { reader } from "../lib/content";
 
 // Textes en props selon la langue ; image de hero variable par activité.
 const { m, cible = "mariage", heroImg } = Astro.props;
@@ -10,6 +11,28 @@ const hero = heroImg ?? pHero;
 
 // Fil d'Ariane visible (cohérent avec le BreadcrumbList schema).
 const lang = (Astro.currentLocale as "fr" | "en" | "it") ?? "fr";
+
+// Maillage réciproque : la page argent renvoie vers les articles du blog liés
+// (le blog est FR seulement, on n'affiche le bloc que sur les pages FR).
+const relatedMap: Record<string, string[]> = {
+  mariage: ["organiser-mariage-au-chateau", "visiter-chateaux-de-la-loire"],
+  sejour: ["chambres-hotes-amboise-chateau", "visiter-chateaux-de-la-loire"],
+  retraite: ["organiser-retraite-yoga-chateau", "visiter-chateaux-de-la-loire"],
+  famille: ["chambres-hotes-amboise-chateau", "visiter-chateaux-de-la-loire"],
+  seminaire: ["visiter-chateaux-de-la-loire", "chambres-hotes-amboise-chateau"],
+  restauration: ["chambres-hotes-amboise-chateau", "visiter-chateaux-de-la-loire"],
+};
+let related: { slug: string; title: string }[] = [];
+if (lang === "fr") {
+  const slugs = relatedMap[cible] ?? [];
+  const entries = await Promise.all(
+    slugs.map(async (s) => {
+      const e = await reader.collections.articles.read(s);
+      return e ? { slug: s, title: e.title } : null;
+    })
+  );
+  related = entries.filter((e): e is { slug: string; title: string } => e !== null);
+}
 const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
 const prefix = lang === "fr" ? "" : `/${lang}`;
 const homeLabel = lang === "fr" ? "Accueil" : "Home";
@@ -103,6 +126,24 @@ const crumbName = String(m.title).split(/[—|]/)[0].trim();
     <figure class="reveal" style="grid-column:2/3;grid-row:1/2"><Image src={v2} alt="Grande salle dressée pour un dîner" widths={[600, 1000, 1400]} sizes="50vw" /></figure>
   </div>
 </section>
+
+{related.length > 0 && (
+  <section class="related-reads">
+    <div class="extras-head reveal">
+      <span class="section-eyebrow">À lire</span>
+      <h2 class="section-title">Pour aller plus loin</h2>
+    </div>
+    <div class="reads-grid">
+      {related.map((r) => (
+        <a class="read-card reveal" href={`/blog/${r.slug}`}>
+          <span class="read-kicker">Journal du château</span>
+          <span class="read-title">{r.title}</span>
+          <span class="read-link">Lire l'article →</span>
+        </a>
+      ))}
+    </div>
+  </section>
+)}
 
 <section class="final" id="final" style="padding-top:120px">
   <span class="section-eyebrow">{m.final.eyebrow}</span>
@@ -267,10 +308,37 @@ const crumbName = String(m.title).split(/[—|]/)[0].trim();
   .faq-answer { padding: 0 4px 22px; }
   .faq-answer p { color: #646464; line-height: 1.7; margin: 0; }
 
+  .related-reads { padding: 90px 24px 10px; }
+  .reads-grid {
+    max-width: 1000px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;
+  }
+  .read-card {
+    display: flex; flex-direction: column; gap: 12px;
+    background: #fbfaf6; border: 1px solid #ece6d8; border-radius: 4px;
+    padding: 30px 28px; text-decoration: none;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .read-card:hover { border-color: #8b0000; transform: translateY(-2px); }
+  .read-kicker {
+    font-family: "Montserrat", sans-serif; font-size: 0.72rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: #8b0000;
+  }
+  .read-title {
+    font-family: "Playfair Display", Georgia, serif; font-size: 1.25rem;
+    line-height: 1.35; color: #2e3a48;
+  }
+  .read-link {
+    margin-top: auto; font-family: "Montserrat", sans-serif;
+    font-size: 0.84rem; color: #8b0000;
+  }
+
   @media (max-width: 860px) {
     .stats-row { grid-template-columns: 1fr; gap: 24px; }
     .extras-grid { grid-template-columns: 1fr; }
     .extras { padding: 70px 22px 10px; }
     .faq { padding: 64px 22px 20px; }
+    .reads-grid { grid-template-columns: 1fr; }
+    .related-reads { padding: 64px 22px 10px; }
   }
 </style>

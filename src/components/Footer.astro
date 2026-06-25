@@ -6,6 +6,8 @@ const f = s.footer;
 
 const localize = (href: string) => {
   if (lang === "fr" || !href || !href.startsWith("/")) return href;
+  // Le blog est FR uniquement : ne pas préfixer /blog (sinon /en/blog = 404).
+  if (href === "/blog" || href.startsWith("/blog/")) return href;
   if (href === "/") return `/${lang}`;
   if (href.startsWith("/#")) return `/${lang}${href.slice(1)}`;
   return `/${lang}${href}`;

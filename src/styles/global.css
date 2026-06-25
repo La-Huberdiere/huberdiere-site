@@ -213,6 +213,15 @@ section{padding:140px 48px;position:relative}
   .footer-grid{grid-template-columns:1fr;gap:40px}
 }
 
+/* Mobile : le hero passe en hauteur auto et le contenu en flux normal pour ne pas
+   rogner la barre de réservation Octorate (sinon overflow:hidden la coupe). */
+@media(max-width:768px){
+  .hero{height:auto;min-height:100svh}
+  .hero-content{position:relative;top:auto;transform:none;padding:128px 22px 56px}
+  .hero h1{margin-bottom:24px}
+  .hero p.lead{margin-bottom:32px}
+}
+
 /* ---------- ANIMATIONS ---------- */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity 1.1s ease,transform 1.1s ease}
 .reveal.in{opacity:1;transform:translateY(0)}
