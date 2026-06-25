@@ -129,7 +129,11 @@ const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
           var href = a.getAttribute("href") || "";
           if (href.indexOf("tel:") === 0) window.huberTrack("contact_click", { method: "phone" });
           else if (href.indexOf("mailto:") === 0) window.huberTrack("contact_click", { method: "email" });
-          else if (/octorate\.com|result\.xhtml/.test(href)) window.huberTrack("reserve_click", {});
+          else if (/octorate\.com|result\.xhtml/.test(href)) {
+            // CTA « Réserver » du header : intention de réservation (comme la recherche du widget).
+            window.huberTrack("reserve_click", {});
+            window.huberTrack("booking_search", { source: "header" });
+          }
         },
         true
       );
