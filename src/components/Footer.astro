@@ -9,6 +9,13 @@ const localize = (href: string) => {
   if (href.startsWith("/#")) return `/${lang}${href.slice(1)}`;
   return `/${lang}${href}`;
 };
+
+// Liens légaux (pages FR pour l'instant), libellés localisés.
+const legalLabels = {
+  fr: { ml: "Mentions légales", pc: "Politique de confidentialité" },
+  en: { ml: "Legal notice", pc: "Privacy policy" },
+  it: { ml: "Note legali", pc: "Informativa privacy" },
+}[lang as "fr" | "en" | "it"];
 ---
 <footer class="site-footer">
   <div class="footer-grid">
@@ -32,8 +39,26 @@ const localize = (href: string) => {
       </ul>
     </div>
   </div>
+  <nav class="footer-legal" aria-label="Liens légaux">
+    <a href="/mentions-legales">{legalLabels.ml}</a>
+    <span class="sep">·</span>
+    <a href="/politique-de-confidentialite">{legalLabels.pc}</a>
+  </nav>
   <div class="footer-bottom">
     <span>{f.bottomLeft}</span>
     <span>{f.bottomRight}</span>
   </div>
 </footer>
+
+<style>
+  .footer-legal {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 8px 24px 0;
+    font-family: "Montserrat", sans-serif;
+    font-size: 0.78rem;
+  }
+  .footer-legal a { color: inherit; opacity: 0.85; text-decoration: none; }
+  .footer-legal a:hover { opacity: 1; text-decoration: underline; }
+  .footer-legal .sep { opacity: 0.5; margin: 0 8px; }
+</style>

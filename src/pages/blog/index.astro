@@ -1,6 +1,9 @@
 ---
 import Base from "../../layouts/Base.astro";
 import { reader } from "../../lib/content";
+import { getAuthor } from "../../lib/authors";
+import { categoryLabel, formatDate } from "../../lib/blog";
+import { breadcrumbSchema } from "../../lib/seo";
 
 const slugs = await reader.collections.articles.list();
 const articles = (
@@ -11,23 +14,54 @@ const articles = (
     })
   )
 ).sort((x, y) => String(y.publishedAt || "").localeCompare(String(x.publishedAt || "")));
+
+const schemas = [
+  breadcrumbSchema([
+    { name: "Accueil", path: "/" },
+    { name: "Journal", path: "/blog" },
+  ]),
+];
 ---
-<Base title="Journal — Château de la Huberdière" description="Articles, conseils et actualités du Château de la Huberdière, en Touraine.">
+<Base
+  title="Journal du château — conseils mariage, séjour & art de vivre en Val de Loire"
+  description="Le journal du Château de la Huberdière : conseils et inspirations pour vos mariages, séjours, séminaires et retraites en Touraine, au cœur des Châteaux de la Loire."
+  lang="fr"
+  path="/blog"
+  schemas={schemas}
+>
   <section style="padding-top:140px">
     <div class="prose reveal">
+      <nav class="breadcrumb" aria-label="Fil d'Ariane">
+        <ol>
+          <li><a href="/">Accueil</a></li>
+          <li aria-current="page">Journal</li>
+        </ol>
+      </nav>
       <span class="section-eyebrow">Le journal</span>
-      <h1>Actualités du château</h1>
+      <h1>Conseils & inspirations du château</h1>
+      <p class="blog-intro">
+        Nos conseils pour organiser un mariage, un séjour ou un séminaire au château, et nos
+        inspirations pour découvrir la Touraine et les Châteaux de la Loire.
+      </p>
     </div>
+
     <div class="blog-list">
-      {articles.map((a) => (
-        <a class="blog-card reveal" href={`/blog/${a.slug}`}>
-          {a.cover && <img src={a.cover} alt={a.title} />}
-          <div class="blog-card-body">
-            <h3>{a.title}</h3>
-            <p>{a.description}</p>
-          </div>
-        </a>
-      ))}
+      {articles.map((a) => {
+        const author = getAuthor((a as any).author);
+        return (
+          <a class="blog-card reveal" href={`/blog/${a.slug}`}>
+            {a.cover && <img src={a.cover} alt={a.title} width="600" height="200" />}
+            <div class="blog-card-body">
+              <span class="blog-cat">{categoryLabel((a as any).category)}</span>
+              <h2>{a.title}</h2>
+              <p>{a.description}</p>
+              <span class="blog-card-meta">
+                {author.name}{a.publishedAt ? ` · ${formatDate(a.publishedAt)}` : ""}
+              </span>
+            </div>
+          </a>
+        );
+      })}
     </div>
     {articles.length === 0 && (
       <p class="prose" style="color:#646464">Aucun article pour le moment.</p>
@@ -35,28 +69,35 @@ const articles = (
   </section>
 
   <style>
+    .breadcrumb { padding: 0 0 18px; }
+    .breadcrumb ol {
+      list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0;
+      font-family: "Montserrat", sans-serif; font-size: 0.8rem; color: #646464;
+    }
+    .breadcrumb li { display: flex; align-items: center; gap: 8px; }
+    .breadcrumb li + li::before { content: "›"; color: #b9b1a0; }
+    .breadcrumb a { color: #8b0000; text-decoration: none; }
+    .blog-intro { color: #646464; max-width: 640px; line-height: 1.7; }
+
     .blog-list {
-      max-width: 1100px;
-      margin: 48px auto 0;
-      padding: 0 24px;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 32px;
+      max-width: 1100px; margin: 48px auto 0; padding: 0 24px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 32px;
     }
     .blog-card {
-      display: block;
-      text-decoration: none;
-      color: inherit;
-      border: 1px solid #e2dccc;
-      border-radius: 6px;
-      overflow: hidden;
-      background: #fbfaf6;
+      display: block; text-decoration: none; color: inherit;
+      border: 1px solid #e2dccc; border-radius: 6px; overflow: hidden; background: #fbfaf6;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     .blog-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
     .blog-card img { width: 100%; height: 200px; object-fit: cover; display: block; }
-    .blog-card-body { padding: 20px 22px 26px; }
-    .blog-card h3 { font-family: "Playfair Display", Georgia, serif; color: #2e3a48; margin: 0 0 8px; }
-    .blog-card p { color: #646464; font-size: 0.95rem; margin: 0; }
+    .blog-card-body { padding: 18px 22px 24px; }
+    .blog-cat {
+      display: inline-block; background: #f3e9e9; color: #8b0000;
+      padding: 3px 12px; border-radius: 999px; font-family: "Montserrat", sans-serif;
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.02em; margin-bottom: 10px;
+    }
+    .blog-card h2 { font-family: "Playfair Display", Georgia, serif; font-size: 1.25rem; color: #2e3a48; margin: 0 0 8px; }
+    .blog-card p { color: #646464; font-size: 0.95rem; margin: 0 0 12px; }
+    .blog-card-meta { font-family: "Montserrat", sans-serif; font-size: 0.78rem; color: #9a9a9a; }
   </style>
 </Base>

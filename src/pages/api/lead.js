@@ -1,16 +1,65 @@
-// Réception des formulaires du site → Brevo (CRM + email de notification).
+// Réception des formulaires du site → Brevo (CRM + emails).
 // Tourne en fonction serverless sur Vercel. La clé API reste côté serveur.
+// 3 emails : confirmation au prospect + notification à l'équipe (contact@ et Alexis).
 export const prerender = false;
 
 const TAGS = {
   mariage: "LP_Mariage",
   seminaire: "LP_Seminaire",
   stage: "LP_Stage",
+  retraite: "LP_Stage",
   famille: "LP_Reunion_Famille",
+  sejour: "LP_Sejour",
+  restauration: "LP_Restauration",
   contact: "Contact_Form",
 };
 
-const OWNER_EMAIL = "contact@chateaudelahuberdiere.com";
+// Libellés lisibles de la cible (titre du mail + ligne « Activité »).
+const CIBLE_LABEL = {
+  mariage: "Mariage",
+  seminaire: "Séminaire",
+  stage: "Stage",
+  retraite: "Retraite",
+  famille: "Réunion de famille",
+  sejour: "Séjour",
+  restauration: "Restauration",
+  contact: "Contact",
+};
+
+// Adresse expéditrice : DOIT être un expéditeur validé dans le compte Brevo du château.
+// Validés : hello@ et lodovica.dalpozzo@. contact@ n'est PAS validé comme expéditeur
+// (c'est l'email du compte), donc on envoie depuis hello@ et on répond vers contact@.
+const SENDER = { name: "Château de la Huberdière", email: "hello@chateaudelahuberdiere.com" };
+const REPLY_PUBLIC = { email: "contact@chateaudelahuberdiere.com", name: "Château de la Huberdière" };
+// Destinataires des notifications internes.
+// TEST : on n'envoie qu'à Alexis pour ne pas déranger le client.
+// AVANT MISE EN LIGNE : remettre { email: "contact@chateaudelahuberdiere.com" }.
+const TEAM = [{ email: "alexis@morain.fr" }];
+
+// Confirmation envoyée au prospect, localisée.
+const CONFIRM = {
+  fr: {
+    subject: "Nous avons bien reçu votre demande — Château de la Huberdière",
+    title: "Merci pour votre message",
+    body: (p) =>
+      `Bonjour ${p || ""},<br><br>Nous avons bien reçu votre demande et nous reviendrons vers vous sous 24 heures avec une première réponse. À très bientôt au Château de la Huberdière.`,
+    signoff: "L'équipe du Château de la Huberdière",
+  },
+  en: {
+    subject: "We have received your enquiry — Château de la Huberdière",
+    title: "Thank you for your message",
+    body: (p) =>
+      `Hello ${p || ""},<br><br>We have received your enquiry and will get back to you within 24 hours with a first reply. See you soon at Château de la Huberdière.`,
+    signoff: "The Château de la Huberdière team",
+  },
+  it: {
+    subject: "Abbiamo ricevuto la tua richiesta — Château de la Huberdière",
+    title: "Grazie per il tuo messaggio",
+    body: (p) =>
+      `Buongiorno ${p || ""},<br><br>Abbiamo ricevuto la tua richiesta e ti risponderemo entro 24 ore con una prima risposta. A presto al Château de la Huberdière.`,
+    signoff: "Il team del Château de la Huberdière",
+  },
+};
 
 export async function POST({ request }) {
   let data;
@@ -25,7 +74,26 @@ export async function POST({ request }) {
   if (!data.email) return json({ ok: false, error: "email_required" }, 422);
 
   const tag = TAGS[data.cible] || "Contact_Form";
+  const cibleLabel = CIBLE_LABEL[data.cible] || "Contact";
+  const lang = ["fr", "en", "it"].includes(data.lang) ? data.lang : "fr";
   const key = process.env.BREVO_API_KEY || import.meta.env.BREVO_API_KEY;
+  const fullName = `${data.prenom || ""} ${data.nom || ""}`.trim();
+
+  // Contexte du lead pour la notification (navigateur via User-Agent, géo Vercel, date).
+  const dec = (v) => { try { return decodeURIComponent(v || ""); } catch { return v || ""; } };
+  const client = parseUA(request.headers.get("user-agent") || "");
+  const meta = {
+    lang,
+    browser: client.browser,
+    os: client.os,
+    device: client.device,
+    location: [
+      dec(request.headers.get("x-vercel-ip-city")),
+      dec(request.headers.get("x-vercel-ip-country-region")),
+      request.headers.get("x-vercel-ip-country") || "",
+    ].filter(Boolean).join(", "),
+    when: new Intl.DateTimeFormat("fr-FR", { dateStyle: "long", timeStyle: "short", timeZone: "Europe/Paris" }).format(new Date()),
+  };
 
   // Sans clé (démo), on n'échoue pas : on laisse le parcours se terminer.
   if (!key) {
@@ -50,40 +118,143 @@ export async function POST({ request }) {
         FORM: [tag],
         UTM_SOURCE: data.utm_source || "",
         UTM_CAMPAIGN: data.utm_campaign || "",
+        GCLID: data.gclid || "",
+        LEAD_ID: data.lead_id || "",
       },
     }),
   });
 
-  // 2) Notification à l'équipe (réception automatique du mail).
+  // 2) Notification à l'équipe (contact@ + Alexis), réponse possible au prospect.
   const notify = fetch("https://api.brevo.com/v3/smtp/email", {
     method: "POST",
     headers,
     body: JSON.stringify({
-      sender: { name: "Site Huberdière", email: OWNER_EMAIL },
-      to: [{ email: OWNER_EMAIL }],
-      replyTo: { email: data.email, name: `${data.prenom || ""} ${data.nom || ""}`.trim() || data.email },
-      subject: `Nouvelle demande ${data.cible || "contact"} — ${data.prenom || ""} ${data.nom || ""}`.trim(),
-      htmlContent: `
-        <h2 style="font-family:Georgia,serif;color:#8B0000">Nouvelle demande (${tag})</h2>
-        <p><strong>${esc(data.prenom)} ${esc(data.nom)}</strong></p>
-        <p>Email : <a href="mailto:${esc(data.email)}">${esc(data.email)}</a><br>
-           Téléphone : ${esc(data.telephone) || "—"}</p>
-        <p style="white-space:pre-wrap">${esc(data.message) || "(pas de message)"}</p>
-        <hr>
-        <p style="color:#646464;font-size:13px">Source : ${esc(data.utm_source) || "direct"} · Campagne : ${esc(data.utm_campaign) || "—"}</p>`,
+      sender: SENDER,
+      to: TEAM,
+      replyTo: { email: data.email, name: fullName || data.email },
+      subject: `[${cibleLabel}] Nouvelle demande — ${fullName || data.email}`,
+      htmlContent: notifyHtml(data, cibleLabel, meta),
+    }),
+  });
+
+  // 3) Confirmation au prospect (localisée, à la DA du château).
+  const confirm = fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      sender: SENDER,
+      to: [{ email: data.email, name: fullName || data.email }],
+      replyTo: REPLY_PUBLIC,
+      subject: CONFIRM[lang].subject,
+      htmlContent: confirmHtml(lang, data.prenom),
     }),
   });
 
   try {
-    const [c, n] = await Promise.all([contact, notify]);
+    const [c, n, p] = await Promise.all([contact, notify, confirm]);
     if (!c.ok) console.error("[lead] Brevo contact:", c.status, await safeText(c));
-    if (!n.ok) console.error("[lead] Brevo email:", n.status, await safeText(n));
-    return json({ ok: true, brevo: c.ok && n.ok });
+    if (!n.ok) console.error("[lead] Brevo notif:", n.status, await safeText(n));
+    if (!p.ok) console.error("[lead] Brevo confirm:", p.status, await safeText(p));
+    return json({ ok: true, brevo: c.ok && n.ok && p.ok });
   } catch (e) {
     console.error("[lead] erreur Brevo:", e);
     // On ne bloque pas le prospect : le parcours se termine quand même.
     return json({ ok: true, brevo: false });
   }
+}
+
+function confirmHtml(lang, prenom) {
+  const t = CONFIRM[lang];
+  return `
+  <div style="background:#f4f2ec;padding:32px 0;font-family:Helvetica,Arial,sans-serif">
+    <div style="max-width:560px;margin:0 auto;background:#fffdf9;border:1px solid #e6dfce;border-radius:10px;overflow:hidden">
+      <div style="background:#2e3a48;padding:22px 28px">
+        <span style="color:#fff;font-family:Georgia,serif;font-size:20px;letter-spacing:.5px">Château de la Huberdière</span>
+      </div>
+      <div style="padding:30px 28px">
+        <h1 style="font-family:Georgia,serif;color:#8B0000;font-size:22px;font-weight:normal;margin:0 0 16px">${t.title}</h1>
+        <p style="color:#2e3a48;font-size:15px;line-height:1.65;margin:0 0 22px">${t.body(esc(prenom))}</p>
+        <p style="color:#2e3a48;font-size:15px;margin:0">${t.signoff}</p>
+        <hr style="border:none;border-top:1px solid #ece6d8;margin:26px 0">
+        <p style="color:#646464;font-size:13px;line-height:1.6;margin:0">
+          Vallée de Vaugadeland, 37530 Nazelles-Négron · +33 2 47 57 52 92<br>
+          <a href="mailto:contact@chateaudelahuberdiere.com" style="color:#8B0000">contact@chateaudelahuberdiere.com</a> ·
+          <a href="https://www.chateaudelahuberdiere.com" style="color:#8B0000">chateaudelahuberdiere.com</a>
+        </p>
+      </div>
+    </div>
+  </div>`;
+}
+
+// Déduit navigateur / OS / type d'appareil depuis le User-Agent.
+function parseUA(s = "") {
+  let browser = "Inconnu";
+  if (/Edg\//.test(s)) browser = "Edge";
+  else if (/OPR\/|Opera/.test(s)) browser = "Opera";
+  else if (/SamsungBrowser/.test(s)) browser = "Samsung Internet";
+  else if (/Chrome\//.test(s) && !/Chromium/.test(s)) browser = "Chrome";
+  else if (/Firefox\//.test(s)) browser = "Firefox";
+  else if (/Version\/.*Safari/.test(s)) browser = "Safari";
+  let os = "Inconnu";
+  if (/Windows NT/.test(s)) os = "Windows";
+  else if (/iPhone|iPad|iPod/.test(s)) os = "iOS";
+  else if (/Mac OS X/.test(s)) os = "macOS";
+  else if (/Android/.test(s)) os = "Android";
+  else if (/Linux/.test(s)) os = "Linux";
+  const device = /iPad|Tablet/.test(s) ? "Tablette" : /Mobi|iPhone|Android.*Mobile/.test(s) ? "Mobile" : "Ordinateur";
+  return { browser, os, device };
+}
+
+// Mail de notification interne, brandé, avec un maximum de contexte sur le lead.
+function notifyHtml(data, cibleLabel, meta) {
+  const full = `${data.prenom || ""} ${data.nom || ""}`.trim() || data.email;
+  const origin = data.utm_source ? data.utm_source : data.referrer ? "Lien externe" : "Accès direct";
+  const rows = [
+    ["Activité", cibleLabel],
+    ["Origine", origin],
+    ["Source (utm_source)", data.utm_source],
+    ["Support (utm_medium)", data.utm_medium],
+    ["Campagne (utm_campaign)", data.utm_campaign],
+    ["Mot-clé (utm_term)", data.utm_term],
+    ["Contenu (utm_content)", data.utm_content],
+    ["Page du formulaire", data.page],
+    ["Provenance (referrer)", data.referrer],
+    ["Langue", meta.lang],
+    ["Localisation", meta.location],
+    ["Appareil", meta.device],
+    ["Navigateur", meta.browser],
+    ["Système", meta.os],
+    ["Google Ads (gclid)", data.gclid],
+    ["ID lead", data.lead_id],
+    ["Reçu le", meta.when],
+  ]
+    .filter(([, v]) => v)
+    .map(
+      ([l, v]) =>
+        `<tr><td style="padding:7px 14px;color:#646464;font-size:13px;border-bottom:1px solid #f0ebdf;white-space:nowrap;vertical-align:top">${esc(l)}</td><td style="padding:7px 14px;color:#2e3a48;font-size:13px;border-bottom:1px solid #f0ebdf;word-break:break-word">${esc(v)}</td></tr>`
+    )
+    .join("");
+  return `
+  <div style="background:#f4f2ec;padding:32px 0;font-family:Helvetica,Arial,sans-serif">
+    <div style="max-width:600px;margin:0 auto;background:#fffdf9;border:1px solid #e6dfce;border-radius:10px;overflow:hidden">
+      <div style="background:#8B0000;padding:18px 28px">
+        <span style="color:#fff;font-family:Georgia,serif;font-size:18px">Nouvelle demande · Château de la Huberdière</span>
+      </div>
+      <div style="padding:26px 28px">
+        <h1 style="font-family:Georgia,serif;color:#2e3a48;font-size:20px;font-weight:normal;margin:0 0 4px">${esc(full)}</h1>
+        <p style="margin:0 0 18px;font-size:14px;color:#2e3a48">
+          <a href="mailto:${esc(data.email)}" style="color:#8B0000">${esc(data.email)}</a>${
+            data.telephone ? ` · <a href="tel:${esc(data.telephone)}" style="color:#8B0000">${esc(data.telephone)}</a>` : ""
+          }
+        </p>
+        <div style="background:#fbfaf6;border-left:3px solid #8B0000;padding:14px 16px;border-radius:4px;margin:0 0 22px">
+          <div style="color:#646464;font-size:12px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px">Message</div>
+          <div style="color:#2e3a48;font-size:14px;line-height:1.6;white-space:pre-wrap">${esc(data.message) || "(pas de message)"}</div>
+        </div>
+        <table style="width:100%;border-collapse:collapse;border-top:1px solid #f0ebdf">${rows}</table>
+      </div>
+    </div>
+  </div>`;
 }
 
 function json(obj, status = 200) {

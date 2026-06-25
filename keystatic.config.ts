@@ -207,6 +207,20 @@ const mariageSchema = {
     }),
     { label: "Section « activités / extras » — items", itemLabel: (p) => p.fields.title.value || "Item" }
   ),
+  faqHead: fields.object(
+    {
+      eyebrow: fields.text({ label: "Sur-titre" }),
+      title: fields.text({ label: "Titre de la section FAQ" }),
+    },
+    { label: "FAQ — en-tête" }
+  ),
+  faq: fields.array(
+    fields.object({
+      q: fields.text({ label: "Question" }),
+      a: fields.text({ label: "Réponse", multiline: true }),
+    }),
+    { label: "FAQ (questions / réponses)", itemLabel: (p) => p.fields.q.value || "Question" }
+  ),
   final: fields.object(
     {
       eyebrow: fields.text({ label: "Sur-titre" }),
@@ -358,6 +372,27 @@ export default config({
         title: fields.slug({ name: { label: "Titre" } }),
         description: fields.text({ label: "Méta description (SEO)", multiline: true }),
         publishedAt: fields.date({ label: "Date de publication" }),
+        updatedAt: fields.date({ label: "Date de mise à jour (optionnel)" }),
+        author: fields.select({
+          label: "Auteur",
+          options: [
+            { label: "Lodovica", value: "lodovica" },
+            { label: "Patrick", value: "patrick" },
+          ],
+          defaultValue: "lodovica",
+        }),
+        category: fields.select({
+          label: "Catégorie",
+          options: [
+            { label: "Mariage", value: "mariage" },
+            { label: "Séjour & tourisme", value: "sejour" },
+            { label: "Séminaire", value: "seminaire" },
+            { label: "Famille & groupes", value: "famille" },
+            { label: "Retraites & bien-être", value: "retraite" },
+            { label: "Art de vivre", value: "art-de-vivre" },
+          ],
+          defaultValue: "art-de-vivre",
+        }),
         cover: fields.image({
           label: "Image de couverture",
           directory: "public/images/articles",

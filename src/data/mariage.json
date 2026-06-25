@@ -1,15 +1,15 @@
 {
   "fr": {
-    "title": "Mariage au château en Touraine — Château de la Huberdière",
-    "description": "Célébrez votre mariage dans un château du XVIᵉ siècle au cœur des Châteaux de la Loire. Privatisation exclusive, parc de 12 hectares, de 30 à 150 convives, à 2 h de Paris.",
+    "title": "Mariage au château — Val de Loire, près d'Amboise | La Huberdière",
+    "description": "Votre mariage au château en Val de Loire. Un domaine du XVIᵉ siècle privatisé rien que pour vous, parc séculaire, de 30 à 150 convives et 21 couchages sur place, à 2 h de Paris.",
     "hero": {
-      "eyebrow": "Mariage · Val de Loire",
-      "titleLine1": "Se marier au château",
+      "eyebrow": "Mariage au château · Val de Loire",
+      "titleLine1": "Votre mariage au château",
       "titleLine2Italic": "de la Huberdière.",
-      "lead": "Une privatisation exclusive, un parc de douze hectares, et l'art de recevoir d'une maison de famille. À deux heures de Paris."
+      "lead": "Un château pour mariage privatisé rien que pour vous : parc de douze hectares, art de recevoir d'une maison de famille, et vos proches qui dorment sur place. À deux heures de Paris."
     },
     "intro": [
-      "Imaginez une cérémonie laïque sous les arbres centenaires, un vin d'honneur sur la terrasse au soleil couchant, un dîner dans la grande salle voûtée, puis la fête qui se prolonge sous les étoiles. Au matin, vos proches se réveillent sur place, dans les chambres du château.",
+      "Se marier au château, vraiment au château : la Huberdière se privatise entièrement pour votre mariage, sans aucun autre événement en parallèle. Cérémonie laïque sous les arbres centenaires, vin d'honneur sur la terrasse au soleil couchant, dîner dans la grande salle voûtée, puis la fête sous les étoiles. Au matin, vos invités se réveillent sur place.",
       "La Huberdière se privatise entièrement, pour vous et vos invités seuls. De 30 à 150 convives, vous disposez du château, du parc et de la piscine, avec un interlocuteur dédié du premier rendez-vous au lendemain de la fête."
     ],
     "cards": [
@@ -68,20 +68,46 @@
         "title": "Un interlocuteur dédié",
         "text": "Lodovica apporte la chaleur de ses racines italiennes, Patrick veille à chaque détail logistique, du premier rendez-vous au lendemain de la fête."
       }
+    ],
+    "faqHead": {
+      "eyebrow": "Questions fréquentes",
+      "title": "Votre mariage au château, en pratique"
+    },
+    "faq": [
+      {
+        "q": "Combien d'invités peut accueillir le château pour un mariage ?",
+        "a": "De 30 à 150 convives en réception. Le château privatisé loge 21 personnes en 10 suites, et nous vous aidons à organiser l'hébergement des autres invités à proximité."
+      },
+      {
+        "q": "La privatisation est-elle exclusive ?",
+        "a": "Oui. Le jour de votre mariage, le château, le parc et la piscine sont à vous seuls : aucun autre événement n'a lieu en même temps."
+      },
+      {
+        "q": "Où se situe le château et à quelle distance de Paris ?",
+        "a": "En Touraine, à Nazelles-Négron près d'Amboise, au cœur des Châteaux de la Loire, à environ 2 heures de Paris et 30 minutes de Tours."
+      },
+      {
+        "q": "Peut-on se marier en plein air dans le parc ?",
+        "a": "Oui, le parc séculaire de douze hectares se prête aux cérémonies laïques sous les arbres, au vin d'honneur en terrasse et à la fête en intérieur comme en extérieur."
+      },
+      {
+        "q": "Proposez-vous un accompagnement pour l'organisation ?",
+        "a": "Un interlocuteur dédié vous suit du premier rendez-vous au lendemain de la fête, pour coordonner prestataires, traiteur et logistique."
+      }
     ]
   },
   "en": {
-    "title": "Wedding at a château in Touraine — Château de la Huberdière",
-    "description": "Celebrate your wedding in a 16th-century château in the heart of the Loire Valley. Exclusive use of the venue, 12-hectare grounds, accommodating 30 to 150 guests, just 2 hours from Paris.",
+    "title": "Wedding at the château — Loire Valley, near Amboise | La Huberdière",
+    "description": "Your wedding at a château in the Loire Valley. A 16th-century estate reserved exclusively for you, with a historic park, accommodation for 30 to 150 guests and 21 beds on site, just 2 hours from Paris.",
     "hero": {
-      "eyebrow": "Wedding · Loire Valley",
-      "titleLine1": "Getting married at the château",
+      "eyebrow": "Wedding at the château · Loire Valley",
+      "titleLine1": "Your wedding at the château",
       "titleLine2Italic": "de la Huberdière.",
-      "lead": "Exclusive private use, a twelve-hectare estate, and the warm hospitality of a family home. Just two hours from Paris."
+      "lead": "A castle exclusively reserved for your wedding: a twelve-hectare estate, the warm hospitality of a family home, and your loved ones staying overnight on site. Just two hours from Paris."
     },
     "intro": [
-      "Imagine a non-religious ceremony beneath centuries-old trees, a reception on the terrace as the sun sets, dinner in the grand vaulted hall, followed by a party that goes on late into the night under the stars. In the morning, your loved ones wake up right there, in the château’s guest rooms.",
-      "La Huberdière is available for exclusive hire, just for you and your guests. Whether you’re hosting 30 or 150 guests, you’ll have the château, the grounds and the swimming pool all to yourselves, with a dedicated point of contact from your first meeting right through to the day after the event."
+      "Get married at the château – and we really do mean the château: La Huberdière is exclusively yours for your wedding, with no other events taking place at the same time. A non-religious ceremony beneath the centuries-old trees, a reception on the terrace as the sun sets, dinner in the grand vaulted hall, followed by a celebration under the stars. In the morning, your guests wake up right there on the premises.",
+      "La Huberdière is available for exclusive hire, just for you and your guests. Whether you’re hosting 30 or 150 guests, you’ll have the château, the grounds and the swimming pool all to yourselves, with a dedicated point of contact from your first enquiry right through to the day after the event."
     ],
     "cards": [
       {
@@ -92,7 +118,7 @@
       {
         "num": "II",
         "title": "Accommodation",
-        "text": "The rooms in the château are for immediate family, with accommodation nearby for all the guests. Everyone stays on site or very close by."
+        "text": "The rooms in the château are for immediate family, with accommodation nearby for all the guests. Everyone stays either on site or very close by."
       },
       {
         "num": "III",
@@ -139,19 +165,45 @@
         "title": "A dedicated contact person",
         "text": "Lodovica brings the warmth of her Italian heritage, whilst Patrick takes care of every logistical detail, from the first meeting right through to the day after the party."
       }
+    ],
+    "faqHead": {
+      "eyebrow": "Frequently Asked Questions",
+      "title": "Your wedding at the château: practical information"
+    },
+    "faq": [
+      {
+        "q": "How many guests can the château accommodate for a wedding?",
+        "a": "From 30 to 150 guests for the reception. The château, when hired exclusively, can accommodate 21 people in 10 suites, and we can help you arrange accommodation for the other guests nearby."
+      },
+      {
+        "q": "Is privatisation exclusive?",
+        "a": "Yes. On your wedding day, the château, the grounds and the swimming pool are all yours: no other events take place at the same time."
+      },
+      {
+        "q": "Where is the château located, and how far is it from Paris?",
+        "a": "In Touraine, in Nazelles-Négron near Amboise, in the heart of the Loire Valley, about 2 hours from Paris and 30 minutes from Tours."
+      },
+      {
+        "q": "Can we get married outdoors in the park?",
+        "a": "Yes, the 12-hectare historic park is ideal for secular ceremonies under the trees, receptions on the terrace, and celebrations both indoors and outdoors."
+      },
+      {
+        "q": "Do you offer support with the organisation?",
+        "a": "A dedicated point of contact will support you from your first meeting right through to the day after the event, coordinating service providers, the caterer and logistics."
+      }
     ]
   },
   "it": {
-    "title": "Matrimonio in un castello in Touraine — Castello di La Huberdière",
-    "description": "Festeggiate il vostro matrimonio in un castello del XVI secolo nel cuore della Valle della Loira. Esclusiva a disposizione degli sposi, parco di 12 ettari, da 30 a 150 invitati, a 2 ore da Parigi.",
+    "title": "Matrimonio al castello — Valle della Loira, vicino ad Amboise | La Huberdière",
+    "description": "Il vostro matrimonio in un castello nella Valle della Loira. Una tenuta del XVI secolo riservata esclusivamente a voi, con un parco secolare, da 30 a 150 invitati e 21 posti letto in loco, a 2 ore da Parigi.",
     "hero": {
-      "eyebrow": "Matrimonio · Valle della Loira",
-      "titleLine1": "Sposarsi al castello",
+      "eyebrow": "Matrimonio al castello · Valle della Loira",
+      "titleLine1": "Il vostro matrimonio al castello",
       "titleLine2Italic": "di Huberdière.",
-      "lead": "Una struttura riservata esclusivamente agli ospiti, un parco di dodici ettari e l'arte dell'accoglienza tipica di una dimora di famiglia. A due ore da Parigi."
+      "lead": "Un castello a vostra completa disposizione per il matrimonio: un parco di dodici ettari, l’accoglienza calorosa di una casa di famiglia e i vostri cari che pernottano sul posto. A due ore da Parigi."
     },
     "intro": [
-      "Immaginate una cerimonia laica sotto alberi secolari, un ricevimento sulla terrazza al tramonto, una cena nella grande sala a volta e poi la festa che prosegue sotto le stelle. Al mattino, i vostri cari si sveglieranno sul posto, nelle camere del castello.",
+      "Sposarsi al castello, proprio al castello: La Huberdière viene interamente riservata per il vostro matrimonio, senza alcun altro evento in contemporanea. Cerimonia laica sotto alberi secolari, ricevimento sulla terrazza al tramonto, cena nella grande sala a volta e poi festa sotto le stelle. Al mattino, i vostri ospiti si sveglieranno direttamente sul posto.",
       "La Huberdière viene interamente riservata, esclusivamente per voi e i vostri ospiti. Da 30 a 150 invitati, avrete a vostra disposizione il castello, il parco e la piscina, con un referente dedicato dal primo incontro fino al giorno successivo alla festa."
     ],
     "cards": [
@@ -209,6 +261,32 @@
       {
         "title": "Un referente dedicato",
         "text": "Lodovica infonde il calore delle sue origini italiane, mentre Patrick cura ogni minimo dettaglio logistico, dal primo incontro fino al giorno dopo la festa."
+      }
+    ],
+    "faqHead": {
+      "eyebrow": "Domande frequenti",
+      "title": "Il vostro matrimonio al castello: gli aspetti pratici"
+    },
+    "faq": [
+      {
+        "q": "Quanti invitati può ospitare il castello in occasione di un matrimonio?",
+        "a": "Da 30 a 150 ospiti al ricevimento. Il castello, a uso esclusivo, può ospitare 21 persone in 10 suite; vi aiutiamo inoltre a organizzare la sistemazione degli altri ospiti nelle vicinanze."
+      },
+      {
+        "q": "La privatizzazione è esclusiva?",
+        "a": "Sì. Il giorno del vostro matrimonio, il castello, il parco e la piscina saranno a vostra completa disposizione: non si terrà nessun altro evento contemporaneamente."
+      },
+      {
+        "q": "Dove si trova il castello e a che distanza da Parigi?",
+        "a": "In Touraine, a Nazelles-Négron, vicino ad Amboise, nel cuore dei Castelli della Loira, a circa 2 ore da Parigi e 30 minuti da Tours."
+      },
+      {
+        "q": "È possibile sposarsi all'aperto nel parco?",
+        "a": "Sì, il parco secolare di dodici ettari si presta perfettamente a cerimonie laiche all’ombra degli alberi, a ricevimenti sulla terrazza e a feste sia al chiuso che all’aperto."
+      },
+      {
+        "q": "Offrite un servizio di assistenza per l'organizzazione?",
+        "a": "Un referente dedicato vi seguirà dal primo incontro fino al giorno dopo la festa, coordinando fornitori, catering e logistica."
       }
     ]
   }

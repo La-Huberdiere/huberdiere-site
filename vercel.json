@@ -1,0 +1,30 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    { "source": "/contact-9", "destination": "/contact", "permanent": true },
+    { "source": "/mariage-chateau-touraine", "destination": "/mariage", "permanent": true },
+    { "source": "/location-chateau-mariage-touraine", "destination": "/mariage", "permanent": true },
+    { "source": "/location-chateau-seminaire-touraine", "destination": "/seminaire", "permanent": true },
+    { "source": "/seminaire-entreprise-touraine-chateau-huberdiere", "destination": "/seminaire", "permanent": true },
+    { "source": "/location-chateau-reunion-famille-touraine", "destination": "/famille", "permanent": true },
+    { "source": "/lieu-retraite-stage-chateau-touraine", "destination": "/retraite", "permanent": true },
+    { "source": "/chateau-location-touraine", "destination": "/sejour", "permanent": true },
+    { "source": "/hebergement-chateau-touraine", "destination": "/sejour", "permanent": true },
+    { "source": "/restauration-chateau-huberdiere-touraine", "destination": "/restauration", "permanent": true },
+    { "source": "/activites-chateau-huberdiere-touraine", "destination": "/", "permanent": true },
+    { "source": "/members", "destination": "/", "permanent": true },
+    { "source": "/article/:slug*", "destination": "/blog", "permanent": true }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
+        { "key": "Permissions-Policy", "value": "geolocation=(), microphone=(), camera=()" }
+      ]
+    }
+  ]
+}

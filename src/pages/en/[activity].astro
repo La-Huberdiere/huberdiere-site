@@ -2,6 +2,7 @@
 import Base from "../../layouts/Base.astro";
 import MariagePage from "../../components/MariagePage.astro";
 import { activities } from "../../lib/activities";
+import { activitySchemas } from "../../lib/seo";
 
 export function getStaticPaths() {
   return Object.keys(activities).map((activity) => ({ params: { activity } }));
@@ -10,7 +11,8 @@ export function getStaticPaths() {
 const { activity } = Astro.params;
 const a = activities[activity as string];
 const m = a.data.en;
+const schemas = activitySchemas({ m, slug: activity as string, lang: "en" });
 ---
-<Base title={m.title} description={m.description} lang="en" path={`/${activity}`}>
-  <MariagePage m={m} cible={activity} heroImg={a.hero} thanksPath="/merci-mariage" />
+<Base title={m.title} description={m.description} lang="en" path={`/${activity}`} image={`/og/${activity}.jpg`} schemas={schemas}>
+  <MariagePage m={m} cible={activity} heroImg={a.hero} />
 </Base>

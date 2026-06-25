@@ -2,8 +2,10 @@
 import Base from "../../layouts/Base.astro";
 import MariagePage from "../../components/MariagePage.astro";
 import data from "../../data/mariage.json";
+import { activitySchemas } from "../../lib/seo";
 const m = data.en;
+const schemas = activitySchemas({ m, slug: "mariage", lang: "en" });
 ---
-<Base title={m.title} description={m.description} lang="en" path="/mariage">
-  <MariagePage m={m} thanksPath="/merci-mariage" />
+<Base title={m.title} description={m.description} lang="en" path="/mariage" image="/og/mariage.jpg" schemas={schemas}>
+  <MariagePage m={m} />
 </Base>

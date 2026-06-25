@@ -1,15 +1,15 @@
 {
   "fr": {
-    "title": "Séminaire d'entreprise en Touraine — Château de la Huberdière",
-    "description": "Organisez votre séminaire d'entreprise dans un château du Val de Loire : 10 suites privatisables jusqu'à 20 collaborateurs, parc de 14 hectares, à 2 h de Paris.",
+    "title": "Séminaire d'entreprise au château — Val de Loire | La Huberdière",
+    "description": "Organisez votre séminaire au château en Val de Loire : domaine privatisé jusqu'à 20 collaborateurs logés, 4 salons modulables, plénière jusqu'à 100 personnes, à 2 h de Paris.",
     "hero": {
-      "eyebrow": "Séminaire · Val de Loire",
+      "eyebrow": "Séminaire au château · Val de Loire",
       "titleLine1": "Votre séminaire au château",
       "titleLine2Italic": "de la Huberdière.",
-      "lead": "Conjuguez travail, cohésion et sérénité dans un cadre unique pour inspirer durablement vos équipes. À deux heures de Paris."
+      "lead": "Un château privatisé pour vos séminaires d'entreprise : travail, cohésion et sérénité dans un même lieu, à deux heures de Paris."
     },
     "intro": [
-      "Privatisez un domaine préservé pour vos comités de direction, masters classes et journées de cohésion. Dix suites raffinées avec salles de bain privatives accueillent jusqu'à 20 collaborateurs, et quatre salons modulables s'adaptent à vos formats de travail.",
+      "Réunissez vos équipes pour un séminaire au château : la Huberdière se privatise pour vos comités de direction, masters classes et journées de cohésion. Dix suites avec salles de bain privatives logent jusqu'à 20 collaborateurs, et quatre salons modulables s'adaptent à vos formats de travail.",
       "Quatorze hectares de parc boisé pour les activités de team-building en plein air, un couloir de nage chauffé d'avril à octobre, une cuisine italienne saine et gourmande : tout est pensé pour alterner sessions productives et vrais moments de respiration.",
       "Côté travail, quatre salons modulables et l'Orangerie permettent des plénières jusqu'à 100 personnes, équipés vidéoprojecteur et paperboard, tandis que le parc se prête aux sessions en plein air."
     ],
@@ -81,19 +81,45 @@
         "title": "Patrimoine & châteaux",
         "text": "Chenonceau, Amboise, Blois ou Chambord, à quelques minutes du domaine."
       }
+    ],
+    "faqHead": {
+      "eyebrow": "Questions fréquentes",
+      "title": "Votre séminaire au château, en pratique"
+    },
+    "faq": [
+      {
+        "q": "Combien de collaborateurs peut accueillir le château ?",
+        "a": "Jusqu'à 20 collaborateurs logés sur place en 10 suites, et des plénières jusqu'à 100 personnes à l'Orangerie."
+      },
+      {
+        "q": "Quels espaces de travail sont disponibles ?",
+        "a": "Quatre salons modulables et l'Orangerie, équipés vidéoprojecteur et paperboard, plus le parc pour les sessions en plein air."
+      },
+      {
+        "q": "Propose-t-on des activités de team building ?",
+        "a": "Oui, quatorze hectares de parc pour les activités en extérieur, couloir de nage et nombreuses animations sur place."
+      },
+      {
+        "q": "À quelle distance de Paris et de Tours ?",
+        "a": "Environ 2 heures de Paris et 30 minutes de Tours, en Touraine près d'Amboise."
+      },
+      {
+        "q": "Le séminaire est-il en privatisation exclusive ?",
+        "a": "Oui, le domaine est réservé à votre entreprise seule, sans autre groupe en parallèle."
+      }
     ]
   },
   "en": {
-    "title": "Corporate seminar in Touraine — Château de la Huberdière",
-    "description": "Organise your corporate seminar at a château in the Loire Valley: 10 suites that can be booked for private use, accommodating up to 20 staff members, set in 14-hectare grounds, just 2 hours from Paris.",
+    "title": "Corporate seminar at the château — Loire Valley | La Huberdière",
+    "description": "Organise your seminar at a château in the Loire Valley: exclusive use of the estate for up to 20 staff members with accommodation, 4 versatile function rooms, and a plenary session for up to 100 people, just 2 hours from Paris.",
     "hero": {
-      "eyebrow": "Seminar · Loire Valley",
+      "eyebrow": "Seminar at the château · Loire Valley",
       "titleLine1": "Your seminar at the château",
       "titleLine2Italic": "de la Huberdière.",
-      "lead": "Combine work, team spirit and peace of mind in a unique setting to provide lasting inspiration for your teams. Just two hours from Paris."
+      "lead": "A private château for your corporate seminars: work, team-building and tranquillity all in one place, just two hours from Paris."
     },
     "intro": [
-      "Exclusively book this unspoilt estate for your board meetings, masterclasses and team-building days. Ten elegant suites with en-suite bathrooms can accommodate up to 20 staff members, and four versatile function rooms can be adapted to suit your working requirements.",
+      "Bring your teams together for a seminar at the château: La Huberdière can be hired exclusively for your executive committee meetings, masterclasses and team-building days. Ten suites with en-suite bathrooms can accommodate up to 20 staff members, and four versatile function rooms can be adapted to suit your working requirements.",
       "Fourteen hectares of wooded grounds for outdoor team-building activities, a swimming pool heated from April to October, and wholesome, gourmet Italian cuisine: everything is designed to ensure a balance between productive sessions and genuine moments of relaxation.",
       "For business events, four versatile function rooms and the Orangery can accommodate plenary sessions for up to 100 people, equipped with a projector and flipchart, whilst the grounds are ideal for outdoor sessions."
     ],
@@ -165,20 +191,46 @@
         "title": "Heritage & castles",
         "text": "Chenonceau, Amboise, Blois or Chambord, just a few minutes’ drive from the estate."
       }
+    ],
+    "faqHead": {
+      "eyebrow": "Frequently Asked Questions",
+      "title": "Your seminar at the château: practical information"
+    },
+    "faq": [
+      {
+        "q": "How many staff can the château accommodate?",
+        "a": "Up to 20 staff members can be accommodated on site in 10 suites, and plenary sessions for up to 100 people can be held at the Orangerie."
+      },
+      {
+        "q": "What workspaces are available?",
+        "a": "Four versatile function rooms and the Orangery, equipped with a video projector and a flipchart, plus the grounds for outdoor sessions."
+      },
+      {
+        "q": "Are there any team-building activities on offer?",
+        "a": "Yes, fourteen hectares of parkland for outdoor activities, a swimming lane and a wide range of on-site entertainment."
+      },
+      {
+        "q": "How far is it from Paris and Tours?",
+        "a": "About 2 hours from Paris and 30 minutes from Tours, in Touraine near Amboise."
+      },
+      {
+        "q": "Is the seminar being privatised exclusively?",
+        "a": "Yes, the domain is reserved exclusively for your company; no other group will share it."
+      }
     ]
   },
   "it": {
-    "title": "Seminario aziendale in Touraine — Castello di La Huberdière",
-    "description": "Organizzate il vostro seminario aziendale in un castello della Valle della Loira: 10 suite privatizzabili per un massimo di 20 collaboratori, un parco di 14 ettari, a 2 ore da Parigi.",
+    "title": "Seminario aziendale al castello — Valle della Loira | La Huberdière",
+    "description": "Organizzate il vostro seminario in un castello nella Valle della Loira: tenuta riservata in esclusiva per un massimo di 20 collaboratori con pernottamento, 4 sale modulabili, sala plenaria con capienza fino a 100 persone, a 2 ore da Parigi.",
     "hero": {
-      "eyebrow": "Seminario · Valle della Loira",
+      "eyebrow": "Seminario al castello · Valle della Loira",
       "titleLine1": "Il vostro seminario al castello",
       "titleLine2Italic": "di Huberdière.",
-      "lead": "Coniugate lavoro, coesione e serenità in un ambiente unico per ispirare i vostri team in modo duraturo. A due ore da Parigi."
+      "lead": "Un castello a vostra disposizione per i vostri seminari aziendali: lavoro, coesione e serenità in un unico luogo, a due ore da Parigi."
     },
     "intro": [
-      "Riservate una tenuta incontaminata per le vostre riunioni del consiglio di amministrazione, i corsi di perfezionamento e le giornate di team building. Dieci raffinate suite con bagno privato possono ospitare fino a 20 collaboratori, mentre quattro sale modulabili si adattano alle vostre esigenze lavorative.",
-      "Quattordici ettari di parco alberato per attività di team building all’aria aperta, una piscina riscaldata da aprile a ottobre, una cucina italiana sana e gustosa: tutto è pensato per alternare sessioni produttive a veri momenti di relax.",
+      "Riunite i vostri team per un seminario al castello: La Huberdière è a vostra disposizione in esclusiva per i vostri comitati direttivi, master class e giornate di team building. Dieci suite con bagno privato possono ospitare fino a 20 collaboratori, mentre quattro saloni modulabili si adattano alle vostre esigenze lavorative.",
+      "Quattordici ettari di parco boscoso per attività di team building all’aria aperta, una piscina riscaldata da aprile a ottobre, una cucina italiana sana e gustosa: tutto è pensato per alternare sessioni produttive a veri momenti di relax.",
       "Per quanto riguarda gli spazi di lavoro, quattro sale modulabili e l’Orangerie consentono di ospitare riunioni plenarie fino a 100 persone, dotate di videoproiettore e lavagna a fogli mobili, mentre il parco si presta perfettamente alle sessioni all’aperto."
     ],
     "cards": [
@@ -195,7 +247,7 @@
       {
         "num": "III",
         "title": "Energia creativa",
-        "text": "Una cucina italiana semplice e raffinata, pensata per infondere energia sana e golosa per tutta la giornata."
+        "text": "Una cucina italiana semplice e raffinata, pensata per fornire energia sana e gustosa per tutta la giornata."
       }
     ],
     "final": {
@@ -239,7 +291,7 @@
       },
       {
         "title": "Coesione gastronomica",
-        "text": "Rafforzate i legami attraverso il piacere della buona tavola, con corsi di cucina italiana o laboratori tenuti da uno chef stellato."
+        "text": "Rafforzate i legami attraverso il gusto, con corsi di cucina italiana o laboratori tenuti da uno chef stellato."
       },
       {
         "title": "Volo in mongolfiera",
@@ -248,6 +300,32 @@
       {
         "title": "Patrimonio e castelli",
         "text": "Chenonceau, Amboise, Blois o Chambord, a pochi minuti dalla tenuta."
+      }
+    ],
+    "faqHead": {
+      "eyebrow": "Domande frequenti",
+      "title": "Il vostro seminario al castello: informazioni pratiche"
+    },
+    "faq": [
+      {
+        "q": "Quanti collaboratori può ospitare il castello?",
+        "a": "Fino a 20 collaboratori possono alloggiare in loco in 10 suite, mentre l'Orangerie può ospitare riunioni plenarie con un massimo di 100 persone."
+      },
+      {
+        "q": "Quali spazi di lavoro sono disponibili?",
+        "a": "Quattro sale modulabili e l’Orangerie, dotate di videoproiettore e lavagna a fogli mobili, oltre al parco per le sessioni all’aperto."
+      },
+      {
+        "q": "Si organizzano attività di team building?",
+        "a": "Sì, quattordici ettari di parco per le attività all’aperto, una corsia di nuoto e numerose attività di intrattenimento in loco."
+      },
+      {
+        "q": "A che distanza si trova da Parigi e da Tours?",
+        "a": "A circa 2 ore da Parigi e 30 minuti da Tours, in Touraine, vicino ad Amboise."
+      },
+      {
+        "q": "Il seminario è riservato esclusivamente a un gruppo privato?",
+        "a": "Sì, il dominio è riservato esclusivamente alla vostra azienda, senza altri gruppi in parallelo."
       }
     ]
   }

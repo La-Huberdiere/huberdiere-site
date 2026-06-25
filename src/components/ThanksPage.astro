@@ -1,0 +1,125 @@
+---
+// Page de remerciement = page de conversion. Elle lit les paramètres d'URL
+// (cible, em, ph hashés, gclid, lead_id) et pousse un event dataLayer `generate_lead`
+// propre, prêt à être consommé par GTM / Google Ads (Enhanced Conversions incluses).
+const { lang = "fr" } = Astro.props;
+const prefix = lang === "fr" ? "" : `/${lang}`;
+
+const T = {
+  fr: {
+    eyebrow: "Demande envoyée",
+    title: "Merci, votre demande<br /><span class='it'>est bien arrivée.</span>",
+    lead: "Nous revenons vers vous sous 24 heures avec une première réponse. À très bientôt au Château de la Huberdière.",
+    response: "Réponse sous 24 heures",
+    home: "Retour à l'accueil",
+    exploreTitle: "En attendant, explorez le domaine",
+    links: [
+      { label: "Le mariage au château", href: "/mariage" },
+      { label: "Les chambres d'hôtes", href: "/sejour" },
+      { label: "Le journal du château", href: "/blog" },
+    ],
+  },
+  en: {
+    eyebrow: "Request sent",
+    title: "Thank you, your request<br /><span class='it'>has been received.</span>",
+    lead: "We will get back to you within 24 hours with a first reply. See you soon at Château de la Huberdière.",
+    response: "Reply within 24 hours",
+    home: "Back to home",
+    exploreTitle: "In the meantime, explore the estate",
+    links: [
+      { label: "Weddings at the château", href: "/mariage" },
+      { label: "Bed & breakfast", href: "/sejour" },
+      { label: "The château journal", href: "/blog" },
+    ],
+  },
+  it: {
+    eyebrow: "Richiesta inviata",
+    title: "Grazie, la tua richiesta<br /><span class='it'>è ben arrivata.</span>",
+    lead: "Ti risponderemo entro 24 ore con una prima risposta. A presto al Château de la Huberdière.",
+    response: "Risposta entro 24 ore",
+    home: "Torna alla home",
+    exploreTitle: "Nel frattempo, scopri la tenuta",
+    links: [
+      { label: "Matrimoni al castello", href: "/mariage" },
+      { label: "Camere e soggiorno", href: "/sejour" },
+      { label: "Il giornale del castello", href: "/blog" },
+    ],
+  },
+}[lang as "fr" | "en" | "it"];
+---
+<section class="thanks">
+  <div class="thanks-inner">
+    <span class="section-eyebrow">{T.eyebrow}</span>
+    <h1 set:html={T.title} />
+    <p class="thanks-lead">{T.lead}</p>
+    <a class="btn-burgundy" href={`${prefix}/`}>{T.home}</a>
+    <div class="thanks-response">{T.response}</div>
+
+    <div class="thanks-explore">
+      <span class="explore-title">{T.exploreTitle}</span>
+      <nav class="explore-links">
+        {T.links.map((l) => <a href={`${prefix}${l.href}`}>{l.label}</a>)}
+      </nav>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  // Conversion : push dataLayer `generate_lead` (GA4/Google Ads via GTM).
+  (function () {
+    var p = new URLSearchParams(location.search);
+    var cible = p.get("cible") || "contact";
+    var leadId = p.get("lead_id") || (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()));
+    // Anti double comptage (refresh) : on ne pousse qu'une fois par lead.
+    try {
+      if (sessionStorage.getItem("lead_pushed_" + leadId)) return;
+      sessionStorage.setItem("lead_pushed_" + leadId, "1");
+    } catch (e) {}
+    // Valeur indicative par cible (€), pour le value-based bidding. À ajuster.
+    var VALUE = { mariage: 50, seminaire: 40, retraite: 30, famille: 20, sejour: 10, restauration: 5, contact: 5 };
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: "generate_lead",
+      lead_type: cible,
+      value: VALUE[cible] != null ? VALUE[cible] : 5,
+      currency: "EUR",
+      transaction_id: leadId,
+      gclid: p.get("gclid") || "",
+      // Données fournies par l'utilisateur, déjà hashées SHA-256 (Enhanced Conversions).
+      user_data: {
+        sha256_email_address: p.get("em") || "",
+        sha256_phone_number: p.get("ph") || "",
+      },
+    });
+  })();
+</script>
+
+<style>
+  .thanks { padding: 200px 24px 140px; text-align: center; min-height: 70vh; }
+  .thanks-inner { max-width: 640px; margin: 0 auto; }
+  .thanks h1 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    color: #212121;
+    line-height: 1.15;
+    margin: 14px 0 22px;
+  }
+  .thanks h1 :global(.it) { font-style: italic; color: #8b0000; }
+  .thanks-lead { color: #646464; line-height: 1.75; margin: 0 0 32px; font-family: "Montserrat", sans-serif; }
+  .thanks-response {
+    margin-top: 22px; color: #8b0000; font-family: "Montserrat", sans-serif;
+    font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .thanks-explore { margin-top: 64px; border-top: 1px solid #ece6d8; padding-top: 36px; }
+  .explore-title {
+    display: block; color: #646464; font-family: "Montserrat", sans-serif;
+    font-size: 0.82rem; letter-spacing: 0.04em; margin-bottom: 18px;
+  }
+  .explore-links { display: flex; flex-wrap: wrap; gap: 14px 28px; justify-content: center; }
+  .explore-links a {
+    color: #2e3a48; text-decoration: none; font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.05rem; border-bottom: 1px solid transparent;
+  }
+  .explore-links a:hover { border-bottom-color: #8b0000; color: #8b0000; }
+</style>

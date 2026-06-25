@@ -1,15 +1,15 @@
 {
   "fr": {
-    "title": "Réunion de famille au château en Touraine — Château de la Huberdière",
-    "description": "Réunissez les générations dans un château du Val de Loire : 21 couchages en 10 suites privatives, parc de 14 hectares, table d'hôtes maison. À 2 h de Paris.",
+    "title": "Louer un château pour un grand groupe — Val de Loire | La Huberdière",
+    "description": "Louez un château entier pour réunir famille ou amis : 21 couchages en 10 suites privatives, parc de 14 hectares et table d'hôtes maison. Grande capacité d'accueil, à 2 h de Paris.",
     "hero": {
-      "eyebrow": "Réunions de famille · Val de Loire",
-      "titleLine1": "Réunir les siens",
-      "titleLine2Italic": "au château.",
-      "lead": "Réunissez toutes les générations dans un cadre unique pour créer des souvenirs impérissables et partager des moments hors du temps."
+      "eyebrow": "Louer le château · Val de Loire",
+      "titleLine1": "Louer un château",
+      "titleLine2Italic": "pour réunir les siens.",
+      "lead": "Le château privatisé rien que pour votre groupe : 21 couchages, parc de quatorze hectares et grande table conviviale. De quoi réunir toute la famille au même endroit. À deux heures de Paris."
     },
     "intro": [
-      "Entre Amboise et Chenonceau, le château se privatise entièrement pour votre tribu. Vingt et un couchages dans dix suites de prestige, chacune avec sa salle de bain privative : la vie de château, sans compromis sur votre intimité.",
+      "Entre Amboise et Chenonceau, louez le château entier pour votre tribu : vingt et un couchages dans dix suites de prestige, chacune avec sa salle de bain privative. Une grande capacité d'accueil pour réunir toutes les générations au même endroit, sans compromis sur l'intimité.",
       "Quatorze hectares de bois, d'étangs et de prairies pour les promenades et le vélo dans les vignes, et une grande table d'hôtes maison où Lodovica apporte la chaleur de ses racines italiennes pour de généreux buffets conviviaux."
     ],
     "cards": [
@@ -80,20 +80,46 @@
         "title": "Vignobles & nature",
         "text": "Balades dans les vignes et les forêts, visites et dégustations dans les caves locales."
       }
+    ],
+    "faqHead": {
+      "eyebrow": "Questions fréquentes",
+      "title": "Réunir votre groupe au château"
+    },
+    "faq": [
+      {
+        "q": "Combien de personnes peut accueillir le château ?",
+        "a": "Le château privatisé loge 21 personnes en 10 suites privatives, chacune avec sa salle de bain. C'est un gîte de grande capacité idéal pour les groupes et les familles nombreuses."
+      },
+      {
+        "q": "Peut-on louer le château entier pour un week-end ?",
+        "a": "Oui, le domaine se privatise entièrement le temps d'un week-end ou d'un séjour, pour vous et vos invités seuls."
+      },
+      {
+        "q": "Le lieu convient-il à un anniversaire ou une cousinade ?",
+        "a": "Tout à fait : anniversaires, cousinades, retrouvailles entre amis. La grande table d'hôtes maison accueille les repas conviviaux."
+      },
+      {
+        "q": "Les enfants et les animaux sont-ils les bienvenus ?",
+        "a": "Le parc clos de quatorze hectares est parfait pour les enfants. Pour les animaux, contactez-nous, nous étudions chaque demande."
+      },
+      {
+        "q": "À quelle distance de Paris ?",
+        "a": "Environ 2 heures de Paris, en Touraine, près d'Amboise."
+      }
     ]
   },
   "en": {
-    "title": "Family reunion at the château in Touraine — Château de la Huberdière",
-    "description": "Bring the whole family together at a château in the Loire Valley: sleeps 21 in 10 private suites, set in 14-hectare grounds, with home-cooked meals. Just 2 hours from Paris.",
+    "title": "Rent a château for a large group — Loire Valley | La Huberdière",
+    "description": "Rent an entire château for a family or friends’ get-together: sleeps 21 in 10 private suites, set in 14-hectare grounds, with home-cooked meals served by the hosts. Plenty of space, just 2 hours from Paris.",
     "hero": {
-      "eyebrow": "Family gatherings · Loire Valley",
-      "titleLine1": "Bringing the family together",
-      "titleLine2Italic": "at the castle.",
-      "lead": "Bring together all generations in a unique setting to create lasting memories and share moments that transcend time."
+      "eyebrow": "Rent the château · Loire Valley",
+      "titleLine1": "Rent a castle",
+      "titleLine2Italic": "to bring his family together.",
+      "lead": "The château, exclusively for your group: sleeps 21, set in fourteen-hectare grounds, and featuring a large, convivial dining table. The perfect place to bring the whole family together. Just two hours from Paris."
     },
     "intro": [
-      "Located between Amboise and Chenonceau, the château is available for your group’s exclusive use. It sleeps 21 guests in ten luxury suites, each with its own en-suite bathroom: a taste of château life, without compromising on your privacy.",
-      "Fourteen hectares of woodland, ponds and meadows, perfect for walks and cycle rides through the vineyards, and a generous home-cooked table d’hôte where Lodovica brings the warmth of her Italian heritage to create generous, convivial buffets."
+      "Between Amboise and Chenonceau, hire the entire château for your family: twenty-one beds in ten luxury suites, each with its own en-suite bathroom. Plenty of space to bring all generations together in one place, without compromising on privacy.",
+      "Fourteen hectares of woodland, ponds and meadows, perfect for walks and cycle rides through the vineyards, and a generous home-cooked table d’hôte, where Lodovica brings the warmth of her Italian roots to create generous, convivial buffets."
     ],
     "cards": [
       {
@@ -163,26 +189,52 @@
         "title": "Vineyards & nature",
         "text": "Walks through the vineyards and forests, tours and tastings at local wineries."
       }
+    ],
+    "faqHead": {
+      "eyebrow": "Frequently Asked Questions",
+      "title": "Gather your group at the château"
+    },
+    "faq": [
+      {
+        "q": "How many people can the castle accommodate?",
+        "a": "The castle, when hired exclusively, accommodates 21 people in 10 private suites, each with its own bathroom. It is a large-capacity holiday cottage, ideal for groups and large families."
+      },
+      {
+        "q": "Is it possible to hire the whole castle for a weekend?",
+        "a": "Yes, the estate is available for exclusive use for a weekend or a longer stay, just for you and your guests."
+      },
+      {
+        "q": "Is this venue suitable for a birthday party or a family reunion?",
+        "a": "Exactly: birthdays, family reunions, get-togethers with friends. The large communal dining table is the perfect setting for convivial meals."
+      },
+      {
+        "q": "Are children and pets welcome?",
+        "a": "The 14-hectare enclosed park is perfect for children. If you’d like to bring pets, please contact us; we consider each request on a case-by-case basis."
+      },
+      {
+        "q": "How far is it from Paris?",
+        "a": "About two hours from Paris, in Touraine, near Amboise."
+      }
     ]
   },
   "it": {
-    "title": "Riunione di famiglia al castello in Touraine — Castello di La Huberdière",
-    "description": "Riunite tutte le generazioni in un castello della Valle della Loira: 21 posti letto distribuiti in 10 suite private, un parco di 14 ettari, cucina casalinga. A 2 ore da Parigi.",
+    "title": "Affittare un castello per un gruppo numeroso — Valle della Loira | La Huberdière",
+    "description": "Affittate un intero castello per riunire la famiglia o gli amici: 21 posti letto in 10 suite private, un parco di 14 ettari e cucina casalinga. Ampia capacità ricettiva, a 2 ore da Parigi.",
     "hero": {
-      "eyebrow": "Riunioni di famiglia · Valle della Loira",
-      "titleLine1": "Riunire la propria famiglia",
-      "titleLine2Italic": "al castello.",
-      "lead": "Riunite tutte le generazioni in un ambiente unico per creare ricordi indimenticabili e condividere momenti fuori dal tempo."
+      "eyebrow": "Affittare il castello · Valle della Loira",
+      "titleLine1": "Affittare un castello",
+      "titleLine2Italic": "per riunire i propri cari.",
+      "lead": "Il castello a disposizione esclusiva del vostro gruppo: 21 posti letto, un parco di quattordici ettari e un grande tavolo dove mangiare in compagnia. L’ideale per riunire tutta la famiglia in un unico posto. A due ore da Parigi."
     },
     "intro": [
-      "Tra Amboise e Chenonceau, il castello viene interamente riservato alla vostra comitiva. Ventuno posti letto in dieci suite di prestigio, ciascuna con bagno privato: la vita da castello, senza rinunciare alla vostra privacy.",
-      "Quattordici ettari di boschi, laghetti e prati per passeggiate e gite in bicicletta tra i vigneti, e un’ampia tavola degli ospiti dove Lodovica infonde il calore delle sue origini italiane in generosi buffet all’insegna della convivialità."
+      "Tra Amboise e Chenonceau, affittate l'intero castello per la vostra famiglia allargata: ventuno posti letto in dieci suite di prestigio, ciascuna con bagno privato. Una grande capienza per riunire tutte le generazioni sotto lo stesso tetto, senza rinunciare alla privacy.",
+      "Quattordici ettari di boschi, laghetti e prati per passeggiate e gite in bicicletta tra i vigneti, e un’ampia tavola degli ospiti dove Lodovica infonde il calore delle sue radici italiane in generosi buffet all’insegna della convivialità."
     ],
     "cards": [
       {
         "num": "I",
         "title": "Libertà e natura",
-        "text": "14 ettari di boschi, laghetti e prati. Escursioni a piedi e in bicicletta tra i vigneti, in un silenzio assoluto cullati dal canto degli uccelli."
+        "text": "14 ettari di boschi, laghetti e prati. Escursioni a piedi e in bicicletta tra i vigneti, in una quiete assoluta cullati dal canto degli uccelli."
       },
       {
         "num": "II",
@@ -245,6 +297,32 @@
       {
         "title": "Vigneti e natura",
         "text": "Passeggiate tra i vigneti e nei boschi, visite e degustazioni nelle cantine locali."
+      }
+    ],
+    "faqHead": {
+      "eyebrow": "Domande frequenti",
+      "title": "Organizzate un incontro con il vostro gruppo al castello"
+    },
+    "faq": [
+      {
+        "q": "Quante persone può ospitare il castello?",
+        "a": "Il castello, affittabile in esclusiva, può ospitare 21 persone in 10 suite private, ciascuna con bagno privato. Si tratta di una struttura ricettiva di grande capienza, ideale per gruppi e famiglie numerose."
+      },
+      {
+        "q": "È possibile affittare l'intero castello per un fine settimana?",
+        "a": "Sì, la tenuta viene interamente riservata per un fine settimana o un soggiorno, solo per voi e i vostri ospiti."
+      },
+      {
+        "q": "Il locale è adatto per festeggiare un compleanno o una riunione di famiglia?",
+        "a": "Esatto: compleanni, riunioni di famiglia, ritrovi tra amici. Il grande tavolo comune della casa è il luogo ideale per pasti in compagnia."
+      },
+      {
+        "q": "I bambini e gli animali sono i benvenuti?",
+        "a": "Il parco recintato di quattordici ettari è perfetto per i bambini. Per quanto riguarda gli animali, contattateci: valuteremo ogni richiesta."
+      },
+      {
+        "q": "A che distanza si trova da Parigi?",
+        "a": "A circa 2 ore da Parigi, in Touraine, vicino ad Amboise."
       }
     ]
   }

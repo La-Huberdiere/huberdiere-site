@@ -2,6 +2,7 @@ import { defineConfig } from "astro/config";
 import vercel from "@astrojs/vercel";
 import react from "@astrojs/react";
 import keystatic from "@keystatic/astro";
+import sitemap from "@astrojs/sitemap";
 
 // V0 du Château de la Huberdière — site statique Astro + 1 fonction serverless
 // (src/pages/api/lead.js) pour la réception des formulaires et la connexion Brevo.
@@ -11,7 +12,19 @@ export default defineConfig({
   site: "https://www.chateaudelahuberdiere.com",
   output: "static",
   adapter: vercel(),
-  integrations: [react(), keystatic()],
+  integrations: [
+    react(),
+    keystatic(),
+    sitemap({
+      i18n: {
+        defaultLocale: "fr",
+        locales: { fr: "fr-FR", en: "en-GB", it: "it-IT" },
+      },
+      // Exclut les pages sans valeur d'indexation (remerciement, éditeur).
+      filter: (page) =>
+        !/\/merci|\/keystatic/.test(page),
+    }),
+  ],
   // Multilingue calé sur le site Wix actuel : FR par défaut (sans préfixe),
   // EN sur /en, IT sur /it.
   i18n: {

@@ -1,31 +1,58 @@
 ---
 import "../styles/global.css";
+// Polices auto-hébergées (supprime la requête Google Fonts bloquante + risque RGPD du CDN).
+import "@fontsource/playfair-display/400.css";
+import "@fontsource/playfair-display/500.css";
+import "@fontsource/playfair-display/600.css";
+import "@fontsource/playfair-display/700.css";
+import "@fontsource/playfair-display/400-italic.css";
+import "@fontsource/playfair-display/500-italic.css";
+import "@fontsource/montserrat/200.css";
+import "@fontsource/montserrat/300.css";
+import "@fontsource/montserrat/400.css";
+import "@fontsource/montserrat/500.css";
+import "@fontsource/montserrat/600.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import CookieBanner from "../components/CookieBanner.astro";
 import settingsData from "../data/settings.json";
+import { SITE, organizationSchema, webSiteSchema } from "../lib/seo";
 
 interface Props {
   title?: string;
   description?: string;
   lang?: "fr" | "en" | "it";
   path?: string; // chemin sans préfixe de langue, ex. "/" ou "/mariage"
+  image?: string; // image OG (chemin public ou URL absolue)
+  noindex?: boolean; // pages à exclure de l'index (merci, etc.)
+  ogType?: "website" | "article";
+  schemas?: object[]; // données structurées spécifiques à la page
 }
-const { title, description, lang = "fr", path = "/" } = Astro.props;
+const {
+  title,
+  description,
+  lang = "fr",
+  path = "/",
+  image,
+  noindex = false,
+  ogType = "website",
+  schemas = [],
+} = Astro.props;
 
 const s = settingsData[lang];
 
 const defaults = {
   fr: {
-    title: "Château de la Huberdière — Touraine, Châteaux de la Loire",
-    description: "Une demeure du XVIᵉ siècle au cœur des Châteaux de la Loire. Mariages, chambres d'hôtes, séminaires et événements privés, à deux heures de Paris.",
+    title: "Château de la Huberdière — Mariage, chambres d'hôtes & séminaire en Val de Loire",
+    description: "Demeure du XVIᵉ siècle au cœur des Châteaux de la Loire, près d'Amboise. Mariages, chambres d'hôtes, séminaires, retraites et réunions de famille, à 2 h de Paris.",
   },
   en: {
-    title: "Château de la Huberdière — Loire Valley, France",
-    description: "A 16th-century estate in the heart of the Loire Valley castles. Weddings, bed & breakfast, corporate retreats and private events, two hours from Paris.",
+    title: "Château de la Huberdière — Weddings, B&B & seminars in the Loire Valley",
+    description: "A 16th-century château in the heart of the Loire Valley, near Amboise. Weddings, bed & breakfast, seminars, retreats and family gatherings, two hours from Paris.",
   },
   it: {
-    title: "Château de la Huberdière — Valle della Loira, Francia",
-    description: "Una dimora del XVI secolo nel cuore dei castelli della Loira. Matrimoni, camere, seminari ed eventi privati, a due ore da Parigi.",
+    title: "Château de la Huberdière — Matrimoni, camere e seminari nella Valle della Loira",
+    description: "Dimora del XVI secolo nel cuore della Valle della Loira, vicino ad Amboise. Matrimoni, camere, seminari, ritiri e riunioni di famiglia, a due ore da Parigi.",
   },
 };
 const metaTitle = title ?? defaults[lang].title;
@@ -41,53 +68,118 @@ const langs = [
 const hreflangMap: Record<string, string> = { fr: "fr-fr", en: "en-gb", it: "it-it" };
 
 const htmlLang = lang === "en" ? "en-GB" : lang === "it" ? "it-IT" : "fr-FR";
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "LodgingBusiness",
-  name: "Château de la Huberdière",
-  description: metaDescription,
-  url: "https://www.chateaudelahuberdiere.com",
-  telephone: "+33247575292",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "Vallée de Vaugadeland",
-    addressLocality: "Nazelles-Négron",
-    postalCode: "37530",
-    addressRegion: "Indre-et-Loire",
-    addressCountry: "FR",
-  },
-  geo: { "@type": "GeoCoordinates", latitude: 47.44645, longitude: 0.93489 },
-  aggregateRating: { "@type": "AggregateRating", ratingValue: "9.5", bestRating: "10", reviewCount: "42" },
-  priceRange: "€€€",
-};
+const ogLocale = lang === "en" ? "en_GB" : lang === "it" ? "it_IT" : "fr_FR";
+
+// URL canonique de la page courante (auto-référente, sensible à la langue).
+const canonical = new URL(localePath(lang), Astro.site).href;
+const ogImage = new URL(image ?? SITE.ogImage, Astro.site).href;
+
+// Données structurées : Organisation + WebSite partout, + schemas de la page.
+const allSchemas = [organizationSchema(), webSiteSchema(), ...schemas];
+const robots = noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large";
+
+// Mesure d'audience (activée par variables d'env, sinon rien ne se charge).
+// GTM/GA4 et Google Ads passent sous Consent Mode v2 (refusé par défaut, RGPD).
+// Umami est cookieless/RGPD : il peut se charger sans consentement.
+const GTM_ID = import.meta.env.PUBLIC_GTM_ID;
+const UMAMI_SRC = import.meta.env.PUBLIC_UMAMI_SRC;
+const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
 ---
 <!doctype html>
 <html lang={htmlLang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    {/* Consent Mode v2 : tout refusé par défaut, réapplique un choix déjà donné. */}
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("consent", "default", {
+        ad_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+        analytics_storage: "denied",
+        wait_for_update: 500,
+      });
+      try {
+        if (localStorage.getItem("huber-consent") === "granted") {
+          gtag("consent", "update", {
+            ad_storage: "granted",
+            ad_user_data: "granted",
+            ad_personalization: "granted",
+            analytics_storage: "granted",
+          });
+        }
+      } catch (e) {}
+    </script>
+
+    {/* Google Tag Manager (chargé seulement si PUBLIC_GTM_ID est défini) */}
+    {GTM_ID && (
+      <script is:inline set:html={`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`} />
+    )}
+
+    {/* Umami (cookieless, RGPD) : audience anonyme, sans consentement requis */}
+    {UMAMI_SRC && UMAMI_ID && (
+      <script is:inline async src={UMAMI_SRC} data-website-id={UMAMI_ID}></script>
+    )}
+
     <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#8B0000" />
     <title>{metaTitle}</title>
     <meta name="description" content={metaDescription} />
+    <meta name="robots" content={robots} />
+    <link rel="canonical" href={canonical} />
+
+    {/* Open Graph */}
+    <meta property="og:site_name" content={SITE.name} />
     <meta property="og:title" content={metaTitle} />
     <meta property="og:description" content={metaDescription} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    {/* Twitter Card */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={metaTitle} />
+    <meta name="twitter:description" content={metaDescription} />
+    <meta name="twitter:image" content={ogImage} />
+
+    {/* hreflang */}
     {langs.map((l) => (
       <link rel="alternate" hreflang={hreflangMap[l.code]} href={new URL(l.href, Astro.site).href} />
     ))}
     <link rel="alternate" hreflang="x-default" href={new URL(localePath("fr"), Astro.site).href} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@200;300;400;500;600&display=swap"
-      rel="stylesheet"
-    />
-    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+    {allSchemas.map((sc) => (
+      <script type="application/ld+json" set:html={JSON.stringify(sc)} />
+    ))}
   </head>
   <body>
+    {GTM_ID && (
+      <noscript set:html={`<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`} />
+    )}
     <Header settings={s} lang={lang} langs={langs} />
     <slot />
     <Footer settings={s} lang={lang} />
+    <CookieBanner lang={lang} />
+
+    <script is:inline>
+      // Tracking Google Ads : capture les identifiants de clic (gclid/gbraid/wbraid)
+      // à l'arrivée et les stocke 90 jours en cookie first-party, pour les rattacher
+      // au lead lors de la soumission du formulaire (base de l'import de conversions).
+      (function () {
+        var p = new URLSearchParams(location.search);
+        ["gclid", "gbraid", "wbraid"].forEach(function (k) {
+          var v = p.get(k);
+          if (v) document.cookie = k + "=" + encodeURIComponent(v) + ";path=/;max-age=7776000;samesite=lax";
+        });
+      })();
+    </script>
     <script>
       const header = document.getElementById("siteHeader");
       const hasHero = !!document.querySelector(".hero, .page-hero");

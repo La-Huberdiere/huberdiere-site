@@ -1,15 +1,15 @@
 {
   "fr": {
-    "title": "Retraites, stages et ateliers au château en Touraine — Château de la Huberdière",
-    "description": "Organisez votre retraite ou votre stage dans un château privatisé du Val de Loire : 20 participants, 15 hectares, 4 salons modulables. À 5 km d'Amboise, 2 h de Paris.",
+    "title": "Lieu pour retraite yoga et stage bien-être — Château, Val de Loire",
+    "description": "Un château privatisé pour vos retraites yoga, stages de bien-être, ateliers d'écriture ou de méditation : 20 participants logés, 15 hectares, 4 salons modulables. À 2 h de Paris.",
     "hero": {
-      "eyebrow": "Retraites & ateliers · Val de Loire",
-      "titleLine1": "Votre retraite au château",
-      "titleLine2Italic": "de la Huberdière.",
-      "lead": "Un écrin de sérénité entièrement privatisé pour offrir à vos participants une expérience immersive, entre nature, confort et inspiration."
+      "eyebrow": "Retraites yoga & stages bien-être",
+      "titleLine1": "Votre retraite yoga",
+      "titleLine2Italic": "au château.",
+      "lead": "Un château entièrement privatisé pour vos retraites yoga et stages de bien-être : nature, confort et salons modulables pour une expérience immersive jusqu'à 20 participants."
     },
     "intro": [
-      "Stages de yoga, retraites créatives, ateliers d'écriture ou de méditation : à cinq kilomètres d'Amboise, le domaine se privatise pour vos groupes jusqu'à 20 participants. Dix suites luxueuses, chacune avec salle de bain privative, un vrai atout pour les retraites haut de gamme.",
+      "Retraite de yoga, stage de bien-être, atelier d'écriture ou de méditation : à cinq kilomètres d'Amboise, le château se privatise pour vos groupes jusqu'à 20 participants. Dix suites avec salle de bain privative, un vrai atout pour une retraite haut de gamme.",
       "Quinze hectares d'écrins naturels pour les pratiques en plein air, quatre salons modulables pour vos sessions, et une logistique invisible : vous vous concentrez sur votre transmission, nous gérons le reste."
     ],
     "cards": [
@@ -72,19 +72,45 @@
         "title": "Accessibilité & logistique",
         "text": "À une heure de Paris (TGV Saint-Pierre-des-Corps) puis trente minutes de voiture, ou via l'A10. Une arrivée fluide pour vos participants."
       }
+    ],
+    "faqHead": {
+      "eyebrow": "Questions fréquentes",
+      "title": "Organiser votre retraite ou votre stage"
+    },
+    "faq": [
+      {
+        "q": "Quels types de retraites accueillez-vous ?",
+        "a": "Retraites de yoga, stages de méditation et de bien-être, résidences et ateliers d'écriture, séminaires de développement personnel. Le lieu s'adapte à la plupart des pratiques."
+      },
+      {
+        "q": "Combien de participants peut accueillir le château ?",
+        "a": "Jusqu'à 20 participants logés en 10 suites privatives, château privatisé rien que pour votre groupe."
+      },
+      {
+        "q": "Y a-t-il des espaces pour pratiquer ?",
+        "a": "Quatre salons modulables en intérieur et quinze hectares de parc pour les pratiques en plein air."
+      },
+      {
+        "q": "La restauration peut-elle s'adapter (végétarien, etc.) ?",
+        "a": "Oui, la cuisine maison s'adapte aux régimes : végétarien, sans gluten et autres demandes sur simple échange."
+      },
+      {
+        "q": "À quelle distance d'Amboise et de Paris ?",
+        "a": "À cinq kilomètres d'Amboise et environ 2 heures de Paris."
+      }
     ]
   },
   "en": {
-    "title": "Retreats, courses and workshops at the château in Touraine — Château de la Huberdière",
-    "description": "Organise your retreat or training course in an exclusively hired château in the Loire Valley: 20 participants, 15 hectares, 4 versatile function rooms. 5 km from Amboise, 2 hours from Paris.",
+    "title": "A venue for yoga retreats and wellness courses — Castle, Loire Valley",
+    "description": "A private château for your yoga retreats, wellness courses, writing or meditation workshops: accommodation for 20 participants, 15 hectares, 4 versatile function rooms. 2 hours from Paris.",
     "hero": {
-      "eyebrow": "Retreats & workshops · Loire Valley",
-      "titleLine1": "Your retreat at the château",
-      "titleLine2Italic": "de la Huberdière.",
-      "lead": "A haven of tranquillity, entirely private, offering your participants an immersive experience that combines nature, comfort and inspiration."
+      "eyebrow": "Yoga retreats & wellness courses",
+      "titleLine1": "Your yoga retreat",
+      "titleLine2Italic": "at the castle.",
+      "lead": "An entire castle, exclusively yours for your yoga retreats and wellness courses: surrounded by nature, offering comfort and versatile function rooms for an immersive experience for up to 20 participants."
     },
     "intro": [
-      "Yoga courses, creative retreats, writing or meditation workshops: just five kilometres from Amboise, the estate can be hired exclusively for your groups of up to 20 participants. Ten luxurious suites, each with an en-suite bathroom, make this an ideal choice for high-end retreats.",
+      "Yoga retreats, wellness courses, writing or meditation workshops: just five kilometres from Amboise, the château can be hired exclusively for your groups of up to 20 people. Ten suites with en-suite bathrooms – a real bonus for a luxury retreat.",
       "Fifteen hectares of natural settings for outdoor activities, four versatile function rooms for your sessions, and seamless logistics: you focus on sharing your expertise, and we’ll take care of the rest."
     ],
     "cards": [
@@ -105,10 +131,10 @@
       }
     ],
     "final": {
-      "eyebrow": "Your retreat",
+      "eyebrow": "Your pension",
       "titleLine1": "Let’s imagine your",
-      "titleLine2Italic": "retreat at the château.",
-      "text": "Please let us know your dates, your discipline and the number of participants. We will send you a bespoke proposal.",
+      "titleLine2Italic": "work placement at the château.",
+      "text": "Please let us know your dates, the sport and the number of participants. We’ll send you a bespoke proposal.",
       "submitLabel": "Receive a proposal",
       "responseLine": "We’ll get back to you within 24 hours"
     },
@@ -147,19 +173,45 @@
         "title": "Accessibility & logistics",
         "text": "An hour from Paris (TGV to Saint-Pierre-des-Corps) followed by a thirty-minute drive, or via the A10. A hassle-free journey for your participants."
       }
+    ],
+    "faqHead": {
+      "eyebrow": "Frequently Asked Questions",
+      "title": "Organise your retreat or course"
+    },
+    "faq": [
+      {
+        "q": "What sort of retreats do you host?",
+        "a": "Yoga retreats, meditation and wellbeing courses, writing residencies and workshops, and personal development seminars. The venue is suitable for most activities."
+      },
+      {
+        "q": "How many guests can the château accommodate?",
+        "a": "Up to 20 guests accommodated in 10 private suites; the château is reserved exclusively for your group."
+      },
+      {
+        "q": "Are there any places to practise?",
+        "a": "Four versatile indoor function rooms and fifteen hectares of grounds for outdoor activities."
+      },
+      {
+        "q": "Can the catering be adapted (vegetarian, etc.)?",
+        "a": "Yes, our home-cooked meals can be adapted to suit different dietary requirements: vegetarian, gluten-free and other requests can be accommodated on request."
+      },
+      {
+        "q": "How far is it from Amboise and Paris?",
+        "a": "Five kilometres from Amboise and about two hours from Paris."
+      }
     ]
   },
   "it": {
-    "title": "Corsi di formazione, stage e laboratori al castello in Touraine — Castello di La Huberdière",
-    "description": "Organizzate il vostro ritiro o il vostro corso in un castello in esclusiva nella Valle della Loira: 20 partecipanti, 15 ettari, 4 sale modulabili. A 5 km da Amboise, a 2 ore da Parigi.",
+    "title": "Luogo per ritiri di yoga e corsi di benessere — Castello, Valle della Loira",
+    "description": "Un castello a vostra disposizione per ritiri di yoga, corsi di benessere, laboratori di scrittura o di meditazione: 20 posti letto, 15 ettari, 4 sale modulabili. A 2 ore da Parigi.",
     "hero": {
-      "eyebrow": "Corsi e laboratori · Valle della Loira",
-      "titleLine1": "Il vostro ritiro al castello",
-      "titleLine2Italic": "di Huberdière.",
-      "lead": "Un oasi di serenità interamente riservata per offrire ai vostri partecipanti un'esperienza coinvolgente, tra natura, comfort e ispirazione."
+      "eyebrow": "Ritiri di yoga e corsi di benessere",
+      "titleLine1": "Il vostro ritiro di yoga",
+      "titleLine2Italic": "al castello.",
+      "lead": "Un castello interamente a vostra disposizione per i vostri ritiri di yoga e corsi di benessere: natura, comfort e sale modulabili per un’esperienza coinvolgente fino a 20 partecipanti."
     },
     "intro": [
-      "Corsi di yoga, ritiri creativi, laboratori di scrittura o di meditazione: a cinque chilometri da Amboise, la tenuta è disponibile in esclusiva per i vostri gruppi fino a 20 partecipanti. Dieci lussuose suite, ciascuna con bagno privato, un vero punto di forza per i ritiri di alto livello.",
+      "Ritiro di yoga, corso di benessere, laboratorio di scrittura o di meditazione: a cinque chilometri da Amboise, il castello è disponibile in esclusiva per i vostri gruppi fino a 20 partecipanti. Dieci suite con bagno privato: un vero punto di forza per un ritiro di alto livello.",
       "Quindici ettari di scenari naturali per le attività all'aria aperta, quattro sale modulabili per le vostre sessioni e una logistica discreta: voi vi concentrate sulla vostra formazione, al resto pensiamo noi."
     ],
     "cards": [
@@ -180,10 +232,10 @@
       }
     ],
     "final": {
-      "eyebrow": "Il vostro ritiro",
+      "eyebrow": "La vostra pensione",
       "titleLine1": "Immaginiamo il vostro",
-      "titleLine2Italic": "ritiro al castello.",
-      "text": "Comunicateci le date, la vostra disciplina e il numero di partecipanti. Vi invieremo una proposta su misura.",
+      "titleLine2Italic": "tirocinio al castello.",
+      "text": "Comunicateci le date, la disciplina e il numero di partecipanti. Vi invieremo un'offerta su misura.",
       "submitLabel": "Ricevere un'offerta",
       "responseLine": "Risposta entro 24 ore"
     },
@@ -221,6 +273,32 @@
       {
         "title": "Accessibilità e logistica",
         "text": "A un'ora da Parigi (TGV Saint-Pierre-des-Corps) e poi trenta minuti in auto, oppure tramite l'A10. Un arrivo senza intoppi per i vostri partecipanti."
+      }
+    ],
+    "faqHead": {
+      "eyebrow": "Domande frequenti",
+      "title": "Organizza il tuo ritiro o il tuo corso"
+    },
+    "faq": [
+      {
+        "q": "Quali tipi di pensionati ospitate?",
+        "a": "Ritiri di yoga, corsi di meditazione e benessere, soggiorni e laboratori di scrittura, seminari di crescita personale. La struttura si adatta alla maggior parte delle attività."
+      },
+      {
+        "q": "Quanti partecipanti può ospitare il castello?",
+        "a": "Fino a 20 partecipanti ospitati in 10 suite private, con il castello riservato esclusivamente al vostro gruppo."
+      },
+      {
+        "q": "Ci sono spazi dove praticare?",
+        "a": "Quattro sale modulabili al coperto e quindici ettari di parco per le attività all’aperto."
+      },
+      {
+        "q": "È possibile adattare il menu (vegetariano, ecc.)?",
+        "a": "Sì, la cucina casalinga si adatta alle diverse esigenze alimentari: vegetariana, senza glutine e altre richieste, basta comunicarlo."
+      },
+      {
+        "q": "A che distanza si trova da Amboise e da Parigi?",
+        "a": "A cinque chilometri da Amboise e a circa 2 ore da Parigi."
       }
     ]
   }

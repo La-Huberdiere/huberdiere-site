@@ -1,0 +1,74 @@
+---
+import Base from "../layouts/Base.astro";
+---
+<Base title="Page introuvable — Château de la Huberdière" lang="fr" path="/404" noindex={true}>
+  <main class="notfound">
+    <p class="nf-eyebrow">Erreur 404</p>
+    <h1>Cette page s'est égarée dans le parc</h1>
+    <p class="nf-text">
+      La page que vous cherchez n'existe pas ou a été déplacée. Revenez à l'accueil
+      ou laissez-vous guider vers nos pages principales.
+    </p>
+    <a class="nf-cta" href="/">Retour à l'accueil</a>
+    <nav class="nf-links" aria-label="Pages principales">
+      <a href="/mariage">Mariage</a>
+      <a href="/sejour">Chambres d'hôtes</a>
+      <a href="/seminaire">Séminaire</a>
+      <a href="/famille">Réunions de famille</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </main>
+</Base>
+
+<style>
+  .notfound {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 160px 24px 120px;
+    text-align: center;
+  }
+  .nf-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.78rem;
+    color: var(--bordeaux, #8b0000);
+    margin: 0 0 12px;
+  }
+  .notfound h1 {
+    font-family: "Playfair Display", serif;
+    font-weight: 500;
+    font-size: clamp(1.9rem, 4vw, 2.8rem);
+    color: var(--ink, #212121);
+    margin: 0 0 18px;
+  }
+  .nf-text {
+    color: var(--gris, #646464);
+    line-height: 1.7;
+    margin: 0 0 32px;
+  }
+  .nf-cta {
+    display: inline-block;
+    background: var(--bordeaux, #8b0000);
+    color: #fff;
+    padding: 14px 30px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-family: "Montserrat", sans-serif;
+    letter-spacing: 0.04em;
+  }
+  .nf-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 40px;
+  }
+  .nf-links a {
+    color: var(--slate, #2e3a48);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .nf-links a:hover {
+    border-bottom-color: var(--bordeaux, #8b0000);
+  }
+</style>

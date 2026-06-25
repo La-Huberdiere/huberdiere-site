@@ -2,7 +2,20 @@
 import Base from "../layouts/Base.astro";
 import Home from "../components/Home.astro";
 import data from "../data/homepage.json";
+import { lodgingBusinessSchema } from "../lib/seo";
+
+const lodging = lodgingBusinessSchema({
+  images: ["/og/og-default.jpg"],
+  amenities: [
+    "Parc privé clos",
+    "Chambres d'hôtes",
+    "Salle de réception",
+    "Wifi gratuit",
+    "Parking",
+    "Petit-déjeuner",
+  ],
+});
 ---
-<Base lang="fr" path="/">
+<Base lang="fr" path="/" schemas={[lodging]}>
   <Home c={data.fr} lang="fr" />
 </Base>

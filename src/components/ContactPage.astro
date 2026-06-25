@@ -3,8 +3,10 @@ import { Image } from "astro:assets";
 import pHero from "../assets/BD_5.jpg";
 
 // Textes (c) et coordonnées (settings.footer) en props selon la langue.
-const { c, settings, cible = "contact", thanksPath = "/merci-mariage" } = Astro.props;
+const { c, settings, cible = "contact" } = Astro.props;
 const f = settings.footer;
+const lang = (Astro.currentLocale as "fr" | "en" | "it") ?? "fr";
+const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
 ---
 <section class="page-hero">
   <Image src={pHero} alt={c.hero.titleLine1} widths={[768, 1280, 1920]} sizes="100vw" loading="eager" fetchpriority="high" />
@@ -72,6 +74,18 @@ const f = settings.footer;
       btn.disabled = true;
       status.textContent = "Envoi en cours…";
       const data = Object.fromEntries(new FormData(form).entries());
+      data.lang = (document.documentElement.lang || "fr").slice(0, 2);
+      const qp = new URLSearchParams(location.search);
+      data.utm_medium = qp.get("utm_medium") || "";
+      data.utm_term = qp.get("utm_term") || "";
+      data.utm_content = qp.get("utm_content") || "";
+      data.page = location.pathname + location.search;
+      data.referrer = document.referrer || "";
+      const cookie = (n) => (document.cookie.match(new RegExp("(?:^|; )" + n + "=([^;]*)")) || [])[1] || "";
+      data.gclid = decodeURIComponent(cookie("gclid"));
+      data.gbraid = decodeURIComponent(cookie("gbraid"));
+      data.wbraid = decodeURIComponent(cookie("wbraid"));
+      data.lead_id = crypto.randomUUID ? crypto.randomUUID() : String(Date.now());
       try {
         const res = await fetch("/api/lead", {
           method: "POST",
@@ -81,7 +95,9 @@ const f = settings.footer;
         if (!res.ok) throw new Error("http " + res.status);
         const em = await sha256(data.email);
         const ph = await sha256((data.telephone || "").replace(/[^0-9+]/g, ""));
-        location.href = `${thanksPath}?em=${em}&ph=${ph}`;
+        const params = new URLSearchParams({ cible: data.cible || "", em, ph, lead_id: data.lead_id });
+        if (data.gclid) params.set("gclid", data.gclid);
+        location.href = `${thanksPath}?${params.toString()}`;
       } catch (err) {
         btn.disabled = false;
         status.textContent = "Une erreur est survenue. Réessayez ou écrivez-nous à contact@chateaudelahuberdiere.com";

@@ -68,6 +68,28 @@
         "title": "Pour vos événements",
         "text": "Buffets, dîners servis ou table d'hôtes, adaptés à vos mariages, séminaires et réunions."
       }
+    ],
+    "faqHead": {
+      "eyebrow": "Questions fréquentes",
+      "title": "Notre table, en pratique"
+    },
+    "faq": [
+      {
+        "q": "La table est-elle ouverte au public ?",
+        "a": "La restauration est proposée dans le cadre des séjours et des événements privés organisés au château : mariages, séminaires, retraites et réunions de famille."
+      },
+      {
+        "q": "La cuisine est-elle faite maison ?",
+        "a": "Oui, tous les repas sont préparés sur place avec des produits frais, le potager du château et des producteurs locaux de Touraine."
+      },
+      {
+        "q": "Peut-on adapter les menus aux régimes alimentaires ?",
+        "a": "Oui, les menus s'adaptent : végétarien, sans gluten et autres demandes."
+      },
+      {
+        "q": "Quelles cuisines proposez-vous ?",
+        "a": "Des saveurs italiennes et tourangelles, avec un dîner italien convivial le jeudi soir."
+      }
     ]
   },
   "en": {
@@ -137,12 +159,34 @@
       },
       {
         "title": "For your events",
-        "text": "Buffets, sit-down dinners or set menus, tailored to your weddings, seminars and meetings."
+        "text": "Buffets, set dinners or table d’hôtes, tailored to your weddings, seminars and meetings."
+      }
+    ],
+    "faqHead": {
+      "eyebrow": "Frequently Asked Questions",
+      "title": "Our table, in practice"
+    },
+    "faq": [
+      {
+        "q": "Is the restaurant open to the public?",
+        "a": "Catering is available as part of stays and private events organised at the château: weddings, seminars, retreats and family gatherings."
+      },
+      {
+        "q": "Is the food home-cooked?",
+        "a": "Yes, all meals are prepared on site using fresh produce from the château’s vegetable garden and local producers in Touraine."
+      },
+      {
+        "q": "Can the menus be adapted to suit different dietary requirements?",
+        "a": "Yes, the menus can be adapted to suit vegetarian, gluten-free and other dietary requirements."
+      },
+      {
+        "q": "What types of cuisine do you offer?",
+        "a": "Flavours from Italy and Tours, with a convivial Italian dinner on Thursday evenings."
       }
     ]
   },
   "it": {
-    "title": "Ristorazione e cena presso il castello in Touraine — Château de la Huberdière",
+    "title": "Ristorazione e cena presso il castello in Touraine — Castello di La Huberdière",
     "description": "Una cucina casalinga dai sapori italiani e di Tours, preparata con i prodotti dell’orto e dei produttori locali. Colazione, cene sotto le stelle, piatti da condividere.",
     "hero": {
       "eyebrow": "Ristorazione · Cena in famiglia",
@@ -158,7 +202,7 @@
       {
         "num": "I",
         "title": "Colazione inclusa",
-        "text": "Bevande calde, frutta fresca, dolci da fornaio e specialità della casa, serviti dalle 8:30 alle 10:30. Incluso nel prezzo della camera."
+        "text": "Bevande calde, frutta fresca, dolci e specialità della casa, serviti dalle 8:30 alle 10:30. Incluso nel prezzo della camera."
       },
       {
         "num": "II",
@@ -209,6 +253,28 @@
       {
         "title": "Per i vostri eventi",
         "text": "Buffet, cene servite o menu fisso, adatti a matrimoni, seminari e riunioni."
+      }
+    ],
+    "faqHead": {
+      "eyebrow": "Domande frequenti",
+      "title": "Il nostro tavolo, in pratica"
+    },
+    "faq": [
+      {
+        "q": "Il ristorante è aperto al pubblico?",
+        "a": "Il servizio di ristorazione è disponibile nell'ambito dei soggiorni e degli eventi privati organizzati al castello: matrimoni, seminari, ritiri e riunioni di famiglia."
+      },
+      {
+        "q": "Il cibo è fatto in casa?",
+        "a": "Sì, tutti i pasti vengono preparati in loco con prodotti freschi, provenienti dall'orto del castello e dai produttori locali della Touraine."
+      },
+      {
+        "q": "È possibile adattare i menù alle diverse esigenze alimentari?",
+        "a": "Sì, i menu sono personalizzabili: vegetariani, senza glutine e altre richieste."
+      },
+      {
+        "q": "Quali tipi di cucina proponete?",
+        "a": "Sapori italiani e di Tours, con una cena italiana in compagnia il giovedì sera."
       }
     ]
   }

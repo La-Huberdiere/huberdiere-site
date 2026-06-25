@@ -1,0 +1,74 @@
+---
+import Base from "../layouts/Base.astro";
+---
+<Base
+  title="Mentions légales — Château de la Huberdière"
+  description="Mentions légales du site du Château de la Huberdière."
+  lang="fr"
+  path="/mentions-legales"
+>
+  <main class="legal">
+    <h1>Mentions légales</h1>
+
+    <h2>Éditeur du site</h2>
+    <p>
+      Le site chateaudelahuberdiere.com est édité par la société ELLEDIPI (SARL VO ITALIA),
+      Société par actions simplifiée au capital de 20 000 €.<br />
+      Siège social : La Huberdière, 37530 Nazelles-Négron, Indre-et-Loire, France<br />
+      Téléphone : +33 2 47 57 52 92<br />
+      Email : contact@chateaudelahuberdiere.com
+    </p>
+    <p>
+      SIREN : 450 149 208 — SIRET (siège) : 450 149 208 00065<br />
+      RCS Tours 450 149 208 — Code APE : 55.10Z<br />
+      Numéro de TVA intracommunautaire : FR56 450 149 208
+    </p>
+    <p>Directrice de la publication : Lodovica Jourdan, présidente.</p>
+
+    <h2>Hébergement</h2>
+    <p>
+      Le site est hébergé par Vercel Inc.<br />
+      340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis<br />
+      https://vercel.com
+    </p>
+
+    <h2>Propriété intellectuelle</h2>
+    <p>
+      L'ensemble des contenus de ce site (textes, photographies, logo, mise en page) est protégé
+      par le droit d'auteur. Toute reproduction, même partielle, sans autorisation préalable est
+      interdite.
+    </p>
+
+    <h2>Crédits photographiques</h2>
+    <p>Photographies : Château de la Huberdière. [Crédits photographe à compléter si nécessaire.]</p>
+
+    <h2>Contact</h2>
+    <p>Pour toute question : contact@chateaudelahuberdiere.com</p>
+  </main>
+</Base>
+
+<style>
+  .legal {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 150px 24px 110px;
+    font-family: "Montserrat", sans-serif;
+    color: #2e3a48;
+    line-height: 1.7;
+  }
+  .legal h1 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    color: #212121;
+    margin: 0 0 32px;
+  }
+  .legal h2 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-weight: 500;
+    color: #8b0000;
+    font-size: 1.3rem;
+    margin: 40px 0 12px;
+  }
+  .legal p { margin: 0 0 14px; color: #4a4a4a; }
+</style>

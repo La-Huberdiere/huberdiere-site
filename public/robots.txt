@@ -1,0 +1,24 @@
+# Château de la Huberdière — robots.txt
+# Crawl ouvert. Les robots d'IA générative sont autorisés (objectif GEO :
+# citations dans AI Overviews, ChatGPT, Perplexity).
+
+User-agent: *
+Allow: /
+Disallow: /keystatic
+Disallow: /api/
+Disallow: /merci
+
+# Robots IA explicitement autorisés
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://www.chateaudelahuberdiere.com/sitemap-index.xml

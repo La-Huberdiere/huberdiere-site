@@ -1,15 +1,15 @@
 {
   "fr": {
-    "title": "Chambres d'hôtes de charme au château en Touraine — Château de la Huberdière",
-    "description": "Séjournez au château de la Huberdière, en Touraine : chambres d'exception climatisées, parc de 14 hectares, couloir de nage, table d'hôtes. À 10 min d'Amboise.",
+    "title": "Chambres d'hôtes à Amboise — Château de la Huberdière, Val de Loire",
+    "description": "Des chambres d'hôtes de charme dans un château près d'Amboise, au cœur des Châteaux de la Loire. Chambres d'exception climatisées, parc de 14 hectares, couloir de nage et table d'hôtes.",
     "hero": {
-      "eyebrow": "Chambres d'hôtes · Val de Loire",
-      "titleLine1": "Séjourner",
+      "eyebrow": "Chambres d'hôtes · près d'Amboise",
+      "titleLine1": "Chambres d'hôtes",
       "titleLine2Italic": "au château.",
-      "lead": "Des chambres de prestige dans un cadre d'exception, au cœur des Châteaux de la Loire. La dolce vita en Vallée de la Loire."
+      "lead": "Des chambres d'hôtes de prestige dans un château du Val de Loire, à quelques minutes d'Amboise. La dolce vita au cœur des Châteaux de la Loire."
     },
     "intro": [
-      "Le château propose des chambres délicieusement décorées, chacune avec sa personnalité et sa salle de bain privée, climatisées au second étage. Toutes peuvent être privatisées pour vos événements.",
+      "À deux pas d'Amboise, le château vous accueille en chambres d'hôtes : des chambres délicieusement décorées, chacune avec sa personnalité et sa salle de bain privée, climatisées au second étage. Une base idéale pour visiter les Châteaux de la Loire et rayonner en Touraine.",
       "Un parc de 14 hectares avec ses terrasses, son grand étang et son couloir de nage de 16 mètres chauffé d'avril à octobre, une salle à manger jusqu'à 22 convives et une bibliothèque au parquet Versailles transformable en piste de danse."
     ],
     "cards": [
@@ -72,19 +72,45 @@
         "title": "Aux portes des châteaux",
         "text": "Amboise et le Clos Lucé à dix minutes ; Chenonceau, Villandry et Chambord à moins d'une heure."
       }
+    ],
+    "faqHead": {
+      "eyebrow": "Questions fréquentes",
+      "title": "Votre séjour en chambres d'hôtes"
+    },
+    "faq": [
+      {
+        "q": "À quelle distance d'Amboise se trouve le château ?",
+        "a": "Le château est à une dizaine de minutes d'Amboise, en Indre-et-Loire, au cœur des Châteaux de la Loire."
+      },
+      {
+        "q": "Le petit-déjeuner est-il inclus ?",
+        "a": "Oui, un petit-déjeuner gourmand fait maison est servi chaque matin, avec des produits frais et locaux."
+      },
+      {
+        "q": "Y a-t-il une piscine ?",
+        "a": "Le parc dispose d'un couloir de nage de 16 mètres chauffé d'avril à octobre."
+      },
+      {
+        "q": "Est-ce un bon point de départ pour visiter les Châteaux de la Loire ?",
+        "a": "Oui. Chenonceau, Amboise, le Clos Lucé et Chambord sont à portée. Le château est une base idéale pour un séjour dans le Val de Loire."
+      },
+      {
+        "q": "Peut-on privatiser les chambres pour un événement ?",
+        "a": "Oui, toutes les chambres peuvent être privatisées pour un mariage, un séminaire ou une réunion de famille."
+      }
     ]
   },
   "en": {
-    "title": "Charming guest rooms in a château in Touraine — Château de la Huberdière",
-    "description": "Stay at the Château de la Huberdière in Touraine: exceptional air-conditioned rooms, 14-hectare grounds, a lap pool and table d’hôtes. 10 minutes from Amboise.",
+    "title": "Bed and Breakfast in Amboise — Château de la Huberdière, Loire Valley",
+    "description": "Charming guest rooms in a château near Amboise, in the heart of the Loire Valley. Exceptional air-conditioned rooms, 14-hectare grounds, a swimming pool and table d’hôtes.",
     "hero": {
-      "eyebrow": "Bed and Breakfasts · Loire Valley",
-      "titleLine1": "To stay",
+      "eyebrow": "Bed and Breakfasts · near Amboise",
+      "titleLine1": "Bed and Breakfast",
       "titleLine2Italic": "at the castle.",
-      "lead": "Luxury rooms in an exceptional setting, in the heart of the Loire Valley. La dolce vita in the Loire Valley."
+      "lead": "Luxury guest rooms in a château in the Loire Valley, just a few minutes from Amboise. La dolce vita in the heart of the Loire Valley."
     },
     "intro": [
-      "The château offers beautifully decorated rooms, each with its own character and private bathroom, all air-conditioned and situated on the second floor. All rooms can be booked exclusively for your events.",
+      "Just a stone’s throw from Amboise, the château welcomes you to its guest rooms: delightfully decorated rooms, each with its own character and private bathroom, all air-conditioned and situated on the second floor. An ideal base for visiting the châteaux of the Loire Valley and exploring the Touraine region.",
       "A 14-hectare park featuring terraces, a large pond and a 16-metre swimming lane heated from April to October, a dining room that can seat up to 22 guests, and a library with Versailles-style parquet flooring that can be converted into a dance floor."
     ],
     "cards": [
@@ -147,19 +173,45 @@
         "title": "At the gates of the castles",
         "text": "Amboise and the Clos Lucé are ten minutes away; Chenonceau, Villandry and Chambord are less than an hour away."
       }
+    ],
+    "faqHead": {
+      "eyebrow": "Frequently Asked Questions",
+      "title": "Your stay at a bed and breakfast"
+    },
+    "faq": [
+      {
+        "q": "How far is the château from Amboise?",
+        "a": "The château is about ten minutes’ drive from Amboise, in Indre-et-Loire, in the heart of the Loire Valley."
+      },
+      {
+        "q": "Is breakfast included?",
+        "a": "Yes, a delicious homemade breakfast is served every morning, featuring fresh, locally sourced produce."
+      },
+      {
+        "q": "Is there a swimming pool?",
+        "a": "The park has a 16-metre swimming lane, which is heated from April to October."
+      },
+      {
+        "q": "Is this a good starting point for visiting the châteaux of the Loire Valley?",
+        "a": "Yes. Chenonceau, Amboise, the Clos Lucé and Chambord are all within easy reach. The château is an ideal base for a holiday in the Loire Valley."
+      },
+      {
+        "q": "Can we book the rooms exclusively for an event?",
+        "a": "Yes, all rooms can be booked exclusively for a wedding, a seminar or a family gathering."
+      }
     ]
   },
   "it": {
-    "title": "Affascinanti camere per ospiti nel castello della Touraine — Château de la Huberdière",
-    "description": "Soggiornate al castello di La Huberdière, in Touraine: camere d'eccezione dotate di aria condizionata, parco di 14 ettari, piscina a corsie, cucina casalinga. A 10 minuti da Amboise.",
+    "title": "Bed & Breakfast ad Amboise — Castello di La Huberdière, Valle della Loira",
+    "description": "Camere di charme in un castello vicino ad Amboise, nel cuore dei Castelli della Loira. Camere d'eccezione dotate di aria condizionata, parco di 14 ettari, piscina e cucina casalinga.",
     "hero": {
-      "eyebrow": "Bed & Breakfast · Valle della Loira",
-      "titleLine1": "Soggiornare",
+      "eyebrow": "Bed & Breakfast · nei pressi di Amboise",
+      "titleLine1": "Camere per ospiti",
       "titleLine2Italic": "al castello.",
-      "lead": "Camere di prestigio in una cornice d'eccezione, nel cuore dei Castelli della Loira. La dolce vita nella Valle della Loira."
+      "lead": "Camere di prestigio in un castello della Valle della Loira, a pochi minuti da Amboise. La dolce vita nel cuore dei castelli della Loira."
     },
     "intro": [
-      "Il castello offre camere arredate con gusto, ognuna con la propria personalità e il bagno privato, tutte climatizzate e situate al secondo piano. Tutte possono essere riservate in esclusiva per i vostri eventi.",
+      "A due passi da Amboise, il castello vi accoglie nelle sue camere per ospiti: stanze arredate con gusto, ognuna con la propria personalità e il bagno privato, climatizzate e situate al secondo piano. Un punto di partenza ideale per visitare i castelli della Loira ed esplorare la Touraine.",
       "Un parco di 14 ettari con terrazze, un grande laghetto e una piscina da 16 metri riscaldata da aprile a ottobre, una sala da pranzo che può ospitare fino a 22 commensali e una biblioteca con pavimento in parquet stile Versailles trasformabile in pista da ballo."
     ],
     "cards": [
@@ -176,7 +228,7 @@
       {
         "num": "III",
         "title": "Un parco di 14 ettari",
-        "text": "Lago artificiale, terrazze e corsia di nuoto di 16x3 m con pool house. Una tenuta attenta all’ambiente: filiera corta, prodotti biologici e riscaldamento a biomassa."
+        "text": "Lago, terrazze e corsia di nuoto di 16x3 m con pool house. Una tenuta attenta all’ambiente: filiera corta, prodotti biologici e riscaldamento a biomassa."
       }
     ],
     "final": {
@@ -221,6 +273,32 @@
       {
         "title": "Alle porte dei castelli",
         "text": "Amboise e il Clos Lucé a dieci minuti; Chenonceau, Villandry e Chambord a meno di un'ora."
+      }
+    ],
+    "faqHead": {
+      "eyebrow": "Domande frequenti",
+      "title": "Il vostro soggiorno in una camera presso una famiglia"
+    },
+    "faq": [
+      {
+        "q": "A che distanza da Amboise si trova il castello?",
+        "a": "Il castello si trova a una decina di minuti da Amboise, nel dipartimento dell'Indre-et-Loire, nel cuore dei Castelli della Loira."
+      },
+      {
+        "q": "La colazione è inclusa?",
+        "a": "Sì, ogni mattina viene servita una ricca colazione fatta in casa, con prodotti freschi e locali."
+      },
+      {
+        "q": "C'è una piscina?",
+        "a": "Il parco dispone di una corsia di nuoto lunga 16 metri, riscaldata da aprile a ottobre."
+      },
+      {
+        "q": "È un buon punto di partenza per visitare i castelli della Loira?",
+        "a": "Sì. Chenonceau, Amboise, il Clos Lucé e Chambord sono tutti nelle vicinanze. Il castello è un punto di partenza ideale per un soggiorno nella Valle della Loira."
+      },
+      {
+        "q": "È possibile riservare le camere per un evento?",
+        "a": "Sì, tutte le camere possono essere riservate in esclusiva per un matrimonio, un seminario o una riunione di famiglia."
       }
     ]
   }

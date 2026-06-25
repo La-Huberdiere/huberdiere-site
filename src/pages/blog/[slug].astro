@@ -1,30 +1,188 @@
 ---
 import Base from "../../layouts/Base.astro";
 import { reader, renderMarkdocNode } from "../../lib/content";
+import { getAuthor } from "../../lib/authors";
+import { categoryLabel, readingTime, formatDate } from "../../lib/blog";
+import { articleSchema, breadcrumbSchema } from "../../lib/seo";
 
 export async function getStaticPaths() {
   const slugs = await reader.collections.articles.list();
-  return Promise.all(
+  const all = await Promise.all(
     slugs.map(async (slug) => {
       const entry = await reader.collections.articles.read(slug);
-      const body = await entry!.body();
+      return { slug, entry: entry! };
+    })
+  );
+  return Promise.all(
+    all.map(async ({ slug, entry }) => {
+      const body = await entry.body();
       const node = (body as any)?.node ?? body;
-      return { params: { slug }, props: { entry, html: renderMarkdocNode(node) } };
+      // Articles liés : même catégorie, hors article courant, 3 max.
+      const related = all
+        .filter((o) => o.slug !== slug && o.entry.category === entry.category)
+        .slice(0, 3)
+        .map((o) => ({ slug: o.slug, title: o.entry.title, cover: o.entry.cover }));
+      return { params: { slug }, props: { slug, entry, html: renderMarkdocNode(node), related } };
     })
   );
 }
 
-const { entry, html } = Astro.props;
-const dateLabel = entry.publishedAt
-  ? new Date(entry.publishedAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })
-  : "";
+const { slug, entry, html, related } = Astro.props;
+const author = getAuthor(entry.author);
+const cat = categoryLabel(entry.category);
+const published = formatDate(entry.publishedAt);
+const updated = entry.updatedAt && entry.updatedAt !== entry.publishedAt ? formatDate(entry.updatedAt) : "";
+const minutes = readingTime(html);
+const path = `/blog/${slug}`;
+
+const schemas = [
+  breadcrumbSchema([
+    { name: "Accueil", path: "/" },
+    { name: "Journal", path: "/blog" },
+    { name: entry.title, path },
+  ]),
+  articleSchema({
+    title: entry.title,
+    description: entry.description,
+    path,
+    image: entry.cover ?? undefined,
+    datePublished: entry.publishedAt ?? undefined,
+    dateModified: entry.updatedAt ?? entry.publishedAt ?? undefined,
+    author: { name: author.name, role: author.role, image: author.photo },
+    section: cat,
+  }),
+];
 ---
-<Base title={`${entry.title} — Château de la Huberdière`} description={entry.description}>
-  <article class="prose reveal" style="padding-top:140px">
-    {entry.cover && <img src={entry.cover} alt={entry.title} style="width:100%;border-radius:6px;margin-bottom:32px" />}
-    <span class="section-eyebrow">Journal{dateLabel ? ` · ${dateLabel}` : ""}</span>
-    <h1>{entry.title}</h1>
-    <Fragment set:html={html} />
-    <p style="margin-top:48px"><a href="/blog">← Tous les articles</a></p>
+<Base
+  title={`${entry.title} — Château de la Huberdière`}
+  description={entry.description}
+  lang="fr"
+  path={path}
+  image={entry.cover ?? undefined}
+  ogType="article"
+  schemas={schemas}
+>
+  <article class="article">
+    <nav class="breadcrumb" aria-label="Fil d'Ariane">
+      <ol>
+        <li><a href="/">Accueil</a></li>
+        <li><a href="/blog">Journal</a></li>
+        <li aria-current="page">{entry.title}</li>
+      </ol>
+    </nav>
+
+    <header class="article-head reveal">
+      <p class="article-meta">
+        <span class="cat">{cat}</span>
+        {published && <span>· {published}</span>}
+        <span>· {minutes} min de lecture</span>
+      </p>
+      <h1>{entry.title}</h1>
+      <p class="article-byline">Par {author.name}, {author.role}</p>
+    </header>
+
+    {entry.cover && <img class="article-cover reveal" src={entry.cover} alt={entry.title} width="1200" height="630" />}
+
+    <div class="article-body prose reveal" set:html={html} />
+
+    {updated && <p class="article-updated">Mis à jour le {updated}.</p>}
+
+    <aside class="author-box reveal">
+      {author.photo && <img src={author.photo} alt={author.name} class="author-photo" />}
+      <div>
+        <div class="author-name">{author.name}</div>
+        <div class="author-role">{author.role}</div>
+        <p class="author-bio">{author.bio}</p>
+      </div>
+    </aside>
+
+    <section class="article-cta reveal">
+      <h2>Envie de vivre le château ?</h2>
+      <p>Mariage, séjour, séminaire ou réunion de famille : recevez une proposition personnalisée.</p>
+      <a class="btn-burgundy" href="/contact">Recevoir une proposition</a>
+    </section>
+
+    {related.length > 0 && (
+      <section class="related reveal">
+        <h2>À lire aussi</h2>
+        <div class="related-grid">
+          {related.map((r) => (
+            <a class="related-card" href={`/blog/${r.slug}`}>
+              {r.cover && <img src={r.cover} alt={r.title} />}
+              <span>{r.title}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <p class="article-back"><a href="/blog">← Tous les articles</a></p>
   </article>
 </Base>
+
+<style>
+  .article { max-width: 760px; margin: 0 auto; padding: 0 24px 100px; }
+  .breadcrumb { padding: 130px 0 0; }
+  .breadcrumb ol {
+    list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0;
+    font-family: "Montserrat", sans-serif; font-size: 0.8rem; color: #646464;
+  }
+  .breadcrumb li { display: flex; align-items: center; gap: 8px; }
+  .breadcrumb li + li::before { content: "›"; color: #b9b1a0; }
+  .breadcrumb a { color: #8b0000; text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+
+  .article-head { margin: 28px 0 24px; }
+  .article-meta {
+    font-family: "Montserrat", sans-serif; font-size: 0.8rem; color: #646464;
+    display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px;
+  }
+  .article-meta .cat {
+    background: #f3e9e9; color: #8b0000; padding: 3px 12px; border-radius: 999px;
+    font-weight: 500; letter-spacing: 0.02em;
+  }
+  .article-head h1 {
+    font-family: "Playfair Display", Georgia, serif; font-weight: 500;
+    font-size: clamp(2rem, 4.5vw, 3rem); color: #212121; line-height: 1.15; margin: 0 0 14px;
+  }
+  .article-byline { font-family: "Montserrat", sans-serif; font-size: 0.9rem; color: #646464; margin: 0; }
+
+  .article-cover { width: 100%; height: auto; border-radius: 8px; margin: 8px 0 36px; display: block; }
+  .article-updated { font-size: 0.82rem; color: #9a9a9a; font-style: italic; margin-top: 32px; }
+
+  .author-box {
+    display: flex; gap: 18px; align-items: flex-start;
+    margin: 48px 0; padding: 26px; background: #fbfaf6;
+    border: 1px solid #ece6d8; border-radius: 10px;
+  }
+  .author-photo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; flex: 0 0 auto; }
+  .author-name { font-family: "Playfair Display", Georgia, serif; font-size: 1.15rem; color: #2e3a48; }
+  .author-role { font-family: "Montserrat", sans-serif; font-size: 0.82rem; color: #8b0000; margin: 2px 0 10px; }
+  .author-bio { font-family: "Montserrat", sans-serif; font-size: 0.92rem; color: #646464; line-height: 1.6; margin: 0; }
+
+  .article-cta {
+    text-align: center; margin: 56px 0; padding: 44px 24px;
+    background: #2e3a48; border-radius: 12px; color: #fff;
+  }
+  .article-cta h2 { font-family: "Playfair Display", Georgia, serif; font-weight: 500; margin: 0 0 10px; color: #fff; }
+  .article-cta p { color: #d7d2c8; margin: 0 0 22px; font-family: "Montserrat", sans-serif; }
+
+  .related { margin: 48px 0; }
+  .related h2 { font-family: "Playfair Display", Georgia, serif; font-weight: 500; color: #2e3a48; margin: 0 0 20px; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+  .related-card {
+    display: block; text-decoration: none; color: inherit;
+    border: 1px solid #e2dccc; border-radius: 6px; overflow: hidden; background: #fbfaf6;
+  }
+  .related-card img { width: 100%; height: 120px; object-fit: cover; display: block; }
+  .related-card span {
+    display: block; padding: 12px 14px; font-family: "Playfair Display", Georgia, serif;
+    color: #2e3a48; font-size: 0.98rem;
+  }
+  .article-back { margin-top: 40px; font-family: "Montserrat", sans-serif; }
+  .article-back a { color: #8b0000; }
+
+  @media (max-width: 560px) {
+    .author-box { flex-direction: column; }
+  }
+</style>
