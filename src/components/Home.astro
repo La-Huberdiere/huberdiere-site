@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import BookingBar from "./BookingBar.astro";
+import Reviews from "./Reviews.astro";
 import settings from "../data/settings.json";
 import hero from "../assets/SD_2.jpg";
 import intro from "../assets/SD_1.jpg";
@@ -118,6 +119,9 @@ const actIds = ["sejour", "mariage", "seminaire", "famille", "retraite"];
     <figure class="g6 reveal"><Image src={g6} alt="Piscine et jardins du domaine" widths={[600, 1000, 1400]} sizes="60vw" /></figure>
   </div>
 </section>
+
+<!-- AVIS -->
+<Reviews lang={lang} />
 
 <!-- LOCATION -->
 <section class="location" id="location">

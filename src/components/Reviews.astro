@@ -1,0 +1,95 @@
+---
+// Section avis clients. Ne s'affiche QUE si reviews.items contient de vrais avis.
+// Le texte des avis n'est pas traduit (il garde la langue d'origine de l'auteur) ;
+// seuls l'intitulé de section et le libellé de note sont localisés.
+import reviews from "../data/reviews.json";
+
+const { lang = "fr" } = Astro.props;
+const head = (reviews.head as Record<string, { eyebrow: string; title: string }>)[lang] ?? reviews.head.fr;
+const items = reviews.items as Array<{
+  author: string;
+  location?: string;
+  source?: string;
+  rating?: number | string;
+  text: string;
+  date?: string;
+}>;
+
+const ratingLine: Record<string, string> = {
+  fr: `Note ${reviews.ratingValue}/${reviews.bestRating} · ${reviews.reviewCount} avis`,
+  en: `Rated ${reviews.ratingValue}/${reviews.bestRating} · ${reviews.reviewCount} reviews`,
+  it: `Voto ${reviews.ratingValue}/${reviews.bestRating} · ${reviews.reviewCount} recensioni`,
+};
+---
+{items.length > 0 && (
+  <section class="reviews" id="avis">
+    <div class="section-head reveal">
+      <span class="section-eyebrow">{head.eyebrow}</span>
+      <h2 class="section-title">{head.title}</h2>
+      <div class="rating-line">{ratingLine[lang] ?? ratingLine.fr}</div>
+    </div>
+    <div class="reviews-grid">
+      {items.map((r) => (
+        <figure class="review-card reveal">
+          <blockquote>« {r.text} »</blockquote>
+          <figcaption>
+            <span class="rv-author">{r.author}</span>
+            {r.location && <span class="rv-loc">{r.location}</span>}
+            {r.source && <span class="rv-source">{r.source}</span>}
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </section>
+)}
+
+<style>
+  .reviews {
+    background: var(--cream, #f4f2ec);
+    padding: 90px 24px;
+  }
+  .reviews .section-head { text-align: center; max-width: 720px; margin: 0 auto 48px; }
+  .rating-line {
+    margin-top: 14px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    color: #8b0000;
+  }
+  .reviews-grid {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 28px;
+  }
+  .review-card {
+    background: #fff;
+    border: 1px solid rgba(139, 0, 0, 0.12);
+    border-radius: 4px;
+    padding: 32px 30px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .review-card blockquote {
+    margin: 0;
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.12rem;
+    line-height: 1.6;
+    color: #2e3a48;
+    font-style: italic;
+  }
+  .review-card figcaption {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-family: "Montserrat", sans-serif;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    padding-top: 16px;
+  }
+  .rv-author { font-weight: 600; color: #212121; font-size: 0.92rem; }
+  .rv-loc { color: #646464; font-size: 0.82rem; }
+  .rv-source { color: #8b0000; font-size: 0.74rem; letter-spacing: 0.05em; text-transform: uppercase; margin-top: 4px; }
+</style>

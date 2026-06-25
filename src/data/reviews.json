@@ -1,0 +1,12 @@
+{
+  "ratingValue": "9.5",
+  "bestRating": "10",
+  "reviewCount": "42",
+  "source": "Booking.com",
+  "head": {
+    "fr": { "eyebrow": "Ils ont séjourné chez nous", "title": "Ce que disent nos hôtes" },
+    "en": { "eyebrow": "They stayed with us", "title": "What our guests say" },
+    "it": { "eyebrow": "Hanno soggiornato da noi", "title": "Cosa dicono i nostri ospiti" }
+  },
+  "items": []
+}

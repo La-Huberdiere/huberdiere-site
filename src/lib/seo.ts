@@ -18,8 +18,8 @@ export const SITE = {
     addressCountry: "FR",
   },
   geo: { latitude: 47.44645, longitude: 0.93489 },
-  // Note d'avis : À RACCORDER à de vrais avis affichés sur la page (sinon, retirer
-  // l'aggregateRating pour éviter une pénalité « rich results » de Google).
+  // Note d'avis : désormais pilotée par src/data/reviews.json (l'aggregateRating
+  // n'est émis QUE si des avis réels sont affichés sur la home, cf. lodgingBusinessSchema).
   rating: { value: "9.5", best: "10", count: "42" },
   priceRange: "€€€",
   ogImage: "/og/og-default.jpg",
@@ -62,8 +62,34 @@ export function webSiteSchema() {
   };
 }
 
-/** Établissement d'hébergement complet : à mettre sur la page d'accueil. */
-export function lodgingBusinessSchema(opts?: { images?: string[]; amenities?: string[] }) {
+/** Un avis client (Schema.org Review). */
+export interface ReviewInput {
+  author: string;
+  rating?: number | string;
+  text: string;
+  date?: string;
+}
+function reviewSchema(r: ReviewInput, bestRating: string) {
+  return {
+    "@type": "Review",
+    author: { "@type": "Person", name: r.author },
+    ...(r.rating ? { reviewRating: { "@type": "Rating", ratingValue: String(r.rating), bestRating } } : {}),
+    reviewBody: r.text,
+    ...(r.date ? { datePublished: r.date } : {}),
+  };
+}
+
+/** Établissement d'hébergement complet : à mettre sur la page d'accueil.
+ * L'aggregateRating et les Review ne sont émis QUE si de vrais avis sont
+ * fournis et affichés sur la page (sinon, risque de pénalité « rich results »). */
+export function lodgingBusinessSchema(opts?: {
+  images?: string[];
+  amenities?: string[];
+  reviews?: ReviewInput[];
+  rating?: { value: string; best: string; count: string };
+}) {
+  const hasReviews = (opts?.reviews?.length ?? 0) > 0;
+  const best = opts?.rating?.best ?? "10";
   return {
     "@context": "https://schema.org",
     "@type": "LodgingBusiness",
@@ -78,12 +104,17 @@ export function lodgingBusinessSchema(opts?: { images?: string[]; amenities?: st
     address: { "@type": "PostalAddress", ...SITE.address },
     geo: { "@type": "GeoCoordinates", latitude: SITE.geo.latitude, longitude: SITE.geo.longitude },
     hasMap: `https://www.google.com/maps?q=${SITE.geo.latitude},${SITE.geo.longitude}`,
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: SITE.rating.value,
-      bestRating: SITE.rating.best,
-      reviewCount: SITE.rating.count,
-    },
+    ...(hasReviews && opts?.rating
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: opts.rating.value,
+            bestRating: opts.rating.best,
+            reviewCount: opts.rating.count,
+          },
+        }
+      : {}),
+    ...(hasReviews ? { review: opts!.reviews!.map((r) => reviewSchema(r, best)) } : {}),
     ...(opts?.amenities?.length
       ? {
           amenityFeature: opts.amenities.map((a) => ({

@@ -2,8 +2,11 @@
 import Base from "../layouts/Base.astro";
 import Home from "../components/Home.astro";
 import data from "../data/homepage.json";
+import reviews from "../data/reviews.json";
 import { lodgingBusinessSchema } from "../lib/seo";
 
+// L'aggregateRating + les Review ne sont émis que si reviews.items est non vide
+// (de vrais avis affichés sur la page), pour rester conforme aux rich results Google.
 const lodging = lodgingBusinessSchema({
   images: ["/og/og-default.jpg"],
   amenities: [
@@ -14,6 +17,8 @@ const lodging = lodgingBusinessSchema({
     "Parking",
     "Petit-déjeuner",
   ],
+  reviews: reviews.items,
+  rating: { value: reviews.ratingValue, best: reviews.bestRating, count: reviews.reviewCount },
 });
 ---
 <Base lang="fr" path="/" schemas={[lodging]}>

@@ -270,7 +270,7 @@ export default config({
     brand: { name: "Château de la Huberdière" },
     navigation: {
       Pages: ["homepage", "mariage", "seminaire", "famille", "retraite", "sejour", "restauration", "contact"],
-      Réglages: ["settings"],
+      Réglages: ["settings", "reviews"],
       Contenu: ["pages", "articles"],
     },
   },
@@ -336,6 +336,49 @@ export default config({
       path: "src/data/settings",
       format: { data: "json" },
       schema: langSections(settingsSchema),
+    }),
+    reviews: singleton({
+      label: "Avis clients (home)",
+      path: "src/data/reviews",
+      format: { data: "json" },
+      previewUrl: "/#avis",
+      schema: {
+        ratingValue: fields.text({ label: "Note moyenne (ex. 9.5)" }),
+        bestRating: fields.text({ label: "Note maximale (ex. 10)" }),
+        reviewCount: fields.text({ label: "Nombre total d'avis (ex. 42)" }),
+        source: fields.text({ label: "Source principale (ex. Booking.com)" }),
+        head: fields.object(
+          {
+            fr: fields.object(
+              { eyebrow: fields.text({ label: "Sur-titre" }), title: fields.text({ label: "Titre" }) },
+              { label: "Français" }
+            ),
+            en: fields.object(
+              { eyebrow: fields.text({ label: "Eyebrow" }), title: fields.text({ label: "Title" }) },
+              { label: "English" }
+            ),
+            it: fields.object(
+              { eyebrow: fields.text({ label: "Sopratitolo" }), title: fields.text({ label: "Titolo" }) },
+              { label: "Italiano" }
+            ),
+          },
+          { label: "Intitulé de la section (par langue)" }
+        ),
+        items: fields.array(
+          fields.object({
+            author: fields.text({ label: "Auteur (prénom ou prénom + initiale)" }),
+            location: fields.text({ label: "Lieu / pays (optionnel)" }),
+            source: fields.text({ label: "Source (ex. Booking, Google)" }),
+            rating: fields.text({ label: "Note de cet avis (ex. 10, optionnel)" }),
+            date: fields.text({ label: "Date AAAA-MM-JJ (optionnel)" }),
+            text: fields.text({ label: "Avis", multiline: true }),
+          }),
+          {
+            label: "Avis affichés",
+            itemLabel: (props) => props.fields.author.value || "Avis",
+          }
+        ),
+      },
     }),
   },
   collections: {
