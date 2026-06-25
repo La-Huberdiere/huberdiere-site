@@ -90,6 +90,9 @@ export function lodgingBusinessSchema(opts?: {
 }) {
   const hasReviews = (opts?.reviews?.length ?? 0) > 0;
   const best = opts?.rating?.best ?? "10";
+  // On ne balise en Review individuel que les avis portant une note (un Review
+  // sans reviewRating est incomplet pour Google → avertissement Search Console).
+  const ratedReviews = (opts?.reviews ?? []).filter((r) => r.rating != null && r.rating !== "");
   return {
     "@context": "https://schema.org",
     "@type": "LodgingBusiness",
@@ -114,7 +117,7 @@ export function lodgingBusinessSchema(opts?: {
           },
         }
       : {}),
-    ...(hasReviews ? { review: opts!.reviews!.map((r) => reviewSchema(r, best)) } : {}),
+    ...(ratedReviews.length ? { review: ratedReviews.map((r) => reviewSchema(r, best)) } : {}),
     ...(opts?.amenities?.length
       ? {
           amenityFeature: opts.amenities.map((a) => ({
