@@ -91,6 +91,10 @@ const T = {
         sha256_phone_number: p.get("ph") || "",
       },
     });
+    // Événement de conversion côté Umami (funnels + segments).
+    try {
+      if (window.umami) window.umami.track("lead", { type: cible, value: VALUE[cible] != null ? VALUE[cible] : 5 });
+    } catch (e) {}
   })();
 </script>
 

@@ -114,6 +114,27 @@ const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
       } catch (e) {}
     </script>
 
+    {/* Helper de tracking unifié : envoie chaque événement à Umami ET au dataLayer (GTM/Ads).
+        Défini tôt pour être dispo dans tous les scripts inline. + écouteurs délégués. */}
+    <script is:inline>
+      window.huberTrack = function (name, data) {
+        try { (window.dataLayer = window.dataLayer || []).push(Object.assign({ event: name }, data || {})); } catch (e) {}
+        try { if (window.umami) window.umami.track(name, data || {}); } catch (e) {}
+      };
+      document.addEventListener(
+        "click",
+        function (e) {
+          var a = e.target && e.target.closest ? e.target.closest("a") : null;
+          if (!a) return;
+          var href = a.getAttribute("href") || "";
+          if (href.indexOf("tel:") === 0) window.huberTrack("contact_click", { method: "phone" });
+          else if (href.indexOf("mailto:") === 0) window.huberTrack("contact_click", { method: "email" });
+          else if (/octorate\.com|result\.xhtml/.test(href)) window.huberTrack("reserve_click", {});
+        },
+        true
+      );
+    </script>
+
     {/* Google Tag Manager (chargé seulement si PUBLIC_GTM_ID est défini) */}
     {GTM_ID && (
       <script is:inline set:html={`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`} />

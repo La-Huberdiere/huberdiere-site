@@ -146,6 +146,14 @@ const crumbName = String(m.title).split(/[—|]/)[0].trim();
       return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
     }
 
+    let formStarted = false;
+    form.addEventListener("focusin", () => {
+      if (formStarted) return;
+      formStarted = true;
+      const cb = (form.querySelector("[name=cible]") || {}).value || "";
+      window.huberTrack && window.huberTrack("form_start", { cible: cb });
+    }, { passive: true });
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       if (!form.reportValidity()) return;

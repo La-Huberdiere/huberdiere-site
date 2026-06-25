@@ -35,6 +35,12 @@ const warnMsg = {
 
 <script is:inline>
   (function () {
+    // Tracking : intention de réservation (soumission du widget Octorate).
+    document.addEventListener("submit", function (e) {
+      if (e.target && e.target.closest && e.target.closest(".octorate-widget")) {
+        window.huberTrack && window.huberTrack("booking_search", {});
+      }
+    }, true);
     var pad = function (n) { return String(n).padStart(2, "0"); };
     var key = function (y, m, d) { return y + "-" + pad(m) + "-" + pad(d); }; // m 1-based
     var closedNights = new Set(), noArrival = new Set(), noDeparture = new Set();
