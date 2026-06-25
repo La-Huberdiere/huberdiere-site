@@ -1,0 +1,152 @@
+---
+// Bloc d'inscription newsletter (footer, toutes pages). Envoie vers /api/newsletter
+// (Brevo, liste newsletter_form) sans quitter la page. Émet le goal Umami newsletter_signup.
+const { lang = "fr" } = Astro.props;
+const T = {
+  fr: {
+    title: "La lettre du château",
+    lead: "Saisons, événements et inspirations, quelques fois par an. Pas de spam.",
+    placeholder: "Votre email",
+    button: "S'inscrire",
+    ok: "Merci, votre inscription est bien prise en compte.",
+    err: "Une erreur est survenue. Réessayez dans un instant.",
+  },
+  en: {
+    title: "The château newsletter",
+    lead: "Seasons, events and inspiration, a few times a year. No spam.",
+    placeholder: "Your email",
+    button: "Subscribe",
+    ok: "Thank you, your subscription is confirmed.",
+    err: "Something went wrong. Please try again in a moment.",
+  },
+  it: {
+    title: "La newsletter del castello",
+    lead: "Stagioni, eventi e ispirazioni, qualche volta l'anno. Niente spam.",
+    placeholder: "La tua email",
+    button: "Iscriviti",
+    ok: "Grazie, la tua iscrizione è confermata.",
+    err: "Si è verificato un errore. Riprova tra un istante.",
+  },
+}[lang as "fr" | "en" | "it"];
+---
+<section class="newsletter" aria-label={T.title}>
+  <div class="nl-inner">
+    <div class="nl-text">
+      <h2>{T.title}</h2>
+      <p>{T.lead}</p>
+    </div>
+    <form class="nl-form" id="nlForm" novalidate>
+      <input type="text" name="website" tabindex="-1" autocomplete="off" class="nl-hp" aria-hidden="true" />
+      <input type="email" name="email" placeholder={T.placeholder} aria-label={T.placeholder} required />
+      <button type="submit" id="nlBtn">{T.button}</button>
+    </form>
+  </div>
+  <p class="nl-status" id="nlStatus" role="status"></p>
+</section>
+
+<script is:inline define:vars={{ lang, msgOk: T.ok, msgErr: T.err }}>
+  (function () {
+    var form = document.getElementById("nlForm");
+    if (!form) return;
+    var status = document.getElementById("nlStatus");
+    var btn = document.getElementById("nlBtn");
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      btn.disabled = true;
+      status.textContent = "…";
+      var data = Object.fromEntries(new FormData(form).entries());
+      data.lang = lang;
+      try {
+        var res = await fetch("/api/newsletter", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        if (!res.ok) throw new Error("http " + res.status);
+        status.textContent = msgOk;
+        form.reset();
+        btn.disabled = false;
+        if (window.huberTrack) window.huberTrack("newsletter_signup", {});
+      } catch (err) {
+        btn.disabled = false;
+        status.textContent = msgErr;
+      }
+    });
+  })();
+</script>
+
+<style>
+  .newsletter {
+    background: #2e3a48;
+    color: #fff;
+    padding: 48px 24px;
+  }
+  .nl-inner {
+    max-width: 980px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 24px 40px;
+    justify-content: space-between;
+  }
+  .nl-text { flex: 1 1 320px; }
+  .newsletter h2 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-weight: 500;
+    font-size: 1.6rem;
+    margin: 0 0 8px;
+    color: #fff;
+  }
+  .nl-text p {
+    margin: 0;
+    color: #d7d2c8;
+    font-family: "Montserrat", sans-serif;
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+  .nl-form {
+    flex: 1 1 360px;
+    display: flex;
+    gap: 10px;
+    max-width: 460px;
+  }
+  .nl-hp { display: none; }
+  .nl-form input[type="email"] {
+    flex: 1;
+    padding: 13px 16px;
+    border: 1px solid #51606f;
+    border-radius: 4px;
+    background: #fff;
+    color: #212121;
+    font-family: "Montserrat", sans-serif;
+    font-size: 0.95rem;
+  }
+  .nl-form button {
+    background: #8b0000;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 13px 26px;
+    font-family: "Montserrat", sans-serif;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.15s ease;
+  }
+  .nl-form button:hover { opacity: 0.88; }
+  .nl-form button:disabled { opacity: 0.6; cursor: default; }
+  .nl-status {
+    max-width: 980px;
+    margin: 14px auto 0;
+    color: #f0e6c8;
+    font-family: "Montserrat", sans-serif;
+    font-size: 0.86rem;
+    min-height: 1em;
+  }
+  @media (max-width: 620px) {
+    .nl-form { flex-direction: column; max-width: none; width: 100%; }
+    .nl-form button { width: 100%; }
+  }
+</style>

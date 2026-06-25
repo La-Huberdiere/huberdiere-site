@@ -1,5 +1,6 @@
 ---
 // Réglages + langue passés par Base. NAP canonique (corrigé dans l'audit SEO).
+import NewsletterSignup from "./NewsletterSignup.astro";
 const { settings: s, lang = "fr" } = Astro.props;
 const f = s.footer;
 
@@ -17,6 +18,7 @@ const legalLabels = {
   it: { ml: "Note legali", pc: "Informativa privacy" },
 }[lang as "fr" | "en" | "it"];
 ---
+<NewsletterSignup lang={lang} />
 <footer class="site-footer">
   <div class="footer-grid">
     <div>
