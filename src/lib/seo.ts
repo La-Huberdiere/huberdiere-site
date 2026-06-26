@@ -205,6 +205,8 @@ export function articleSchema(opts: {
   dateModified?: string;
   author?: { name: string; role?: string; image?: string };
   section?: string;
+  keywords?: string[];
+  wordCount?: number;
 }) {
   const author = opts.author
     ? {
@@ -226,6 +228,10 @@ export function articleSchema(opts: {
     ...(opts.datePublished ? { datePublished: opts.datePublished } : {}),
     dateModified: opts.dateModified ?? opts.datePublished,
     ...(opts.section ? { articleSection: opts.section } : {}),
+    ...(opts.keywords && opts.keywords.length ? { keywords: opts.keywords.join(", ") } : {}),
+    ...(opts.wordCount ? { wordCount: opts.wordCount } : {}),
+    inLanguage: "fr-FR",
+    isPartOf: { "@id": `${SITE.url}/#website` },
     author,
     publisher: { "@id": `${SITE.url}/#organization` },
   };

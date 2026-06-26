@@ -262,6 +262,71 @@ const langSections = (schema: any) => ({
   it: fields.object(schema, { label: "Italiano" }),
 });
 
+// Schéma partagé des articles de blog (identique pour les 3 langues).
+const articleSchemaFields = {
+  title: fields.slug({ name: { label: "Titre" } }),
+  description: fields.text({ label: "Méta description (SEO)", multiline: true }),
+  publishedAt: fields.date({ label: "Date de publication" }),
+  updatedAt: fields.date({ label: "Date de mise à jour (optionnel)" }),
+  author: fields.select({
+    label: "Auteur",
+    options: [
+      { label: "Lodovica", value: "lodovica" },
+      { label: "Patrick", value: "patrick" },
+    ],
+    defaultValue: "lodovica",
+  }),
+  category: fields.select({
+    label: "Catégorie",
+    options: [
+      { label: "Mariage", value: "mariage" },
+      { label: "Séjour & tourisme", value: "sejour" },
+      { label: "Séminaire", value: "seminaire" },
+      { label: "Famille & groupes", value: "famille" },
+      { label: "Retraites & bien-être", value: "retraite" },
+      { label: "Art de vivre", value: "art-de-vivre" },
+    ],
+    defaultValue: "art-de-vivre",
+  }),
+  cover: fields.image({
+    label: "Image de couverture",
+    directory: "public/images/articles",
+    publicPath: "/images/articles/",
+  }),
+  keywords: fields.array(fields.text({ label: "Mot-clé" }), {
+    label: "Mots-clés associés (SEO + recherche)",
+    description: "Termes ciblés par l'article. Servent à la recherche du blog et au référencement.",
+    itemLabel: (props: any) => props.value,
+  }),
+  faq: fields.array(
+    fields.object({
+      q: fields.text({ label: "Question" }),
+      a: fields.text({ label: "Réponse", multiline: true }),
+    }),
+    {
+      label: "FAQ (questions / réponses)",
+      description: "Optionnel. Affiché en bas de l'article + balisé FAQPage (positions zéro Google).",
+      itemLabel: (p: any) => p.fields.q.value || "Question",
+    }
+  ),
+  body: fields.markdoc({
+    label: "Contenu de l'article",
+    options: { image: { directory: "public/images/articles", publicPath: "/images/articles/" } },
+  }),
+};
+
+// FR = source rédigée à la main. EN/IT = générés par scripts/translate-articles.mjs
+// (DeepL), modifiables ensuite dans Keystatic. Régénérer écrase les corrections.
+const articlesCollection = (label: string, dir: string, previewBase: string) =>
+  collection({
+    label,
+    slugField: "title",
+    path: `src/content/${dir}/*`,
+    format: { contentField: "body" },
+    previewUrl: `${previewBase}/{slug}`,
+    schema: articleSchemaFields,
+  });
+
 export default config({
   storage: useGithub
     ? { kind: "github", repo: { owner: "alexis-morain", name: "huberdiere-site" } }
@@ -271,7 +336,7 @@ export default config({
     navigation: {
       Pages: ["homepage", "mariage", "seminaire", "famille", "retraite", "sejour", "restauration", "contact"],
       Réglages: ["settings", "reviews"],
-      Contenu: ["pages", "articles"],
+      Contenu: ["pages", "articles", "articlesEn", "articlesIt"],
     },
   },
   singletons: {
@@ -405,47 +470,8 @@ export default config({
         }),
       },
     }),
-    articles: collection({
-      label: "Articles (blog SEO)",
-      slugField: "title",
-      path: "src/content/articles/*",
-      format: { contentField: "body" },
-      previewUrl: "/blog/{slug}",
-      schema: {
-        title: fields.slug({ name: { label: "Titre" } }),
-        description: fields.text({ label: "Méta description (SEO)", multiline: true }),
-        publishedAt: fields.date({ label: "Date de publication" }),
-        updatedAt: fields.date({ label: "Date de mise à jour (optionnel)" }),
-        author: fields.select({
-          label: "Auteur",
-          options: [
-            { label: "Lodovica", value: "lodovica" },
-            { label: "Patrick", value: "patrick" },
-          ],
-          defaultValue: "lodovica",
-        }),
-        category: fields.select({
-          label: "Catégorie",
-          options: [
-            { label: "Mariage", value: "mariage" },
-            { label: "Séjour & tourisme", value: "sejour" },
-            { label: "Séminaire", value: "seminaire" },
-            { label: "Famille & groupes", value: "famille" },
-            { label: "Retraites & bien-être", value: "retraite" },
-            { label: "Art de vivre", value: "art-de-vivre" },
-          ],
-          defaultValue: "art-de-vivre",
-        }),
-        cover: fields.image({
-          label: "Image de couverture",
-          directory: "public/images/articles",
-          publicPath: "/images/articles/",
-        }),
-        body: fields.markdoc({
-          label: "Contenu de l'article",
-          options: { image: { directory: "public/images/articles", publicPath: "/images/articles/" } },
-        }),
-      },
-    }),
+    articles: articlesCollection("Articles · FR", "articles", "/blog"),
+    articlesEn: articlesCollection("Articles · EN (auto)", "articles-en", "/en/blog"),
+    articlesIt: articlesCollection("Articles · IT (auto)", "articles-it", "/it/blog"),
   },
 });

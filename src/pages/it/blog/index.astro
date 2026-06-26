@@ -1,0 +1,6 @@
+---
+import BlogIndex from "../../../components/BlogIndex.astro";
+import { listArticles } from "../../../lib/content";
+const articles = await listArticles("articlesIt");
+---
+<BlogIndex lang="it" articles={articles} />

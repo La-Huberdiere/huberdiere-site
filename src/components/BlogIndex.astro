@@ -1,0 +1,242 @@
+---
+import Base from "../layouts/Base.astro";
+import { getAuthor } from "../lib/authors";
+import { categoryLabel, formatDate, CATEGORY_ORDER, BLOG_UI, lp, type Lang } from "../lib/blog";
+import { breadcrumbSchema } from "../lib/seo";
+
+interface Props { lang: Lang; articles: any[] }
+const { lang, articles } = Astro.props;
+const T = BLOG_UI[lang];
+
+const present = new Set(articles.map((a) => a.category).filter(Boolean));
+const cats = CATEGORY_ORDER.filter((c) => present.has(c));
+
+const searchIndex = (a: any) =>
+  [a.title, a.description, categoryLabel(a.category, lang), ...((a.keywords as string[]) || [])]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+const [featured, ...rest] = articles;
+
+const schemas = [
+  breadcrumbSchema([
+    { name: T.home, path: lp(lang, "/") },
+    { name: T.journal, path: lp(lang, "/blog") },
+  ]),
+];
+---
+<Base title={T.metaTitle} description={T.metaDesc} lang={lang} path="/blog" schemas={schemas}>
+  <section class="blog-hero reveal">
+    <div class="prose">
+      <nav class="breadcrumb" aria-label="Fil d'Ariane">
+        <ol>
+          <li><a href={lp(lang, "/")}>{T.home}</a></li>
+          <li aria-current="page">{T.journal}</li>
+        </ol>
+      </nav>
+      <span class="section-eyebrow">{T.eyebrow}</span>
+      <h1>{T.h1}</h1>
+      <p class="blog-intro">{T.intro}</p>
+    </div>
+  </section>
+
+  {articles.length > 0 && (
+    <div class="blog-toolbar">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="search-ico"><path d="M21 21l-4.3-4.3m1.8-5.2a7 7 0 11-14 0 7 7 0 0114 0z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <input type="search" id="blogSearch" placeholder={T.searchPlaceholder} aria-label={T.searchAria} autocomplete="off" />
+      </div>
+      <div class="filters" role="tablist" aria-label={T.filterAria}>
+        <button class="chip is-active" data-cat="all" type="button">{T.all}</button>
+        {cats.map((c) => (
+          <button class="chip" data-cat={c} type="button">{categoryLabel(c, lang)}</button>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {featured && (
+    <a class="featured reveal" href={lp(lang, `/blog/${featured.slug}`)} data-cat={featured.category || "art-de-vivre"} data-search={searchIndex(featured)}>
+      <div class="featured-media">
+        {featured.cover && <img src={featured.cover} alt={featured.title} width="760" height="460" loading="eager" />}
+        <span class="featured-flag">{T.flag}</span>
+      </div>
+      <div class="featured-body">
+        <span class="blog-cat">{categoryLabel(featured.category, lang)}</span>
+        <h2>{featured.title}</h2>
+        <p>{featured.description}</p>
+        <span class="blog-card-meta">
+          {getAuthor(featured.author, lang).name}{featured.publishedAt ? ` · ${formatDate(featured.publishedAt, lang)}` : ""}
+        </span>
+        <span class="featured-link">{T.readArticle}</span>
+      </div>
+    </a>
+  )}
+
+  <div class="blog-list" id="blogList">
+    {rest.map((a) => (
+      <a class="blog-card reveal" href={lp(lang, `/blog/${a.slug}`)} data-cat={a.category || "art-de-vivre"} data-search={searchIndex(a)}>
+        {a.cover && <img src={a.cover} alt={a.title} width="600" height="340" loading="lazy" />}
+        <div class="blog-card-body">
+          <span class="blog-cat">{categoryLabel(a.category, lang)}</span>
+          <h2>{a.title}</h2>
+          <p>{a.description}</p>
+          <span class="blog-card-meta">{getAuthor(a.author, lang).name}{a.publishedAt ? ` · ${formatDate(a.publishedAt, lang)}` : ""}</span>
+        </div>
+      </a>
+    ))}
+  </div>
+
+  <div class="blog-more-wrap">
+    <button class="blog-more" id="blogMore" type="button" hidden>{T.more}</button>
+  </div>
+
+  <p class="blog-empty" id="blogEmpty" hidden>{T.empty}</p>
+  {articles.length === 0 && (
+    <p class="prose" style="color:#646464; text-align:center; padding:0 24px 60px">{T.none}</p>
+  )}
+
+  <script is:inline>
+    (function () {
+      var PAGE = 9;
+      var search = document.getElementById("blogSearch");
+      var chips = Array.prototype.slice.call(document.querySelectorAll(".chip"));
+      var empty = document.getElementById("blogEmpty");
+      var more = document.getElementById("blogMore");
+      var featured = document.querySelector(".featured");
+      var cards = Array.prototype.slice.call(document.querySelectorAll(".blog-card"));
+      var activeCat = "all";
+      var limit = PAGE;
+
+      function matches(el) {
+        if (!el) return false;
+        var q = (search && search.value || "").trim().toLowerCase();
+        var okCat = activeCat === "all" || el.getAttribute("data-cat") === activeCat;
+        var okQ = !q || (el.getAttribute("data-search") || "").indexOf(q) !== -1;
+        return okCat && okQ;
+      }
+      function apply() {
+        if (featured) featured.style.display = matches(featured) ? "" : "none";
+        var matched = cards.filter(matches);
+        cards.forEach(function (c) { c.style.display = "none"; });
+        matched.slice(0, limit).forEach(function (c) { c.style.display = ""; });
+        var totalVisible = matched.length + (matches(featured) ? 1 : 0);
+        if (empty) empty.hidden = totalVisible !== 0;
+        if (more) more.hidden = matched.length <= limit;
+      }
+      function resetAndApply() { limit = PAGE; apply(); }
+      chips.forEach(function (chip) {
+        chip.addEventListener("click", function () {
+          chips.forEach(function (c) { c.classList.remove("is-active"); });
+          chip.classList.add("is-active");
+          activeCat = chip.getAttribute("data-cat");
+          resetAndApply();
+        });
+      });
+      if (search) search.addEventListener("input", resetAndApply);
+      if (more) more.addEventListener("click", function () { limit += PAGE; apply(); });
+      try {
+        var q0 = new URLSearchParams(window.location.search).get("q");
+        if (q0 && search) { search.value = q0; }
+      } catch (e) {}
+      apply();
+    })();
+  </script>
+
+  <style>
+    .blog-hero { padding-top: 140px; }
+    .breadcrumb { padding: 0 0 18px; }
+    .breadcrumb ol {
+      list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0;
+      font-family: "Montserrat", sans-serif; font-size: 0.8rem; color: #646464;
+    }
+    .breadcrumb li { display: flex; align-items: center; gap: 8px; }
+    .breadcrumb li + li::before { content: "›"; color: #b9b1a0; }
+    .breadcrumb a { color: #8b0000; text-decoration: none; }
+    .blog-intro { color: #646464; max-width: 640px; line-height: 1.7; }
+
+    .blog-toolbar {
+      max-width: 1100px; margin: 34px auto 8px; padding: 0 24px;
+      display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: center; justify-content: space-between;
+    }
+    .search-wrap { position: relative; flex: 1 1 300px; max-width: 420px; }
+    .search-ico { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #9a9a9a; pointer-events: none; }
+    #blogSearch {
+      width: 100%; font-family: "Montserrat", sans-serif; font-size: 0.92rem; color: #212121;
+      background: #fff; border: 1px solid #e2dccc; border-radius: 999px; padding: 13px 18px 13px 44px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    #blogSearch:focus { outline: none; border-color: #8b0000; box-shadow: 0 0 0 3px rgba(139,0,0,0.08); }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      font-family: "Montserrat", sans-serif; font-size: 0.78rem; letter-spacing: 0.02em; color: #646464;
+      background: transparent; border: 1px solid #e2dccc; padding: 8px 16px; border-radius: 999px;
+      cursor: pointer; transition: all 0.18s ease; white-space: nowrap;
+    }
+    .chip:hover { border-color: #8b0000; color: #8b0000; }
+    .chip.is-active { background: #8b0000; border-color: #8b0000; color: #fff; }
+
+    .featured {
+      max-width: 1100px; margin: 28px auto 0; padding: 0 24px;
+      display: grid; grid-template-columns: 1.15fr 1fr; gap: 0; text-decoration: none; color: inherit;
+    }
+    .featured-media { position: relative; border-radius: 8px 0 0 8px; overflow: hidden; min-height: 340px; background: #ece6d8; }
+    .featured-media img { width: 100%; height: 100%; min-height: 340px; object-fit: cover; display: block; transition: transform 0.5s ease; }
+    .featured:hover .featured-media img { transform: scale(1.04); }
+    .featured-flag {
+      position: absolute; top: 16px; left: 16px; background: #8b0000; color: #fff;
+      font-family: "Montserrat", sans-serif; font-size: 0.7rem; letter-spacing: 0.14em;
+      text-transform: uppercase; padding: 6px 14px; border-radius: 999px;
+    }
+    .featured-body {
+      background: #fbfaf6; border: 1px solid #e2dccc; border-left: none; border-radius: 0 8px 8px 0;
+      padding: 38px 40px; display: flex; flex-direction: column; justify-content: center;
+    }
+    .featured-body h2 {
+      font-family: "Playfair Display", Georgia, serif; font-weight: 500;
+      font-size: clamp(1.5rem, 2.4vw, 2rem); color: #212121; line-height: 1.18; margin: 12px 0 12px;
+    }
+    .featured-body p { color: #646464; line-height: 1.7; margin: 0 0 18px; }
+    .featured-link { font-family: "Montserrat", sans-serif; font-size: 0.82rem; letter-spacing: 0.08em; color: #8b0000; text-transform: uppercase; margin-top: 6px; }
+
+    .blog-list {
+      max-width: 1100px; margin: 40px auto 0; padding: 0 24px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 32px;
+    }
+    .blog-card {
+      display: flex; flex-direction: column; text-decoration: none; color: inherit;
+      border: 1px solid #e2dccc; border-radius: 8px; overflow: hidden; background: #fbfaf6;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .blog-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+    .blog-card img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; }
+    .blog-card-body { padding: 20px 22px 24px; display: flex; flex-direction: column; flex: 1; }
+    .blog-cat {
+      display: inline-block; align-self: flex-start; background: #f3e9e9; color: #8b0000;
+      padding: 4px 13px; border-radius: 999px; font-family: "Montserrat", sans-serif;
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.02em; margin-bottom: 12px;
+    }
+    .blog-card h2 { font-family: "Playfair Display", Georgia, serif; font-weight: 500; font-size: 1.25rem; color: #2e3a48; margin: 0 0 8px; line-height: 1.25; }
+    .blog-card p { color: #646464; font-size: 0.95rem; line-height: 1.6; margin: 0 0 14px; flex: 1; }
+    .blog-card-meta { font-family: "Montserrat", sans-serif; font-size: 0.78rem; color: #9a9a9a; }
+
+    .blog-more-wrap { text-align: center; margin: 40px auto 0; }
+    .blog-more {
+      font-family: "Montserrat", sans-serif; font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: #8b0000; background: transparent; border: 1px solid #8b0000; border-radius: 999px; padding: 14px 34px;
+      cursor: pointer; transition: all 0.18s ease;
+    }
+    .blog-more:hover { background: #8b0000; color: #fff; }
+    .blog-empty { max-width: 1100px; margin: 40px auto 0; padding: 0 24px 60px; text-align: center; font-family: "Montserrat", sans-serif; color: #646464; }
+
+    @media (max-width: 760px) {
+      .featured { grid-template-columns: 1fr; }
+      .featured-media { border-radius: 8px 8px 0 0; min-height: 220px; }
+      .featured-media img { min-height: 220px; }
+      .featured-body { border-left: 1px solid #e2dccc; border-top: none; border-radius: 0 0 8px 8px; padding: 28px 24px; }
+      .blog-toolbar { gap: 14px; }
+      .search-wrap { max-width: none; }
+    }
+  </style>
+</Base>

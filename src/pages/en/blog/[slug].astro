@@ -1,0 +1,9 @@
+---
+import BlogArticle from "../../../components/BlogArticle.astro";
+import { articleStaticPaths } from "../../../lib/content";
+export async function getStaticPaths() {
+  return articleStaticPaths("articlesEn");
+}
+const { slug, entry, html, toc, related } = Astro.props;
+---
+<BlogArticle lang="en" slug={slug} entry={entry} html={html} toc={toc} related={related} />

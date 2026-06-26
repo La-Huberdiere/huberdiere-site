@@ -1,0 +1,323 @@
+---
+import Base from "../layouts/Base.astro";
+import { getAuthor } from "../lib/authors";
+import { categoryLabel, readingTime, formatDate, wordCount, BLOG_UI, lp, type Lang, type TocItem } from "../lib/blog";
+import { articleSchema, breadcrumbSchema, faqSchema } from "../lib/seo";
+import { octorateUrl } from "../lib/octorate";
+
+interface Props { lang: Lang; slug: string; entry: any; html: string; toc: TocItem[]; related: any[] }
+const { lang, slug, entry, html, toc, related } = Astro.props;
+const T = BLOG_UI[lang];
+
+const author = getAuthor(entry.author, lang);
+const cat = categoryLabel(entry.category, lang);
+const published = formatDate(entry.publishedAt, lang);
+const updated = entry.updatedAt && entry.updatedAt !== entry.publishedAt ? formatDate(entry.updatedAt, lang) : "";
+const minutes = readingTime(html);
+const keywords = (entry.keywords as string[]) || [];
+const faq = ((entry.faq as { q: string; a: string }[]) || []).filter((f) => f.q && f.a);
+const basePath = `/blog/${slug}`; // sans préfixe de langue (Base ajoute le préfixe)
+const path = lp(lang, basePath); // chemin localisé pour le schema + le fil d'Ariane
+const bookingUrl = octorateUrl();
+
+const schemas = [
+  breadcrumbSchema([
+    { name: T.home, path: lp(lang, "/") },
+    { name: T.journal, path: lp(lang, "/blog") },
+    { name: entry.title, path },
+  ]),
+  articleSchema({
+    title: entry.title,
+    description: entry.description,
+    path,
+    image: entry.cover ?? undefined,
+    datePublished: entry.publishedAt ?? undefined,
+    dateModified: entry.updatedAt ?? entry.publishedAt ?? undefined,
+    author: { name: author.name, role: author.role, image: author.photo },
+    section: cat,
+    keywords,
+    wordCount: wordCount(html),
+  }),
+  ...(faq.length ? [faqSchema(faq.map((f) => ({ question: f.q, answer: f.a })))] : []),
+];
+---
+<Base
+  title={`${entry.title} — Château de la Huberdière`}
+  description={entry.description}
+  lang={lang}
+  path={basePath}
+  image={entry.cover ?? undefined}
+  ogType="article"
+  schemas={schemas}
+>
+  <div class="reading-progress" id="readProgress" aria-hidden="true"></div>
+
+  <article class="article">
+    <nav class="breadcrumb" aria-label="Fil d'Ariane">
+      <ol>
+        <li><a href={lp(lang, "/")}>{T.home}</a></li>
+        <li><a href={lp(lang, "/blog")}>{T.journal}</a></li>
+        <li aria-current="page">{entry.title}</li>
+      </ol>
+    </nav>
+
+    <header class="article-head reveal">
+      <p class="article-meta">
+        <span class="cat">{cat}</span>
+        {published && <span>· {published}</span>}
+        <span>· {minutes} {T.readingTime}</span>
+      </p>
+      <h1>{entry.title}</h1>
+      <p class="article-byline">{T.by} {author.name}, {author.role}</p>
+    </header>
+
+    {entry.cover && <img class="article-cover reveal" src={entry.cover} alt={entry.title} width="1200" height="630" />}
+
+    <div class="article-layout">
+      <div class="article-main">
+        <div class="article-body prose reveal" set:html={html} />
+
+        {keywords.length > 0 && (
+          <div class="article-tags reveal" aria-label="Mots-clés">
+            {keywords.map((k) => <a class="tag" href={`${lp(lang, "/blog")}?q=${encodeURIComponent(k)}`}>{k}</a>)}
+          </div>
+        )}
+
+        {faq.length > 0 && (
+          <section class="article-faq reveal" aria-label={T.faqTitle}>
+            <h2>{T.faqTitle}</h2>
+            <div class="faq-list">
+              {faq.map((f) => (
+                <details>
+                  <summary>{f.q}</summary>
+                  <div class="faq-answer"><p>{f.a}</p></div>
+                </details>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {updated && <p class="article-updated">{T.updated} {updated}.</p>}
+
+        <aside class="author-box reveal">
+          {author.photo
+            ? <img src={author.photo} alt={author.name} class="author-photo" />
+            : <span class="author-monogram" aria-hidden="true">{author.name.trim().charAt(0)}</span>}
+          <div>
+            <div class="author-name">{author.name}</div>
+            <div class="author-role">{author.role}</div>
+            <p class="author-bio">{author.bio}</p>
+          </div>
+        </aside>
+
+        <section class="article-cta reveal">
+          <h2>{T.ctaTitle}</h2>
+          <p>{T.ctaText}</p>
+          <a class="btn-burgundy" href={lp(lang, "/contact")}>{T.ctaBtn}</a>
+        </section>
+
+        {related.length > 0 && (
+          <section class="related reveal">
+            <h2>{T.related}</h2>
+            <div class="related-grid">
+              {related.map((r) => (
+                <a class="related-card" href={lp(lang, `/blog/${r.slug}`)}>
+                  {r.cover && <img src={r.cover} alt={r.title} loading="lazy" />}
+                  <span class="related-cat">{categoryLabel(r.category, lang)}</span>
+                  <span class="related-title">{r.title}</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <p class="article-back"><a href={lp(lang, "/blog")}>{T.back}</a></p>
+      </div>
+
+      <aside class="article-rail">
+        <div class="rail-sticky">
+          {toc.length > 1 && (
+            <nav class="toc" aria-label={T.toc}>
+              <p class="rail-title">{T.toc}</p>
+              <ul>
+                {toc.filter((t) => t.level === 2).map((t) => (
+                  <li><a href={`#${t.id}`} data-toc={t.id}>{t.text}</a></li>
+                ))}
+              </ul>
+            </nav>
+          )}
+
+          <div class="rail-card">
+            <p class="rail-kicker">{T.railKicker}</p>
+            <p class="rail-card-text">{T.railText}</p>
+            <a class="btn-burgundy rail-btn" href={bookingUrl} target="_blank" rel="noopener">{T.railBtn}</a>
+            <a class="rail-link" href={lp(lang, "/contact")}>{T.railLink}</a>
+          </div>
+
+          <form class="rail-nl" id="railNl" data-lang={lang} data-ok={T.nlOk} data-err={T.nlErr} novalidate>
+            <p class="rail-title">{T.nlTitle}</p>
+            <p class="rail-nl-lead">{T.nlLead}</p>
+            <input type="text" name="website" tabindex="-1" autocomplete="off" class="rail-hp" aria-hidden="true" />
+            <input type="email" name="email" placeholder={T.nlPlaceholder} aria-label={T.nlPlaceholder} required />
+            <button type="submit" id="railNlBtn">{T.nlBtn}</button>
+            <p class="rail-nl-status" id="railNlStatus" role="status"></p>
+          </form>
+        </div>
+      </aside>
+    </div>
+  </article>
+
+  <script is:inline>
+    (function () {
+      var bar = document.getElementById("readProgress");
+      var article = document.querySelector(".article-main");
+      function onScroll() {
+        if (!bar || !article) return;
+        var rect = article.getBoundingClientRect();
+        var total = article.offsetHeight - window.innerHeight;
+        var done = Math.min(1, Math.max(0, -rect.top / (total > 0 ? total : 1)));
+        bar.style.width = (done * 100).toFixed(1) + "%";
+      }
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", onScroll);
+      onScroll();
+
+      var links = Array.prototype.slice.call(document.querySelectorAll(".toc a[data-toc]"));
+      if (links.length && "IntersectionObserver" in window) {
+        var map = {};
+        links.forEach(function (l) { map[l.getAttribute("data-toc")] = l; });
+        var heads = links.map(function (l) { return document.getElementById(l.getAttribute("data-toc")); }).filter(Boolean);
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              links.forEach(function (l) { l.classList.remove("active"); });
+              if (map[e.target.id]) map[e.target.id].classList.add("active");
+            }
+          });
+        }, { rootMargin: "-15% 0px -70% 0px" });
+        heads.forEach(function (h) { io.observe(h); });
+      }
+
+      var f = document.getElementById("railNl");
+      if (f) {
+        var st = document.getElementById("railNlStatus");
+        var btn = document.getElementById("railNlBtn");
+        f.addEventListener("submit", async function (e) {
+          e.preventDefault();
+          if (!f.reportValidity()) return;
+          btn.disabled = true; st.textContent = "…";
+          var data = Object.fromEntries(new FormData(f).entries());
+          data.lang = f.getAttribute("data-lang") || "fr";
+          try {
+            var res = await fetch("/api/newsletter", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(data) });
+            if (!res.ok) throw new Error("http " + res.status);
+            st.textContent = f.getAttribute("data-ok");
+            f.reset(); btn.disabled = false;
+            if (window.huberTrack) window.huberTrack("newsletter_signup", {});
+          } catch (err) { btn.disabled = false; st.textContent = f.getAttribute("data-err"); }
+        });
+      }
+    })();
+  </script>
+</Base>
+
+<style>
+  .reading-progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: #8b0000; z-index: 200; transition: width 0.1s linear; }
+  .article { max-width: 1180px; margin: 0 auto; padding: 0 24px 100px; }
+  .breadcrumb { padding: 130px 0 0; }
+  .breadcrumb ol {
+    list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0;
+    font-family: "Montserrat", sans-serif; font-size: 0.8rem; color: #646464;
+  }
+  .breadcrumb li { display: flex; align-items: center; gap: 8px; }
+  .breadcrumb li + li::before { content: "›"; color: #b9b1a0; }
+  .breadcrumb a { color: #8b0000; text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+
+  .article-head { margin: 28px 0 24px; max-width: 820px; }
+  .article-meta { font-family: "Montserrat", sans-serif; font-size: 0.8rem; color: #646464; display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
+  .article-meta .cat { background: #f3e9e9; color: #8b0000; padding: 3px 12px; border-radius: 999px; font-weight: 500; letter-spacing: 0.02em; }
+  .article-head h1 { font-family: "Playfair Display", Georgia, serif; font-weight: 500; font-size: clamp(2rem, 4.5vw, 3rem); color: #212121; line-height: 1.15; margin: 0 0 14px; }
+  .article-byline { font-family: "Montserrat", sans-serif; font-size: 0.9rem; color: #646464; margin: 0; }
+
+  .article-cover { width: 100%; max-width: 1180px; height: auto; border-radius: 10px; margin: 8px auto 40px; display: block; }
+
+  .article-layout { display: grid; grid-template-columns: minmax(0, 1fr) 308px; gap: 56px; align-items: start; }
+  .article-main { min-width: 0; }
+  .article-main .prose { margin: 0; max-width: 720px; }
+
+  .article-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 30px 0 0; }
+  .article-tags .tag {
+    font-family: "Montserrat", sans-serif; font-size: 0.78rem; color: #646464; background: #f1ede2;
+    border: 1px solid #e2dccc; padding: 5px 13px; border-radius: 999px; text-decoration: none; transition: all 0.15s ease;
+  }
+  .article-tags .tag:hover { color: #8b0000; border-color: #8b0000; }
+  .article-updated { font-size: 0.82rem; color: #9a9a9a; font-style: italic; margin-top: 26px; }
+
+  .article-faq { margin: 48px 0 0; max-width: 720px; }
+  .article-faq > h2 { font-family: "Playfair Display", Georgia, serif; font-weight: 500; font-size: 1.6rem; color: #2e3a48; margin: 0 0 18px; }
+  .faq-list { border-top: 1px solid #e2dccc; }
+  .article-faq details { border-bottom: 1px solid #e2dccc; }
+  .article-faq summary { list-style: none; cursor: pointer; padding: 18px 36px 18px 0; position: relative; font-family: "Montserrat", sans-serif; font-weight: 500; font-size: 1rem; color: #212121; }
+  .article-faq summary::-webkit-details-marker { display: none; }
+  .article-faq summary::after { content: "+"; position: absolute; right: 4px; top: 50%; transform: translateY(-50%); font-size: 1.4rem; color: #8b0000; font-weight: 400; line-height: 1; transition: transform 0.2s ease; }
+  .article-faq details[open] summary::after { content: "–"; }
+  .article-faq summary:hover { color: #8b0000; }
+  .faq-answer p { margin: 0; padding: 0 0 20px; color: #646464; line-height: 1.75; font-family: "Montserrat", sans-serif; font-size: 0.96rem; }
+
+  .author-box { display: flex; gap: 18px; align-items: flex-start; margin: 44px 0; padding: 26px; background: #fbfaf6; border: 1px solid #ece6d8; border-radius: 10px; max-width: 720px; }
+  .author-photo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; flex: 0 0 auto; }
+  .author-monogram { width: 64px; height: 64px; border-radius: 50%; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; background: #8b0000; color: #f4f2ec; font-family: "Playfair Display", Georgia, serif; font-size: 1.7rem; }
+  .author-name { font-family: "Playfair Display", Georgia, serif; font-size: 1.15rem; color: #2e3a48; }
+  .author-role { font-family: "Montserrat", sans-serif; font-size: 0.82rem; color: #8b0000; margin: 2px 0 10px; }
+  .author-bio { font-family: "Montserrat", sans-serif; font-size: 0.92rem; color: #646464; line-height: 1.6; margin: 0; }
+
+  .article-cta { text-align: center; margin: 52px 0; padding: 44px 24px; background: #2e3a48; border-radius: 12px; color: #fff; max-width: 720px; }
+  .article-cta h2 { font-family: "Playfair Display", Georgia, serif; font-weight: 500; margin: 0 0 10px; color: #fff; }
+  .article-cta p { color: #d7d2c8; margin: 0 0 22px; font-family: "Montserrat", sans-serif; }
+
+  .related { margin: 48px 0; }
+  .related h2 { font-family: "Playfair Display", Georgia, serif; font-weight: 500; color: #2e3a48; margin: 0 0 20px; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+  .related-card { display: flex; flex-direction: column; text-decoration: none; color: inherit; border: 1px solid #e2dccc; border-radius: 8px; overflow: hidden; background: #fbfaf6; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+  .related-card:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,0,0,0.07); }
+  .related-card img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; }
+  .related-cat { font-family: "Montserrat", sans-serif; font-size: 0.68rem; color: #8b0000; letter-spacing: 0.04em; text-transform: uppercase; padding: 12px 14px 0; }
+  .related-title { display: block; padding: 4px 14px 14px; font-family: "Playfair Display", Georgia, serif; color: #2e3a48; font-size: 0.98rem; line-height: 1.3; }
+  .article-back { margin-top: 40px; font-family: "Montserrat", sans-serif; }
+  .article-back a { color: #8b0000; }
+
+  .rail-sticky { position: sticky; top: 110px; display: flex; flex-direction: column; gap: 26px; }
+  .rail-title { font-family: "Montserrat", sans-serif; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: #8b0000; margin: 0 0 14px; }
+  .toc ul { list-style: none; margin: 0; padding: 0; border-left: 2px solid #e2dccc; }
+  .toc li { margin: 0; }
+  .toc a { display: block; padding: 7px 0 7px 16px; margin-left: -2px; border-left: 2px solid transparent; font-family: "Montserrat", sans-serif; font-size: 0.86rem; color: #646464; text-decoration: none; line-height: 1.4; transition: color 0.15s, border-color 0.15s; }
+  .toc a:hover { color: #8b0000; }
+  .toc a.active { color: #8b0000; border-left-color: #8b0000; font-weight: 500; }
+
+  .rail-card { background: #fbfaf6; border: 1px solid #ece6d8; border-radius: 10px; padding: 24px; }
+  .rail-kicker { font-family: "Playfair Display", Georgia, serif; font-size: 1.15rem; color: #2e3a48; margin: 0 0 8px; }
+  .rail-card-text { font-family: "Montserrat", sans-serif; font-size: 0.86rem; color: #646464; line-height: 1.6; margin: 0 0 18px; }
+  .rail-btn { width: 100%; padding: 14px 18px !important; font-size: 10px !important; }
+  .rail-link { display: block; text-align: center; margin-top: 14px; font-family: "Montserrat", sans-serif; font-size: 0.82rem; color: #8b0000; text-decoration: none; }
+  .rail-link:hover { text-decoration: underline; }
+
+  .rail-nl { background: #2e3a48; border-radius: 10px; padding: 24px; }
+  .rail-nl .rail-title { color: #e8c9a0; }
+  .rail-nl-lead { font-family: "Montserrat", sans-serif; font-size: 0.84rem; color: #d7d2c8; line-height: 1.6; margin: 0 0 16px; }
+  .rail-hp { display: none; }
+  .rail-nl input[type="email"] { width: 100%; padding: 12px 14px; border: 1px solid #51606f; border-radius: 4px; background: #fff; color: #212121; font-family: "Montserrat", sans-serif; font-size: 0.9rem; margin-bottom: 10px; }
+  .rail-nl button { width: 100%; background: #8b0000; color: #fff; border: none; border-radius: 4px; padding: 12px; font-family: "Montserrat", sans-serif; letter-spacing: 0.06em; cursor: pointer; transition: opacity 0.15s ease; }
+  .rail-nl button:hover { opacity: 0.88; }
+  .rail-nl button:disabled { opacity: 0.6; cursor: default; }
+  .rail-nl-status { font-family: "Montserrat", sans-serif; font-size: 0.8rem; color: #f0e6c8; min-height: 1em; margin: 10px 0 0; }
+
+  @media (max-width: 980px) {
+    .article-layout { grid-template-columns: 1fr; gap: 0; }
+    .article-rail { margin-top: 40px; }
+    .rail-sticky { position: static; flex-direction: column; }
+    .toc { display: none; }
+    .article-main .prose, .author-box, .article-cta { max-width: none; }
+  }
+  @media (max-width: 560px) { .author-box { flex-direction: column; } }
+</style>
