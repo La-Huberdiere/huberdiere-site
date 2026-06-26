@@ -49,8 +49,8 @@ export const BLOG_UI: Record<Lang, Record<string, string>> = {
     metaTitle: "Journal du château — conseils mariage, séjour & art de vivre en Val de Loire",
     metaDesc:
       "Le journal du Château de la Huberdière : conseils et inspirations pour vos mariages, séjours, séminaires et retraites en Touraine, au cœur des Châteaux de la Loire.",
-    eyebrow: "Le Journal",
-    h1: "Le carnet du château",
+    eyebrow: "Touraine · Vallée de la Loire",
+    h1: "Le Journal du château de la Huberdière",
     intro:
       "La vie du domaine, nos adresses en vallée de la Loire et nos conseils pour s'y marier, y séjourner ou y recevoir.",
     searchPlaceholder: "Rechercher un sujet, un mot-clé…",
@@ -90,8 +90,8 @@ export const BLOG_UI: Record<Lang, Record<string, string>> = {
     metaTitle: "Château journal — wedding, stay & art-of-living tips in the Loire Valley",
     metaDesc:
       "The journal of Château de la Huberdière: tips and inspiration for your weddings, stays, seminars and retreats in Touraine, at the heart of the Loire châteaux.",
-    eyebrow: "The Journal",
-    h1: "The château notebook",
+    eyebrow: "Touraine · Loire Valley",
+    h1: "The Château de la Huberdière Journal",
     intro:
       "Life at the estate, our favourite spots in the Loire Valley, and tips for getting married, staying or hosting here.",
     searchPlaceholder: "Search a topic, a keyword…",
@@ -131,8 +131,8 @@ export const BLOG_UI: Record<Lang, Record<string, string>> = {
     metaTitle: "Diario del castello — matrimoni, soggiorni e arte di vivere nella Valle della Loira",
     metaDesc:
       "Il diario del Château de la Huberdière: consigli e ispirazioni per matrimoni, soggiorni, seminari e ritiri in Turenna, nel cuore dei castelli della Loira.",
-    eyebrow: "Il Diario",
-    h1: "Il taccuino del castello",
+    eyebrow: "Turenna · Valle della Loira",
+    h1: "Il Diario dello Château de la Huberdière",
     intro:
       "La vita della tenuta, i nostri indirizzi nella Valle della Loira e i consigli per sposarsi, soggiornare o ricevere qui.",
     searchPlaceholder: "Cerca un argomento, una parola chiave…",
