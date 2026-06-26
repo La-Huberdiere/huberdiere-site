@@ -72,7 +72,11 @@ const ogLocale = lang === "en" ? "en_GB" : lang === "it" ? "it_IT" : "fr_FR";
 
 // URL canonique de la page courante (auto-référente, sensible à la langue).
 const canonical = new URL(localePath(lang), Astro.site).href;
-const ogImage = new URL(image ?? SITE.ogImage, Astro.site).href;
+// L'image OG doit être servie par l'hôte réel pendant la phase de pré-bascule
+// (le domaine prod est encore sur Wix). PUBLIC_OG_HOST surcharge l'hôte de l'image
+// uniquement ; à retirer après la bascule DNS pour revenir au domaine prod.
+const ogHost = import.meta.env.PUBLIC_OG_HOST || Astro.site;
+const ogImage = new URL(image ?? SITE.ogImage, ogHost).href;
 
 // Données structurées : Organisation + WebSite partout, + schemas de la page.
 const allSchemas = [organizationSchema(), webSiteSchema(), ...schemas];

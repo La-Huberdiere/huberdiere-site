@@ -13,3 +13,4 @@ dist/
 # os
 .DS_Store
 !.env.example
+.vercel
