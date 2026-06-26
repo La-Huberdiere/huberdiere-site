@@ -4,7 +4,6 @@ import { getAuthor } from "../lib/authors";
 import { categoryLabel, readingTime, formatDate, wordCount, BLOG_UI, lp, type Lang, type TocItem } from "../lib/blog";
 import { articleSchema, breadcrumbSchema, faqSchema } from "../lib/seo";
 import { octorateUrl } from "../lib/octorate";
-import { existsSync } from "node:fs";
 
 interface Props { lang: Lang; slug: string; entry: any; html: string; toc: TocItem[]; related: any[] }
 const { lang, slug, entry, html, toc, related } = Astro.props;
@@ -21,11 +20,10 @@ const basePath = `/blog/${slug}`; // sans préfixe de langue (Base ajoute le pr�
 const path = lp(lang, basePath); // chemin localisé pour le schema + le fil d'Ariane
 const bookingUrl = octorateUrl();
 
-// Image de partage social (og:image) avec titre incrusté, générée par
-// scripts/gen-article-og.mjs. Repli sur la cover si elle n'existe pas encore
-// (article créé dans Keystatic sans avoir relancé le script).
-const ogRel = lang === "fr" ? `/og/articles/${slug}.jpg` : `/og/articles/${lang}/${slug}.jpg`;
-const ogImage = existsSync(`public${ogRel}`) ? ogRel : entry.cover ?? undefined;
+// Image de partage social (og:image) avec titre incrusté, GÉNÉRÉE AU BUILD par
+// l'endpoint src/pages/og/articles/**.jpg.ts (satori + resvg). Toujours présente,
+// donc tout nouvel article créé dans Keystatic obtient son image automatiquement.
+const ogImage = lang === "fr" ? `/og/articles/${slug}.jpg` : `/og/articles/${lang}/${slug}.jpg`;
 
 const schemas = [
   breadcrumbSchema([
