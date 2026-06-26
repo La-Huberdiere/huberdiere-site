@@ -51,7 +51,7 @@ case "${1:-}" in
     trap cleanup EXIT
     echo "1) Ouvre cette adresse EXACTE (avec /setup à la fin) :"
     echo "      http://localhost:4321/keystatic/setup"
-    echo "2) « Deployed App URL » : ${PROD_URL}   |   « GitHub organization » : laisse vide"
+    echo "2) « Deployed App URL » : ${PROD_URL}   |   « GitHub organization » : ${REPO_OWNER}"
     echo "3) Clique « Create GitHub App », autorise sur GitHub, installe l'app sur"
     echo "   ${REPO_OWNER}/${REPO_NAME}. Keystatic écrit CLIENT_ID/SECRET dans .env."
     echo "4) Ctrl+C, puis :  ./scripts/setup-keystatic-github.sh vercel"
