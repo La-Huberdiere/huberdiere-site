@@ -30,13 +30,17 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
 .site-header{
   position:fixed;top:0;left:0;right:0;z-index:50;
   display:flex;align-items:center;justify-content:space-between;
-  padding:10px 48px;transition:padding .4s,box-shadow .4s;
+  padding:10px 48px;
   background:var(--bg);color:var(--ink);
   box-shadow:0 1px 0 var(--line-soft);
 }
+/* Transition uniquement après le 1er rendu (classe .anim ajoutée en JS),
+   pour ne pas animer l'état initial à chaque changement de page. */
+.site-header.anim{transition:padding .4s,box-shadow .4s}
+.site-header.anim .brand-logo{transition:height .4s}
 .site-header.solid{padding:6px 48px;box-shadow:0 2px 14px rgba(0,0,0,.07)}
 .brand{display:flex;align-items:center}
-.brand-logo{height:58px;width:auto;display:block;transition:height .4s}
+.brand-logo{height:58px;width:auto;display:block}
 .site-header.solid .brand-logo{height:48px}
 .nav{display:flex;align-items:center;gap:18px}
 .lang-switch{display:inline-flex;align-items:center;gap:6px;margin-left:14px;font-size:.78rem;letter-spacing:.04em}

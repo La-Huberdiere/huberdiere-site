@@ -208,9 +208,13 @@ const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
     <script>
       const header = document.getElementById("siteHeader");
       const hasHero = !!document.querySelector(".hero, .page-hero");
-      const onScroll = () => header?.classList.toggle("solid", !hasHero || window.scrollY > 40);
-      onScroll();
-      window.addEventListener("scroll", onScroll, { passive: true });
+      const setSolid = () => header?.classList.toggle("solid", !hasHero || window.scrollY > 40);
+      setSolid(); // état initial posé SANS transition (pas d'animation au chargement)
+      // La transition ne s'active qu'au 1er scroll réel (c'est là qu'on la veut).
+      window.addEventListener("scroll", () => {
+        header?.classList.add("anim");
+        setSolid();
+      }, { passive: true });
 
       document.getElementById("hero")?.classList.add("loaded");
 
