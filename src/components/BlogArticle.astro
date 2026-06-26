@@ -4,6 +4,7 @@ import { getAuthor } from "../lib/authors";
 import { categoryLabel, readingTime, formatDate, wordCount, BLOG_UI, lp, type Lang, type TocItem } from "../lib/blog";
 import { articleSchema, breadcrumbSchema, faqSchema } from "../lib/seo";
 import { octorateUrl } from "../lib/octorate";
+import { existsSync } from "node:fs";
 
 interface Props { lang: Lang; slug: string; entry: any; html: string; toc: TocItem[]; related: any[] }
 const { lang, slug, entry, html, toc, related } = Astro.props;
@@ -20,6 +21,12 @@ const basePath = `/blog/${slug}`; // sans préfixe de langue (Base ajoute le pr�
 const path = lp(lang, basePath); // chemin localisé pour le schema + le fil d'Ariane
 const bookingUrl = octorateUrl();
 
+// Image de partage social (og:image) avec titre incrusté, générée par
+// scripts/gen-article-og.mjs. Repli sur la cover si elle n'existe pas encore
+// (article créé dans Keystatic sans avoir relancé le script).
+const ogRel = lang === "fr" ? `/og/articles/${slug}.jpg` : `/og/articles/${lang}/${slug}.jpg`;
+const ogImage = existsSync(`public${ogRel}`) ? ogRel : entry.cover ?? undefined;
+
 const schemas = [
   breadcrumbSchema([
     { name: T.home, path: lp(lang, "/") },
@@ -30,7 +37,7 @@ const schemas = [
     title: entry.title,
     description: entry.description,
     path,
-    image: entry.cover ?? undefined,
+    image: ogImage,
     datePublished: entry.publishedAt ?? undefined,
     dateModified: entry.updatedAt ?? entry.publishedAt ?? undefined,
     author: { name: author.name, role: author.role, image: author.photo },
@@ -46,7 +53,7 @@ const schemas = [
   description={entry.description}
   lang={lang}
   path={basePath}
-  image={entry.cover ?? undefined}
+  image={ogImage}
   ogType="article"
   schemas={schemas}
 >
