@@ -9,7 +9,6 @@ import { reader } from "../lib/content";
 const { m, cible = "mariage", heroImg } = Astro.props;
 const hero = heroImg ?? pHero;
 
-// Fil d'Ariane visible (cohérent avec le BreadcrumbList schema).
 const lang = (Astro.currentLocale as "fr" | "en" | "it") ?? "fr";
 
 // Maillage réciproque : la page argent renvoie vers les articles du blog liés
@@ -34,9 +33,6 @@ if (lang === "fr") {
   related = entries.filter((e): e is { slug: string; title: string } => e !== null);
 }
 const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
-const prefix = lang === "fr" ? "" : `/${lang}`;
-const homeLabel = lang === "fr" ? "Accueil" : "Home";
-const crumbName = String(m.title).split(/[—|]/)[0].trim();
 ---
 
 <section class="page-hero">
@@ -47,13 +43,6 @@ const crumbName = String(m.title).split(/[—|]/)[0].trim();
     <p>{m.hero.lead}</p>
   </div>
 </section>
-
-<nav class="breadcrumb" aria-label="Fil d'Ariane">
-  <ol>
-    <li><a href={`${prefix}/`}>{homeLabel}</a></li>
-    <li aria-current="page">{crumbName}</li>
-  </ol>
-</nav>
 
 {m.stats && m.stats.length > 0 && (
   <section class="stats-band">
@@ -264,18 +253,6 @@ const crumbName = String(m.title).split(/[—|]/)[0].trim();
     color: #2e3a48; font-size: 1.2rem; margin: 0 0 10px;
   }
   .extra-card p { color: #646464; line-height: 1.65; margin: 0; font-size: 0.96rem; }
-
-  .breadcrumb { max-width: 1080px; margin: 0 auto; padding: 18px 24px 0; }
-  .breadcrumb ol {
-    list-style: none; display: flex; flex-wrap: wrap; gap: 8px;
-    margin: 0; padding: 0;
-    font-family: "Montserrat", sans-serif; font-size: 0.8rem; color: #646464;
-  }
-  .breadcrumb li { display: flex; align-items: center; gap: 8px; }
-  .breadcrumb li + li::before { content: "›"; color: #b9b1a0; }
-  .breadcrumb a { color: #8b0000; text-decoration: none; }
-  .breadcrumb a:hover { text-decoration: underline; }
-  .breadcrumb [aria-current="page"] { color: #646464; }
 
   .faq { padding: 90px 24px 30px; }
   .faq-list { max-width: 820px; margin: 0 auto; }
