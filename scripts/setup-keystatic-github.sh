@@ -12,9 +12,10 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 ENV_FILE=".env"
-REPO_OWNER="alexis-morain"
+REPO_OWNER="La-Huberdiere"
 REPO_NAME="huberdiere-site"
-PROD_URL="https://site-v0-rho.vercel.app"
+PROD_URL="https://huberdiere-site.vercel.app"
+VERCEL_SCOPE="la-huberdiere"
 
 set_env_var() {
   # set_env_var CLE VALEUR : écrit/remplace la clé dans .env (sans toucher au reste)
@@ -61,6 +62,10 @@ case "${1:-}" in
   vercel)
     command -v vercel >/dev/null 2>&1 || export PATH="$HOME/.bun/bin:$PATH"
     command -v vercel >/dev/null 2>&1 || { echo "vercel CLI introuvable (bun)."; exit 1; }
+    # Le projet est sur le Team du client : on cible son scope + son token API.
+    VTOKEN="$(get_env_var VERCEL_TOKEN)"
+    [ -n "$VTOKEN" ] || { echo "✗ VERCEL_TOKEN absent du .env."; exit 1; }
+    VFLAGS="--scope $VERCEL_SCOPE --token $VTOKEN"
 
     for KEY in KEYSTATIC_GITHUB_CLIENT_ID KEYSTATIC_GITHUB_CLIENT_SECRET KEYSTATIC_SECRET PUBLIC_KEYSTATIC_GITHUB_APP_SLUG; do
       VAL="$(get_env_var "$KEY")"
@@ -68,8 +73,8 @@ case "${1:-}" in
         echo "✗ $KEY est vide dans .env. Lance d'abord 'secret' puis 'wizard'."; exit 1
       fi
       # on retire l'ancienne valeur si elle existe (silencieux), puis on (re)pose
-      vercel env rm "$KEY" production -y >/dev/null 2>&1 || true
-      printf '%s' "$VAL" | vercel env add "$KEY" production >/dev/null
+      vercel env rm "$KEY" production -y $VFLAGS >/dev/null 2>&1 || true
+      printf '%s' "$VAL" | vercel env add "$KEY" production $VFLAGS >/dev/null
       echo "✓ $KEY poussé sur Vercel (production)"
     done
 
@@ -79,7 +84,7 @@ case "${1:-}" in
     echo "  ${PROD_URL}/api/keystatic/github/oauth/callback"
     echo
     echo "Déploiement en production…"
-    vercel deploy --prod --yes
+    vercel deploy --prod --yes $VFLAGS
     echo "✓ Déployé. Édition en ligne : ${PROD_URL}/keystatic"
     ;;
 

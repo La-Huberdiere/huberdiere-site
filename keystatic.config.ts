@@ -329,7 +329,7 @@ const articlesCollection = (label: string, dir: string, previewBase: string) =>
 
 export default config({
   storage: useGithub
-    ? { kind: "github", repo: { owner: "alexis-morain", name: "huberdiere-site" } }
+    ? { kind: "github", repo: { owner: "La-Huberdiere", name: "huberdiere-site" } }
     : { kind: "local" },
   ui: {
     brand: { name: "Château de la Huberdière" },
