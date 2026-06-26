@@ -1,32 +1,32 @@
 {
   "fr": {
-    "title": "Restauration et table d'hôtes au château en Touraine — Château de la Huberdière",
-    "description": "Une cuisine maison aux saveurs italiennes et tourangelles, préparée avec les produits du potager et des producteurs locaux. Petit-déjeuner, dîners sous les étoiles, assiettes à partager.",
+    "title": "Table d'hôtes et dîners au château en Touraine, Château de la Huberdière",
+    "description": "Le soir, une cuisine maison aux saveurs italiennes et tourangelles : planches à partager tous les soirs sauf le dimanche, et un dîner 100% italien le jeudi, sur réservation. Produits du potager et des producteurs de Touraine.",
     "hero": {
       "eyebrow": "Restauration · Table d'hôtes",
       "titleLine1": "À table",
       "titleLine2Italic": "au château.",
-      "lead": "Une gastronomie authentique préparée sur place avec les produits du potager et des producteurs locaux de Touraine."
+      "lead": "Le soir venu, une cuisine maison préparée sur place avec les produits du potager et des producteurs de Touraine, servie en intérieur ou en extérieur, dans un cadre bucolique."
     },
     "intro": [
-      "Du petit-déjeuner gourmand aux dîners raffinés, tous les repas sont préparés sur place avec des ingrédients frais, en privilégiant le bio et la qualité locale. Une approche sincère de la table d'hôtes, loin des formules industrielles.",
-      "Les menus mettent à l'honneur les saveurs méditerranéennes et régionales, et l'ambiance conviviale du château transforme chaque repas en moment de détente, surtout lors des dîners servis sous les étoiles en terrasse."
+      "La table de la Huberdière se vit le soir. Tous les soirs de la semaine sauf le dimanche, des planches à partager mettent à l'honneur fromages, charcuteries et légumes de la région, dans une ambiance simple et conviviale. Le service de restauration n'est pas proposé le midi.",
+      "Le jeudi, place à un dîner 100% italien : un menu fixe, dans l'esprit d'un repas de famille, à réserver à l'avance. Rien de gastronomique ni de guindé, juste la cuisine que Lodovica prépare comme à la maison."
     ],
     "cards": [
       {
         "num": "I",
-        "title": "Petit-déjeuner inclus",
-        "text": "Boissons chaudes, fruits frais, viennoiseries et spécialités maison, servis de 8h30 à 10h30. Inclus dans la chambre."
+        "title": "Les planches à partager",
+        "text": "Tous les soirs sauf le dimanche : fromages, charcuteries fines et légumes de la région, à partager en toute simplicité."
       },
       {
         "num": "II",
-        "title": "Dîner italien sous les étoiles",
-        "text": "Le jeudi soir, un menu fixe servi en terrasse à 20h. Une vraie dolce vita tourangelle."
+        "title": "Le dîner italien du jeudi",
+        "text": "Chaque jeudi soir, un menu fixe 100% italien, sur réservation. Un repas de famille, généreux et sans façon."
       },
       {
         "num": "III",
-        "title": "Assiettes à partager",
-        "text": "Salades, fromages locaux, charcuteries fines et légumes grillés, servis de 18h à 20h30."
+        "title": "Petit-déjeuner inclus",
+        "text": "Servi chaque matin pour les personnes qui séjournent au château. Inclus dans la chambre."
       }
     ],
     "final": {
@@ -39,16 +39,16 @@
     },
     "stats": [
       {
+        "big": "6 soirs / 7",
+        "lbl": "planches à partager"
+      },
+      {
+        "big": "Le jeudi",
+        "lbl": "dîner 100% italien"
+      },
+      {
         "big": "100%",
         "lbl": "fait maison, sur place"
-      },
-      {
-        "big": "Bio",
-        "lbl": "& circuit court"
-      },
-      {
-        "big": "20h",
-        "lbl": "dîner italien le jeudi"
       }
     ],
     "extrasHead": {
@@ -62,11 +62,11 @@
       },
       {
         "title": "L'âme italienne",
-        "text": "Les saveurs méditerranéennes de Lodovica dans chaque assiette, du petit-déjeuner au dîner."
+        "text": "Les saveurs méditerranéennes de Lodovica, surtout le jeudi soir, pour son dîner italien."
       },
       {
         "title": "Pour vos événements",
-        "text": "Buffets, dîners servis ou table d'hôtes, adaptés à vos mariages, séminaires et réunions."
+        "text": "Mariages, séminaires et réunions de famille disposent d'une restauration dédiée, distincte de la table des séjours."
       }
     ],
     "faqHead": {
@@ -76,50 +76,54 @@
     "faq": [
       {
         "q": "La table est-elle ouverte au public ?",
-        "a": "La restauration est proposée dans le cadre des séjours et des événements privés organisés au château : mariages, séminaires, retraites et réunions de famille."
+        "a": "Non. La restauration est réservée aux personnes qui séjournent au château, en dehors des événements privés qui bénéficient d'une offre dédiée."
       },
       {
-        "q": "La cuisine est-elle faite maison ?",
-        "a": "Oui, tous les repas sont préparés sur place avec des produits frais, le potager du château et des producteurs locaux de Touraine."
+        "q": "Servez-vous le midi ?",
+        "a": "Non, le service de restauration est proposé le soir uniquement. Le midi, vous profitez librement du parc et de ses espaces, en intérieur comme en extérieur."
+      },
+      {
+        "q": "Quels soirs propose-t-on les planches à partager ?",
+        "a": "Tous les soirs de la semaine sauf le dimanche."
+      },
+      {
+        "q": "Faut-il réserver le dîner italien du jeudi ?",
+        "a": "Oui. Le dîner du jeudi est un menu fixe 100% italien, à réserver à l'avance. Une cuisine familiale, sans prétention gastronomique."
       },
       {
         "q": "Peut-on adapter les menus aux régimes alimentaires ?",
         "a": "Oui, les menus s'adaptent : végétarien, sans gluten et autres demandes."
-      },
-      {
-        "q": "Quelles cuisines proposez-vous ?",
-        "a": "Des saveurs italiennes et tourangelles, avec un dîner italien convivial le jeudi soir."
       }
     ]
   },
   "en": {
-    "title": "Catering and table d’hôte meals at the château in Touraine — Château de la Huberdière",
-    "description": "Home-cooked meals combining Italian and Tours-style flavours, prepared using produce from the vegetable garden and local growers. Breakfast, dinners under the stars, dishes to share.",
+    "title": "Table d’hôte meals and dinners at the château in Touraine, Château de la Huberdière",
+    "description": "In the evening, home-cooked meals with Italian and Tours-style flavours: platters to share every evening except Sundays, and a 100% Italian dinner on Thursdays, by reservation only. Produce from our vegetable garden and local producers in Touraine.",
     "hero": {
       "eyebrow": "Catering · Table d'hôtes",
       "titleLine1": "Let’s eat",
       "titleLine2Italic": "at the castle.",
-      "lead": "Authentic cuisine prepared on the premises using produce from our vegetable garden and local producers in Touraine."
+      "lead": "Come evening, enjoy home-cooked meals prepared on the premises using produce from our vegetable garden and local farmers in Touraine, served indoors or outdoors in a picturesque setting."
     },
     "intro": [
-      "From gourmet breakfasts to refined dinners, all meals are prepared on the premises using fresh ingredients, with a focus on organic produce and local quality. A genuine approach to table d’hôte dining, a far cry from mass-produced options.",
-      "The menus showcase Mediterranean and regional flavours, and the château’s welcoming atmosphere turns every meal into a relaxing experience, especially during dinners served under the stars on the terrace."
+      "La Table de la Huberdière is best experienced in the evening. Every evening of the week except Sundays, platters to share showcase local cheeses, charcuterie and vegetables, in a simple and friendly atmosphere. Lunch is not served.",
+      "On Thursdays, it’s time for a 100% Italian dinner: a set menu, in the spirit of a family meal, which must be booked in advance. Nothing gourmet or stuffy – just the sort of home-cooked food that Lodovica prepares."
     ],
     "cards": [
       {
         "num": "I",
-        "title": "Breakfast included",
-        "text": "Hot drinks, fresh fruit, pastries and homemade specialities, served from 8.30 am to 10.30 am. Included in the room rate."
+        "title": "Plates to share",
+        "text": "Every evening except Sundays: cheeses, fine cured meats and locally sourced vegetables, perfect for sharing in a relaxed atmosphere."
       },
       {
         "num": "II",
-        "title": "An Italian dinner under the stars",
-        "text": "On Thursday evenings, a set menu is served on the terrace at 8 pm. A real taste of the ‘dolce vita’ in Tours."
+        "title": "Thursday’s Italian dinner",
+        "text": "Every Thursday evening, a set menu featuring 100% Italian cuisine, by reservation only. A hearty, unpretentious family meal."
       },
       {
         "num": "III",
-        "title": "Plates for sharing",
-        "text": "Salads, local cheeses, fine charcuterie and grilled vegetables, served from 6.00 pm to 8.30 pm."
+        "title": "Breakfast included",
+        "text": "Served every morning for guests staying at the château. Included in the room rate."
       }
     ],
     "final": {
@@ -132,16 +136,16 @@
     },
     "stats": [
       {
+        "big": "6 / 7",
+        "lbl": "evenings of sharing platters"
+      },
+      {
+        "big": "Thursday",
+        "lbl": "a 100% Italian dinner"
+      },
+      {
         "big": "100%",
         "lbl": "homemade, on the premises"
-      },
-      {
-        "big": "Bio",
-        "lbl": "& short supply chain"
-      },
-      {
-        "big": "20h",
-        "lbl": "Italian dinner on Thursday"
       }
     ],
     "extrasHead": {
@@ -155,11 +159,11 @@
       },
       {
         "title": "The Italian spirit",
-        "text": "Lodovica’s Mediterranean flavours on every plate, from breakfast to dinner."
+        "text": "Lodovica’s Mediterranean flavours, especially on Thursday evenings for her Italian dinner."
       },
       {
         "title": "For your events",
-        "text": "Buffets, set dinners or table d’hôtes, tailored to your weddings, seminars and meetings."
+        "text": "Weddings, seminars and family gatherings have their own dedicated catering service, separate from that provided for guests staying at the hotel."
       }
     ],
     "faqHead": {
@@ -169,50 +173,54 @@
     "faq": [
       {
         "q": "Is the restaurant open to the public?",
-        "a": "Catering is available as part of stays and private events organised at the château: weddings, seminars, retreats and family gatherings."
+        "a": "No. Dining is reserved for guests staying at the château, with the exception of private events, for which there is a special package."
       },
       {
-        "q": "Is the food home-cooked?",
-        "a": "Yes, all meals are prepared on site using fresh produce from the château’s vegetable garden and local producers in Touraine."
+        "q": "Do you serve lunch?",
+        "a": "No, the catering service is available in the evening only. At lunchtime, you are free to enjoy the park and its facilities, both indoors and outdoors."
+      },
+      {
+        "q": "On which evenings are the platters to share available?",
+        "a": "Every evening of the week except Sundays."
+      },
+      {
+        "q": "Do we need to book the Italian dinner on Thursday?",
+        "a": "Yes. Thursday’s dinner is a set menu featuring 100% Italian cuisine, which must be booked in advance. It’s home-style cooking, without any gourmet pretensions."
       },
       {
         "q": "Can the menus be adapted to suit different dietary requirements?",
         "a": "Yes, the menus can be adapted to suit vegetarian, gluten-free and other dietary requirements."
-      },
-      {
-        "q": "What types of cuisine do you offer?",
-        "a": "Flavours from Italy and Tours, with a convivial Italian dinner on Thursday evenings."
       }
     ]
   },
   "it": {
-    "title": "Ristorazione e cena presso il castello in Touraine — Castello di La Huberdière",
-    "description": "Una cucina casalinga dai sapori italiani e di Tours, preparata con i prodotti dell’orto e dei produttori locali. Colazione, cene sotto le stelle, piatti da condividere.",
+    "title": "Tavola d'hôtes e cene al castello in Touraine, Château de la Huberdière",
+    "description": "La sera, cucina casalinga dai sapori italiani e tipici di Tours: taglieri da condividere tutte le sere tranne la domenica, e una cena 100% italiana il giovedì, su prenotazione. Prodotti dell’orto e dei produttori della Touraine.",
     "hero": {
       "eyebrow": "Ristorazione · Cena in famiglia",
       "titleLine1": "A tavola",
       "titleLine2Italic": "al castello.",
-      "lead": "Una cucina autentica, preparata in loco con i prodotti dell'orto e dei produttori locali della Touraine."
+      "lead": "Alla sera, piatti fatti in casa preparati sul posto con i prodotti dell'orto e dei produttori della Touraine, serviti all'interno o all'aperto, in un ambiente bucolico."
     },
     "intro": [
-      "Dalla colazione gourmet alle cene raffinate, tutti i pasti sono preparati in loco con ingredienti freschi, privilegiando i prodotti biologici e di provenienza locale. Un approccio genuino alla cucina casalinga, lontano dalle formule industriali.",
-      "I menù esaltano i sapori mediterranei e regionali, e l'atmosfera accogliente del castello trasforma ogni pasto in un momento di relax, soprattutto durante le cene servite sotto le stelle sulla terrazza."
+      "Il ristorante La Table de la Huberdière è il posto giusto dove andare la sera. Tutte le sere della settimana, tranne la domenica, vengono serviti piatti da condividere a base di formaggi, salumi e verdure della regione, in un’atmosfera semplice e conviviale. A pranzo non è previsto il servizio di ristorazione.",
+      "Il giovedì è il momento di una cena 100% italiana: un menu fisso, nello spirito di un pasto in famiglia, da prenotare in anticipo. Niente di gastronomico né di formale, solo la cucina che Lodovica prepara proprio come a casa."
     ],
     "cards": [
       {
         "num": "I",
-        "title": "Colazione inclusa",
-        "text": "Bevande calde, frutta fresca, dolci e specialità della casa, serviti dalle 8:30 alle 10:30. Incluso nel prezzo della camera."
+        "title": "Le tavole da condividere",
+        "text": "Tutte le sere tranne la domenica: formaggi, salumi pregiati e verdure locali, da gustare in tutta semplicità."
       },
       {
         "num": "II",
-        "title": "Cena italiana sotto le stelle",
-        "text": "Il giovedì sera, un menu fisso servito sulla terrazza alle 20:00. Una vera “dolce vita” alla maniera di Tours."
+        "title": "La cena italiana del giovedì",
+        "text": "Ogni giovedì sera, un menu fisso 100% italiano, su prenotazione. Un pasto in famiglia, abbondante e senza pretese."
       },
       {
         "num": "III",
-        "title": "Piatti da condividere",
-        "text": "Insalate, formaggi locali, salumi pregiati e verdure grigliate, serviti dalle 18:00 alle 20:30."
+        "title": "Colazione inclusa",
+        "text": "Viene servita ogni mattina agli ospiti che soggiornano al castello. È inclusa nel prezzo della camera."
       }
     ],
     "final": {
@@ -225,16 +233,16 @@
     },
     "stats": [
       {
+        "big": "6 / 7",
+        "lbl": "sere con taglieri da condividere"
+      },
+      {
+        "big": "Il giovedì",
+        "lbl": "cena 100% italiana"
+      },
+      {
         "big": "100%",
         "lbl": "fatto in casa, sul posto"
-      },
-      {
-        "big": "Bio",
-        "lbl": "& filiera corta"
-      },
-      {
-        "big": "20h",
-        "lbl": "cena italiana il giovedì"
       }
     ],
     "extrasHead": {
@@ -248,11 +256,11 @@
       },
       {
         "title": "L'anima italiana",
-        "text": "I sapori mediterranei di Lodovica in ogni piatto, dalla colazione alla cena."
+        "text": "I sapori mediterranei di Lodovica, soprattutto il giovedì sera, in occasione della sua cena italiana."
       },
       {
         "title": "Per i vostri eventi",
-        "text": "Buffet, cene servite o menu fisso, adatti a matrimoni, seminari e riunioni."
+        "text": "Matrimoni, seminari e riunioni di famiglia dispongono di un servizio di ristorazione dedicato, distinto da quello previsto per i soggiorni."
       }
     ],
     "faqHead": {
@@ -262,19 +270,23 @@
     "faq": [
       {
         "q": "Il ristorante è aperto al pubblico?",
-        "a": "Il servizio di ristorazione è disponibile nell'ambito dei soggiorni e degli eventi privati organizzati al castello: matrimoni, seminari, ritiri e riunioni di famiglia."
+        "a": "No. Il servizio di ristorazione è riservato agli ospiti che soggiornano nel castello, ad eccezione degli eventi privati, per i quali è prevista un'offerta dedicata."
       },
       {
-        "q": "Il cibo è fatto in casa?",
-        "a": "Sì, tutti i pasti vengono preparati in loco con prodotti freschi, provenienti dall'orto del castello e dai produttori locali della Touraine."
+        "q": "Servite il pranzo?",
+        "a": "No, il servizio di ristorazione è disponibile solo la sera. A pranzo potrete godervi liberamente il parco e i suoi spazi, sia al chiuso che all’aperto."
+      },
+      {
+        "q": "In quali sere vengono proposti i piatti da condividere?",
+        "a": "Tutte le sere della settimana tranne la domenica."
+      },
+      {
+        "q": "È necessario prenotare la cena italiana del giovedì?",
+        "a": "Sì. La cena del giovedì prevede un menù fisso al 100% italiano, da prenotare in anticipo. Una cucina casalinga, senza pretese gastronomiche."
       },
       {
         "q": "È possibile adattare i menù alle diverse esigenze alimentari?",
         "a": "Sì, i menu sono personalizzabili: vegetariani, senza glutine e altre richieste."
-      },
-      {
-        "q": "Quali tipi di cucina proponete?",
-        "a": "Sapori italiani e di Tours, con una cena italiana in compagnia il giovedì sera."
       }
     ]
   }
