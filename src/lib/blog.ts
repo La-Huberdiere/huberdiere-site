@@ -49,10 +49,10 @@ export const BLOG_UI: Record<Lang, Record<string, string>> = {
     metaTitle: "Journal du château — conseils mariage, séjour & art de vivre en Val de Loire",
     metaDesc:
       "Le journal du Château de la Huberdière : conseils et inspirations pour vos mariages, séjours, séminaires et retraites en Touraine, au cœur des Châteaux de la Loire.",
-    eyebrow: "Le journal",
-    h1: "Conseils & inspirations du château",
+    eyebrow: "Le Journal",
+    h1: "Le carnet du château",
     intro:
-      "Nos conseils pour organiser un mariage, un séjour ou un séminaire au château, et nos inspirations pour découvrir la Touraine et les Châteaux de la Loire.",
+      "La vie du domaine, nos adresses en vallée de la Loire et nos conseils pour s'y marier, y séjourner ou y recevoir.",
     searchPlaceholder: "Rechercher un sujet, un mot-clé…",
     searchAria: "Rechercher un article",
     filterAria: "Filtrer par thème",
@@ -90,10 +90,10 @@ export const BLOG_UI: Record<Lang, Record<string, string>> = {
     metaTitle: "Château journal — wedding, stay & art-of-living tips in the Loire Valley",
     metaDesc:
       "The journal of Château de la Huberdière: tips and inspiration for your weddings, stays, seminars and retreats in Touraine, at the heart of the Loire châteaux.",
-    eyebrow: "The journal",
-    h1: "Tips & inspiration from the château",
+    eyebrow: "The Journal",
+    h1: "The château notebook",
     intro:
-      "Our advice for planning a wedding, a stay or a seminar at the château, and our inspiration for discovering Touraine and the Loire châteaux.",
+      "Life at the estate, our favourite spots in the Loire Valley, and tips for getting married, staying or hosting here.",
     searchPlaceholder: "Search a topic, a keyword…",
     searchAria: "Search an article",
     filterAria: "Filter by theme",
@@ -131,10 +131,10 @@ export const BLOG_UI: Record<Lang, Record<string, string>> = {
     metaTitle: "Diario del castello — matrimoni, soggiorni e arte di vivere nella Valle della Loira",
     metaDesc:
       "Il diario del Château de la Huberdière: consigli e ispirazioni per matrimoni, soggiorni, seminari e ritiri in Turenna, nel cuore dei castelli della Loira.",
-    eyebrow: "Il diario",
-    h1: "Consigli e ispirazioni del castello",
+    eyebrow: "Il Diario",
+    h1: "Il taccuino del castello",
     intro:
-      "I nostri consigli per organizzare un matrimonio, un soggiorno o un seminario al castello, e le nostre ispirazioni per scoprire la Turenna e i castelli della Loira.",
+      "La vita della tenuta, i nostri indirizzi nella Valle della Loira e i consigli per sposarsi, soggiornare o ricevere qui.",
     searchPlaceholder: "Cerca un argomento, una parola chiave…",
     searchAria: "Cerca un articolo",
     filterAria: "Filtra per tema",
