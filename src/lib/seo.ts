@@ -23,11 +23,13 @@ export const SITE = {
   rating: { value: "9.5", best: "10", count: "42" },
   priceRange: "€€€",
   ogImage: "/og/og-default.jpg",
-  // Réseaux sociaux (renforce le graphe d'entité et le SEO local). La fiche Google
-  // est rattachée via geo/hasMap. Récupérés du Wix (2026-06-25).
+  // Réseaux sociaux + fiche Google Business Profile (renforce le graphe d'entité et le
+  // SEO local). Instagram/Facebook récupérés du Wix (2026-06-25) ; fiche Google = URL Maps
+  // stable par cid (cid 5728274181919890705, ajouté 2026-06-28).
   sameAs: [
     "https://www.instagram.com/chateaudelahuberdiere",
     "https://www.facebook.com/people/Chateau-de-la-Huberdière/100093953672278/",
+    "https://www.google.com/maps?cid=5728274181919890705",
   ] as string[],
 };
 

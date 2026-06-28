@@ -46,7 +46,7 @@ export const BLOG_UI: Record<Lang, Record<string, string>> = {
   fr: {
     home: "Accueil",
     journal: "Journal",
-    metaTitle: "Journal du château — conseils mariage, séjour & art de vivre en Val de Loire",
+    metaTitle: "Journal du château · conseils mariage, séjour & art de vivre en Val de Loire",
     metaDesc:
       "Le journal du Château de la Huberdière : conseils et inspirations pour vos mariages, séjours, séminaires et retraites en Touraine, au cœur des Châteaux de la Loire.",
     eyebrow: "Touraine · Vallée de la Loire",
@@ -87,7 +87,7 @@ export const BLOG_UI: Record<Lang, Record<string, string>> = {
   en: {
     home: "Home",
     journal: "Journal",
-    metaTitle: "Château journal — wedding, stay & art-of-living tips in the Loire Valley",
+    metaTitle: "Château journal · wedding, stay & art-of-living tips in the Loire Valley",
     metaDesc:
       "The journal of Château de la Huberdière: tips and inspiration for your weddings, stays, seminars and retreats in Touraine, at the heart of the Loire châteaux.",
     eyebrow: "Touraine · Loire Valley",
@@ -128,7 +128,7 @@ export const BLOG_UI: Record<Lang, Record<string, string>> = {
   it: {
     home: "Home",
     journal: "Diario",
-    metaTitle: "Diario del castello — matrimoni, soggiorni e arte di vivere nella Valle della Loira",
+    metaTitle: "Diario del castello · matrimoni, soggiorni e arte di vivere nella Valle della Loira",
     metaDesc:
       "Il diario del Château de la Huberdière: consigli e ispirazioni per matrimoni, soggiorni, seminari e ritiri in Turenna, nel cuore dei castelli della Loira.",
     eyebrow: "Turenna · Valle della Loira",

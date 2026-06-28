@@ -1,6 +1,6 @@
 {
   "fr": {
-    "title": "Lieu pour retraite yoga et stage bien-être — Château, Val de Loire",
+    "title": "Lieu pour retraite yoga et stage bien-être · Château, Val de Loire",
     "description": "Un château privatisé pour vos retraites yoga, stages de bien-être, ateliers d'écriture ou de méditation : 20 participants logés, 14 hectares, 4 salons modulables. À 2 h 20 de Paris.",
     "hero": {
       "eyebrow": "Retraites yoga & stages bien-être",
@@ -101,7 +101,7 @@
     ]
   },
   "en": {
-    "title": "A venue for yoga retreats and wellness courses — Castle, Loire Valley",
+    "title": "A venue for yoga retreats and wellness courses · Castle, Loire Valley",
     "description": "A private château for your yoga retreats, wellness courses, writing or meditation workshops: accommodation for 20 participants, 14 hectares, 4 versatile function rooms. 2 hours 20 from Paris.",
     "hero": {
       "eyebrow": "Yoga retreats & wellness courses",
@@ -131,10 +131,10 @@
       }
     ],
     "final": {
-      "eyebrow": "Your pension",
+      "eyebrow": "Your retreat",
       "titleLine1": "Let’s imagine your",
-      "titleLine2Italic": "work placement at the château.",
-      "text": "Please let us know your dates, the sport and the number of participants. We’ll send you a bespoke proposal.",
+      "titleLine2Italic": "retreat at the château.",
+      "text": "Tell us your dates, your discipline and the number of participants. We’ll send you a bespoke proposal.",
       "submitLabel": "Receive a proposal",
       "responseLine": "We’ll get back to you within 24 hours"
     },
@@ -202,7 +202,7 @@
     ]
   },
   "it": {
-    "title": "Luogo per ritiri di yoga e corsi di benessere — Castello, Valle della Loira",
+    "title": "Luogo per ritiri di yoga e corsi di benessere · Castello, Valle della Loira",
     "description": "Un castello a vostra disposizione per ritiri di yoga, corsi di benessere, laboratori di scrittura o di meditazione: 20 posti letto, 14 ettari, 4 sale modulabili. A 2 ore e 20 da Parigi.",
     "hero": {
       "eyebrow": "Ritiri di yoga e corsi di benessere",
@@ -232,9 +232,9 @@
       }
     ],
     "final": {
-      "eyebrow": "La vostra pensione",
+      "eyebrow": "Il vostro ritiro",
       "titleLine1": "Immaginiamo il vostro",
-      "titleLine2Italic": "tirocinio al castello.",
+      "titleLine2Italic": "ritiro al castello.",
       "text": "Comunicateci le date, la disciplina e il numero di partecipanti. Vi invieremo un'offerta su misura.",
       "submitLabel": "Ricevere un'offerta",
       "responseLine": "Risposta entro 24 ore"
@@ -281,7 +281,7 @@
     },
     "faq": [
       {
-        "q": "Quali tipi di pensionati ospitate?",
+        "q": "Quali tipi di ritiri ospitate?",
         "a": "Ritiri di yoga, corsi di meditazione e benessere, soggiorni e laboratori di scrittura, seminari di crescita personale. La struttura si adatta alla maggior parte delle attività."
       },
       {

@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 
 const { entry, html } = Astro.props;
 ---
-<Base title={`${entry.title} — Château de la Huberdière`} description={entry.description}>
+<Base title={`${entry.title} · Château de la Huberdière`} description={entry.description}>
   {entry.heroImage && (
     <section class="page-hero">
       <img src={entry.heroImage} alt={entry.title} style="width:100%;height:100%;object-fit:cover" />
