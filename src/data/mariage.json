@@ -1,12 +1,12 @@
 {
   "fr": {
     "title": "Mariage au château — Val de Loire, près d'Amboise | La Huberdière",
-    "description": "Votre mariage au château en Val de Loire. Un domaine du XVIᵉ siècle privatisé rien que pour vous, parc séculaire, de 30 à 150 convives et 21 couchages sur place, à 2 h de Paris.",
+    "description": "Votre mariage au château en Val de Loire. Un domaine du XVIᵉ siècle privatisé rien que pour vous, parc séculaire, de 30 à 150 convives et 21 couchages sur place, à 2 h 20 de Paris.",
     "hero": {
       "eyebrow": "Mariage au château · Val de Loire",
       "titleLine1": "Votre mariage au château",
       "titleLine2Italic": "de la Huberdière.",
-      "lead": "Un château pour mariage privatisé rien que pour vous : parc de douze hectares, art de recevoir d'une maison de famille, et vos proches qui dorment sur place. À deux heures de Paris."
+      "lead": "Un château pour mariage privatisé rien que pour vous : parc de quatorze hectares, art de recevoir d'une maison de famille, et vos proches qui dorment sur place. À 2 h 20 de Paris."
     },
     "intro": [
       "Se marier au château, vraiment au château : la Huberdière se privatise entièrement pour votre mariage, sans aucun autre événement en parallèle. Cérémonie laïque sous les arbres centenaires, vin d'honneur sur la terrasse au soleil couchant, dîner dans la grande salle voûtée, puis la fête sous les étoiles. Au matin, vos invités se réveillent sur place.",
@@ -16,7 +16,7 @@
       {
         "num": "I",
         "title": "Le lieu",
-        "text": "Château du XVIᵉ siècle, parc clos de 12 hectares, terrasse, grande salle voûtée et orangerie. Décor naturel, sans superflu."
+        "text": "Château du XVIᵉ siècle, parc clos de 14 hectares, terrasse, grande salle voûtée et orangerie. Décor naturel, sans superflu."
       },
       {
         "num": "II",
@@ -43,11 +43,11 @@
         "lbl": "couchages, jusqu'à 150 convives"
       },
       {
-        "big": "15 ha",
+        "big": "14 ha",
         "lbl": "de parc séculaire privatisé"
       },
       {
-        "big": "2 h",
+        "big": "2 h 20",
         "lbl": "de Paris"
       }
     ],
@@ -62,7 +62,7 @@
       },
       {
         "title": "Le parc",
-        "text": "Quinze hectares de bois, d'étangs et de prairies pour vos cérémonies, et l'Orangerie ou les salons en repli élégant si la météo se montre capricieuse."
+        "text": "Quatorze hectares de bois, d'étangs et de prairies pour vos cérémonies, et l'Orangerie ou les salons en repli élégant si la météo se montre capricieuse."
       },
       {
         "title": "Un interlocuteur dédié",
@@ -84,11 +84,11 @@
       },
       {
         "q": "Où se situe le château et à quelle distance de Paris ?",
-        "a": "En Touraine, à Nazelles-Négron près d'Amboise, au cœur des Châteaux de la Loire, à environ 2 heures de Paris et 30 minutes de Tours."
+        "a": "En Touraine, à Nazelles-Négron près d'Amboise, au cœur des Châteaux de la Loire, à environ 2 h 20 de Paris et 30 minutes de Tours."
       },
       {
         "q": "Peut-on se marier en plein air dans le parc ?",
-        "a": "Oui, le parc séculaire de douze hectares se prête aux cérémonies laïques sous les arbres, au vin d'honneur en terrasse et à la fête en intérieur comme en extérieur."
+        "a": "Oui, le parc séculaire de quatorze hectares se prête aux cérémonies laïques sous les arbres, au vin d'honneur en terrasse et à la fête en intérieur comme en extérieur."
       },
       {
         "q": "Proposez-vous un accompagnement pour l'organisation ?",
@@ -98,12 +98,12 @@
   },
   "en": {
     "title": "Wedding at the château — Loire Valley, near Amboise | La Huberdière",
-    "description": "Your wedding at a château in the Loire Valley. A 16th-century estate reserved exclusively for you, with a historic park, accommodation for 30 to 150 guests and 21 beds on site, just 2 hours from Paris.",
+    "description": "Your wedding at a château in the Loire Valley. A 16th-century estate reserved exclusively for you, with a historic park, accommodation for 30 to 150 guests and 21 beds on site, just 2 hours 20 from Paris.",
     "hero": {
       "eyebrow": "Wedding at the château · Loire Valley",
       "titleLine1": "Your wedding at the château",
       "titleLine2Italic": "de la Huberdière.",
-      "lead": "A castle exclusively reserved for your wedding: a twelve-hectare estate, the warm hospitality of a family home, and your loved ones staying overnight on site. Just two hours from Paris."
+      "lead": "A castle exclusively reserved for your wedding: a fourteen-hectare estate, the warm hospitality of a family home, and your loved ones staying overnight on site. Just 2 hours 20 from Paris."
     },
     "intro": [
       "Get married at the château – and we really do mean the château: La Huberdière is exclusively yours for your wedding, with no other events taking place at the same time. A non-religious ceremony beneath the centuries-old trees, a reception on the terrace as the sun sets, dinner in the grand vaulted hall, followed by a celebration under the stars. In the morning, your guests wake up right there on the premises.",
@@ -113,7 +113,7 @@
       {
         "num": "I",
         "title": "The venue",
-        "text": "A 16th-century château, set in 12 hectares of enclosed grounds, with a terrace, a large vaulted hall and an orangery. A natural setting, free from excess."
+        "text": "A 16th-century château, set in 14 hectares of enclosed grounds, with a terrace, a large vaulted hall and an orangery. A natural setting, free from excess."
       },
       {
         "num": "II",
@@ -140,11 +140,11 @@
         "lbl": "accommodation for up to 150 guests"
       },
       {
-        "big": "15 ha",
+        "big": "14 ha",
         "lbl": "a centuries-old park that has been privatised"
       },
       {
-        "big": "2 h",
+        "big": "2 h 20",
         "lbl": "in Paris"
       }
     ],
@@ -159,7 +159,7 @@
       },
       {
         "title": "The park",
-        "text": "Fifteen hectares of woodland, ponds and meadows for your events, and the Orangery or the elegant indoor reception rooms should the weather turn unsettled."
+        "text": "Fourteen hectares of woodland, ponds and meadows for your events, and the Orangery or the elegant indoor reception rooms should the weather turn unsettled."
       },
       {
         "title": "A dedicated contact person",
@@ -181,11 +181,11 @@
       },
       {
         "q": "Where is the château located, and how far is it from Paris?",
-        "a": "In Touraine, in Nazelles-Négron near Amboise, in the heart of the Loire Valley, about 2 hours from Paris and 30 minutes from Tours."
+        "a": "In Touraine, in Nazelles-Négron near Amboise, in the heart of the Loire Valley, about 2 hours 20 from Paris and 30 minutes from Tours."
       },
       {
         "q": "Can we get married outdoors in the park?",
-        "a": "Yes, the 12-hectare historic park is ideal for secular ceremonies under the trees, receptions on the terrace, and celebrations both indoors and outdoors."
+        "a": "Yes, the 14-hectare historic park is ideal for secular ceremonies under the trees, receptions on the terrace, and celebrations both indoors and outdoors."
       },
       {
         "q": "Do you offer support with the organisation?",
@@ -195,12 +195,12 @@
   },
   "it": {
     "title": "Matrimonio al castello — Valle della Loira, vicino ad Amboise | La Huberdière",
-    "description": "Il vostro matrimonio in un castello nella Valle della Loira. Una tenuta del XVI secolo riservata esclusivamente a voi, con un parco secolare, da 30 a 150 invitati e 21 posti letto in loco, a 2 ore da Parigi.",
+    "description": "Il vostro matrimonio in un castello nella Valle della Loira. Una tenuta del XVI secolo riservata esclusivamente a voi, con un parco secolare, da 30 a 150 invitati e 21 posti letto in loco, a 2 ore e 20 da Parigi.",
     "hero": {
       "eyebrow": "Matrimonio al castello · Valle della Loira",
       "titleLine1": "Il vostro matrimonio al castello",
       "titleLine2Italic": "di Huberdière.",
-      "lead": "Un castello a vostra completa disposizione per il matrimonio: un parco di dodici ettari, l’accoglienza calorosa di una casa di famiglia e i vostri cari che pernottano sul posto. A due ore da Parigi."
+      "lead": "Un castello a vostra completa disposizione per il matrimonio: un parco di quattordici ettari, l’accoglienza calorosa di una casa di famiglia e i vostri cari che pernottano sul posto. A 2 ore e 20 da Parigi."
     },
     "intro": [
       "Sposarsi al castello, proprio al castello: La Huberdière viene interamente riservata per il vostro matrimonio, senza alcun altro evento in contemporanea. Cerimonia laica sotto alberi secolari, ricevimento sulla terrazza al tramonto, cena nella grande sala a volta e poi festa sotto le stelle. Al mattino, i vostri ospiti si sveglieranno direttamente sul posto.",
@@ -210,7 +210,7 @@
       {
         "num": "I",
         "title": "Il luogo",
-        "text": "Castello del XVI secolo, parco recintato di 12 ettari, terrazza, grande sala a volta e aranciera. Ambiente naturale, senza fronzoli."
+        "text": "Castello del XVI secolo, parco recintato di 14 ettari, terrazza, grande sala a volta e aranciera. Ambiente naturale, senza fronzoli."
       },
       {
         "num": "II",
@@ -237,11 +237,11 @@
         "lbl": "posti letto, fino a 150 ospiti"
       },
       {
-        "big": "15 ha",
+        "big": "14 ha",
         "lbl": "di un parco secolare privatizzato"
       },
       {
-        "big": "2 h",
+        "big": "2 h 20",
         "lbl": "di Parigi"
       }
     ],
@@ -256,7 +256,7 @@
       },
       {
         "title": "Il parco",
-        "text": "Quindici ettari di boschi, laghetti e prati per le vostre cerimonie, e l’Orangerie o gli eleganti saloni come riparo in caso di maltempo."
+        "text": "Quattordici ettari di boschi, laghetti e prati per le vostre cerimonie, e l’Orangerie o gli eleganti saloni come riparo in caso di maltempo."
       },
       {
         "title": "Un referente dedicato",
@@ -278,11 +278,11 @@
       },
       {
         "q": "Dove si trova il castello e a che distanza da Parigi?",
-        "a": "In Touraine, a Nazelles-Négron, vicino ad Amboise, nel cuore dei Castelli della Loira, a circa 2 ore da Parigi e 30 minuti da Tours."
+        "a": "In Touraine, a Nazelles-Négron, vicino ad Amboise, nel cuore dei Castelli della Loira, a circa 2 ore e 20 da Parigi e 30 minuti da Tours."
       },
       {
         "q": "È possibile sposarsi all'aperto nel parco?",
-        "a": "Sì, il parco secolare di dodici ettari si presta perfettamente a cerimonie laiche all’ombra degli alberi, a ricevimenti sulla terrazza e a feste sia al chiuso che all’aperto."
+        "a": "Sì, il parco secolare di quattordici ettari si presta perfettamente a cerimonie laiche all’ombra degli alberi, a ricevimenti sulla terrazza e a feste sia al chiuso che all’aperto."
       },
       {
         "q": "Offrite un servizio di assistenza per l'organizzazione?",

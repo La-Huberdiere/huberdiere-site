@@ -1,12 +1,12 @@
 {
   "fr": {
     "title": "Louer un château pour un grand groupe — Val de Loire | La Huberdière",
-    "description": "Louez un château entier pour réunir famille ou amis : 21 couchages en 10 suites privatives, parc de 14 hectares et table d'hôtes maison. Grande capacité d'accueil, à 2 h de Paris.",
+    "description": "Louez un château entier pour réunir famille ou amis : 21 couchages en 10 suites privatives, parc de 14 hectares et table d'hôtes maison. Grande capacité d'accueil, à 2 h 20 de Paris.",
     "hero": {
       "eyebrow": "Louer le château · Val de Loire",
       "titleLine1": "Louer un château",
       "titleLine2Italic": "pour réunir les siens.",
-      "lead": "Le château privatisé rien que pour votre groupe : 21 couchages, parc de quatorze hectares et grande table conviviale. De quoi réunir toute la famille au même endroit. À deux heures de Paris."
+      "lead": "Le château privatisé rien que pour votre groupe : 21 couchages, parc de quatorze hectares et grande table conviviale. De quoi réunir toute la famille au même endroit. À 2 h 20 de Paris."
     },
     "intro": [
       "Entre Amboise et Chenonceau, louez le château entier pour votre tribu : vingt et un couchages dans dix suites de prestige, chacune avec sa salle de bain privative. Une grande capacité d'accueil pour réunir toutes les générations au même endroit, sans compromis sur l'intimité.",
@@ -47,7 +47,7 @@
         "lbl": "de parc boisé"
       },
       {
-        "big": "2 h",
+        "big": "2 h 20",
         "lbl": "de Paris"
       }
     ],
@@ -104,18 +104,18 @@
       },
       {
         "q": "À quelle distance de Paris ?",
-        "a": "Environ 2 heures de Paris, en Touraine, près d'Amboise."
+        "a": "Environ 2 h 20 de Paris, en Touraine, près d'Amboise."
       }
     ]
   },
   "en": {
     "title": "Rent a château for a large group — Loire Valley | La Huberdière",
-    "description": "Rent an entire château for a family or friends’ get-together: sleeps 21 in 10 private suites, set in 14-hectare grounds, with home-cooked meals served by the hosts. Plenty of space, just 2 hours from Paris.",
+    "description": "Rent an entire château for a family or friends’ get-together: sleeps 21 in 10 private suites, set in 14-hectare grounds, with home-cooked meals served by the hosts. Plenty of space, just 2 hours 20 from Paris.",
     "hero": {
       "eyebrow": "Rent the château · Loire Valley",
       "titleLine1": "Rent a castle",
       "titleLine2Italic": "to bring his family together.",
-      "lead": "The château, exclusively for your group: sleeps 21, set in fourteen-hectare grounds, and featuring a large, convivial dining table. The perfect place to bring the whole family together. Just two hours from Paris."
+      "lead": "The château, exclusively for your group: sleeps 21, set in fourteen-hectare grounds, and featuring a large, convivial dining table. The perfect place to bring the whole family together. Just 2 hours 20 from Paris."
     },
     "intro": [
       "Between Amboise and Chenonceau, hire the entire château for your family: twenty-one beds in ten luxury suites, each with its own en-suite bathroom. Plenty of space to bring all generations together in one place, without compromising on privacy.",
@@ -156,7 +156,7 @@
         "lbl": "wooded park"
       },
       {
-        "big": "2 h",
+        "big": "2 h 20",
         "lbl": "in Paris"
       }
     ],
@@ -213,18 +213,18 @@
       },
       {
         "q": "How far is it from Paris?",
-        "a": "About two hours from Paris, in Touraine, near Amboise."
+        "a": "About 2 hours 20 from Paris, in Touraine, near Amboise."
       }
     ]
   },
   "it": {
     "title": "Affittare un castello per un gruppo numeroso — Valle della Loira | La Huberdière",
-    "description": "Affittate un intero castello per riunire la famiglia o gli amici: 21 posti letto in 10 suite private, un parco di 14 ettari e cucina casalinga. Ampia capacità ricettiva, a 2 ore da Parigi.",
+    "description": "Affittate un intero castello per riunire la famiglia o gli amici: 21 posti letto in 10 suite private, un parco di 14 ettari e cucina casalinga. Ampia capacità ricettiva, a 2 ore e 20 da Parigi.",
     "hero": {
       "eyebrow": "Affittare il castello · Valle della Loira",
       "titleLine1": "Affittare un castello",
       "titleLine2Italic": "per riunire i propri cari.",
-      "lead": "Il castello a disposizione esclusiva del vostro gruppo: 21 posti letto, un parco di quattordici ettari e un grande tavolo dove mangiare in compagnia. L’ideale per riunire tutta la famiglia in un unico posto. A due ore da Parigi."
+      "lead": "Il castello a disposizione esclusiva del vostro gruppo: 21 posti letto, un parco di quattordici ettari e un grande tavolo dove mangiare in compagnia. L’ideale per riunire tutta la famiglia in un unico posto. A 2 ore e 20 da Parigi."
     },
     "intro": [
       "Tra Amboise e Chenonceau, affittate l'intero castello per la vostra famiglia allargata: ventuno posti letto in dieci suite di prestigio, ciascuna con bagno privato. Una grande capienza per riunire tutte le generazioni sotto lo stesso tetto, senza rinunciare alla privacy.",
@@ -265,7 +265,7 @@
         "lbl": "di un parco boscoso"
       },
       {
-        "big": "2 h",
+        "big": "2 h 20",
         "lbl": "di Parigi"
       }
     ],
@@ -322,7 +322,7 @@
       },
       {
         "q": "A che distanza si trova da Parigi?",
-        "a": "A circa 2 ore da Parigi, in Touraine, vicino ad Amboise."
+        "a": "A circa 2 ore e 20 da Parigi, in Touraine, vicino ad Amboise."
       }
     ]
   }

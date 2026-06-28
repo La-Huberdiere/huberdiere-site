@@ -4,7 +4,7 @@
       "eyebrow": "Touraine · Châteaux de la Loire",
       "titleLine1": "Le Château",
       "titleLine2Italic": "de la Huberdière",
-      "lead": "Une demeure du XVIᵉ siècle, au cœur des Châteaux de la Loire. Pour vos mariages, vos séjours, vos séminaires et vos plus beaux moments, à deux heures de Paris.",
+      "lead": "Une demeure du XVIᵉ siècle, au cœur des Châteaux de la Loire. Pour vos mariages, vos séjours, vos séminaires et vos plus beaux moments, à 2 h 20 de Paris.",
       "ctaPrimary": "Recevoir une proposition",
       "ctaSecondary": "Découvrir le château"
     },
@@ -15,9 +15,9 @@
       "paragraphs": [
         "Édifié au XVIᵉ siècle, à dix minutes du château royal d'Amboise et du Clos Lucé, le Château de la Huberdière n'est ni un hôtel, ni un musée. C'est une maison habitée, où l'on reçoit comme on l'a toujours fait ici, avec attention et discrétion.",
         "Cinq siècles de pierre de tuffeau, de boiseries patinées, de cheminées de marbre. Et un parti pris : préserver l'âme du lieu, sans jamais la figer.",
-        "Au cœur d'un parc de douze hectares, entre Azay-le-Rideau, Chenonceau et Chambord, la Huberdière vous accueille pour une nuit, un séminaire, un mariage, ou le temps d'un déjeuner."
+        "Au cœur d'un parc de quatorze hectares, entre Azay-le-Rideau, Chenonceau et Chambord, la Huberdière vous accueille pour une nuit, un séminaire, un mariage, ou le temps d'un déjeuner."
       ],
-      "sign": "À deux heures de Paris."
+      "sign": "À 2 h 20 de Paris."
     },
     "activitiesHead": {
       "eyebrow": "Toutes vos occasions",
@@ -30,9 +30,9 @@
         "num": "I — Chambres d'hôtes",
         "titlePlain": "Séjourner ",
         "titleItalic": "au château.",
-        "text": "Cinq chambres d'exception, toutes différentes. Tentures d'époque, lit à baldaquin, cheminée d'origine, salle de bain refaite avec soin. Petit-déjeuner servi en terrasse aux beaux jours, dans la grande salle quand le ciel le décide autrement.",
+        "text": "Dix chambres d'exception, toutes différentes. Tentures d'époque, lit à baldaquin, cheminée d'origine, salle de bain refaite avec soin. Petit-déjeuner servi en terrasse aux beaux jours, dans la grande salle quand le ciel le décide autrement.",
         "points": [
-          "5 chambres, 2 à 14 personnes en privatisation",
+          "10 chambres, jusqu'à 21 personnes en privatisation",
           "Petit-déjeuner inclus, table d'hôtes sur réservation",
           "Accès au parc et à la piscine privative"
         ],
@@ -56,7 +56,7 @@
         "num": "III — Séminaire d'entreprise",
         "titlePlain": "Travailler ",
         "titleItalic": "dans un cadre rare.",
-        "text": "Comités de direction, masters classes, séminaires stratégiques, journées de cohésion. Une salle boisée pour réfléchir, douze hectares de parc pour marcher, une piscine pour clore la journée. Confidentialité totale garantie par la privatisation des lieux.",
+        "text": "Comités de direction, masters classes, séminaires stratégiques, journées de cohésion. Une salle boisée pour réfléchir, quatorze hectares de parc pour marcher, une piscine pour clore la journée. Confidentialité totale garantie par la privatisation des lieux.",
         "points": [
           "Salle plénière équipée, salles de sous-commission",
           "De 8 à 40 collaborateurs, en privatisation",
@@ -105,14 +105,14 @@
       "eyebrow": "Au cœur de la Touraine",
       "titleLine1Plain": "Entre Amboise ",
       "titleLine1Italic": "et Chambord,",
-      "titleLine2": "à deux heures de Paris.",
+      "titleLine2": "à 2 h 20 de Paris.",
       "paragraphs": [
         "La Huberdière se cache dans la campagne tourangelle, à dix minutes du château royal d'Amboise et du Clos Lucé, dernière demeure de Léonard de Vinci. Azay-le-Rideau, Chenonceau, Villandry et Chambord à moins d'une heure.",
         "Depuis Paris : TGV en 1 h 05 jusqu'à Tours, puis vingt minutes en voiture. Liaisons directes également depuis Bordeaux, Lyon et Nantes."
       ],
       "pins": [
         {
-          "big": "2 h",
+          "big": "2 h 20",
           "lbl": "de Paris"
         },
         {
@@ -120,7 +120,7 @@
           "lbl": "d'Amboise"
         },
         {
-          "big": "12 ha",
+          "big": "14 ha",
           "lbl": "de parc privé"
         }
       ]
@@ -140,7 +140,7 @@
       "eyebrow": "Touraine · Loire Valley",
       "titleLine1": "The Castle",
       "titleLine2Italic": "de la Huberdière",
-      "lead": "A 16th-century manor house in the heart of the Loire Valley. Perfect for weddings, holidays, seminars and your most memorable moments, just two hours from Paris.",
+      "lead": "A 16th-century manor house in the heart of the Loire Valley. Perfect for weddings, holidays, seminars and your most memorable moments, just 2 hours 20 from Paris.",
       "ctaPrimary": "Receive a proposal",
       "ctaSecondary": "Explore the castle"
     },
@@ -151,9 +151,9 @@
       "paragraphs": [
         "Built in the 16th century, ten minutes from the Royal Château of Amboise and the Clos Lucé, the Château de la Huberdière is neither a hotel nor a museum. It is a private residence, where guests are welcomed as they always have been here, with care and discretion.",
         "Five centuries of tuffeau stone, weathered wood panelling and marble fireplaces. And a clear commitment: to preserve the spirit of the place, without ever allowing it to become static.",
-        "Set in the heart of a twelve-hectare park, between Azay-le-Rideau, Chenonceau and Chambord, La Huberdière welcomes you for an overnight stay, a seminar, a wedding or simply for lunch."
+        "Set in the heart of a fourteen-hectare park, between Azay-le-Rideau, Chenonceau and Chambord, La Huberdière welcomes you for an overnight stay, a seminar, a wedding or simply for lunch."
       ],
-      "sign": "Two hours from Paris."
+      "sign": "2 hours 20 from Paris."
     },
     "activitiesHead": {
       "eyebrow": "For all your occasions",
@@ -166,9 +166,9 @@
         "num": "I — Bed and Breakfasts",
         "titlePlain": "To stay ",
         "titleItalic": "at the castle.",
-        "text": "Five exceptional rooms, each one different. Period drapes, a four-poster bed, an original fireplace, and a bathroom that has been carefully refurbished. Breakfast is served on the terrace in fine weather, or in the large dining room if the weather is inclement.",
+        "text": "Ten exceptional rooms, each one different. Period drapes, a four-poster bed, an original fireplace, and a bathroom that has been carefully refurbished. Breakfast is served on the terrace in fine weather, or in the large dining room if the weather is inclement.",
         "points": [
-          "5 bedrooms, sleeps 2 to 14 people (exclusive use)",
+          "10 bedrooms, sleeps up to 21 (exclusive use)",
           "Breakfast included; set menu available upon booking",
           "Access to the park and the private swimming pool"
         ],
@@ -192,7 +192,7 @@
         "num": "III — In-house seminar",
         "titlePlain": "Work ",
         "titleItalic": "in a unique setting.",
-        "text": "Executive committees, masterclasses, strategic seminars, team-building days. A wood-panelled room for reflection, twelve hectares of grounds for a stroll, and a swimming pool to round off the day. Complete confidentiality guaranteed as the venue is exclusively yours.",
+        "text": "Executive committees, masterclasses, strategic seminars, team-building days. A wood-panelled room for reflection, fourteen hectares of grounds for a stroll, and a swimming pool to round off the day. Complete confidentiality guaranteed as the venue is exclusively yours.",
         "points": [
           "Fully equipped plenary hall, sub-committee rooms",
           "From 8 to 40 staff, in the privatisation sector",
@@ -241,14 +241,14 @@
       "eyebrow": "In the heart of Touraine",
       "titleLine1Plain": "Between Amboise ",
       "titleLine1Italic": "and Chambord,",
-      "titleLine2": "two hours from Paris.",
+      "titleLine2": "2 hours 20 from Paris.",
       "paragraphs": [
         "La Huberdière is tucked away in the countryside around Tours, ten minutes from the Royal Castle of Amboise and the Clos Lucé, Leonardo da Vinci’s final resting place. Azay-le-Rideau, Chenonceau, Villandry and Chambord are all less than an hour away.",
         "From Paris: a 1 hour 5-minute TGV journey to Tours, followed by a twenty-minute drive. There are also direct connections from Bordeaux, Lyon and Nantes."
       ],
       "pins": [
         {
-          "big": "2 h",
+          "big": "2 h 20",
           "lbl": "from Paris"
         },
         {
@@ -256,7 +256,7 @@
           "lbl": "from Amboise"
         },
         {
-          "big": "12 ha",
+          "big": "14 ha",
           "lbl": "private park"
         }
       ]
@@ -276,7 +276,7 @@
       "eyebrow": "Touraine · Castelli della Loira",
       "titleLine1": "Il castello",
       "titleLine2Italic": "della Huberdière",
-      "lead": "Una dimora del XVI secolo, nel cuore dei Castelli della Loira. Per matrimoni, soggiorni, seminari e i vostri momenti più belli, a due ore da Parigi.",
+      "lead": "Una dimora del XVI secolo, nel cuore dei Castelli della Loira. Per matrimoni, soggiorni, seminari e i vostri momenti più belli, a 2 ore e 20 da Parigi.",
       "ctaPrimary": "Ricevere un'offerta",
       "ctaSecondary": "Alla scoperta del castello"
     },
@@ -287,9 +287,9 @@
       "paragraphs": [
         "Costruito nel XVI secolo, a dieci minuti dal castello reale di Amboise e dal Clos Lucé, il Castello della Huberdière non è né un hotel né un museo. È una dimora abitata, dove si accolgono gli ospiti come si è sempre fatto qui, con attenzione e discrezione.",
         "Cinque secoli di pietra di tuffeau, boiserie patinate, caminetti in marmo. E una scelta precisa: preservare l'anima del luogo, senza mai renderla immutabile.",
-        "Nel cuore di un parco di dodici ettari, tra Azay-le-Rideau, Chenonceau e Chambord, La Huberdière vi accoglie per un pernottamento, un seminario, un matrimonio o semplicemente per un pranzo."
+        "Nel cuore di un parco di quattordici ettari, tra Azay-le-Rideau, Chenonceau e Chambord, La Huberdière vi accoglie per un pernottamento, un seminario, un matrimonio o semplicemente per un pranzo."
       ],
-      "sign": "A due ore da Parigi."
+      "sign": "A 2 ore e 20 da Parigi."
     },
     "activitiesHead": {
       "eyebrow": "Tutte le vostre occasioni",
@@ -302,9 +302,9 @@
         "num": "I — Camere per ospiti",
         "titlePlain": "Soggiornare ",
         "titleItalic": "al castello.",
-        "text": "Cinque camere d'eccezione, tutte diverse tra loro. Tendaggi d'epoca, letto a baldacchino, camino originale, bagno ristrutturato con cura. La colazione viene servita sulla terrazza nelle belle giornate, nella grande sala quando il tempo non lo permette.",
+        "text": "Dieci camere d'eccezione, tutte diverse tra loro. Tendaggi d'epoca, letto a baldacchino, camino originale, bagno ristrutturato con cura. La colazione viene servita sulla terrazza nelle belle giornate, nella grande sala quando il tempo non lo permette.",
         "points": [
-          "5 camere, da 2 a 14 persone in uso esclusivo",
+          "10 camere, fino a 21 persone in uso esclusivo",
           "Colazione inclusa, cena in famiglia su prenotazione",
           "Accesso al parco e alla piscina privata"
         ],
@@ -328,7 +328,7 @@
         "num": "III — Seminario aziendale",
         "titlePlain": "Lavorare ",
         "titleItalic": "in un contesto fuori dal comune.",
-        "text": "Riunioni del consiglio di amministrazione, master class, seminari strategici, giornate di team building. Una sala con arredi in legno dove riflettere, dodici ettari di parco dove passeggiare, una piscina per concludere la giornata. Totale riservatezza garantita dall’esclusiva disponibilità dei locali.",
+        "text": "Riunioni del consiglio di amministrazione, master class, seminari strategici, giornate di team building. Una sala con arredi in legno dove riflettere, quattordici ettari di parco dove passeggiare, una piscina per concludere la giornata. Totale riservatezza garantita dall’esclusiva disponibilità dei locali.",
         "points": [
           "Sala plenaria attrezzata, sale delle sottocommissioni",
           "Da 8 a 40 dipendenti, in privatizzazione",
@@ -377,14 +377,14 @@
       "eyebrow": "Nel cuore della Touraine",
       "titleLine1Plain": "Tra Amboise ",
       "titleLine1Italic": "e Chambord,",
-      "titleLine2": "a due ore da Parigi.",
+      "titleLine2": "a 2 ore e 20 da Parigi.",
       "paragraphs": [
         "La Huberdière si trova immersa nella campagna di Tours, a dieci minuti dal castello reale di Amboise e dal Clos Lucé, ultima dimora di Leonardo da Vinci. Azay-le-Rideau, Chenonceau, Villandry e Chambord distano meno di un’ora.",
         "Da Parigi: TGV in 1 ora e 5 minuti fino a Tours, poi venti minuti in auto. Collegamenti diretti anche da Bordeaux, Lione e Nantes."
       ],
       "pins": [
         {
-          "big": "2 h",
+          "big": "2 h 20",
           "lbl": "da Parigi"
         },
         {
@@ -392,7 +392,7 @@
           "lbl": "da Amboise"
         },
         {
-          "big": "12 ha",
+          "big": "14 ha",
           "lbl": "parco privato"
         }
       ]
