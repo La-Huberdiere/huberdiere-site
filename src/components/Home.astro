@@ -21,6 +21,8 @@ import loc from "../assets/BD_5.jpg";
 // Contenu (textes) passé en props selon la langue ; images partagées et optimisées.
 const { c, lang = "fr" } = Astro.props;
 const booking = settings[lang].booking;
+// Lien vers la page contact, préfixé selon la langue (FR sans préfixe).
+const contactHref = lang === "fr" ? "/contact" : `/${lang}/contact`;
 const actImages = [actSejour, actMariage, actSeminaire, actFamille, actRetraite];
 const actAlts = [
   "Chambre du château aux murs poudrés",
@@ -148,7 +150,7 @@ const actIds = ["sejour", "mariage", "seminaire", "famille", "retraite"];
   <h2 class="reveal">{c.final.titleLine1}<br /><span class="italic">{c.final.titleLine2Italic}</span></h2>
   <p class="reveal">{c.final.text}</p>
   <div class="final-cta reveal">
-    <a class="btn-burgundy" href="mailto:contact@chateaudelahuberdiere.com">{c.final.ctaPrimary}</a>
+    <a class="btn-burgundy" href={contactHref}>{c.final.ctaPrimary}</a>
     <a class="btn-ghost" style="color:var(--ink);border-color:var(--ink)" href="tel:+33247575292">{c.final.ctaSecondary}</a>
   </div>
   <div class="response-line reveal">{c.final.responseLine}</div>
