@@ -37,7 +37,7 @@
           "Accès au parc et à la piscine privative"
         ],
         "linkLabel": "Réserver un séjour",
-        "linkHref": "#final"
+        "linkHref": "/sejour"
       },
       {
         "num": "II — Mariage",
@@ -63,7 +63,7 @@
           "Repas signature, activités team-building sur mesure"
         ],
         "linkLabel": "Demander un devis",
-        "linkHref": "#final"
+        "linkHref": "/seminaire"
       },
       {
         "num": "IV — Réunions de famille",
@@ -76,7 +76,7 @@
           "Service traiteur ou table d'hôtes selon vos envies"
         ],
         "linkLabel": "Voir l'offre famille",
-        "linkHref": "#final"
+        "linkHref": "/famille"
       },
       {
         "num": "V — Retraites & ateliers",
@@ -89,7 +89,7 @@
           "Forfait journée ou résidentiel de 2 à 7 jours"
         ],
         "linkLabel": "Voir l'offre retraite",
-        "linkHref": "#final"
+        "linkHref": "/retraite"
       }
     ],
     "quote": {
@@ -173,7 +173,7 @@
           "Access to the park and the private swimming pool"
         ],
         "linkLabel": "Book a holiday",
-        "linkHref": "#final"
+        "linkHref": "/en/sejour"
       },
       {
         "num": "II — Marriage",
@@ -186,7 +186,7 @@
           "Secular ceremony, reception, dinner, dance"
         ],
         "linkLabel": "View the wedding package",
-        "linkHref": "/mariage"
+        "linkHref": "/en/mariage"
       },
       {
         "num": "III — In-house seminar",
@@ -199,7 +199,7 @@
           "Signature dining, bespoke team-building activities"
         ],
         "linkLabel": "Request a quote",
-        "linkHref": "#final"
+        "linkHref": "/en/seminaire"
       },
       {
         "num": "IV — Family gatherings",
@@ -212,7 +212,7 @@
           "Catering service or table d’hôtes, whichever you prefer"
         ],
         "linkLabel": "View the family offer",
-        "linkHref": "#final"
+        "linkHref": "/en/famille"
       },
       {
         "num": "V — Retreats & workshops",
@@ -225,7 +225,7 @@
           "Day package or residential stay of 2 to 7 days"
         ],
         "linkLabel": "View the retreat offer",
-        "linkHref": "#final"
+        "linkHref": "/en/retraite"
       }
     ],
     "quote": {
@@ -309,7 +309,7 @@
           "Accesso al parco e alla piscina privata"
         ],
         "linkLabel": "Prenotare un soggiorno",
-        "linkHref": "#final"
+        "linkHref": "/it/sejour"
       },
       {
         "num": "II — Matrimonio",
@@ -322,7 +322,7 @@
           "Cerimonia laica, ricevimento, cena, serata danzante"
         ],
         "linkLabel": "Scopri l'offerta per matrimoni",
-        "linkHref": "/mariage"
+        "linkHref": "/it/mariage"
       },
       {
         "num": "III — Seminario aziendale",
@@ -335,7 +335,7 @@
           "Pasti d'autore, attività di team building su misura"
         ],
         "linkLabel": "Richiedi un preventivo",
-        "linkHref": "#final"
+        "linkHref": "/it/seminaire"
       },
       {
         "num": "IV — Riunioni di famiglia",
@@ -348,7 +348,7 @@
           "Servizio di catering o cena in famiglia, a seconda delle vostre preferenze"
         ],
         "linkLabel": "Vedi l'offerta per famiglie",
-        "linkHref": "#final"
+        "linkHref": "/it/famille"
       },
       {
         "num": "V — Ritiri e laboratori",
@@ -361,7 +361,7 @@
           "Pacchetto giornaliero o soggiorno da 2 a 7 giorni"
         ],
         "linkLabel": "Scopri l'offerta ritiri",
-        "linkHref": "#final"
+        "linkHref": "/it/retraite"
       }
     ],
     "quote": {
