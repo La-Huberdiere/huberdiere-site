@@ -81,6 +81,11 @@ const policyHref = "/politique-de-confidentialite";
     gap: 14px 20px;
     font-family: "Montserrat", sans-serif;
   }
+  /* Sans cette règle, le display:flex ci-dessus écrase le [hidden] du navigateur
+     et la bannière reste affichée même après un clic Accepter/Refuser. */
+  .cookie-banner[hidden] {
+    display: none;
+  }
   .cookie-text {
     margin: 0;
     flex: 1 1 320px;
