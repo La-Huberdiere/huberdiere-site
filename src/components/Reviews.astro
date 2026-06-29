@@ -15,18 +15,23 @@ const items = reviews.items as Array<{
   date?: string;
 }>;
 
-const ratingLine: Record<string, string> = {
-  fr: `Note ${reviews.ratingValue}/${reviews.bestRating} · ${reviews.reviewCount} avis`,
-  en: `Rated ${reviews.ratingValue}/${reviews.bestRating} · ${reviews.reviewCount} reviews`,
-  it: `Voto ${reviews.ratingValue}/${reviews.bestRating} · ${reviews.reviewCount} recensioni`,
-};
+// Notes affichées par source (Booking + Google). Séparateur décimal localisé
+// (virgule en FR/IT, point en EN), libellé « avis » traduit.
+const ratings = ((reviews as { ratings?: Array<{ source: string; value: string; best: string; count: string }> }).ratings) ?? [];
+const reviewWord: Record<string, string> = { fr: "avis", en: "reviews", it: "recensioni" };
+const dec = (v: string) => (lang === "en" ? v : v.replace(".", ","));
+const ratingLines = ratings.map(
+  (r) => `${r.source} ${dec(r.value)}/${r.best} · ${r.count} ${reviewWord[lang] ?? reviewWord.fr}`
+);
 ---
 {items.length > 0 && (
   <section class="reviews" id="avis">
     <div class="section-head reveal">
       <span class="section-eyebrow">{head.eyebrow}</span>
       <h2 class="section-title">{head.title}</h2>
-      <div class="rating-line">{ratingLine[lang] ?? ratingLine.fr}</div>
+      <div class="rating-lines">
+        {ratingLines.map((line) => <span class="rating-line">{line}</span>)}
+      </div>
     </div>
     <div class="reviews-grid">
       {items.map((r) => (
@@ -49,8 +54,14 @@ const ratingLine: Record<string, string> = {
     padding: 90px 24px;
   }
   .reviews .section-head { text-align: center; max-width: 720px; margin: 0 auto 48px; }
-  .rating-line {
+  .rating-lines {
     margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 28px;
+  }
+  .rating-line {
     font-family: "Montserrat", sans-serif;
     font-size: 0.95rem;
     letter-spacing: 0.04em;

@@ -1,15 +1,15 @@
 {
   "fr": {
-    "title": "Chambres d'hôtes à Amboise · Château de la Huberdière, Val de Loire",
-    "description": "Des chambres d'hôtes de charme dans un château près d'Amboise, au cœur des Châteaux de la Loire. Chambres d'exception climatisées, parc de 14 hectares, couloir de nage et table d'hôtes.",
+    "title": "Hôtel de charme près d'Amboise · Château de la Huberdière, Val de Loire",
+    "description": "Un hôtel de charme dans un château près d'Amboise, au cœur des Châteaux de la Loire. Dix chambres d'exception climatisées, parc de 14 hectares, couloir de nage et table d'hôtes : l'esprit chambre d'hôtes, le service d'un hôtel 3 étoiles.",
     "hero": {
-      "eyebrow": "Chambres d'hôtes · près d'Amboise",
-      "titleLine1": "Chambres d'hôtes",
+      "eyebrow": "Hôtel de charme · près d'Amboise",
+      "titleLine1": "Un hôtel de charme",
       "titleLine2Italic": "au château.",
-      "lead": "Des chambres d'hôtes de prestige dans un château du Val de Loire, à quelques minutes d'Amboise. La dolce vita au cœur des Châteaux de la Loire."
+      "lead": "Un hôtel de charme dans un château du Val de Loire, à quelques minutes d'Amboise. Dix chambres d'exception, le service d'un hôtel 3 étoiles, l'esprit chaleureux d'une maison d'hôtes."
     },
     "intro": [
-      "À deux pas d'Amboise, le château vous accueille en chambres d'hôtes : des chambres délicieusement décorées, chacune avec sa personnalité et sa salle de bain privée, climatisées au second étage. Une base idéale pour visiter les Châteaux de la Loire et rayonner en Touraine.",
+      "À deux pas d'Amboise, le château vous accueille comme un hôtel pas comme les autres : dix chambres délicieusement décorées, chacune avec sa personnalité et sa salle de bain privée, climatisées au second étage. L'esprit d'une chambre d'hôtes, le confort et le service d'un hôtel 3 étoiles. Une base idéale pour visiter les Châteaux de la Loire et rayonner en Touraine.",
       "Un parc de 14 hectares avec ses terrasses, son grand étang et son couloir de nage de 16 mètres chauffé d'avril à octobre, une salle à manger jusqu'à 22 convives et une bibliothèque au parquet Versailles transformable en piste de danse."
     ],
     "cards": [
@@ -39,7 +39,7 @@
     },
     "stats": [
       {
-        "big": "5",
+        "big": "10",
         "lbl": "chambres d'exception"
       },
       {
@@ -75,9 +75,13 @@
     ],
     "faqHead": {
       "eyebrow": "Questions fréquentes",
-      "title": "Votre séjour en chambres d'hôtes"
+      "title": "Votre séjour à l'hôtel"
     },
     "faq": [
+      {
+        "q": "Êtes-vous un hôtel ou une chambre d'hôtes ?",
+        "a": "Le château est un hôtel de charme 3 étoiles. On y retrouve l'esprit, la convivialité et l'accueil d'une chambre d'hôtes, avec le niveau de service, le confort et les prestations d'un hôtel."
+      },
       {
         "q": "À quelle distance d'Amboise se trouve le château ?",
         "a": "Le château est à une dizaine de minutes d'Amboise, en Indre-et-Loire, au cœur des Châteaux de la Loire."
@@ -101,16 +105,16 @@
     ]
   },
   "en": {
-    "title": "Bed and Breakfast in Amboise · Château de la Huberdière, Loire Valley",
-    "description": "Charming guest rooms in a château near Amboise, in the heart of the Loire Valley. Exceptional air-conditioned rooms, 14-hectare grounds, a swimming pool and table d’hôtes.",
+    "title": "Boutique Hotel near Amboise · Château de la Huberdière, Loire Valley",
+    "description": "A boutique hotel in a château near Amboise, in the heart of the Loire Valley. Ten exceptional air-conditioned rooms, 14-hectare grounds, a swimming pool and table d’hôtes: the spirit of a guest house with the service of a 3-star hotel.",
     "hero": {
-      "eyebrow": "Bed and Breakfasts · near Amboise",
-      "titleLine1": "Bed and Breakfast",
+      "eyebrow": "Boutique hotel · near Amboise",
+      "titleLine1": "A boutique hotel",
       "titleLine2Italic": "at the castle.",
-      "lead": "Luxury guest rooms in a château in the Loire Valley, just a few minutes from Amboise. La dolce vita in the heart of the Loire Valley."
+      "lead": "A boutique hotel in a château in the Loire Valley, just a few minutes from Amboise. Ten exceptional rooms, the service of a 3-star hotel, the warm spirit of a guest house."
     },
     "intro": [
-      "Just a stone’s throw from Amboise, the château welcomes you to its guest rooms: delightfully decorated rooms, each with its own character and private bathroom, all air-conditioned and situated on the second floor. An ideal base for visiting the châteaux of the Loire Valley and exploring the Touraine region.",
+      "Just a stone’s throw from Amboise, the château welcomes you like a hotel unlike any other: ten delightfully decorated rooms, each with its own character and private bathroom, all air-conditioned and situated on the second floor. The spirit of a guest house, the comfort and service of a 3-star hotel. An ideal base for visiting the châteaux of the Loire Valley and exploring the Touraine region.",
       "A 14-hectare park featuring terraces, a large pond and a 16-metre swimming lane heated from April to October, a dining room that can seat up to 22 guests, and a library with Versailles-style parquet flooring that can be converted into a dance floor."
     ],
     "cards": [
@@ -121,7 +125,7 @@
       },
       {
         "num": "II",
-        "title": "Shower",
+        "title": "Giboulée",
         "text": "A nautical and aviation-themed décor, a king-size bed, south-facing and with a view of the park."
       },
       {
@@ -140,7 +144,7 @@
     },
     "stats": [
       {
-        "big": "5",
+        "big": "10",
         "lbl": "exceptional rooms"
       },
       {
@@ -176,9 +180,13 @@
     ],
     "faqHead": {
       "eyebrow": "Frequently Asked Questions",
-      "title": "Your stay at a bed and breakfast"
+      "title": "Your stay at the hotel"
     },
     "faq": [
+      {
+        "q": "Are you a hotel or a guest house?",
+        "a": "The château is a 3-star boutique hotel. You'll find the spirit, warmth and welcome of a guest house, with the level of service, comfort and amenities of a hotel."
+      },
       {
         "q": "How far is the château from Amboise?",
         "a": "The château is about ten minutes’ drive from Amboise, in Indre-et-Loire, in the heart of the Loire Valley."
@@ -202,16 +210,16 @@
     ]
   },
   "it": {
-    "title": "Bed & Breakfast ad Amboise · Castello di La Huberdière, Valle della Loira",
-    "description": "Camere di charme in un castello vicino ad Amboise, nel cuore dei Castelli della Loira. Camere d'eccezione dotate di aria condizionata, parco di 14 ettari, piscina e cucina casalinga.",
+    "title": "Hotel di charme vicino ad Amboise · Castello di La Huberdière, Valle della Loira",
+    "description": "Un hotel di charme in un castello vicino ad Amboise, nel cuore dei Castelli della Loira. Dieci camere d'eccezione climatizzate, parco di 14 ettari, piscina e cucina casalinga: lo spirito di una maison d'hôtes con il servizio di un hotel a 3 stelle.",
     "hero": {
-      "eyebrow": "Bed & Breakfast · nei pressi di Amboise",
-      "titleLine1": "Camere per ospiti",
+      "eyebrow": "Hotel di charme · nei pressi di Amboise",
+      "titleLine1": "Un hotel di charme",
       "titleLine2Italic": "al castello.",
-      "lead": "Camere di prestigio in un castello della Valle della Loira, a pochi minuti da Amboise. La dolce vita nel cuore dei castelli della Loira."
+      "lead": "Un hotel di charme in un castello della Valle della Loira, a pochi minuti da Amboise. Dieci camere d'eccezione, il servizio di un hotel a 3 stelle, lo spirito caloroso di una maison d'hôtes."
     },
     "intro": [
-      "A due passi da Amboise, il castello vi accoglie nelle sue camere per ospiti: stanze arredate con gusto, ognuna con la propria personalità e il bagno privato, climatizzate e situate al secondo piano. Un punto di partenza ideale per visitare i castelli della Loira ed esplorare la Touraine.",
+      "A due passi da Amboise, il castello vi accoglie come un hotel fuori dal comune: dieci stanze arredate con gusto, ognuna con la propria personalità e il bagno privato, climatizzate e situate al secondo piano. Lo spirito di una maison d'hôtes, il comfort e il servizio di un hotel a 3 stelle. Un punto di partenza ideale per visitare i castelli della Loira ed esplorare la Touraine.",
       "Un parco di 14 ettari con terrazze, un grande laghetto e una piscina da 16 metri riscaldata da aprile a ottobre, una sala da pranzo che può ospitare fino a 22 commensali e una biblioteca con pavimento in parquet stile Versailles trasformabile in pista da ballo."
     ],
     "cards": [
@@ -222,7 +230,7 @@
       },
       {
         "num": "II",
-        "title": "Rovosa",
+        "title": "Giboulée",
         "text": "Atmosfera in stile marino e aeronautico, letto king-size, esposizione a sud e vista sul parco."
       },
       {
@@ -241,7 +249,7 @@
     },
     "stats": [
       {
-        "big": "5",
+        "big": "10",
         "lbl": "camere d'eccezione"
       },
       {
@@ -277,9 +285,13 @@
     ],
     "faqHead": {
       "eyebrow": "Domande frequenti",
-      "title": "Il vostro soggiorno in una camera presso una famiglia"
+      "title": "Il vostro soggiorno in hotel"
     },
     "faq": [
+      {
+        "q": "Siete un hotel o una maison d'hôtes?",
+        "a": "Il castello è un hotel di charme a 3 stelle. Vi ritroverete lo spirito, il calore e l'accoglienza di una maison d'hôtes, con il livello di servizio, il comfort e i servizi di un hotel."
+      },
       {
         "q": "A che distanza da Amboise si trova il castello?",
         "a": "Il castello si trova a una decina di minuti da Amboise, nel dipartimento dell'Indre-et-Loire, nel cuore dei Castelli della Loira."

@@ -3,6 +3,10 @@
   "bestRating": "10",
   "reviewCount": "120",
   "source": "Booking.com",
+  "ratings": [
+    { "source": "Booking.com", "value": "9.5", "best": "10", "count": "120" },
+    { "source": "Google", "value": "4.9", "best": "5", "count": "99" }
+  ],
   "head": {
     "fr": { "eyebrow": "Ils ont séjourné chez nous", "title": "Ce que disent nos hôtes" },
     "en": { "eyebrow": "They stayed with us", "title": "What our guests say" },

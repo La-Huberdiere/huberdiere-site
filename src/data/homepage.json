@@ -13,9 +13,9 @@
       "titleLine1": "Une demeure de famille,",
       "titleLine2Italic": "vivante depuis cinq siècles.",
       "paragraphs": [
-        "Édifié au XVIᵉ siècle, à dix minutes du château royal d'Amboise et du Clos Lucé, le Château de la Huberdière n'est ni un hôtel, ni un musée. C'est une maison habitée, où l'on reçoit comme on l'a toujours fait ici, avec attention et discrétion.",
+        "Édifié au XVIᵉ siècle, à dix minutes du château royal d'Amboise et du Clos Lucé, le Château de la Huberdière n'est ni un musée, ni un hôtel comme les autres. C'est une demeure de famille habitée, où l'on reçoit comme on l'a toujours fait ici : avec l'esprit d'une maison d'hôtes et le service attentif d'un hôtel de charme.",
         "Cinq siècles de pierre de tuffeau, de boiseries patinées, de cheminées de marbre. Et un parti pris : préserver l'âme du lieu, sans jamais la figer.",
-        "Au cœur d'un parc de quatorze hectares, entre Azay-le-Rideau, Chenonceau et Chambord, la Huberdière vous accueille pour une nuit, un séminaire, un mariage, ou le temps d'un déjeuner."
+        "Au cœur d'un parc de quatorze hectares, entre Azay-le-Rideau, Chenonceau et Chambord, la Huberdière vous accueille pour une nuit, un séminaire, un mariage, ou le temps d'un dîner."
       ],
       "sign": "À 2 h 20 de Paris."
     },
@@ -23,14 +23,14 @@
       "eyebrow": "Toutes vos occasions",
       "titlePlain": "Un château, ",
       "titleItalic": "cinq façons d'y être reçu.",
-      "intro": "Chambres d'hôtes, mariage, séminaire d'entreprise, réunion de famille, retraite ou atelier : chaque séjour est imaginé avec vous, et pour vous seul."
+      "intro": "Séjour, mariage, séminaire d'entreprise, réunion de famille ou retraite : chaque moment est imaginé avec vous, et pour vous seul."
     },
     "activities": [
       {
-        "num": "I — Chambres d'hôtes",
+        "num": "I · Un hôtel pas comme les autres",
         "titlePlain": "Séjourner ",
         "titleItalic": "au château.",
-        "text": "Dix chambres d'exception, toutes différentes. Tentures d'époque, lit à baldaquin, cheminée d'origine, salle de bain refaite avec soin. Petit-déjeuner servi en terrasse aux beaux jours, dans la grande salle quand le ciel le décide autrement.",
+        "text": "Dix chambres d'exception, toutes différentes. Tentures d'époque, lit à baldaquin, cheminée d'origine, salle de bain refaite avec soin. L'esprit d'une maison d'hôtes, le service attentif d'un hôtel de charme 3 étoiles. Petit-déjeuner servi en terrasse aux beaux jours, dans la grande salle quand le ciel le décide autrement.",
         "points": [
           "10 chambres, jusqu'à 21 personnes en privatisation",
           "Petit-déjeuner inclus, table d'hôtes sur réservation",
@@ -40,21 +40,21 @@
         "linkHref": "/sejour"
       },
       {
-        "num": "II — Mariage",
+        "num": "II · Mariage intimiste et romantique",
         "titlePlain": "Célébrer son mariage ",
         "titleItalic": "en Touraine.",
-        "text": "Cérémonie laïque sous les arbres centenaires, dîner dans la grande salle voûtée, soirée sur la terrasse, nuit au château. Privatisation complète des lieux, de 30 à 150 convives. Un interlocuteur dédié, du premier rendez-vous au lendemain de la fête.",
+        "text": "Cérémonie laïque sous les arbres centenaires, cocktail et réception en plein air ou en intérieur, dîner dans la grande salle voûtée, soirée sur la terrasse, nuit au château. Privatisation complète des lieux, de 30 à 150 convives. Un interlocuteur dédié, du premier rendez-vous au lendemain de la fête.",
         "points": [
           "Privatisation exclusive du château et du parc",
           "Hébergement de la famille proche sur place",
-          "Cérémonie laïque, vin d'honneur, dîner, soirée dansante"
+          "Cérémonie laïque, cocktail et réception en plein air ou en intérieur"
         ],
         "linkLabel": "Voir l'offre mariage",
         "linkHref": "/mariage"
       },
       {
-        "num": "III — Séminaire d'entreprise",
-        "titlePlain": "Travailler ",
+        "num": "III · Séminaires et réunions professionnelles",
+        "titlePlain": "Réfléchir et partager ",
         "titleItalic": "dans un cadre rare.",
         "text": "Comités de direction, masters classes, séminaires stratégiques, journées de cohésion. Une salle boisée pour réfléchir, quatorze hectares de parc pour marcher, une piscine pour clore la journée. Confidentialité totale garantie par la privatisation des lieux.",
         "points": [
@@ -66,26 +66,26 @@
         "linkHref": "/seminaire"
       },
       {
-        "num": "IV — Réunions de famille",
+        "num": "IV · Réunions de famille ou d'amis",
         "titlePlain": "Réunir les siens, ",
         "titleItalic": "le temps d'un week-end.",
-        "text": "Anniversaires marquants, fêtes de famille élargie, baptêmes, retrouvailles entre générations. Le château ouvre ses salons, prépare ses chambres, dresse les tables sous les marronniers. Vous arrivez, vous êtes chez vous.",
+        "text": "Week-ends de fête entre amis, anniversaires marquants, fêtes de famille élargie, retrouvailles entre générations. Le château ouvre ses salons, prépare ses chambres, dresse les tables sous les marronniers. Vous arrivez, vous êtes chez vous.",
         "points": [
           "Privatisation complète sur 2 à 4 jours",
-          "Hébergement de 14 à 30 personnes avec couchages d'appoint",
+          "Hébergement de 14 à 21 personnes, logements supplémentaires à proximité",
           "Service traiteur ou table d'hôtes selon vos envies"
         ],
         "linkLabel": "Voir l'offre famille",
         "linkHref": "/famille"
       },
       {
-        "num": "V — Retraites & ateliers",
+        "num": "V · Retraites et ateliers",
         "titlePlain": "Stages, retraites, ",
         "titleItalic": "moments suspendus.",
-        "text": "Stages de yoga, retraites créatives, ateliers d'écriture, sessions de méditation. La Huberdière prête ses pièces inondées de lumière, ses jardins, son silence, pour des groupes de 6 à 25 personnes en immersion.",
+        "text": "Stages de yoga, retraites créatives, ateliers d'écriture, sessions de méditation. La Huberdière prête ses pièces inondées de lumière, ses jardins, son silence, pour des groupes de 6 à 21 personnes en immersion.",
         "points": [
           "Salons lumineux et espaces extérieurs à disposition",
-          "Cuisine de saison, accommodante (végétarien, sans gluten)",
+          "Cuisine de saison, volontiers italienne et accommodante (végétarien, sans gluten)",
           "Forfait journée ou résidentiel de 2 à 7 jours"
         ],
         "linkLabel": "Voir l'offre retraite",
@@ -107,7 +107,7 @@
       "titleLine1Italic": "et Chambord,",
       "titleLine2": "à 2 h 20 de Paris.",
       "paragraphs": [
-        "La Huberdière se cache dans la campagne tourangelle, à dix minutes du château royal d'Amboise et du Clos Lucé, dernière demeure de Léonard de Vinci. Azay-le-Rideau, Chenonceau, Villandry et Chambord à moins d'une heure.",
+        "Au cœur des Châteaux de la Loire, la Huberdière se cache dans la campagne tourangelle, à dix minutes du château royal d'Amboise et du Clos Lucé, dernière demeure de Léonard de Vinci. Azay-le-Rideau, Chenonceau, Chaumont-sur-Loire, Cheverny, Villandry, Blois et Chambord à moins d'une heure.",
         "Depuis Paris : TGV en 1 h 05 jusqu'à Tours, puis vingt minutes en voiture. Liaisons directes également depuis Bordeaux, Lyon et Nantes."
       ],
       "pins": [
@@ -149,9 +149,9 @@
       "titleLine1": "A family home,",
       "titleLine2Italic": "which has been in existence for five centuries.",
       "paragraphs": [
-        "Built in the 16th century, ten minutes from the Royal Château of Amboise and the Clos Lucé, the Château de la Huberdière is neither a hotel nor a museum. It is a private residence, where guests are welcomed as they always have been here, with care and discretion.",
+        "Built in the 16th century, ten minutes from the Royal Château of Amboise and the Clos Lucé, the Château de la Huberdière is neither a museum nor a hotel like any other. It is a family home, where guests are welcomed as they always have been here: with the spirit of a guest house and the attentive service of a charming hotel.",
         "Five centuries of tuffeau stone, weathered wood panelling and marble fireplaces. And a clear commitment: to preserve the spirit of the place, without ever allowing it to become static.",
-        "Set in the heart of a fourteen-hectare park, between Azay-le-Rideau, Chenonceau and Chambord, La Huberdière welcomes you for an overnight stay, a seminar, a wedding or simply for lunch."
+        "Set in the heart of a fourteen-hectare park, between Azay-le-Rideau, Chenonceau and Chambord, La Huberdière welcomes you for an overnight stay, a seminar, a wedding or simply for dinner."
       ],
       "sign": "2 hours 20 from Paris."
     },
@@ -159,14 +159,14 @@
       "eyebrow": "For all your occasions",
       "titlePlain": "A castle, ",
       "titleItalic": "five ways to be admitted there.",
-      "intro": "Bed and breakfast, weddings, corporate seminars, family gatherings, retreats or workshops: every stay is tailored with you in mind, and just for you."
+      "intro": "A stay, a wedding, a corporate seminar, a family gathering or a retreat: every moment is tailored with you in mind, and just for you."
     },
     "activities": [
       {
-        "num": "I — Bed and Breakfasts",
+        "num": "I · A hotel like no other",
         "titlePlain": "To stay ",
         "titleItalic": "at the castle.",
-        "text": "Ten exceptional rooms, each one different. Period drapes, a four-poster bed, an original fireplace, and a bathroom that has been carefully refurbished. Breakfast is served on the terrace in fine weather, or in the large dining room if the weather is inclement.",
+        "text": "Ten exceptional rooms, each one different. Period drapes, a four-poster bed, an original fireplace, and a bathroom that has been carefully refurbished. The spirit of a guest house, the attentive service of a 3-star boutique hotel. Breakfast is served on the terrace in fine weather, or in the large dining room if the weather is inclement.",
         "points": [
           "10 bedrooms, sleeps up to 21 (exclusive use)",
           "Breakfast included; set menu available upon booking",
@@ -176,21 +176,21 @@
         "linkHref": "/en/sejour"
       },
       {
-        "num": "II — Marriage",
+        "num": "II · An intimate, romantic wedding",
         "titlePlain": "Celebrating your wedding ",
         "titleItalic": "in Touraine.",
-        "text": "A secular ceremony beneath century-old trees, dinner in the grand vaulted hall, an evening on the terrace, and an overnight stay at the château. Exclusive use of the venue, for 30 to 150 guests. A dedicated point of contact, from the first meeting right through to the day after the celebration.",
+        "text": "A secular ceremony beneath century-old trees, cocktails and reception outdoors or indoors, dinner in the grand vaulted hall, an evening on the terrace, and an overnight stay at the château. Exclusive use of the venue, for 30 to 150 guests. A dedicated point of contact, from the first meeting right through to the day after the celebration.",
         "points": [
           "Exclusive private hire of the château and grounds",
           "Accommodation for close family members on site",
-          "Secular ceremony, reception, dinner, dance"
+          "Secular ceremony, cocktails and reception outdoors or indoors"
         ],
         "linkLabel": "View the wedding package",
         "linkHref": "/en/mariage"
       },
       {
-        "num": "III — In-house seminar",
-        "titlePlain": "Work ",
+        "num": "III · Seminars and professional gatherings",
+        "titlePlain": "Think and share ",
         "titleItalic": "in a unique setting.",
         "text": "Executive committees, masterclasses, strategic seminars, team-building days. A wood-panelled room for reflection, fourteen hectares of grounds for a stroll, and a swimming pool to round off the day. Complete confidentiality guaranteed as the venue is exclusively yours.",
         "points": [
@@ -202,26 +202,26 @@
         "linkHref": "/en/seminaire"
       },
       {
-        "num": "IV — Family gatherings",
+        "num": "IV · Family and friends gatherings",
         "titlePlain": "Bringing the family together, ",
         "titleItalic": "for a weekend.",
-        "text": "Memorable birthdays, extended family gatherings, christenings, and reunions across the generations. The château opens its drawing rooms, prepares its guest rooms and sets the tables beneath the chestnut trees. The moment you arrive, you’ll feel right at home.",
+        "text": "Celebratory weekends with friends, memorable birthdays, extended family gatherings, and reunions across the generations. The château opens its drawing rooms, prepares its guest rooms and sets the tables beneath the chestnut trees. The moment you arrive, you’ll feel right at home.",
         "points": [
           "Exclusive use for 2 to 4 days",
-          "Accommodation for 14 to 30 people, with extra beds available",
+          "Accommodation for 14 to 21 people, additional lodging nearby",
           "Catering service or table d’hôtes, whichever you prefer"
         ],
         "linkLabel": "View the family offer",
         "linkHref": "/en/famille"
       },
       {
-        "num": "V — Retreats & workshops",
+        "num": "V · Retreats and workshops",
         "titlePlain": "Workshops, retreats, ",
         "titleItalic": "moments frozen in time.",
-        "text": "Yoga courses, creative retreats, writing workshops, meditation sessions. La Huberdière offers its light-filled rooms, gardens and tranquillity to groups of 6 to 25 people for immersive experiences.",
+        "text": "Yoga courses, creative retreats, writing workshops, meditation sessions. La Huberdière offers its light-filled rooms, gardens and tranquillity to groups of 6 to 21 people for immersive experiences.",
         "points": [
           "Bright lounges and outdoor areas available",
-          "Seasonal cuisine, with options to suit all tastes (vegetarian, gluten-free)",
+          "Seasonal cuisine, gladly Italian and accommodating (vegetarian, gluten-free)",
           "Day package or residential stay of 2 to 7 days"
         ],
         "linkLabel": "View the retreat offer",
@@ -243,7 +243,7 @@
       "titleLine1Italic": "and Chambord,",
       "titleLine2": "2 hours 20 from Paris.",
       "paragraphs": [
-        "La Huberdière is tucked away in the countryside around Tours, ten minutes from the Royal Castle of Amboise and the Clos Lucé, Leonardo da Vinci’s final resting place. Azay-le-Rideau, Chenonceau, Villandry and Chambord are all less than an hour away.",
+        "In the heart of the Loire Valley castles, La Huberdière is tucked away in the countryside around Tours, ten minutes from the Royal Castle of Amboise and the Clos Lucé, Leonardo da Vinci’s final resting place. Azay-le-Rideau, Chenonceau, Chaumont-sur-Loire, Cheverny, Villandry, Blois and Chambord are all less than an hour away.",
         "From Paris: a 1 hour 5-minute TGV journey to Tours, followed by a twenty-minute drive. There are also direct connections from Bordeaux, Lyon and Nantes."
       ],
       "pins": [
@@ -285,9 +285,9 @@
       "titleLine1": "Una dimora di famiglia,",
       "titleLine2Italic": "viva da cinque secoli.",
       "paragraphs": [
-        "Costruito nel XVI secolo, a dieci minuti dal castello reale di Amboise e dal Clos Lucé, il Castello della Huberdière non è né un hotel né un museo. È una dimora abitata, dove si accolgono gli ospiti come si è sempre fatto qui, con attenzione e discrezione.",
+        "Costruito nel XVI secolo, a dieci minuti dal castello reale di Amboise e dal Clos Lucé, il Castello della Huberdière non è né un museo, né un hotel come gli altri. È una dimora di famiglia abitata, dove si accolgono gli ospiti come si è sempre fatto qui: con lo spirito di una maison d'hôtes e il servizio attento di un hotel di charme.",
         "Cinque secoli di pietra di tuffeau, boiserie patinate, caminetti in marmo. E una scelta precisa: preservare l'anima del luogo, senza mai renderla immutabile.",
-        "Nel cuore di un parco di quattordici ettari, tra Azay-le-Rideau, Chenonceau e Chambord, La Huberdière vi accoglie per un pernottamento, un seminario, un matrimonio o semplicemente per un pranzo."
+        "Nel cuore di un parco di quattordici ettari, tra Azay-le-Rideau, Chenonceau e Chambord, La Huberdière vi accoglie per un pernottamento, un seminario, un matrimonio o semplicemente per una cena."
       ],
       "sign": "A 2 ore e 20 da Parigi."
     },
@@ -295,14 +295,14 @@
       "eyebrow": "Tutte le vostre occasioni",
       "titlePlain": "Un castello, ",
       "titleItalic": "cinque modi per essere ammessi.",
-      "intro": "Camere per ospiti, matrimoni, seminari aziendali, riunioni di famiglia, ritiri o workshop: ogni soggiorno viene ideato insieme a voi e pensato esclusivamente per voi."
+      "intro": "Un soggiorno, un matrimonio, un seminario aziendale, una riunione di famiglia o un ritiro: ogni momento viene ideato insieme a voi e pensato esclusivamente per voi."
     },
     "activities": [
       {
-        "num": "I — Camere per ospiti",
+        "num": "I · Un hotel come nessun altro",
         "titlePlain": "Soggiornare ",
         "titleItalic": "al castello.",
-        "text": "Dieci camere d'eccezione, tutte diverse tra loro. Tendaggi d'epoca, letto a baldacchino, camino originale, bagno ristrutturato con cura. La colazione viene servita sulla terrazza nelle belle giornate, nella grande sala quando il tempo non lo permette.",
+        "text": "Dieci camere d'eccezione, tutte diverse tra loro. Tendaggi d'epoca, letto a baldacchino, camino originale, bagno ristrutturato con cura. Lo spirito di una maison d'hôtes, il servizio attento di un hotel di charme a 3 stelle. La colazione viene servita sulla terrazza nelle belle giornate, nella grande sala quando il tempo non lo permette.",
         "points": [
           "10 camere, fino a 21 persone in uso esclusivo",
           "Colazione inclusa, cena in famiglia su prenotazione",
@@ -312,21 +312,21 @@
         "linkHref": "/it/sejour"
       },
       {
-        "num": "II — Matrimonio",
+        "num": "II · Matrimonio intimo e romantico",
         "titlePlain": "Festeggiare il proprio matrimonio ",
         "titleItalic": "in Touraine.",
-        "text": "Cerimonia laica sotto alberi secolari, cena nella grande sala a volta, serata sulla terrazza, pernottamento al castello. Esclusiva totale della struttura, da 30 a 150 invitati. Un referente dedicato, dal primo incontro fino al giorno dopo la festa.",
+        "text": "Cerimonia laica sotto alberi secolari, cocktail e ricevimento all'aperto o al coperto, cena nella grande sala a volta, serata sulla terrazza, pernottamento al castello. Esclusiva totale della struttura, da 30 a 150 invitati. Un referente dedicato, dal primo incontro fino al giorno dopo la festa.",
         "points": [
           "Privatizzazione esclusiva del castello e del parco",
           "Alloggio in loco per i parenti stretti",
-          "Cerimonia laica, ricevimento, cena, serata danzante"
+          "Cerimonia laica, cocktail e ricevimento all'aperto o al coperto"
         ],
         "linkLabel": "Scopri l'offerta per matrimoni",
         "linkHref": "/it/mariage"
       },
       {
-        "num": "III — Seminario aziendale",
-        "titlePlain": "Lavorare ",
+        "num": "III · Seminari e riunioni professionali",
+        "titlePlain": "Riflettere e condividere ",
         "titleItalic": "in un contesto fuori dal comune.",
         "text": "Riunioni del consiglio di amministrazione, master class, seminari strategici, giornate di team building. Una sala con arredi in legno dove riflettere, quattordici ettari di parco dove passeggiare, una piscina per concludere la giornata. Totale riservatezza garantita dall’esclusiva disponibilità dei locali.",
         "points": [
@@ -338,26 +338,26 @@
         "linkHref": "/it/seminaire"
       },
       {
-        "num": "IV — Riunioni di famiglia",
+        "num": "IV · Riunioni di famiglia o tra amici",
         "titlePlain": "Riunire la propria famiglia, ",
         "titleItalic": "per un fine settimana.",
-        "text": "Anniversari importanti, feste con tutta la famiglia, battesimi, ritrovi tra generazioni. Il castello apre i suoi saloni, prepara le camere, apparecchia i tavoli sotto i castagni. Appena arrivate, vi sentite come a casa vostra.",
+        "text": "Fine settimana di festa tra amici, anniversari importanti, feste con tutta la famiglia, ritrovi tra generazioni. Il castello apre i suoi saloni, prepara le camere, apparecchia i tavoli sotto i castagni. Appena arrivate, vi sentite come a casa vostra.",
         "points": [
           "Privato esclusivo per 2-4 giorni",
-          "Alloggio da 14 a 30 persone con posti letto supplementari",
+          "Alloggio da 14 a 21 persone, sistemazioni supplementari nelle vicinanze",
           "Servizio di catering o cena in famiglia, a seconda delle vostre preferenze"
         ],
         "linkLabel": "Vedi l'offerta per famiglie",
         "linkHref": "/it/famille"
       },
       {
-        "num": "V — Ritiri e laboratori",
+        "num": "V · Ritiri e laboratori",
         "titlePlain": "Corsi, ritiri, ",
         "titleItalic": "momenti sospesi.",
-        "text": "Corsi di yoga, ritiri creativi, laboratori di scrittura, sessioni di meditazione. La Huberdière mette a disposizione le sue stanze inondate di luce, i suoi giardini e il suo silenzio per gruppi da 6 a 25 persone in immersione totale.",
+        "text": "Corsi di yoga, ritiri creativi, laboratori di scrittura, sessioni di meditazione. La Huberdière mette a disposizione le sue stanze inondate di luce, i suoi giardini e il suo silenzio per gruppi da 6 a 21 persone in immersione totale.",
         "points": [
           "Soggiorni luminosi e spazi esterni a disposizione",
-          "Cucina stagionale, con opzioni per vegetariani e celiaci",
+          "Cucina stagionale, volentieri italiana e accomodante (vegetariana, senza glutine)",
           "Pacchetto giornaliero o soggiorno da 2 a 7 giorni"
         ],
         "linkLabel": "Scopri l'offerta ritiri",
@@ -379,7 +379,7 @@
       "titleLine1Italic": "e Chambord,",
       "titleLine2": "a 2 ore e 20 da Parigi.",
       "paragraphs": [
-        "La Huberdière si trova immersa nella campagna di Tours, a dieci minuti dal castello reale di Amboise e dal Clos Lucé, ultima dimora di Leonardo da Vinci. Azay-le-Rideau, Chenonceau, Villandry e Chambord distano meno di un’ora.",
+        "Nel cuore dei Castelli della Loira, La Huberdière si trova immersa nella campagna di Tours, a dieci minuti dal castello reale di Amboise e dal Clos Lucé, ultima dimora di Leonardo da Vinci. Azay-le-Rideau, Chenonceau, Chaumont-sur-Loire, Cheverny, Villandry, Blois e Chambord distano meno di un’ora.",
         "Da Parigi: TGV in 1 ora e 5 minuti fino a Tours, poi venti minuti in auto. Collegamenti diretti anche da Bordeaux, Lione e Nantes."
       ],
       "pins": [

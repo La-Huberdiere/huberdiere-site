@@ -7,7 +7,7 @@ export const SITE = {
   name: "Château de la Huberdière",
   legalName: "Château de la Huberdière",
   description:
-    "Demeure du XVIᵉ siècle au cœur des Châteaux de la Loire (Touraine, près d'Amboise). Mariages, chambres d'hôtes, séminaires, retraites et événements privés, à deux heures de Paris.",
+    "Hôtel de charme 3 étoiles dans une demeure du XVIᵉ siècle au cœur des Châteaux de la Loire (Touraine, près d'Amboise). Mariages, séjours, séminaires, retraites et événements privés, à 2 h 20 de Paris.",
   phone: "+33247575292",
   email: "contact@chateaudelahuberdiere.com",
   address: {

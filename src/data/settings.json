@@ -55,7 +55,7 @@
       "col2Title": "Le château",
       "col2Links": [
         {
-          "label": "Chambres d'hôtes",
+          "label": "Hôtel de charme",
           "href": "/sejour"
         },
         {
@@ -158,7 +158,7 @@
       "col2Title": "The castle",
       "col2Links": [
         {
-          "label": "Bed and Breakfast",
+          "label": "Boutique hotel",
           "href": "/sejour"
         },
         {
@@ -261,7 +261,7 @@
       "col2Title": "Il castello",
       "col2Links": [
         {
-          "label": "Camere per ospiti",
+          "label": "Hotel di charme",
           "href": "/sejour"
         },
         {
