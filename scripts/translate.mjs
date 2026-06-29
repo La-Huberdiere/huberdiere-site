@@ -22,7 +22,7 @@ const ENDPOINT = KEY.endsWith(":fx")
   : "https://api.deepl.com/v2/translate";
 
 // Clés à NE PAS traduire (liens, contacts, nom propre, mesures).
-const SKIP = new Set(["email", "phone", "phoneHref", "big", "brandName", "name"]);
+const SKIP = new Set(["email", "phone", "phoneHref", "big", "brandName", "name", "size"]);
 const skipKey = (k) => SKIP.has(k) || /href$/i.test(k);
 
 const PAGES = process.argv[2] ? [process.argv[2]] : ["homepage", "mariage", "settings"];

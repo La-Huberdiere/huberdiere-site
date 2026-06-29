@@ -93,17 +93,41 @@
       {
         "q": "Proposez-vous un accompagnement pour l'organisation ?",
         "a": "Un interlocuteur dédié vous suit du premier rendez-vous au lendemain de la fête, pour coordonner prestataires, traiteur et logistique."
+      },
+      {
+        "q": "Le château est-il disponible toute l'année ?",
+        "a": "Oui, nous accueillons des mariages en toute saison. Le charme d'un mariage d'hiver au coin du feu est tout aussi magique qu'une cérémonie estivale dans le parc."
+      },
+      {
+        "q": "Pouvons-nous loger tous nos invités sur place ?",
+        "a": "Le château privatisé loge 21 personnes dans ses 10 suites de prestige. Pour les autres invités, nous tenons à votre disposition une liste de gîtes et hôtels partenaires à moins de 10 minutes."
+      },
+      {
+        "q": "Appliquez-vous un droit de bouchon sur les boissons ?",
+        "a": "Non. Vous apportez vos propres vins, champagnes et spiritueux sans aucun frais supplémentaire. Vous maîtrisez votre budget et servez les crus qui vous tiennent à cœur."
+      },
+      {
+        "q": "Quels sont vos tarifs pour une privatisation de mariage ?",
+        "a": "Chaque mariage est unique : nos tarifs varient selon la saison et le nombre de réceptions. La privatisation complète du domaine pour un week-end, du vendredi au dimanche, incluant les 21 couchages, se situe entre 4 000 € et 8 000 € selon la saison. Nous vous adressons un devis détaillé sous 24 h."
+      },
+      {
+        "q": "Le mobilier et les charges sont-ils inclus dans le prix ?",
+        "a": "Le tarif de location inclut l'accès à tous les espaces, l'eau, l'électricité, le chauffage et le nettoyage de fin de privatisation. La mise à disposition des tables rondes et chaises de réception fait l'objet d'un supplément de 15 € par personne. Pas de frais cachés."
       }
-    ]
+    ],
+    "testimonial": {
+      "text": "Les propriétaires du château, Patrick et Lodovica, savent exactement comment faire de chaque événement une fête, en plein cœur de cette région si particulière.",
+      "author": "Sophia & Alex"
+    }
   },
   "en": {
     "title": "Wedding at the château · Loire Valley, near Amboise | La Huberdière",
-    "description": "Your wedding at a château in the Loire Valley. A 16th-century estate reserved exclusively for you, with a historic park, accommodation for 30 to 150 guests and 21 beds on site, just 2 hours 20 from Paris.",
+    "description": "Your wedding at a château in the Loire Valley. A 16th-century estate reserved exclusively for you, with a centuries-old park, accommodation for 30 to 150 guests and 21 beds on site, just 2 hours 20 minutes from Paris.",
     "hero": {
       "eyebrow": "Wedding at the château · Loire Valley",
       "titleLine1": "Your wedding at the château",
       "titleLine2Italic": "de la Huberdière.",
-      "lead": "A castle exclusively reserved for your wedding: a fourteen-hectare estate, the warm hospitality of a family home, and your loved ones staying overnight on site. Just 2 hours 20 from Paris."
+      "lead": "A castle exclusively reserved for your wedding: a 14-hectare estate, the warm hospitality of a family home, and your loved ones staying overnight on site. Just 2 hours and 20 minutes from Paris."
     },
     "intro": [
       "Get married at the château – and we really do mean the château: La Huberdière is exclusively yours for your wedding, with no other events taking place at the same time. A non-religious ceremony beneath the centuries-old trees, a reception on the terrace as the sun sets, dinner in the grand vaulted hall, followed by a celebration under the stars. In the morning, your guests wake up right there on the premises.",
@@ -130,7 +154,7 @@
       "eyebrow": "Your wedding",
       "titleLine1": "Let’s talk about your",
       "titleLine2Italic": "the loveliest day.",
-      "text": "Let us know your date, the number of guests and the sort of atmosphere you’re envisaging. We’ll send you a bespoke proposal.",
+      "text": "Let us know your date, the number of guests and the style you have in mind. We’ll send you a bespoke proposal.",
       "submitLabel": "Receive a proposal",
       "responseLine": "We’ll get back to you within 24 hours"
     },
@@ -159,7 +183,7 @@
       },
       {
         "title": "The park",
-        "text": "Fourteen hectares of woodland, ponds and meadows for your events, and the Orangery or the elegant indoor reception rooms should the weather turn unsettled."
+        "text": "Fourteen hectares of woodland, ponds and meadows for your ceremonies, and the Orangery or the elegant indoor reception rooms should the weather prove unpredictable."
       },
       {
         "title": "A dedicated contact person",
@@ -181,7 +205,7 @@
       },
       {
         "q": "Where is the château located, and how far is it from Paris?",
-        "a": "In Touraine, in Nazelles-Négron near Amboise, in the heart of the Loire Valley, about 2 hours 20 from Paris and 30 minutes from Tours."
+        "a": "In Touraine, in Nazelles-Négron near Amboise, in the heart of the Loire Valley, about 2 hours 20 minutes from Paris and 30 minutes from Tours."
       },
       {
         "q": "Can we get married outdoors in the park?",
@@ -190,17 +214,41 @@
       {
         "q": "Do you offer support with the organisation?",
         "a": "A dedicated point of contact will support you from your first meeting right through to the day after the event, coordinating service providers, the caterer and logistics."
+      },
+      {
+        "q": "Is the castle open all year round?",
+        "a": "Yes, we host weddings all year round. The charm of a winter wedding by the fireside is just as magical as a summer ceremony in the park."
+      },
+      {
+        "q": "Can we accommodate all our guests on site?",
+        "a": "The castle, which is available for private hire, accommodates 21 people in its 10 luxury suites. For other guests, we have a list of partner holiday cottages and hotels within 10 minutes’ reach."
+      },
+      {
+        "q": "Do you charge a corkage fee on drinks?",
+        "a": "No. You can bring your own wines, champagnes and spirits at no extra cost. You’re in control of your budget and can serve the wines that are close to your heart."
+      },
+      {
+        "q": "What are your rates for a private wedding venue hire?",
+        "a": "Every wedding is unique: our rates vary depending on the season and the number of receptions. Exclusive use of the estate for a weekend, from Friday to Sunday, including accommodation for 21 guests, costs between €4,000 and €8,000 depending on the season. We will send you a detailed quote within 24 hours."
+      },
+      {
+        "q": "Are furniture and service charges included in the price?",
+        "a": "The hire fee includes access to all areas, water, electricity, heating and cleaning at the end of the private hire period. There is an additional charge of €15 per person for the provision of round tables and reception chairs. There are no hidden costs."
       }
-    ]
+    ],
+    "testimonial": {
+      "text": "The château’s owners, Patrick and Lodovica, know exactly how to turn every event into a celebration, right in the heart of this very special region.",
+      "author": "Sophia & Alex"
+    }
   },
   "it": {
     "title": "Matrimonio al castello · Valle della Loira, vicino ad Amboise | La Huberdière",
-    "description": "Il vostro matrimonio in un castello nella Valle della Loira. Una tenuta del XVI secolo riservata esclusivamente a voi, con un parco secolare, da 30 a 150 invitati e 21 posti letto in loco, a 2 ore e 20 da Parigi.",
+    "description": "Il vostro matrimonio in un castello nella Valle della Loira. Una tenuta del XVI secolo riservata esclusivamente a voi, con un parco secolare, da 30 a 150 invitati e 21 posti letto in loco, a 2 ore e 20 minuti da Parigi.",
     "hero": {
       "eyebrow": "Matrimonio al castello · Valle della Loira",
       "titleLine1": "Il vostro matrimonio al castello",
       "titleLine2Italic": "di Huberdière.",
-      "lead": "Un castello a vostra completa disposizione per il matrimonio: un parco di quattordici ettari, l’accoglienza calorosa di una casa di famiglia e i vostri cari che pernottano sul posto. A 2 ore e 20 da Parigi."
+      "lead": "Un castello a vostra completa disposizione per il matrimonio: un parco di quattordici ettari, l’accoglienza calorosa di una casa di famiglia e i vostri cari che pernottano sul posto. A 2 ore e 20 minuti da Parigi."
     },
     "intro": [
       "Sposarsi al castello, proprio al castello: La Huberdière viene interamente riservata per il vostro matrimonio, senza alcun altro evento in contemporanea. Cerimonia laica sotto alberi secolari, ricevimento sulla terrazza al tramonto, cena nella grande sala a volta e poi festa sotto le stelle. Al mattino, i vostri ospiti si sveglieranno direttamente sul posto.",
@@ -256,7 +304,7 @@
       },
       {
         "title": "Il parco",
-        "text": "Quattordici ettari di boschi, laghetti e prati per le vostre cerimonie, e l’Orangerie o gli eleganti saloni come riparo in caso di maltempo."
+        "text": "Quattordici ettari di boschi, laghetti e prati per le vostre cerimonie, e l’Orangerie o i saloni, un rifugio elegante in caso di maltempo."
       },
       {
         "title": "Un referente dedicato",
@@ -270,7 +318,7 @@
     "faq": [
       {
         "q": "Quanti invitati può ospitare il castello in occasione di un matrimonio?",
-        "a": "Da 30 a 150 ospiti al ricevimento. Il castello, a uso esclusivo, può ospitare 21 persone in 10 suite; vi aiutiamo inoltre a organizzare la sistemazione degli altri ospiti nelle vicinanze."
+        "a": "Da 30 a 150 ospiti per il ricevimento. Il castello, a uso esclusivo, può ospitare 21 persone in 10 suite; vi aiutiamo inoltre a organizzare la sistemazione degli altri ospiti nelle vicinanze."
       },
       {
         "q": "La privatizzazione è esclusiva?",
@@ -278,16 +326,40 @@
       },
       {
         "q": "Dove si trova il castello e a che distanza da Parigi?",
-        "a": "In Touraine, a Nazelles-Négron, vicino ad Amboise, nel cuore dei Castelli della Loira, a circa 2 ore e 20 da Parigi e 30 minuti da Tours."
+        "a": "In Touraine, a Nazelles-Négron, vicino ad Amboise, nel cuore dei Castelli della Loira, a circa 2 ore e 20 minuti da Parigi e a 30 minuti da Tours."
       },
       {
         "q": "È possibile sposarsi all'aperto nel parco?",
-        "a": "Sì, il parco secolare di quattordici ettari si presta perfettamente a cerimonie laiche all’ombra degli alberi, a ricevimenti sulla terrazza e a feste sia al chiuso che all’aperto."
+        "a": "Sì, il parco secolare di quattordici ettari si presta perfettamente a cerimonie laiche all’ombra degli alberi, a ricevimenti sulla terrazza e a feste sia all’interno che all’esterno."
       },
       {
         "q": "Offrite un servizio di assistenza per l'organizzazione?",
         "a": "Un referente dedicato vi seguirà dal primo incontro fino al giorno dopo la festa, coordinando fornitori, catering e logistica."
+      },
+      {
+        "q": "Il castello è disponibile tutto l'anno?",
+        "a": "Sì, organizziamo matrimoni in ogni stagione. Il fascino di un matrimonio invernale davanti al caminetto è magico quanto una cerimonia estiva nel parco."
+      },
+      {
+        "q": "Possiamo ospitare tutti i nostri ospiti in loco?",
+        "a": "Il castello, affittato in esclusiva, può ospitare 21 persone nelle sue 10 suite di lusso. Per gli altri ospiti, mettiamo a vostra disposizione un elenco di agriturismi e hotel convenzionati situati a meno di 10 minuti di distanza."
+      },
+      {
+        "q": "Applicate un diritto di tappo sulle bevande?",
+        "a": "No. Potete portare i vostri vini, champagne e liquori senza alcun costo aggiuntivo. Siete voi a gestire il vostro budget e a servire le etichette che preferite."
+      },
+      {
+        "q": "Quali sono le vostre tariffe per l'affitto esclusivo in occasione di un matrimonio?",
+        "a": "Ogni matrimonio è unico: le nostre tariffe variano a seconda della stagione e del numero di ricevimenti. L'affitto esclusivo della tenuta per un fine settimana, dal venerdì alla domenica, comprensivo di 21 posti letto, va da 4.000 € a 8.000 € a seconda della stagione. Vi invieremo un preventivo dettagliato entro 24 ore."
+      },
+      {
+        "q": "L'arredamento e le spese sono inclusi nel prezzo?",
+        "a": "La tariffa di affitto comprende l'accesso a tutti gli spazi, l'acqua, l'elettricità, il riscaldamento e la pulizia a fine evento. La fornitura di tavoli rotondi e sedie da ricevimento comporta un supplemento di 15 € a persona. Nessun costo nascosto."
       }
-    ]
+    ],
+    "testimonial": {
+      "text": "I proprietari del castello, Patrick e Lodovica, sanno esattamente come trasformare ogni evento in una festa, proprio nel cuore di questa regione così speciale.",
+      "author": "Sophia e Alex"
+    }
   }
 }

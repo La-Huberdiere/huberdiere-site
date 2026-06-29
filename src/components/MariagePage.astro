@@ -94,6 +94,53 @@ const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
   </section>
 )}
 
+{m.activities && m.activities.length > 0 && (
+  <section class="activities">
+    <div class="extras-head reveal">
+      {m.activitiesHead?.eyebrow && <span class="section-eyebrow">{m.activitiesHead.eyebrow}</span>}
+      {m.activitiesHead?.title && <h2 class="section-title">{m.activitiesHead.title}</h2>}
+      {m.activitiesHead?.intro && <p class="activities-intro">{m.activitiesHead.intro}</p>}
+    </div>
+    <div class="activities-list">
+      {m.activities.map((a) => (
+        <div class="activity-item reveal">
+          <h3>{a.title}</h3>
+          <p>{a.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+)}
+
+{m.rooms && m.rooms.length > 0 && (
+  <section class="rooms">
+    <div class="extras-head reveal">
+      {m.roomsHead?.eyebrow && <span class="section-eyebrow">{m.roomsHead.eyebrow}</span>}
+      {m.roomsHead?.title && <h2 class="section-title">{m.roomsHead.title}</h2>}
+    </div>
+    <div class="rooms-list">
+      {m.rooms.map((r) => (
+        <div class="room-row reveal">
+          <div class="room-head">
+            <h3>{r.name}</h3>
+            {r.size && <span class="room-size">{r.size}</span>}
+          </div>
+          <p>{r.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+)}
+
+{m.testimonial && m.testimonial.text && (
+  <section class="testimonial">
+    <blockquote class="reveal">
+      <p>{m.testimonial.text}</p>
+      <cite>{m.testimonial.author}</cite>
+    </blockquote>
+  </section>
+)}
+
 {m.faq && m.faq.length > 0 && (
   <section class="faq">
     <div class="extras-head reveal">
@@ -256,6 +303,58 @@ const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
   }
   .extra-card p { color: #646464; line-height: 1.65; margin: 0; font-size: 0.96rem; }
 
+  /* Activités : liste éditoriale, pas une grille de cards identiques */
+  .activities { padding: 100px 24px 20px; }
+  .activities-intro {
+    margin: 18px auto 0; max-width: 640px; color: #646464;
+    font-family: "Montserrat", sans-serif; line-height: 1.7; font-size: 0.96rem;
+  }
+  .activities-list {
+    max-width: 1000px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px 56px;
+  }
+  .activity-item { padding: 26px 0; border-bottom: 1px solid #ece6d8; }
+  .activity-item h3 {
+    font-family: "Playfair Display", Georgia, serif;
+    color: #2e3a48; font-size: 1.12rem; margin: 0 0 8px;
+  }
+  .activity-item p { color: #646464; line-height: 1.65; margin: 0; font-size: 0.94rem; }
+
+  /* Chambres : rangées éditoriales avec surface, pas des cartes-icônes */
+  .rooms { padding: 100px 24px 20px; }
+  .rooms-list { max-width: 880px; margin: 0 auto; }
+  .room-row { padding: 28px 0; border-bottom: 1px solid #ece6d8; }
+  .room-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 16px; margin-bottom: 10px;
+  }
+  .room-head h3 {
+    font-family: "Playfair Display", Georgia, serif;
+    color: #2e3a48; font-size: 1.3rem; margin: 0;
+  }
+  .room-size {
+    flex: none; font-family: "Montserrat", sans-serif;
+    font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #8b0000; white-space: nowrap;
+  }
+  .room-row p { color: #646464; line-height: 1.7; margin: 0; }
+
+  /* Témoignage : citation pleine largeur sur fond crème */
+  .testimonial { padding: 110px 24px; background: #fbfaf6; border-top: 1px solid #ece6d8; border-bottom: 1px solid #ece6d8; }
+  .testimonial blockquote { max-width: 760px; margin: 0 auto; text-align: center; }
+  .testimonial blockquote p {
+    font-family: "Playfair Display", Georgia, serif;
+    font-style: italic; font-size: clamp(1.3rem, 2.6vw, 1.8rem);
+    line-height: 1.5; color: #2e3a48; margin: 0;
+  }
+  .testimonial blockquote p::before { content: "« "; color: #8b0000; }
+  .testimonial blockquote p::after { content: " »"; color: #8b0000; }
+  .testimonial cite {
+    display: block; margin-top: 26px; font-style: normal;
+    font-family: "Montserrat", sans-serif; font-size: 0.82rem;
+    letter-spacing: 0.12em; text-transform: uppercase; color: #8b0000;
+  }
+
   .faq { padding: 90px 24px 30px; }
   .faq-list { max-width: 820px; margin: 0 auto; }
   .faq-item {
@@ -316,6 +415,10 @@ const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
     .stats-row { grid-template-columns: 1fr; gap: 24px; }
     .extras-grid { grid-template-columns: 1fr; }
     .extras { padding: 70px 22px 10px; }
+    .activities-list { grid-template-columns: 1fr; gap: 0 0; }
+    .activities { padding: 70px 22px 10px; }
+    .rooms { padding: 70px 22px 10px; }
+    .testimonial { padding: 72px 22px; }
     .faq { padding: 64px 22px 20px; }
     .reads-grid { grid-template-columns: 1fr; }
     .related-reads { padding: 64px 22px 10px; }

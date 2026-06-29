@@ -82,16 +82,16 @@
       "col3Title": "Découvrir",
       "col3Links": [
         {
-          "label": "Galerie",
-          "href": "/#galerie"
+          "label": "Notre histoire",
+          "href": "/notre-histoire"
+        },
+        {
+          "label": "Activités & alentours",
+          "href": "/activites"
         },
         {
           "label": "Accès & situation",
           "href": "/#location"
-        },
-        {
-          "label": "Demander une proposition",
-          "href": "/#final"
         },
         {
           "label": "Le Journal",
@@ -185,16 +185,16 @@
       "col3Title": "Discover",
       "col3Links": [
         {
-          "label": "Gallery",
-          "href": "/#galerie"
+          "label": "Our story",
+          "href": "/notre-histoire"
+        },
+        {
+          "label": "Activities & surroundings",
+          "href": "/activites"
         },
         {
           "label": "Access & location",
           "href": "/#location"
-        },
-        {
-          "label": "Request a quote",
-          "href": "/#final"
         },
         {
           "label": "Journal",
@@ -288,16 +288,16 @@
       "col3Title": "Scopri",
       "col3Links": [
         {
-          "label": "Galleria",
-          "href": "/#galerie"
+          "label": "La nostra storia",
+          "href": "/notre-histoire"
+        },
+        {
+          "label": "Attività e dintorni",
+          "href": "/activites"
         },
         {
           "label": "Come arrivare e posizione",
           "href": "/#location"
-        },
-        {
-          "label": "Richiedi un preventivo",
-          "href": "/#final"
         },
         {
           "label": "Diario",

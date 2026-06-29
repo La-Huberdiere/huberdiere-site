@@ -8,7 +8,7 @@ optimisées en webp, NAP cohérent).
 ## Lancer en local (pour le call)
 
 ```bash
-cd site-v0
+cd huberdiere-site
 npm install      # une seule fois
 npm run dev      # puis ouvrir http://localhost:4321
 ```

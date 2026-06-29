@@ -13,6 +13,23 @@ export function renderMarkdocNode(node: unknown): string {
   return Markdoc.renderers.html(renderable);
 }
 
+// --- Pages libres : chargeur partagé par les routes FR / EN / IT ---
+type PageCol = "pages" | "pagesEn" | "pagesIt";
+
+/** getStaticPaths d'une page libre : rend le markdoc en HTML. */
+export async function pageStaticPaths(col: PageCol) {
+  const c = (reader.collections as any)[col];
+  const slugs: string[] = await c.list();
+  return Promise.all(
+    slugs.map(async (slug: string) => {
+      const entry = await c.read(slug);
+      const body = await entry!.body();
+      const node = (body as any)?.node ?? body;
+      return { params: { slug }, props: { entry, html: renderMarkdocNode(node) } };
+    })
+  );
+}
+
 // --- Blog : chargeurs partagés par les routes FR / EN / IT ---
 import { withToc } from "./blog";
 

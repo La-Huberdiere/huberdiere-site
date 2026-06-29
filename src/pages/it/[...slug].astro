@@ -1,11 +1,10 @@
 ---
-import Base from "../layouts/Base.astro";
-import { pageStaticPaths } from "../lib/content";
+import Base from "../../layouts/Base.astro";
+import { pageStaticPaths } from "../../lib/content";
 
-// Rend toute "page libre" FR créée dans Keystatic (collection Pages libres).
-// Une page « tarifs » dans Keystatic apparaît automatiquement sur /tarifs.
+// Pages libres traduites (collection pages-it). Slugs identiques au FR.
 export async function getStaticPaths() {
-  return pageStaticPaths("pages");
+  return pageStaticPaths("pagesIt");
 }
 
 const { entry, html } = Astro.props;
@@ -14,7 +13,7 @@ const { slug } = Astro.params;
 <Base
   title={`${entry.title} · Château de la Huberdière`}
   description={entry.description}
-  lang="fr"
+  lang="it"
   path={`/${slug}`}
 >
   {entry.heroImage && (

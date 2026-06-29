@@ -69,6 +69,29 @@
         "text": "Mariages, séminaires et réunions de famille disposent d'une restauration dédiée, distincte de la table des séjours."
       }
     ],
+    "activitiesHead": {
+      "eyebrow": "Au fil de la journée",
+      "title": "Ce que l'on sert au château",
+      "intro": "Tous nos repas sont faits maison, avec les produits du potager ou de producteurs locaux. Le bio est privilégié."
+    },
+    "activities": [
+      {
+        "title": "Le petit-déjeuner",
+        "text": "Inclus dans le prix de la chambre, servi de 8 h 30 à 10 h 30 : boissons chaudes, oranges pressées, jus de fruits Manse, fruits frais coupés, pain et viennoiseries, avocado-toast, fromage, yaourt et granola fait maison. Œufs sur demande (supplément de 3 €)."
+      },
+      {
+        "title": "Les assiettes à partager",
+        "text": "Servies de 18 h à 20 h 30 : salades, tomates et mozzarella de bufflonne, planche de fromages locaux, légumes grillés, jambon de Parme avec melon ou figues, olives des Pouilles, artichauts et copeaux de parmesan. Demandez la liste de nos assiettes gourmandes."
+      },
+      {
+        "title": "Dîner italien sous les étoiles",
+        "text": "Le jeudi soir, un dîner italien pour goûter à la dolce vita tourangelle. Menu fixe servi à 20 h, sur la terrasse si la météo le permet, sinon dans les salons du château. Sur réservation."
+      },
+      {
+        "title": "Pique-nique, cocktails & brunch",
+        "text": "Sur demande, pour tout événement. Un mini-bar de softs est à disposition au rez-de-chaussée."
+      }
+    ],
     "faqHead": {
       "eyebrow": "Questions fréquentes",
       "title": "Notre table, en pratique"
@@ -77,6 +100,10 @@
       {
         "q": "La table est-elle ouverte au public ?",
         "a": "Non. La restauration est réservée aux personnes qui séjournent au château, en dehors des événements privés qui bénéficient d'une offre dédiée."
+      },
+      {
+        "q": "À quelle heure est servi le petit-déjeuner ?",
+        "a": "De 8 h 30 à 10 h 30, inclus dans le prix de la chambre. Les œufs sont proposés sur demande, avec un supplément de 3 €."
       },
       {
         "q": "Servez-vous le midi ?",
@@ -136,11 +163,11 @@
     },
     "stats": [
       {
-        "big": "6 / 7",
-        "lbl": "evenings of sharing platters"
+        "big": "6 nights / 7",
+        "lbl": "plates to share"
       },
       {
-        "big": "Thursday",
+        "big": "Thursdays",
         "lbl": "a 100% Italian dinner"
       },
       {
@@ -159,11 +186,34 @@
       },
       {
         "title": "The Italian spirit",
-        "text": "Lodovica’s Mediterranean flavours, especially on Thursday evenings for her Italian dinner."
+        "text": "The Mediterranean flavours at Lodovica, especially on Thursday evenings for its Italian dinner."
       },
       {
         "title": "For your events",
-        "text": "Weddings, seminars and family gatherings have their own dedicated catering service, separate from that provided for guests staying at the hotel."
+        "text": "Weddings, seminars and family gatherings have their own dedicated catering service, separate from that provided for holidaymakers."
+      }
+    ],
+    "activitiesHead": {
+      "eyebrow": "As the day goes on",
+      "title": "What’s served at the château",
+      "intro": "All our meals are home-cooked, using produce from our vegetable garden or from local growers. We give preference to organic produce."
+    },
+    "activities": [
+      {
+        "title": "Breakfast",
+        "text": "Included in the room rate, served from 8.30 am to 10.30 am: hot drinks, freshly squeezed orange juice, Manse fruit juices, fresh cut fruit, bread and pastries, avocado toast, cheese, yoghurt and homemade granola. Eggs available on request (€3 extra)."
+      },
+      {
+        "title": "Plates for sharing",
+        "text": "Served from 6 pm to 8.30 pm: salads, tomatoes and buffalo mozzarella, a platter of local cheeses, grilled vegetables, Parma ham with melon or figs, Apulian olives, artichokes and shavings of Parmesan. Ask for our list of gourmet dishes."
+      },
+      {
+        "title": "An Italian dinner under the stars",
+        "text": "On Thursday evenings, enjoy an Italian dinner and a taste of the ‘dolce vita’ in Tours. A set menu is served at 8 pm, on the terrace weather permitting, or otherwise in the château’s dining rooms. Booking required."
+      },
+      {
+        "title": "Picnics, cocktails & brunch",
+        "text": "Available on request for any event. A mini-bar stocked with soft drinks is available on the ground floor."
       }
     ],
     "faqHead": {
@@ -174,6 +224,10 @@
       {
         "q": "Is the restaurant open to the public?",
         "a": "No. Dining is reserved for guests staying at the château, with the exception of private events, for which there is a special package."
+      },
+      {
+        "q": "What time is breakfast served?",
+        "a": "From 8.30 am to 10.30 am, included in the room rate. Eggs are available on request, at an additional cost of €3."
       },
       {
         "q": "Do you serve lunch?",
@@ -194,8 +248,8 @@
     ]
   },
   "it": {
-    "title": "Tavola d'hôtes e cene al castello in Touraine, Château de la Huberdière",
-    "description": "La sera, cucina casalinga dai sapori italiani e tipici di Tours: taglieri da condividere tutte le sere tranne la domenica, e una cena 100% italiana il giovedì, su prenotazione. Prodotti dell’orto e dei produttori della Touraine.",
+    "title": "Cena con gli ospiti e cene al castello in Touraine, Château de la Huberdière",
+    "description": "La sera, cucina casalinga dai sapori italiani e di Tours: taglieri da condividere tutte le sere tranne la domenica, e una cena 100% italiana il giovedì, su prenotazione. Prodotti dell'orto e dei produttori della Touraine.",
     "hero": {
       "eyebrow": "Ristorazione · Cena in famiglia",
       "titleLine1": "A tavola",
@@ -203,7 +257,7 @@
       "lead": "Alla sera, piatti fatti in casa preparati sul posto con i prodotti dell'orto e dei produttori della Touraine, serviti all'interno o all'aperto, in un ambiente bucolico."
     },
     "intro": [
-      "Il ristorante La Table de la Huberdière è il posto giusto dove andare la sera. Tutte le sere della settimana, tranne la domenica, vengono serviti piatti da condividere a base di formaggi, salumi e verdure della regione, in un’atmosfera semplice e conviviale. A pranzo non è previsto il servizio di ristorazione.",
+      "Il ristorante La Table de la Huberdière è il posto giusto dove andare la sera. Tutte le sere della settimana, tranne la domenica, vengono serviti piatti da condividere a base di formaggi, salumi e verdure della regione, in un’atmosfera semplice e conviviale. A pranzo il servizio di ristorazione non è disponibile.",
       "Il giovedì è il momento di una cena 100% italiana: un menu fisso, nello spirito di un pasto in famiglia, da prenotare in anticipo. Niente di gastronomico né di formale, solo la cucina che Lodovica prepara proprio come a casa."
     ],
     "cards": [
@@ -233,8 +287,8 @@
     },
     "stats": [
       {
-        "big": "6 / 7",
-        "lbl": "sere con taglieri da condividere"
+        "big": "6 sere / 7",
+        "lbl": "taglieri da condividere"
       },
       {
         "big": "Il giovedì",
@@ -263,6 +317,29 @@
         "text": "Matrimoni, seminari e riunioni di famiglia dispongono di un servizio di ristorazione dedicato, distinto da quello previsto per i soggiorni."
       }
     ],
+    "activitiesHead": {
+      "eyebrow": "Nel corso della giornata",
+      "title": "Cosa si serve al castello",
+      "intro": "Tutti i nostri piatti sono fatti in casa, con prodotti dell'orto o provenienti da produttori locali. Diamo la preferenza ai prodotti biologici."
+    },
+    "activities": [
+      {
+        "title": "La colazione",
+        "text": "Incluso nel prezzo della camera, servito dalle 8:30 alle 10:30: bevande calde, succo d’arancia appena spremuto, succhi di frutta Manse, frutta fresca tagliata, pane e dolci da fornaio, toast all’avocado, formaggio, yogurt e muesli fatto in casa. Uova su richiesta (supplemento di 3 €)."
+      },
+      {
+        "title": "I piatti da condividere",
+        "text": "Serviti dalle 18:00 alle 20:30: insalate, pomodori e mozzarella di bufala, tagliere di formaggi locali, verdure grigliate, prosciutto di Parma con melone o fichi, olive pugliesi, carciofi e scaglie di parmigiano. Chiedete il menu dei nostri piatti gourmet."
+      },
+      {
+        "title": "Cena italiana sotto le stelle",
+        "text": "Il giovedì sera, una cena italiana per assaporare la dolce vita di Tours. Menu fisso servito alle 20:00, sulla terrazza se il tempo lo permette, altrimenti nelle sale del castello. Su prenotazione."
+      },
+      {
+        "title": "Picnic, cocktail e brunch",
+        "text": "Su richiesta, per qualsiasi evento. Al piano terra è disponibile un minibar con bevande analcoliche."
+      }
+    ],
     "faqHead": {
       "eyebrow": "Domande frequenti",
       "title": "Il nostro tavolo, in pratica"
@@ -271,6 +348,10 @@
       {
         "q": "Il ristorante è aperto al pubblico?",
         "a": "No. Il servizio di ristorazione è riservato agli ospiti che soggiornano nel castello, ad eccezione degli eventi privati, per i quali è prevista un'offerta dedicata."
+      },
+      {
+        "q": "A che ora viene servita la colazione?",
+        "a": "Dalle 8:30 alle 10:30, incluso nel prezzo della camera. Le uova sono disponibili su richiesta, con un supplemento di 3 €."
       },
       {
         "q": "Servite il pranzo?",
@@ -282,7 +363,7 @@
       },
       {
         "q": "È necessario prenotare la cena italiana del giovedì?",
-        "a": "Sì. La cena del giovedì prevede un menù fisso al 100% italiano, da prenotare in anticipo. Una cucina casalinga, senza pretese gastronomiche."
+        "a": "Sì. La cena del giovedì prevede un menù fisso 100% italiano, da prenotare in anticipo. Una cucina casalinga, senza pretese gastronomiche."
       },
       {
         "q": "È possibile adattare i menù alle diverse esigenze alimentari?",

@@ -207,6 +207,43 @@ const mariageSchema = {
     }),
     { label: "Section « activités / extras » — items", itemLabel: (p) => p.fields.title.value || "Item" }
   ),
+  activitiesHead: fields.object(
+    {
+      eyebrow: fields.text({ label: "Sur-titre" }),
+      title: fields.text({ label: "Titre de la section activités" }),
+      intro: fields.text({ label: "Introduction", multiline: true }),
+    },
+    { label: "Section « activités » — en-tête (optionnel)" }
+  ),
+  activities: fields.array(
+    fields.object({
+      title: fields.text({ label: "Titre" }),
+      text: fields.text({ label: "Texte", multiline: true }),
+    }),
+    { label: "Activités (liste, optionnel)", itemLabel: (p) => p.fields.title.value || "Activité" }
+  ),
+  roomsHead: fields.object(
+    {
+      eyebrow: fields.text({ label: "Sur-titre" }),
+      title: fields.text({ label: "Titre de la section chambres" }),
+    },
+    { label: "Section « chambres » — en-tête (optionnel)" }
+  ),
+  rooms: fields.array(
+    fields.object({
+      name: fields.text({ label: "Nom de la chambre" }),
+      size: fields.text({ label: "Surface" }),
+      text: fields.text({ label: "Description", multiline: true }),
+    }),
+    { label: "Chambres (liste, optionnel)", itemLabel: (p) => p.fields.name.value || "Chambre" }
+  ),
+  testimonial: fields.object(
+    {
+      text: fields.text({ label: "Citation", multiline: true }),
+      author: fields.text({ label: "Auteur" }),
+    },
+    { label: "Témoignage (optionnel)" }
+  ),
   faqHead: fields.object(
     {
       eyebrow: fields.text({ label: "Sur-titre" }),
@@ -327,6 +364,32 @@ const articlesCollection = (label: string, dir: string, previewBase: string) =>
     schema: articleSchemaFields,
   });
 
+// FR = source rédigée à la main. EN/IT = générés par scripts/translate-pages.mjs (DeepL).
+const pagesCollection = (label: string, dir: string, previewBase: string) =>
+  collection({
+    label,
+    slugField: "title",
+    path: `src/content/${dir}/*`,
+    format: { contentField: "body" },
+    previewUrl: `${previewBase}/{slug}`,
+    schema: {
+      title: fields.slug({
+        name: { label: "Titre de la page" },
+        slug: { label: "Adresse (URL)", description: "L'adresse de la page, ex. « tarifs » → /tarifs" },
+      }),
+      description: fields.text({ label: "Méta description (SEO)", multiline: true }),
+      heroImage: fields.image({
+        label: "Image de bandeau (optionnelle)",
+        directory: "public/images/pages",
+        publicPath: "/images/pages/",
+      }),
+      body: fields.markdoc({
+        label: "Contenu de la page",
+        options: { image: { directory: "public/images/pages", publicPath: "/images/pages/" } },
+      }),
+    },
+  });
+
 export default config({
   storage: useGithub
     ? { kind: "github", repo: { owner: "La-Huberdiere", name: "huberdiere-site" } }
@@ -336,7 +399,7 @@ export default config({
     navigation: {
       Pages: ["homepage", "mariage", "seminaire", "famille", "retraite", "sejour", "restauration", "contact"],
       Réglages: ["settings", "reviews"],
-      Contenu: ["pages", "articles", "articlesEn", "articlesIt"],
+      Contenu: ["pages", "pagesEn", "pagesIt", "articles", "articlesEn", "articlesIt"],
     },
   },
   singletons: {
@@ -447,29 +510,9 @@ export default config({
     }),
   },
   collections: {
-    pages: collection({
-      label: "Pages libres",
-      slugField: "title",
-      path: "src/content/pages/*",
-      format: { contentField: "body" },
-      previewUrl: "/{slug}",
-      schema: {
-        title: fields.slug({
-          name: { label: "Titre de la page" },
-          slug: { label: "Adresse (URL)", description: "L'adresse de la page, ex. « tarifs » → /tarifs" },
-        }),
-        description: fields.text({ label: "Méta description (SEO)", multiline: true }),
-        heroImage: fields.image({
-          label: "Image de bandeau (optionnelle)",
-          directory: "public/images/pages",
-          publicPath: "/images/pages/",
-        }),
-        body: fields.markdoc({
-          label: "Contenu de la page",
-          options: { image: { directory: "public/images/pages", publicPath: "/images/pages/" } },
-        }),
-      },
-    }),
+    pages: pagesCollection("Pages libres · FR", "pages", "/"),
+    pagesEn: pagesCollection("Pages libres · EN (auto)", "pages-en", "/en"),
+    pagesIt: pagesCollection("Pages libres · IT (auto)", "pages-it", "/it"),
     articles: articlesCollection("Articles · FR", "articles", "/blog"),
     articlesEn: articlesCollection("Articles · EN (auto)", "articles-en", "/en/blog"),
     articlesIt: articlesCollection("Articles · IT (auto)", "articles-it", "/it/blog"),

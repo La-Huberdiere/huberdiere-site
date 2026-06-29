@@ -97,12 +97,28 @@
       {
         "q": "À quelle distance d'Amboise et de Paris ?",
         "a": "À cinq kilomètres d'Amboise et environ 2 h 20 de Paris."
+      },
+      {
+        "q": "Quels types de stages et d'ateliers accueillez-vous ?",
+        "a": "Bien-être : yoga, pilates et méditation, en pleine nature ou à l'abri dans l'Orangerie. Créativité et arts : écriture, peinture, théâtre, master class de musique. Développement personnel : coaching, retraites de digital detox. Gastronomie : ateliers culinaires autour des racines italiennes de Lodovica ou avec un chef étoilé."
+      },
+      {
+        "q": "Le domaine est-il vraiment au calme pour une pratique méditative ?",
+        "a": "Le château est au cœur de quatorze hectares de nature préservée, loin de toute nuisance sonore. Le silence est la règle, pour permettre à vos participants de vivre l'instant présent sans distraction."
+      },
+      {
+        "q": "Quel matériel de pratique est disponible sur place ?",
+        "a": "Nous fournissons la logistique technique : sonorisation, wifi et écrans. Pour le matériel spécifique (tapis, coussins), nous en discutons à la réservation afin de faciliter votre voyage."
+      },
+      {
+        "q": "Peut-on adapter la disposition des salles selon la discipline ?",
+        "a": "Oui. L'Orangerie est une toile vierge : vide pour un stage de yoga, équipée de tables pour un atelier d'écriture. Les 4 salons offrent des espaces plus feutrés pour le coaching ou la lecture."
       }
     ]
   },
   "en": {
-    "title": "A venue for yoga retreats and wellness courses · Castle, Loire Valley",
-    "description": "A private château for your yoga retreats, wellness courses, writing or meditation workshops: accommodation for 20 participants, 14 hectares, 4 versatile function rooms. 2 hours 20 from Paris.",
+    "title": "Venue for yoga retreats and wellness courses · Château, Loire Valley",
+    "description": "A private château for your yoga retreats, wellness courses, writing or meditation workshops: accommodation for 20 participants, 14 hectares, 4 versatile function rooms. 2 hours 20 minutes from Paris.",
     "hero": {
       "eyebrow": "Yoga retreats & wellness courses",
       "titleLine1": "Your yoga retreat",
@@ -111,7 +127,7 @@
     },
     "intro": [
       "Yoga retreats, wellness courses, writing or meditation workshops: just five kilometres from Amboise, the château can be hired exclusively for your groups of up to 20 people. Ten suites with en-suite bathrooms – a real bonus for a luxury retreat.",
-      "Fourteen hectares of natural settings for outdoor activities, four versatile function rooms for your sessions, and seamless logistics: you focus on sharing your expertise, and we’ll take care of the rest."
+      "Fourteen hectares of natural settings for outdoor activities, four versatile function rooms for your sessions, and seamless logistics: you focus on teaching, and we’ll take care of the rest."
     ],
     "cards": [
       {
@@ -134,7 +150,7 @@
       "eyebrow": "Your retreat",
       "titleLine1": "Let’s imagine your",
       "titleLine2Italic": "retreat at the château.",
-      "text": "Tell us your dates, your discipline and the number of participants. We’ll send you a bespoke proposal.",
+      "text": "Please let us know your dates, your discipline and the number of participants. We’ll send you a bespoke proposal.",
       "submitLabel": "Receive a proposal",
       "responseLine": "We’ll get back to you within 24 hours"
     },
@@ -197,13 +213,29 @@
       },
       {
         "q": "How far is it from Amboise and Paris?",
-        "a": "Five kilometres from Amboise and about 2 hours 20 from Paris."
+        "a": "Five kilometres from Amboise and about 2 hours 20 minutes from Paris."
+      },
+      {
+        "q": "What sort of courses and workshops do you run?",
+        "a": "Wellbeing: yoga, Pilates and meditation, either in the great outdoors or indoors in the Orangery. Creativity and the arts: writing, painting, theatre, music masterclasses. Personal development: coaching, digital detox retreats. Gastronomy: cookery workshops exploring Lodovica’s Italian roots or with a Michelin-starred chef."
+      },
+      {
+        "q": "Is the estate really peaceful enough for meditation?",
+        "a": "The château is set in the heart of fourteen hectares of unspoilt countryside, far from any noise pollution. Silence is the order of the day, allowing your guests to savour the moment without distraction."
+      },
+      {
+        "q": "What training equipment is available on site?",
+        "a": "We provide the technical support: sound system, Wi-Fi and screens. As for any specific equipment (mats, cushions), we’ll discuss this at the time of booking to make your trip easier."
+      },
+      {
+        "q": "Can the layout of the classrooms be adapted to suit the subject?",
+        "a": "Yes. The Orangerie is a blank canvas: empty for a yoga class, equipped with tables for a writing workshop. The four lounges offer more intimate spaces for coaching or reading."
       }
     ]
   },
   "it": {
     "title": "Luogo per ritiri di yoga e corsi di benessere · Castello, Valle della Loira",
-    "description": "Un castello a vostra disposizione per ritiri di yoga, corsi di benessere, laboratori di scrittura o di meditazione: 20 posti letto, 14 ettari, 4 sale modulabili. A 2 ore e 20 da Parigi.",
+    "description": "Un castello a vostra disposizione per ritiri di yoga, corsi di benessere, laboratori di scrittura o di meditazione: 20 posti letto, 14 ettari, 4 sale modulabili. A 2 ore e 20 minuti da Parigi.",
     "hero": {
       "eyebrow": "Ritiri di yoga e corsi di benessere",
       "titleLine1": "Il vostro ritiro di yoga",
@@ -212,7 +244,7 @@
     },
     "intro": [
       "Ritiro di yoga, corso di benessere, laboratorio di scrittura o di meditazione: a cinque chilometri da Amboise, il castello è disponibile in esclusiva per i vostri gruppi fino a 20 partecipanti. Dieci suite con bagno privato: un vero punto di forza per un ritiro di alto livello.",
-      "Quattordici ettari di scenari naturali per le attività all'aria aperta, quattro sale modulabili per le vostre sessioni e una logistica discreta: voi vi concentrate sulla vostra formazione, al resto pensiamo noi."
+      "Quattordici ettari di scenari naturali per le attività all'aria aperta, quattro sale modulabili per i vostri incontri e una logistica discreta: voi vi concentrate sulla vostra formazione, al resto pensiamo noi."
     ],
     "cards": [
       {
@@ -222,7 +254,7 @@
       },
       {
         "num": "II",
-        "title": "Comfort di alta classe",
+        "title": "Comfort di alta gamma",
         "text": "Un'esperienza di soggiorno eccezionale: 10 suite di lusso, ognuna con la privacy di un bagno privato."
       },
       {
@@ -286,7 +318,7 @@
       },
       {
         "q": "Quanti partecipanti può ospitare il castello?",
-        "a": "Fino a 20 partecipanti ospitati in 10 suite private, con il castello riservato esclusivamente al vostro gruppo."
+        "a": "Fino a 20 partecipanti ospitati in 10 suite private, con il castello a disposizione esclusiva del vostro gruppo."
       },
       {
         "q": "Ci sono spazi dove praticare?",
@@ -298,7 +330,23 @@
       },
       {
         "q": "A che distanza si trova da Amboise e da Parigi?",
-        "a": "A cinque chilometri da Amboise e a circa 2 ore e 20 da Parigi."
+        "a": "A cinque chilometri da Amboise e a circa 2 ore e 20 minuti da Parigi."
+      },
+      {
+        "q": "Che tipo di corsi e laboratori organizzate?",
+        "a": "Benessere: yoga, pilates e meditazione, immersi nella natura o al riparo nell’Orangerie. Creatività e arte: scrittura, pittura, teatro, master class di musica. Sviluppo personale: coaching, ritiri di digital detox. Gastronomia: laboratori culinari incentrati sulle origini italiane di Lodovica o con uno chef stellato."
+      },
+      {
+        "q": "La tenuta è davvero un luogo tranquillo per dedicarsi alla meditazione?",
+        "a": "Il castello sorge nel cuore di quattordici ettari di natura incontaminata, lontano da qualsiasi fonte di rumore. Il silenzio è la regola, per consentire ai vostri partecipanti di vivere il momento presente senza distrazioni."
+      },
+      {
+        "q": "Quali attrezzature sono disponibili in loco?",
+        "a": "Forniamo il supporto tecnico: impianto audio, Wi-Fi e schermi. Per quanto riguarda il materiale specifico (tappeti, cuscini), ne discutiamo al momento della prenotazione per facilitare il vostro viaggio."
+      },
+      {
+        "q": "È possibile adattare la disposizione delle aule in base alla materia?",
+        "a": "Sì. L'Orangerie è una tela bianca: vuota per un corso di yoga, attrezzata con tavoli per un laboratorio di scrittura. I quattro salotti offrono spazi più intimi per il coaching o la lettura."
       }
     ]
   }

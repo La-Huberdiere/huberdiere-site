@@ -15,13 +15,13 @@
     "cards": [
       {
         "num": "I",
-        "title": "Paradis Sauvage",
-        "text": "Chambre nuptiale avec lit à baldaquin, double exposition sud-ouest et baignoire, pour les moments d'exception."
+        "title": "Dix chambres d'exception",
+        "text": "Chacune sa décoration et sa personnalité, sa salle de bain privée, climatisées au second étage. Du lit à baldaquin nuptial à la grande chambre familiale."
       },
       {
         "num": "II",
-        "title": "Giboulée",
-        "text": "Ambiance marine et aéronautique, lit king-size, orientation sud et vue sur le parc."
+        "title": "L'esprit maison d'hôtes",
+        "text": "Le confort et le service d'un hôtel 3 étoiles, l'accueil chaleureux et la table d'une maison de famille habitée."
       },
       {
         "num": "III",
@@ -73,6 +73,66 @@
         "text": "Amboise et le Clos Lucé à dix minutes ; Chenonceau, Villandry et Chambord à moins d'une heure."
       }
     ],
+    "roomsHead": {
+      "eyebrow": "Nos chambres",
+      "title": "Dix chambres, dix personnalités"
+    },
+    "rooms": [
+      {
+        "name": "Paradis Sauvage",
+        "size": "37 m²",
+        "text": "La chambre nuptiale par excellence. Moulures au plafond, papier peint signé Moooi alterné de velours gris et lit à baldaquin queen-size trônant au milieu de la pièce. Double exposition sud et ouest, salle de bain avec baignoire. Premier étage, romantisme intemporel."
+      },
+      {
+        "name": "Giboulée",
+        "size": "22 m²",
+        "text": "Une ambiance inspirée de la marine et de l'aéronautique, grandes passions de Patrick : une hélice d'avion de la Grande Guerre côtoie instruments et livres de navigation. Lit king-size, orientation sud avec vue sur le parc, salle de bain avec douche."
+      },
+      {
+        "name": "Pêche",
+        "size": "22 m²",
+        "text": "Située dans la tour est, elle tient son nom de la couleur unique de ses murs, inspirée du fruit de l'été et du cocktail Bellini. Grande salle de bain avec baignoire sur pied, climatisation réversible. Deuxième étage."
+      },
+      {
+        "name": "Thé",
+        "size": "30 m²",
+        "text": "La deuxième plus belle chambre du château, dans l'autre tour. Panneaux tendus de tissu aux tons orangés, marbre de cheminée dans les camaïeux de jaune, abat-jour fait d'un carré Hermès. Double exposition est et sud sur le parc, dressing spacieux."
+      },
+      {
+        "name": "Mirage",
+        "size": "37 m²",
+        "text": "Sous la charpente du XVIᵉ siècle de la plus ancienne tour, la grande chambre familiale tient son nom de la couleur lila de ses murs et de son plafond. Lit king-size et deux lits 90 x 200, assez spacieuse pour un lit bébé supplémentaire et de la place pour jouer."
+      },
+      {
+        "name": "Allium",
+        "size": "26 m²",
+        "text": "Chambre triple avec lit king-size et un troisième lit ancien de 110 x 190. Au premier étage, sa fenêtre s'ouvre face au tapis vert, grande ouverture de la forêt qui entoure l'étang. Grande salle de bain avec douche."
+      },
+      {
+        "name": "Bouquet",
+        "size": "15 m²",
+        "text": "Plus petite et néanmoins très cosy, un cadre parfait pour des nuits douces. Son nom lui vient de son papier peint floral. Une chambre lumineuse grâce à son grand velux, orientation sud."
+      },
+      {
+        "name": "Cactus",
+        "size": "17 m²",
+        "text": "Une chambre fun, la seule sans vue sur le parc. Sa grande salle de bain lumineuse, décorée d'œuvres au fusain, participe à sa douceur. En été, la plus fraîche de toutes nos chambres. Orientation nord."
+      },
+      {
+        "name": "Ponceau",
+        "size": "15 m²",
+        "text": "Un lit ancien de 100 x 190, un espace privilégié pour qui voyage seul ou accompagne un couple."
+      },
+      {
+        "name": "Bleu Indien",
+        "size": "15 m²",
+        "text": "Sa jumelle, avec son lit ancien de 100 x 190, idéale pour une personne voyageant seule ou accompagnant un couple."
+      }
+    ],
+    "testimonial": {
+      "text": "L'accueil bienveillant des hôtes, la décoration raffinée et une literie haut de gamme pour un séjour ressourçant. La table d'hôtes délicieuse. Un séjour enchanteur, à refaire sans modération. Nous reviendrons.",
+      "author": "Isabelle"
+    },
     "faqHead": {
       "eyebrow": "Questions fréquentes",
       "title": "Votre séjour à l'hôtel"
@@ -105,28 +165,28 @@
     ]
   },
   "en": {
-    "title": "Boutique Hotel near Amboise · Château de la Huberdière, Loire Valley",
-    "description": "A boutique hotel in a château near Amboise, in the heart of the Loire Valley. Ten exceptional air-conditioned rooms, 14-hectare grounds, a swimming pool and table d’hôtes: the spirit of a guest house with the service of a 3-star hotel.",
+    "title": "A charming hotel near Amboise · Château de la Huberdière, Loire Valley",
+    "description": "A charming hotel set in a château near Amboise, in the heart of the Loire Valley. Ten exceptional air-conditioned rooms, 14-hectare grounds, a lap pool and table d’hôtes dining: the atmosphere of a bed and breakfast, with the service of a 3-star hotel.",
     "hero": {
-      "eyebrow": "Boutique hotel · near Amboise",
+      "eyebrow": "Charming hotel · near Amboise",
       "titleLine1": "A boutique hotel",
       "titleLine2Italic": "at the castle.",
-      "lead": "A boutique hotel in a château in the Loire Valley, just a few minutes from Amboise. Ten exceptional rooms, the service of a 3-star hotel, the warm spirit of a guest house."
+      "lead": "A charming hotel set in a château in the Loire Valley, just a few minutes from Amboise. Ten exceptional rooms, the service of a 3-star hotel, and the warm, welcoming atmosphere of a guesthouse."
     },
     "intro": [
-      "Just a stone’s throw from Amboise, the château welcomes you like a hotel unlike any other: ten delightfully decorated rooms, each with its own character and private bathroom, all air-conditioned and situated on the second floor. The spirit of a guest house, the comfort and service of a 3-star hotel. An ideal base for visiting the châteaux of the Loire Valley and exploring the Touraine region.",
+      "Just a stone’s throw from Amboise, the château welcomes you as a hotel unlike any other: ten delightfully decorated rooms, each with its own character and private bathroom, all air-conditioned and situated on the second floor. The charm of a bed and breakfast, combined with the comfort and service of a 3-star hotel. An ideal base for exploring the Châteaux of the Loire Valley and discovering the Touraine region.",
       "A 14-hectare park featuring terraces, a large pond and a 16-metre swimming lane heated from April to October, a dining room that can seat up to 22 guests, and a library with Versailles-style parquet flooring that can be converted into a dance floor."
     ],
     "cards": [
       {
         "num": "I",
-        "title": "Wild Paradise",
-        "text": "A bridal suite with a four-poster bed, double south-west-facing windows and a bath, for those special moments."
+        "title": "Ten exceptional rooms",
+        "text": "Each room has its own décor and character, with its own private, air-conditioned bathroom on the second floor. From the bridal four-poster bed to the spacious family room."
       },
       {
         "num": "II",
-        "title": "Giboulée",
-        "text": "A nautical and aviation-themed décor, a king-size bed, south-facing and with a view of the park."
+        "title": "The guesthouse spirit",
+        "text": "The comfort and service of a 3-star hotel, combined with the warm welcome and home-cooked meals of a family home."
       },
       {
         "num": "III",
@@ -178,14 +238,74 @@
         "text": "Amboise and the Clos Lucé are ten minutes away; Chenonceau, Villandry and Chambord are less than an hour away."
       }
     ],
+    "roomsHead": {
+      "eyebrow": "Our rooms",
+      "title": "Ten rooms, ten personalities"
+    },
+    "rooms": [
+      {
+        "name": "Paradis Sauvage",
+        "size": "37 m²",
+        "text": "The ultimate bridal suite. Ceiling mouldings, Moooi wallpaper alternating with grey velvet, and a queen-size four-poster bed taking pride of place in the centre of the room. Double aspect facing south and west, en-suite bathroom with a bath. First floor, timeless romance."
+      },
+      {
+        "name": "Giboulée",
+        "size": "22 m²",
+        "text": "The décor is inspired by the navy and aviation, Patrick’s great passions: a First World War aeroplane propeller sits alongside navigational instruments and books. King-size bed, south-facing with a view of the park, en-suite bathroom with shower."
+      },
+      {
+        "name": "Pêche",
+        "size": "22 m²",
+        "text": "Located in the east tower, it takes its name from the unique colour of its walls, inspired by the summer fruit and the Bellini cocktail. Large bathroom with a freestanding bath, reversible air conditioning. Second floor."
+      },
+      {
+        "name": "Thé",
+        "size": "30 m²",
+        "text": "The second most beautiful bedroom in the château, in the other tower. Panels draped in orange-toned fabric, a marble fireplace in shades of yellow, and a lampshade made from a Hermès square. Double aspect to the east and south overlooking the grounds, with a spacious walk-in wardrobe."
+      },
+      {
+        "name": "Mirage",
+        "size": "37 m²",
+        "text": "Beneath the 16th-century roof structure of the oldest tower, the large family room takes its name from the lilac colour of its walls and ceiling. It features a king-size bed and two 90 x 200 beds, and is spacious enough for an extra cot and plenty of room to play."
+      },
+      {
+        "name": "Allium",
+        "size": "26 m²",
+        "text": "Triple room with a king-size bed and a third antique bed measuring 110 x 190. On the first floor, the window overlooks the green meadow, a wide clearing in the forest surrounding the pond. Large en-suite bathroom with a shower."
+      },
+      {
+        "name": "Bouquet",
+        "size": "15 m²",
+        "text": "Smaller yet very cosy, it’s the perfect setting for a peaceful night’s sleep. It takes its name from its floral wallpaper. The room is bright thanks to its large south-facing skylight."
+      },
+      {
+        "name": "Cactus",
+        "size": "17 m²",
+        "text": "A fun room, the only one without a view of the park. Its large, light-filled bathroom, decorated with charcoal drawings, adds to its cosy atmosphere. In summer, it’s the coolest of all our rooms. North-facing."
+      },
+      {
+        "name": "Ponceau",
+        "size": "15 m²",
+        "text": "An antique bed measuring 100 x 190, a cosy space for those travelling alone or accompanying a couple."
+      },
+      {
+        "name": "Bleu Indien",
+        "size": "15 m²",
+        "text": "Its twin room, with its antique 100 x 190 bed, is ideal for a solo traveller or someone accompanying a couple."
+      }
+    ],
+    "testimonial": {
+      "text": "The warm welcome from the hosts, the tasteful décor and top-quality bedding made for a rejuvenating stay. The table d’hôtes was delicious. An enchanting stay – one we’d happily repeat time and again. We’ll be back.",
+      "author": "Isabelle"
+    },
     "faqHead": {
       "eyebrow": "Frequently Asked Questions",
       "title": "Your stay at the hotel"
     },
     "faq": [
       {
-        "q": "Are you a hotel or a guest house?",
-        "a": "The château is a 3-star boutique hotel. You'll find the spirit, warmth and welcome of a guest house, with the level of service, comfort and amenities of a hotel."
+        "q": "Are you a hotel or a guesthouse?",
+        "a": "The château is a charming 3-star hotel. It combines the atmosphere, friendliness and warm welcome of a bed and breakfast with the standard of service, comfort and facilities of a hotel."
       },
       {
         "q": "How far is the château from Amboise?",
@@ -210,33 +330,33 @@
     ]
   },
   "it": {
-    "title": "Hotel di charme vicino ad Amboise · Castello di La Huberdière, Valle della Loira",
-    "description": "Un hotel di charme in un castello vicino ad Amboise, nel cuore dei Castelli della Loira. Dieci camere d'eccezione climatizzate, parco di 14 ettari, piscina e cucina casalinga: lo spirito di una maison d'hôtes con il servizio di un hotel a 3 stelle.",
+    "title": "Hotel di charme vicino ad Amboise · Château de la Huberdière, Valle della Loira",
+    "description": "Un hotel di charme in un castello vicino ad Amboise, nel cuore dei Castelli della Loira. Dieci camere d'eccezione dotate di aria condizionata, un parco di 14 ettari, una piscina a corsie e la cucina casalinga: l'atmosfera di una pensione, il servizio di un hotel a 3 stelle.",
     "hero": {
       "eyebrow": "Hotel di charme · nei pressi di Amboise",
       "titleLine1": "Un hotel di charme",
       "titleLine2Italic": "al castello.",
-      "lead": "Un hotel di charme in un castello della Valle della Loira, a pochi minuti da Amboise. Dieci camere d'eccezione, il servizio di un hotel a 3 stelle, lo spirito caloroso di una maison d'hôtes."
+      "lead": "Un hotel di charme in un castello della Valle della Loira, a pochi minuti da Amboise. Dieci camere d'eccezione, il servizio di un hotel a 3 stelle, l'atmosfera accogliente di una pensione."
     },
     "intro": [
-      "A due passi da Amboise, il castello vi accoglie come un hotel fuori dal comune: dieci stanze arredate con gusto, ognuna con la propria personalità e il bagno privato, climatizzate e situate al secondo piano. Lo spirito di una maison d'hôtes, il comfort e il servizio di un hotel a 3 stelle. Un punto di partenza ideale per visitare i castelli della Loira ed esplorare la Touraine.",
+      "A due passi da Amboise, il castello vi accoglie come un hotel fuori dal comune: dieci camere arredate con gusto, ognuna con la propria personalità e il bagno privato, tutte climatizzate e situate al secondo piano. L'atmosfera di una camera per gli ospiti, il comfort e il servizio di un hotel a 3 stelle. Una base ideale per visitare i castelli della Loira ed esplorare la Touraine.",
       "Un parco di 14 ettari con terrazze, un grande laghetto e una piscina da 16 metri riscaldata da aprile a ottobre, una sala da pranzo che può ospitare fino a 22 commensali e una biblioteca con pavimento in parquet stile Versailles trasformabile in pista da ballo."
     ],
     "cards": [
       {
         "num": "I",
-        "title": "Paradiso selvaggio",
-        "text": "Camera nuziale con letto a baldacchino, doppia esposizione a sud-ovest e vasca da bagno, per momenti davvero speciali."
+        "title": "Dieci camere d'eccezione",
+        "text": "Ognuna con il proprio stile d’arredo e la propria personalità, con bagno privato e aria condizionata, al secondo piano. Dal letto a baldacchino nuziale alla grande camera familiare."
       },
       {
         "num": "II",
-        "title": "Giboulée",
-        "text": "Atmosfera in stile marino e aeronautico, letto king-size, esposizione a sud e vista sul parco."
+        "title": "Lo spirito della pensione",
+        "text": "Il comfort e il servizio di un hotel a 3 stelle, l'accoglienza calorosa e la cucina di una casa di famiglia."
       },
       {
         "num": "III",
         "title": "Un parco di 14 ettari",
-        "text": "Lago, terrazze e corsia di nuoto di 16x3 m con pool house. Una tenuta attenta all’ambiente: filiera corta, prodotti biologici e riscaldamento a biomassa."
+        "text": "Lago artificiale, terrazze e corsia di nuoto di 16x3 m con pool house. Una tenuta attenta all’ambiente: filiera corta, prodotti biologici e riscaldamento a biomassa."
       }
     ],
     "final": {
@@ -283,14 +403,74 @@
         "text": "Amboise e il Clos Lucé a dieci minuti; Chenonceau, Villandry e Chambord a meno di un'ora."
       }
     ],
+    "roomsHead": {
+      "eyebrow": "Le nostre camere",
+      "title": "Dieci camere, dieci personalità"
+    },
+    "rooms": [
+      {
+        "name": "Paradis Sauvage",
+        "size": "37 m²",
+        "text": "La camera nuziale per eccellenza. Modanature sul soffitto, carta da parati firmata Moooi alternata a velluto grigio e un letto a baldacchino queen-size che troneggia al centro della stanza. Doppia esposizione a sud e a ovest, bagno con vasca. Primo piano, romanticismo senza tempo."
+      },
+      {
+        "name": "Giboulée",
+        "size": "22 m²",
+        "text": "Un’atmosfera ispirata alla marina e all’aeronautica, grandi passioni di Patrick: un’elica di aereo della Grande Guerra fa da cornice a strumenti e libri di navigazione. Letto king-size, esposizione a sud con vista sul parco, bagno con doccia."
+      },
+      {
+        "name": "Pêche",
+        "size": "22 m²",
+        "text": "Situata nella torre est, deve il suo nome al colore unico delle sue pareti, ispirato al frutto estivo e al cocktail Bellini. Ampio bagno con vasca su piedistallo, aria condizionata reversibile. Secondo piano."
+      },
+      {
+        "name": "Thé",
+        "size": "30 m²",
+        "text": "La seconda camera più bella del castello, nell'altra torre. Pannelli rivestiti di tessuto dai toni aranciati, marmo del camino in sfumature di giallo, paralume realizzato con un quadrato di tessuto Hermès. Doppia esposizione a est e a sud sul parco, spaziosa cabina armadio."
+      },
+      {
+        "name": "Mirage",
+        "size": "37 m²",
+        "text": "Sotto la travatura del XVI secolo della torre più antica, la grande camera familiare prende il nome dal colore lilla delle pareti e del soffitto. Letto king-size e due letti da 90 x 200; abbastanza spaziosa per ospitare un lettino aggiuntivo e con spazio a sufficienza per giocare."
+      },
+      {
+        "name": "Allium",
+        "size": "26 m²",
+        "text": "Camera tripla con letto king-size e un terzo letto antico da 110 x 190. Al primo piano, la finestra si affaccia sul tappeto verde, un’ampia radura del bosco che circonda lo stagno. Ampio bagno con doccia."
+      },
+      {
+        "name": "Bouquet",
+        "size": "15 m²",
+        "text": "Più piccola ma comunque molto accogliente, è l’ambiente perfetto per notti tranquille. Il suo nome deriva dalla carta da parati a motivi floreali. Una camera luminosa grazie al grande lucernario esposto a sud."
+      },
+      {
+        "name": "Cactus",
+        "size": "17 m²",
+        "text": "Una camera divertente, l'unica senza vista sul parco. Il suo ampio e luminoso bagno, decorato con disegni a carboncino, contribuisce a renderla accogliente. In estate, è la più fresca tra tutte le nostre camere. Esposizione a nord."
+      },
+      {
+        "name": "Ponceau",
+        "size": "15 m²",
+        "text": "Un letto antico da 100 x 190, uno spazio esclusivo per chi viaggia da solo o accompagna una coppia."
+      },
+      {
+        "name": "Bleu Indien",
+        "size": "15 m²",
+        "text": "La sua camera gemella, con il suo letto antico da 100 x 190, ideale per chi viaggia da solo o accompagna una coppia."
+      }
+    ],
+    "testimonial": {
+      "text": "L'accoglienza cordiale dei padroni di casa, l'arredamento raffinato e biancheria da letto di alta qualità per un soggiorno rigenerante. La cucina della casa è deliziosa. Un soggiorno incantevole, da ripetere senza riserve. Torneremo.",
+      "author": "Isabelle"
+    },
     "faqHead": {
       "eyebrow": "Domande frequenti",
       "title": "Il vostro soggiorno in hotel"
     },
     "faq": [
       {
-        "q": "Siete un hotel o una maison d'hôtes?",
-        "a": "Il castello è un hotel di charme a 3 stelle. Vi ritroverete lo spirito, il calore e l'accoglienza di una maison d'hôtes, con il livello di servizio, il comfort e i servizi di un hotel."
+        "q": "Siete un hotel o una pensione?",
+        "a": "Il castello è un hotel di charme a 3 stelle. Qui si respirano l'atmosfera, la cordialità e l'accoglienza di una pensione, con il livello di servizio, il comfort e i servizi di un hotel."
       },
       {
         "q": "A che distanza da Amboise si trova il castello?",
@@ -310,7 +490,7 @@
       },
       {
         "q": "È possibile riservare le camere per un evento?",
-        "a": "Sì, tutte le camere possono essere riservate in esclusiva per un matrimonio, un seminario o una riunione di famiglia."
+        "a": "Sì, tutte le camere possono essere riservate per un matrimonio, un seminario o una riunione di famiglia."
       }
     ]
   }
