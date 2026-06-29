@@ -38,14 +38,18 @@ const actIds = ["sejour", "mariage", "seminaire", "famille", "retraite"];
 <section class="hero" id="hero">
   <Image src={hero} alt="Château de la Huberdière vu depuis l'étang" widths={[768, 1280, 1920, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />
   <div class="hero-content">
-    <div class="eyebrow">{c.hero.eyebrow}</div>
-    <h1>{c.hero.titleLine1}<br /><span class="italic">{c.hero.titleLine2Italic}</span></h1>
-    <p class="lead">{c.hero.lead}</p>
-    <div class="hero-cta">
-      <a class="btn-primary" href="#final">{c.hero.ctaPrimary}</a>
-      <a class="btn-ghost" href="#acts">{c.hero.ctaSecondary}</a>
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-rule"></div>
+        <h1>{c.hero.titleLine1}<br /><span class="italic">{c.hero.titleLine2Italic}</span></h1>
+        <p class="lead">{c.hero.lead}</p>
+        <div class="hero-cta">
+          <a class="btn-primary" href="#final">{c.hero.ctaPrimary}</a>
+          <a class="hero-link" href="#acts">{c.hero.ctaSecondary}</a>
+        </div>
+        <BookingBar booking={booking} lang={lang} />
+      </div>
     </div>
-    <BookingBar booking={booking} lang={lang} />
   </div>
 </section>
 
