@@ -1,5 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
+import FreePage from "../components/FreePage.astro";
 import { pageStaticPaths } from "../lib/content";
 
 // Rend toute "page libre" FR créée dans Keystatic (collection Pages libres).
@@ -17,18 +18,5 @@ const { slug } = Astro.params;
   lang="fr"
   path={`/${slug}`}
 >
-  {entry.heroImage && (
-    <section class="page-hero">
-      <img src={entry.heroImage} alt={entry.title} style="width:100%;height:100%;object-fit:cover" />
-      <div class="inner">
-        <h1>{entry.title}</h1>
-      </div>
-    </section>
-  )}
-  <section style={entry.heroImage ? "" : "padding-top:140px"}>
-    <div class="prose reveal">
-      {!entry.heroImage && <h1>{entry.title}</h1>}
-      <Fragment set:html={html} />
-    </div>
-  </section>
+  <FreePage entry={entry} html={html} lang="fr" path={`/${slug}`} slug={slug} />
 </Base>

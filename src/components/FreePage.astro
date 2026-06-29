@@ -1,0 +1,145 @@
+---
+import { Image } from "astro:assets";
+// Pages éditoriales (Notre histoire, Activités…). Mise en page magazine :
+// hero plein cadre asymétrique, lettrine, filets bordeaux, photo pleine largeur,
+// bloc d'appel. Partagé par les routes FR / EN / IT.
+import sChateauEtang from "../assets/SD_2.jpg";
+import sInterieur from "../assets/SD_11.jpg";
+import sPiscine from "../assets/SD_4.jpg";
+import sEscalier from "../assets/SD_1.jpg";
+import sFacade from "../assets/SD_3.jpg";
+
+const { entry, html, lang = "fr", path = "/", slug = "" } = Astro.props;
+
+// Photos par page (hero + une image d'aération en pleine largeur).
+const imgMap: Record<string, { hero: any; feature: any }> = {
+  "notre-histoire": { hero: sChateauEtang, feature: sInterieur },
+  activites: { hero: sPiscine, feature: sEscalier },
+};
+const imgs = imgMap[slug] ?? { hero: sFacade, feature: sChateauEtang };
+
+const locator =
+  lang === "it" ? "Château de la Huberdière · Touraine"
+  : lang === "en" ? "Château de la Huberdière · Touraine"
+  : "Château de la Huberdière · Touraine";
+
+const cta = {
+  fr: { title: "Envie de découvrir le château ?", text: "Écrivez-nous votre projet ou vos dates. Nous vous répondons sous 24 heures.", contact: "Nous contacter", book: "Réserver un séjour" },
+  en: { title: "Like to discover the château?", text: "Tell us about your plans or your dates. We reply within 24 hours.", contact: "Contact us", book: "Book a stay" },
+  it: { title: "Voglia di scoprire il castello?", text: "Scriveteci il vostro progetto o le vostre date. Rispondiamo entro 24 ore.", contact: "Contattaci", book: "Prenota un soggiorno" },
+}[lang as "fr" | "en" | "it"] ?? null;
+
+const L = (href: string) => (lang === "fr" ? href : `/${lang}${href}`);
+const contactHref = L("/contact");
+const bookHref = "/reservation";
+const captionFeature =
+  lang === "it" ? "Il castello e il suo parco di quattordici ettari."
+  : lang === "en" ? "The château and its fourteen-hectare grounds."
+  : "Le château et son parc de quatorze hectares.";
+---
+
+<section class="free-hero">
+  <Image src={imgs.hero} alt={entry.title} widths={[768, 1280, 1920]} sizes="100vw" loading="eager" fetchpriority="high" />
+  <div class="fh-inner">
+    <span class="fh-eyebrow">{locator}</span>
+    <h1>{entry.title}</h1>
+  </div>
+</section>
+
+<section class="free-body">
+  <div class="free-prose">
+    <Fragment set:html={html} />
+  </div>
+</section>
+
+<figure class="free-feature">
+  <Image src={imgs.feature} alt={captionFeature} widths={[768, 1280, 1760]} sizes="100vw" />
+  <figcaption>{captionFeature}</figcaption>
+</figure>
+
+{cta && (
+  <section class="free-cta">
+    <span class="cta-rule" aria-hidden="true"></span>
+    <h2>{cta.title}</h2>
+    <p>{cta.text}</p>
+    <div class="cta-actions">
+      <a class="btn-burgundy" href={contactHref}>{cta.contact}</a>
+      <a class="btn-ghost-line" href={bookHref}>{cta.book}</a>
+    </div>
+  </section>
+)}
+
+<style>
+  /* ---- Hero éditorial : photo plein cadre, texte calé en bas à gauche ---- */
+  .free-hero { position: relative; height: 66vh; min-height: 520px; overflow: hidden; background: #1a1a1a; }
+  .free-hero :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.04); animation: fh-zoom 9s ease-out forwards; }
+  .free-hero::after { content: ""; position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(90deg, rgba(20,16,14,0.72), rgba(20,16,14,0.32) 48%, rgba(20,16,14,0.05) 80%); }
+  .fh-inner { position: absolute; left: 0; bottom: 0; z-index: 2; color: #fff;
+    padding: 0 24px clamp(38px, 5vw, 66px); max-width: 880px;
+    animation: fh-rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  .fh-eyebrow { display: inline-block; font-family: "Montserrat", sans-serif; font-size: 11px;
+    letter-spacing: 0.22em; text-transform: uppercase; color: #e8c9a0; margin: 0 0 18px;
+    padding-left: 46px; position: relative; }
+  .fh-eyebrow::before { content: ""; position: absolute; left: 0; top: 0.5em; width: 32px; height: 2px; background: #b9132f; }
+  .free-hero h1 { font-family: "Playfair Display", Georgia, serif; font-weight: 400; color: #fff;
+    font-size: clamp(40px, 6vw, 78px); line-height: 1.04; margin: 0; max-width: 14ch; }
+  @keyframes fh-rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+  @keyframes fh-zoom { to { transform: scale(1); } }
+  @media (prefers-reduced-motion: reduce) {
+    .free-hero :global(img) { animation: none; transform: none; }
+    .fh-inner { animation: none; }
+  }
+
+  /* ---- Corps : lettrine, titres à filet, listes et citations soignées ---- */
+  .free-body { padding: clamp(64px, 8vw, 120px) 24px 40px; }
+  .free-prose { max-width: 720px; margin: 0 auto; }
+  .free-prose :global(p) { font-size: 17px; color: var(--ink-2); font-weight: 300; line-height: 1.95; margin: 0 0 24px; }
+  /* Lettrine bordeaux sur le tout premier paragraphe (détail signature). */
+  .free-prose :global(p:first-of-type) { font-size: 19px; color: var(--ink); line-height: 1.85; }
+  .free-prose :global(p:first-of-type)::first-letter {
+    float: left; font-family: "Playfair Display", Georgia, serif; font-weight: 500;
+    font-size: 4.8em; line-height: 0.72; padding: 8px 16px 0 0; color: var(--burgundy);
+  }
+  .free-prose :global(h2) { font-family: "Playfair Display", Georgia, serif; font-weight: 400;
+    font-size: clamp(26px, 3.2vw, 36px); line-height: 1.2; color: var(--ink);
+    margin: 58px 0 22px; padding-top: 30px; border-top: 1px solid var(--line); position: relative; }
+  .free-prose :global(h2)::before { content: ""; position: absolute; top: -1px; left: 0; width: 56px; height: 3px; background: var(--burgundy); }
+  .free-prose :global(h3) { font-family: "Playfair Display", Georgia, serif; font-weight: 400;
+    font-size: 22px; color: var(--ink); margin: 36px 0 14px; }
+  .free-prose :global(ul) { list-style: none; margin: 0 0 24px; padding: 0; }
+  .free-prose :global(li) { position: relative; padding: 0 0 14px 30px; color: var(--ink-2);
+    font-weight: 300; line-height: 1.8; font-size: 16px; border-bottom: 1px solid #efe9dc; margin-bottom: 14px; }
+  .free-prose :global(li):last-child { border-bottom: 0; }
+  .free-prose :global(li)::before { content: ""; position: absolute; left: 4px; top: 11px; width: 7px; height: 7px;
+    background: var(--burgundy); transform: rotate(45deg); }
+  .free-prose :global(blockquote) { margin: 40px 0; padding: 6px 0 6px 28px; border-left: 3px solid var(--burgundy); }
+  .free-prose :global(blockquote p) { font-family: "Playfair Display", Georgia, serif; font-style: italic;
+    font-size: 23px; line-height: 1.5; color: var(--ink); }
+  .free-prose :global(a) { color: var(--burgundy); text-decoration: underline; text-underline-offset: 3px; }
+  .free-prose :global(strong) { font-weight: 500; color: var(--ink); }
+
+  /* ---- Photo d'aération pleine largeur ---- */
+  .free-feature { position: relative; margin: clamp(40px, 6vw, 80px) 0 0; }
+  .free-feature :global(img) { width: 100%; height: clamp(360px, 56vh, 620px); object-fit: cover; display: block; }
+  .free-feature figcaption { font-family: "Montserrat", sans-serif; font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink-2); text-align: right; max-width: 1200px; margin: 12px auto 0; padding: 0 24px; }
+
+  /* ---- Bloc d'appel ---- */
+  .free-cta { text-align: center; padding: clamp(70px, 9vw, 120px) 24px; }
+  .cta-rule { display: block; width: 40px; height: 2px; background: var(--burgundy); margin: 0 auto 26px; }
+  .free-cta h2 { font-family: "Playfair Display", Georgia, serif; font-weight: 400;
+    font-size: clamp(28px, 4vw, 44px); color: var(--ink); margin: 0 0 16px; }
+  .free-cta p { max-width: 480px; margin: 0 auto 36px; color: var(--ink-2); font-weight: 300; line-height: 1.8; }
+  .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn-ghost-line { font-family: "Montserrat", sans-serif; font-weight: 500; font-size: 11px;
+    letter-spacing: 0.26em; text-transform: uppercase; padding: 18px 38px; border: 1px solid var(--ink);
+    color: var(--ink); text-decoration: none; transition: all 0.35s; }
+  .btn-ghost-line:hover { background: var(--ink); color: #fff; }
+
+  @media (max-width: 760px) {
+    .free-hero { height: 58vh; min-height: 420px; }
+    .free-body { padding: 56px 22px 28px; }
+    .free-prose :global(> p:first-of-type)::first-letter { font-size: 3.8em; }
+  }
+</style>
