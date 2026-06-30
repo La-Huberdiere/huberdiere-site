@@ -32,9 +32,8 @@ const CIBLE_LABEL = {
 const SENDER = { name: "Château de la Huberdière", email: "hello@chateaudelahuberdiere.com" };
 const REPLY_PUBLIC = { email: "contact@chateaudelahuberdiere.com", name: "Château de la Huberdière" };
 // Destinataires des notifications internes.
-// TEST : on n'envoie qu'à Alexis pour ne pas déranger le client.
-// AVANT MISE EN LIGNE : remettre { email: "contact@chateaudelahuberdiere.com" }.
-const TEAM = [{ email: "alexis@morain.fr" }];
+// MISE EN LIGNE 2026-06-30 : le client reçoit ses leads, Alexis garde une copie de suivi.
+const TEAM = [{ email: "contact@chateaudelahuberdiere.com" }, { email: "alexis@morain.fr" }];
 
 // Confirmation envoyée au prospect, localisée.
 const CONFIRM = {

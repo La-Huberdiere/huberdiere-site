@@ -11,9 +11,10 @@
     { "source": "/chateau-location-touraine", "destination": "/sejour", "permanent": true },
     { "source": "/hebergement-chateau-touraine", "destination": "/sejour", "permanent": true },
     { "source": "/restauration-chateau-huberdiere-touraine", "destination": "/restauration", "permanent": true },
-    { "source": "/activites-chateau-huberdiere-touraine", "destination": "/", "permanent": true },
+    { "source": "/activites-chateau-huberdiere-touraine", "destination": "/activites", "permanent": true },
     { "source": "/members", "destination": "/", "permanent": true },
-    { "source": "/article/:slug*", "destination": "/blog", "permanent": true }
+    { "source": "/article/:slug*", "destination": "/blog", "permanent": true },
+    { "source": "/event-details/:slug*", "destination": "/", "permanent": true }
   ],
   "headers": [
     {
