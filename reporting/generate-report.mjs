@@ -150,6 +150,30 @@ async function pullLlm() {
   return results
 }
 
+// ── Historique de visibilité du domaine (backfill, ~12 mois) ──────────────
+async function pullDomainHistory() {
+  try {
+    const result = await dfs("/dataforseo_labs/google/historical_rank_overview/live", {
+      target: DOMAIN, location_name: "France", language_code: "fr", ignore_synonyms: true,
+    })
+    const items = result[0]?.items ?? []
+    return items
+      .map((it) => {
+        const o = it.metrics?.organic ?? {}
+        const top3 = (o.pos_1 || 0) + (o.pos_2_3 || 0)
+        const top10 = top3 + (o.pos_4_10 || 0)
+        const top20 = top10 + (o.pos_11_20 || 0)
+        return { ym: `${it.year}-${String(it.month).padStart(2, "0")}`, top3, top10, top20, etv: Math.round(o.etv || 0) }
+      })
+      .sort((a, b) => a.ym.localeCompare(b.ym))
+  } catch (e) {
+    console.error("Domain history KO", e.message)
+    return []
+  }
+}
+
+const monthShort = (ym) => new Intl.DateTimeFormat("fr-FR", { month: "short", year: "2-digit", timeZone: "UTC" }).format(new Date(`${ym}-15T00:00:00Z`))
+
 // ── Articles (frontmatter du repo) ────────────────────────────────────────
 async function readArticles() {
   if (!existsSync(ARTICLES_DIR)) return []
@@ -253,6 +277,10 @@ function renderHtml(data) {
     <tbody>${serp.map((s) => `<tr><td>${esc(s.keyword)}</td><td>${esc(s.intent)}</td><td class="num pos">${s.position != null ? s.position : '<span style="color:var(--gris)">non classé</span>'}</td><td style="color:var(--gris)">${esc(s.leader || "")}</td></tr>`).join("")}</tbody>
   </table>
 
+  <h2>Visibilité globale sur Google</h2>
+  <p class="lead">Nombre de mots-clés du site positionnés dans le top 20 de Google, et trafic mensuel estimé, sur les derniers mois.</p>
+  <div class="card"><canvas id="domChart"></canvas></div>
+
   <h2>Articles rédigés</h2>
   <p class="lead">Le contenu publié ce mois et depuis le début, avec les mots-clés visés par chaque article.</p>
   <table>
@@ -286,26 +314,42 @@ function renderHtml(data) {
 <script>
 const HISTORY = ${JSON.stringify(history)};
 const KW = ${JSON.stringify(KEYWORDS.map((k) => k.keyword))};
+const palette = ["#8B0000","#B08D57","#5C4B3C","#2E7D32","#3b6ea5","#8B7355","#a0508b","#417d7a","#c06014"];
+// Graphe 1 : position par mot-clé (mois avec données de position uniquement).
 (function(){
-  const labels = HISTORY.map(h => h.monthLabel || h.month);
-  const palette = ["#8B0000","#B08D57","#5C4B3C","#2E7D32","#3b6ea5","#8B7355","#a0508b","#417d7a"];
+  const POS = HISTORY.filter(h => h.positions);
+  const labels = POS.map(h => h.monthLabel || h.month);
   const datasets = KW.map((kw, i) => ({
     label: kw,
-    data: HISTORY.map(h => (h.positions && h.positions[kw] != null) ? h.positions[kw] : null),
-    borderColor: palette[i % palette.length],
-    backgroundColor: palette[i % palette.length],
+    data: POS.map(h => (h.positions[kw] != null) ? h.positions[kw] : null),
+    borderColor: palette[i % palette.length], backgroundColor: palette[i % palette.length],
     spanGaps: true, tension: .3, borderWidth: 2, pointRadius: 3,
   }));
-  const ctx = document.getElementById("posChart");
-  new Chart(ctx, {
-    type: "line",
-    data: { labels, datasets },
+  new Chart(document.getElementById("posChart"), {
+    type: "line", data: { labels, datasets },
+    options: {
+      responsive: true, interaction: { mode: "nearest", intersect: false },
+      scales: { y: { reverse: true, min: 1, suggestedMax: 100, title: { display: true, text: "Position Google (1 = en haut)" }, ticks: { precision: 0 } } },
+      plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { family: "Montserrat" } } } }
+    }
+  });
+})();
+// Graphe 2 : visibilité globale du domaine (mots-clés top 20 + trafic estimé).
+(function(){
+  const DOM = HISTORY.filter(h => h.domain);
+  if (!DOM.length) { document.getElementById("domChart").closest(".card").style.display = "none"; return; }
+  const labels = DOM.map(h => h.monthLabel || h.month);
+  new Chart(document.getElementById("domChart"), {
+    type: "bar",
+    data: { labels, datasets: [
+      { type: "bar", label: "Mots-clés en top 20", data: DOM.map(h => h.domain.top20), backgroundColor: "#8B0000", yAxisID: "y", order: 2 },
+      { type: "line", label: "Visiteurs/mois estimés", data: DOM.map(h => h.domain.etv), borderColor: "#B08D57", backgroundColor: "#B08D57", yAxisID: "y1", tension: .3, borderWidth: 2, pointRadius: 3, order: 1 },
+    ] },
     options: {
       responsive: true,
-      interaction: { mode: "nearest", intersect: false },
       scales: {
-        y: { reverse: true, min: 1, suggestedMax: 100, title: { display: true, text: "Position Google (1 = en haut)" }, ticks: { precision: 0 } },
-        x: {}
+        y: { position: "left", beginAtZero: true, title: { display: true, text: "Mots-clés top 20" }, ticks: { precision: 0 } },
+        y1: { position: "right", beginAtZero: true, grid: { drawOnChartArea: false }, title: { display: true, text: "Visiteurs/mois estimés" } },
       },
       plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { family: "Montserrat" } } } }
     }
@@ -322,23 +366,31 @@ async function main() {
   const monthLabel = new Intl.DateTimeFormat("fr-FR", { month: "short", year: "2-digit", timeZone: "UTC" }).format(new Date(`${month}-15T00:00:00Z`))
   console.log(`Génération du rapport ${month}…`)
 
-  const [serp, backlinks, gbp, llm, articles] = await Promise.all([pullSerp(), pullBacklinks(), pullGbp(), pullLlm(), readArticles()])
+  const [serp, backlinks, gbp, llm, articles, domainHistory] = await Promise.all([
+    pullSerp(), pullBacklinks(), pullGbp(), pullLlm(), readArticles(), pullDomainHistory(),
+  ])
 
-  // Historique : remplace l'entrée du mois courant si déjà présente, sinon ajoute.
-  const history = (await loadHistory()).filter((h) => h.month !== month)
+  // Historique fusionné par mois : métriques domaine (backfill ~12 mois via
+  // DataForSEO) + positions par mot-clé (mois courant, s'enrichit à chaque run).
+  const byMonth = new Map((await loadHistory()).map((h) => [h.month, h]))
+  for (const d of domainHistory) {
+    const e = byMonth.get(d.ym) ?? { month: d.ym, monthLabel: monthShort(d.ym) }
+    e.domain = { top3: d.top3, top10: d.top10, top20: d.top20, etv: d.etv }
+    byMonth.set(d.ym, e)
+  }
   const positions = {}
   serp.forEach((s) => { positions[s.keyword] = s.position })
-  history.push({
-    month, monthLabel,
-    positions,
-    backlinks: backlinks.backlinks,
-    referringDomains: backlinks.referringDomains,
-    gbpNote: gbp?.note ?? null,
-    gbpReviews: gbp?.reviews ?? null,
-    llmCited: llm.reduce((s, e) => s + e.rows.filter((r) => r.cited).length, 0),
-    llmAnswered: llm.reduce((s, e) => s + e.rows.filter((r) => !r.error).length, 0),
-  })
-  history.sort((a, b) => a.month.localeCompare(b.month))
+  const cur = byMonth.get(month) ?? { month, monthLabel }
+  cur.monthLabel = monthLabel
+  cur.positions = positions
+  cur.backlinks = backlinks.backlinks
+  cur.referringDomains = backlinks.referringDomains
+  cur.gbpNote = gbp?.note ?? null
+  cur.gbpReviews = gbp?.reviews ?? null
+  cur.llmCited = llm.reduce((s, e) => s + e.rows.filter((r) => r.cited).length, 0)
+  cur.llmAnswered = llm.reduce((s, e) => s + e.rows.filter((r) => !r.error).length, 0)
+  byMonth.set(month, cur)
+  const history = [...byMonth.values()].sort((a, b) => a.month.localeCompare(b.month))
   await writeFile(HISTORY_PATH, JSON.stringify(history, null, 2) + "\n")
 
   const html = renderHtml({ month, serp, backlinks, gbp, llm, articles, history })

@@ -55,3 +55,19 @@ jobs:
 
       - id: deploy
         uses: actions/deploy-pages@v4
+
+      - name: Notifier le lien par email (Brevo)
+        if: success()
+        env:
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+          REPORT_TO: ${{ vars.REPORT_EMAIL_TO }}
+          URL: ${{ steps.deploy.outputs.page_url }}
+        run: |
+          if [ -z "$BREVO_API_KEY" ]; then echo "Pas de BREVO_API_KEY, notification ignorée."; exit 0; fi
+          TO="${REPORT_TO:-alexis@morain.fr}"
+          HTML="<p>Le nouveau rapport SEO du Château de la Huberdière est en ligne :</p><p><a href=\"$URL\">$URL</a></p><p>Prêt à transférer au client.</p>"
+          PAYLOAD=$(jq -n --arg to "$TO" --arg html "$HTML" \
+            '{sender:{email:"alexis@morain.fr",name:"Reporting Huberdière"},to:[{email:$to}],subject:"Rapport SEO Huberdière — nouveau mois en ligne",htmlContent:$html}')
+          curl -sS -X POST https://api.brevo.com/v3/smtp/email \
+            -H "api-key: $BREVO_API_KEY" -H "content-type: application/json" -d "$PAYLOAD"
+          echo "Notification envoyée à $TO."
