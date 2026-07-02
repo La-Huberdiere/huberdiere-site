@@ -1,0 +1,23 @@
+[
+  {
+    "month": "2026-07",
+    "monthLabel": "juil. 26",
+    "positions": {
+      "mariage château touraine": 4,
+      "location château mariage touraine": 24,
+      "château mariage val de loire": null,
+      "chambres d'hôtes amboise": null,
+      "chambre d'hôtes château loire": null,
+      "séminaire château touraine": null,
+      "retraite yoga touraine": null,
+      "location château touraine": null,
+      "restaurant gastronomique amboise": null
+    },
+    "backlinks": 402,
+    "referringDomains": 63,
+    "gbpNote": 4.9,
+    "gbpReviews": 99,
+    "llmCited": 3,
+    "llmAnswered": 24
+  }
+]
