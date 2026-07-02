@@ -1,0 +1,83 @@
+[
+  {
+    "month": "2026-01",
+    "monthLabel": "janv. 26",
+    "domain": {
+      "top3": 2,
+      "top10": 4,
+      "top20": 5,
+      "etv": 196
+    }
+  },
+  {
+    "month": "2026-02",
+    "monthLabel": "févr. 26",
+    "domain": {
+      "top3": 2,
+      "top10": 4,
+      "top20": 5,
+      "etv": 156
+    }
+  },
+  {
+    "month": "2026-03",
+    "monthLabel": "mars 26",
+    "domain": {
+      "top3": 2,
+      "top10": 4,
+      "top20": 5,
+      "etv": 268
+    }
+  },
+  {
+    "month": "2026-04",
+    "monthLabel": "avr. 26",
+    "domain": {
+      "top3": 2,
+      "top10": 4,
+      "top20": 6,
+      "etv": 285
+    }
+  },
+  {
+    "month": "2026-05",
+    "monthLabel": "mai 26",
+    "domain": {
+      "top3": 2,
+      "top10": 4,
+      "top20": 6,
+      "etv": 281
+    }
+  },
+  {
+    "month": "2026-06",
+    "monthLabel": "juin 26",
+    "domain": {
+      "top3": 2,
+      "top10": 2,
+      "top20": 5,
+      "etv": 233
+    }
+  },
+  {
+    "month": "2026-07",
+    "monthLabel": "juil. 26",
+    "positions": {
+      "mariage château touraine": 4,
+      "location château mariage touraine": 24,
+      "château mariage val de loire": null,
+      "chambres d'hôtes amboise": null,
+      "chambre d'hôtes château loire": null,
+      "séminaire château touraine": null,
+      "retraite yoga touraine": null,
+      "location château touraine": null,
+      "restaurant gastronomique amboise": null
+    },
+    "backlinks": 402,
+    "referringDomains": 63,
+    "gbpNote": 4.9,
+    "gbpReviews": 99,
+    "llmCited": 6,
+    "llmAnswered": 24
+  }
+]
