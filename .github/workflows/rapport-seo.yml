@@ -11,7 +11,7 @@ on:
     branches: [master]
     paths:
       - "reporting/**"
-      - ".github/workflows/monthly-report.yml"
+      - ".github/workflows/rapport-seo.yml"
 
 permissions:
   contents: write # committer reporting/history.json
