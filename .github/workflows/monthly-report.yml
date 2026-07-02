@@ -1,12 +1,17 @@
 name: Rapport SEO mensuel (client)
 
 # Génère le rapport SEO/GEO du château et le publie sur GitHub Pages.
-# Le 3 de chaque mois à 06:00 UTC, ou à la demande (workflow_dispatch).
+# Le 3 de chaque mois à 06:00 UTC, à la demande, ou quand le générateur change.
 
 on:
   schedule:
     - cron: "0 6 3 * *"
   workflow_dispatch: {}
+  push:
+    branches: [master]
+    paths:
+      - "reporting/**"
+      - ".github/workflows/monthly-report.yml"
 
 permissions:
   contents: write # committer reporting/history.json
