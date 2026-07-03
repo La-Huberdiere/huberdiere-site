@@ -11,7 +11,7 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
   site: "https://www.chateaudelahuberdiere.com",
   output: "static",
-  adapter: vercel(),
+  adapter: vercel({ maxDuration: 60 }),
   integrations: [
     react(),
     keystatic(),

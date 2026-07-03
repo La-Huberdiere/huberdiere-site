@@ -17,13 +17,12 @@
     "@keystatic/astro": "^5.1.0",
     "@keystatic/core": "^0.5.50",
     "@resvg/resvg-js": "^2.6.2",
+    "@vercel/blob": "^1.1.1",
     "astro": "^5.7.0",
+    "js-yaml": "^4.1.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "satori": "^0.26.0",
     "sharp": "^0.33.5"
-  },
-  "devDependencies": {
-    "js-yaml": "^4.1.0"
   }
 }
