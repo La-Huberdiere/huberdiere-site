@@ -57,10 +57,14 @@ export async function GET({ request, url }) {
   try {
     const prev = await loadHistory()
     const month = url.searchParams.get("month") // override optionnel YYYY-MM
-    const { html, history, summary, monthLabel } = await generateReport(prev, month)
+    const { html, history, summary, monthLabel, month: ym } = await generateReport(prev, month)
 
     await put(HISTORY_PATH, JSON.stringify(history, null, 2), {
       access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json",
+    })
+    // Instantané mensuel permanent (archives) + copie « dernier rapport ».
+    await put(`rapport/m/${ym}.html`, html, {
+      access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "text/html; charset=utf-8",
     })
     const blob = await put(HTML_PATH, html, {
       access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "text/html; charset=utf-8",

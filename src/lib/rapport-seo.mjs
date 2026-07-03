@@ -1,13 +1,13 @@
 /**
- * Château de la Huberdière — moteur du rapport SEO/GEO client.
+ * Château de la Huberdière — moteur du rapport SEO/GEO client (v2).
  *
- * Version serverless du script reporting/generate-report.mjs : tire les données
- * DataForSEO (positions locales, netlinking, fiche Google, visibilité IA), lit les
- * articles du repo via import.meta.glob (bundlés dans la fonction), fusionne
- * l'historique passé en argument et rend le HTML interactif (Chart.js, charte
- * Huberdière). L'I/O de l'historique et du HTML est gérée par l'appelant (Blob).
+ * Version serverless : tire DataForSEO (positions locales, netlinking + détail et
+ * historique, fiche Google, visibilité IA sur 4 moteurs et 6 thèmes), lit les
+ * articles du repo via import.meta.glob, fusionne l'historique passé en argument et
+ * rend le HTML interactif (Chart.js, charte Huberdière). L'I/O historique + HTML est
+ * gérée par l'appelant (Vercel Blob).
  *
- * Env requis au runtime : DATAFORSEO_LOGIN, DATAFORSEO_PASSWORD.
+ * Env requis : DATAFORSEO_LOGIN, DATAFORSEO_PASSWORD.
  */
 import yaml from "js-yaml"
 
@@ -15,16 +15,25 @@ const DFS = "https://api.dataforseo.com/v3"
 const LOCATION = 2250 // France
 const LANGUAGE = "fr"
 const DOMAIN = "chateaudelahuberdiere.com"
+// Domaine public encore sur Wix (bascule DNS vers Vercel en attente) : les liens
+// articles et le rapport passent par l'alias Vercel. À rebasculer après cutover.
+const SITE_BASE = "https://huberdiere-site.vercel.app"
 
-// Mots-clés locaux / longue traîne, gagnables et alignés sur les articles publiés.
+// Mots-clés suivis, groupés par intention. Le domaine ne classe encore que du
+// « marque » + le mariage : on suit donc la notoriété (dominance de marque, à
+// protéger) ET le local gagnable aligné sur chaque offre.
 const KEYWORDS = [
+  { intent: "Notoriété", keyword: "château de la huberdière" },
+  { intent: "Notoriété", keyword: "salle de la huberdière" },
   { intent: "Mariage", keyword: "mariage château touraine" },
   { intent: "Mariage", keyword: "location château mariage touraine" },
   { intent: "Mariage", keyword: "château mariage val de loire" },
-  { intent: "Séjour", keyword: "chambres d'hôtes amboise" },
-  { intent: "Séjour", keyword: "chambre d'hôtes château loire" },
+  { intent: "Mariage", keyword: "salle mariage indre et loire" },
   { intent: "Séminaire", keyword: "séminaire château touraine" },
-  { intent: "Retraite", keyword: "retraite yoga touraine" },
+  { intent: "Séminaire", keyword: "séminaire entreprise val de loire" },
+  { intent: "Séjour / chambres d'hôtes", keyword: "chambres d'hôtes amboise" },
+  { intent: "Séjour / chambres d'hôtes", keyword: "chambre d'hôtes château loire" },
+  { intent: "Retraite / bien-être", keyword: "retraite yoga touraine" },
   { intent: "Famille / groupe", keyword: "location château touraine" },
   { intent: "Restauration", keyword: "restaurant gastronomique amboise" },
 ]
@@ -37,17 +46,17 @@ const LLM_ENGINES = [
 ]
 const BRAND_ALIASES = ["huberdière", "huberdiere", "chateaudelahuberdiere"]
 const LLM_COMPETITORS = ["Château de Pray", "Château des Arpentis", "Manoir Les Minimes", "Château de Perreux", "Château de Noizay"]
+// Une question par offre, pour couvrir toute l'activité (pas seulement le mariage).
 const LLM_PROMPTS = [
-  "Quel est le meilleur château pour se marier en Touraine ? Cite des lieux précis.",
-  "Où organiser un séminaire d'entreprise dans un château en Val de Loire ?",
-  "Quel lieu de séminaire résidentiel recommandez-vous près de Tours ou d'Amboise ?",
-  "Où organiser une grande réunion de famille dans un château en Indre-et-Loire ?",
-  "Quelles chambres d'hôtes dans un château près des châteaux de la Loire recommandez-vous ?",
-  "Quel château propose un séjour avec piscine chauffée et restauration en Touraine ?",
+  { theme: "Mariage", prompt: "Quel château pour se marier en Touraine ou en Val de Loire ? Cite des lieux précis." },
+  { theme: "Séminaire", prompt: "Où organiser un séminaire d'entreprise résidentiel dans un château près de Tours ou d'Amboise ?" },
+  { theme: "Chambres d'hôtes", prompt: "Quelles chambres d'hôtes de charme dans un château près des châteaux de la Loire recommandez-vous ?" },
+  { theme: "Réunion de famille", prompt: "Où louer un château pour une grande réunion de famille en Indre-et-Loire ?" },
+  { theme: "Retraite / bien-être", prompt: "Quel lieu pour organiser une retraite yoga ou bien-être dans un château en Touraine ?" },
+  { theme: "Séjour & restauration", prompt: "Quel château propose un séjour avec piscine chauffée et restauration gastronomique en Touraine ?" },
 ]
 const GBP = { cid: "5728274181919890705", title: "Château de la Huberdière", coord: "47.447,0.935,15" }
 
-// Articles lus au build (frontmatter uniquement) et bundlés dans la fonction.
 const ARTICLE_FILES = import.meta.glob("../content/articles/*.mdoc", { query: "?raw", import: "default", eager: true })
 
 // ── DataForSEO ────────────────────────────────────────────────────────────
@@ -74,7 +83,6 @@ const domMatch = (d, t) => {
   return a === b || a.endsWith("." + b)
 }
 
-// SERP en parallèle (une requête par mot-clé) pour tenir le budget temps du cron.
 async function pullSerp() {
   return Promise.all(
     KEYWORDS.map(async (k) => {
@@ -101,6 +109,30 @@ async function pullBacklinks() {
   return { backlinks: s.backlinks ?? 0, referringDomains: s.referring_domains ?? 0, spamScore: s.backlinks_spam_score ?? 0, referringMainDomains: s.referring_main_domains ?? 0 }
 }
 
+// Détail : top domaines référents (les sites qui pointent vers le château).
+async function pullReferringDomains() {
+  try {
+    const result = await dfs("/backlinks/referring_domains/live", {
+      target: DOMAIN, limit: 12, order_by: ["rank,desc"], backlinks_status_type: "live",
+      filters: [["domain", "not_like", `%${DOMAIN}%`]],
+    })
+    return (result[0]?.items ?? []).map((i) => ({
+      domain: i.domain, backlinks: i.backlinks ?? 0, dofollow: i.dofollow ?? 0, rank: i.rank ?? 0,
+    }))
+  } catch (e) { console.error("Ref domains KO", e.message); return [] }
+}
+
+// Historique mensuel du netlinking (backlinks + domaines référents) → permet la
+// comparaison N-1 dès le premier rapport et la mini-courbe de tendance.
+async function pullBacklinksHistory() {
+  try {
+    const result = await dfs("/backlinks/timeseries_summary/live", { target: DOMAIN, group_range: "month" })
+    return (result[0]?.items ?? [])
+      .map((i) => ({ ym: String(i.date || "").slice(0, 7), backlinks: i.backlinks ?? 0, referringDomains: i.referring_domains ?? 0 }))
+      .filter((i) => i.ym)
+  } catch (e) { console.error("BL history KO", e.message); return [] }
+}
+
 async function pullGbp() {
   try {
     const result = await dfs("/business_data/business_listings/search/live", { title: GBP.title, location_coordinate: GBP.coord, limit: 10 })
@@ -115,7 +147,7 @@ async function pullLlm() {
   return Promise.all(
     LLM_ENGINES.map(async (engine) => {
       const rows = await Promise.all(
-        LLM_PROMPTS.map(async (prompt) => {
+        LLM_PROMPTS.map(async ({ theme, prompt }) => {
           try {
             const result = await dfs(`/ai_optimization/${engine.llmType}/llm_responses/live`, { user_prompt: prompt, model_name: engine.model, web_search: true })
             const text = (result[0]?.items ?? [])
@@ -124,10 +156,10 @@ async function pullLlm() {
               .map((s) => s.text)
               .join("\n")
               .toLowerCase()
-            return { prompt, cited: BRAND_ALIASES.some((a) => text.includes(a)), competitors: LLM_COMPETITORS.filter((c) => text.includes(c.toLowerCase())) }
+            return { theme, prompt, cited: BRAND_ALIASES.some((a) => text.includes(a)), competitors: LLM_COMPETITORS.filter((c) => text.includes(c.toLowerCase())) }
           } catch (e) {
             console.error("LLM KO", engine.label, e.message)
-            return { prompt, cited: false, competitors: [], error: true }
+            return { theme, prompt, cited: false, competitors: [], error: true }
           }
         })
       )
@@ -136,7 +168,6 @@ async function pullLlm() {
   )
 }
 
-// Historique de visibilité du domaine (backfill ~12 mois via DataForSEO).
 async function pullDomainHistory() {
   try {
     const result = await dfs("/dataforseo_labs/google/historical_rank_overview/live", {
@@ -159,6 +190,7 @@ async function pullDomainHistory() {
 }
 
 const monthShort = (ym) => new Intl.DateTimeFormat("fr-FR", { month: "short", year: "2-digit", timeZone: "UTC" }).format(new Date(`${ym}-15T00:00:00Z`))
+const monthLong = (ym) => new Intl.DateTimeFormat("fr-FR", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${ym}-15T00:00:00Z`))
 
 // ── Articles (frontmatter, bundlé) ────────────────────────────────────────
 function readArticles() {
@@ -168,8 +200,10 @@ function readArticles() {
     if (!m) continue
     let fm = {}
     try { fm = yaml.load(m[1]) ?? {} } catch { continue }
+    const slug = path.split("/").pop().replace(/\.mdoc$/, "")
     out.push({
-      slug: path.split("/").pop().replace(/\.mdoc$/, ""),
+      slug,
+      url: `${SITE_BASE}/blog/${slug}`,
       title: fm.title ?? path,
       publishedAt: fm.publishedAt ? String(fm.publishedAt).slice(0, 10) : "",
       category: fm.category ?? "",
@@ -181,18 +215,61 @@ function readArticles() {
 
 // ── Rendu HTML ────────────────────────────────────────────────────────────
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
+const fr = (n) => Number(n || 0).toLocaleString("fr-FR")
+
+// Mouvement d'une position vs le rapport précédent.
+function movement(cur, prev, hasPrev) {
+  if (!hasPrev) return { txt: "", cls: "flat" } // mois de référence
+  if (cur == null && prev == null) return { txt: "", cls: "flat" }
+  if (cur == null) return { txt: "sorti", cls: "down" }
+  if (prev == null) return { txt: "entrée", cls: "up" }
+  const d = prev - cur // >0 = a gagné des places (rang plus petit = mieux)
+  if (d > 0) return { txt: `▲ ${d}`, cls: "up" }
+  if (d < 0) return { txt: `▼ ${-d}`, cls: "down" }
+  return { txt: "=", cls: "flat" }
+}
 
 function renderHtml(data) {
-  const { month, serp, backlinks, gbp, llm, articles, history } = data
-  const monthLabel = new Intl.DateTimeFormat("fr-FR", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${month}-15T00:00:00Z`))
-  const citedTotal = llm.reduce((s, e) => s + e.rows.filter((r) => r.cited).length, 0)
-  const answeredTotal = llm.reduce((s, e) => s + e.rows.filter((r) => !r.error).length, 0)
+  const { month, serp, backlinks, refDomains, blHistory, gbp, llm, articles, history, exec } = data
+  const monthLabel = monthLong(month)
   const rankedCount = serp.filter((s) => s.position !== null).length
+  const bestPos = bestKeyword(serp)
+
+  // Rapport précédent (pour les mouvements de position).
+  const prevReport = [...history].reverse().find((h) => h.month < month && h.positions)
+  const hasPrev = !!prevReport
+  const prevPos = prevReport?.positions ?? {}
+
+  // Netlinking N-1 : deux derniers points de l'historique DataForSEO.
+  const blSorted = [...blHistory].sort((a, b) => a.ym.localeCompare(b.ym))
+  const blNow = blSorted[blSorted.length - 1] ?? { backlinks: backlinks.backlinks, referringDomains: backlinks.referringDomains }
+  const blPrev = blSorted[blSorted.length - 2]
+  const deltaBl = blPrev ? blNow.backlinks - blPrev.backlinks : null
+  const deltaRd = blPrev ? blNow.referringDomains - blPrev.referringDomains : null
+  const deltaBadge = (d) => d == null ? "" : d > 0 ? `<span class="up">▲ +${fr(d)}</span>` : d < 0 ? `<span class="down">▼ ${fr(d)}</span>` : `<span class="flat">=</span>`
+
+  // Opportunités : mots-clés en page 2-3 (11 à 30), les plus proches de la page 1.
+  const opportunities = serp.filter((s) => s.position != null && s.position >= 11 && s.position <= 30).sort((a, b) => a.position - b.position)
+
+  // Visibilité IA : pivot par question (thème × moteurs).
+  const perQuestion = LLM_PROMPTS.map((p, idx) => {
+    const citedBy = llm.filter((e) => e.rows[idx]?.cited).map((e) => e.engine)
+    const answered = llm.filter((e) => !e.rows[idx]?.error).length
+    return { theme: p.theme, prompt: p.prompt, citedBy, answered }
+  })
+  const citedTotal = perQuestion.reduce((s, q) => s + q.citedBy.length, 0)
+  const answeredTotal = perQuestion.reduce((s, q) => s + q.answered, 0)
+
+  // Archives : rapports précédents déjà générés (hors mois courant).
+  const archiveMonths = history.filter((h) => h.hasReport && h.month < month).map((h) => h.month).sort((a, b) => b.localeCompare(a))
+  const archivesHtml = archiveMonths.length
+    ? `<div class="arch"><span style="color:var(--gris)">Rapports précédents : </span>${archiveMonths.map((m) => `<a href="/rapport?m=${m}">${esc(monthLong(m))}</a>`).join("")}</div>`
+    : ""
 
   return `<!doctype html>
 <html lang="fr"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Château de la Huberdière — Rapport SEO ${esc(monthLabel)}</title>
+<title>Château de la Huberdière · Rapport SEO ${esc(monthLabel)}</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
@@ -213,79 +290,122 @@ function renderHtml(data) {
   .kpi .l{font-size:11px;letter-spacing:.03em;color:var(--gris);text-transform:uppercase}
   .kpi .v{font-family:"Playfair Display",serif;font-size:28px;color:var(--encre);margin-top:4px}
   .kpi .n{font-size:12px;color:var(--gris);margin-top:2px}
+  .summary{background:#fff;border:1px solid #e6e1d6;border-left:3px solid var(--or);border-radius:4px;padding:18px 22px;margin-top:26px;font-size:15px}
+  .summary strong{color:var(--bordeaux)}
   table{width:100%;border-collapse:collapse;margin-top:10px;background:#fff;border:1px solid #e6e1d6}
   th,td{text-align:left;padding:10px 12px;font-size:14px;border-bottom:1px solid #efeada;vertical-align:top}
   th{background:#faf8f2;color:var(--gris);font-size:12px;text-transform:uppercase;letter-spacing:.03em;font-weight:600}
   td.num{text-align:right;font-variant-numeric:tabular-nums}
   .tag{display:inline-block;background:#efeada;color:#5c4b3c;border-radius:3px;padding:2px 8px;margin:2px 4px 2px 0;font-size:12px}
   .yes{color:var(--vert);font-weight:600}.no{color:var(--rouge)}
+  .up{color:var(--vert);font-weight:600}.down{color:var(--rouge);font-weight:600}.flat{color:var(--gris)}
+  .badge{display:inline-block;background:#eef4ee;color:var(--vert);border:1px solid #cfe3cf;border-radius:3px;padding:1px 7px;margin:1px 3px 1px 0;font-size:12px;font-weight:600}
   .card{background:#fff;border:1px solid #e6e1d6;border-radius:4px;padding:20px 22px;margin-top:14px}
+  .note{font-size:13px;color:var(--gris);margin:10px 2px 0}
+  a{color:var(--bordeaux)}
   canvas{max-height:340px}
-  footer{color:var(--gris);font-size:12px;padding:40px 0 60px;text-align:center}
+  footer{color:var(--gris);font-size:12px;padding:40px 0 60px}
+  footer .arch{margin-bottom:14px}
+  footer .arch a{margin-right:12px;white-space:nowrap}
   .pos{font-weight:600}
   @media(max-width:720px){.kpis{grid-template-columns:repeat(2,1fr)}h1{font-size:24px}}
+  @media print{body{background:#fff}header{background:#fff;color:var(--encre);border-bottom:2px solid var(--bordeaux);padding:20px 0}header .sub{opacity:1;color:var(--gris)}h1{color:var(--bordeaux)}.card,.kpi,.summary,table{break-inside:avoid}script{display:none}}
 </style></head>
 <body>
 <header><div class="wrap">
   <div class="sub">Château de la Huberdière · Reporting SEO & visibilité</div>
-  <h1>Où en est votre référencement — ${esc(monthLabel)}</h1>
+  <h1>Où en est votre référencement, ${esc(monthLabel)}</h1>
   <div class="sub">Positions Google, articles publiés, netlinking, présence dans les réponses IA.</div>
 </div></header>
 <div class="wrap">
 
+  <div class="summary">${exec}</div>
+
   <div class="kpis">
     <div class="kpi"><div class="l">Mots-clés classés</div><div class="v">${rankedCount}<span style="font-size:15px;color:var(--gris)"> / ${serp.length}</span></div><div class="n">dans le top 100 Google</div></div>
-    <div class="kpi"><div class="l">Articles publiés</div><div class="v">${articles.length}</div><div class="n">sur le blog du château</div></div>
-    <div class="kpi"><div class="l">Note Google</div><div class="v">${gbp?.note != null ? String(gbp.note).replace(".", ",") : "–"}</div><div class="n">${gbp?.reviews != null ? gbp.reviews + " avis" : "fiche Google"}</div></div>
+    <div class="kpi"><div class="l">Meilleure position</div><div class="v">${bestPos ? "#" + bestPos.position : "–"}</div><div class="n">${bestPos ? esc(bestPos.keyword) : "à conquérir"}</div></div>
+    <div class="kpi"><div class="l">Backlinks</div><div class="v">${fr(blNow.backlinks)}</div><div class="n">${deltaBadge(deltaBl)} vs mois dernier</div></div>
     <div class="kpi"><div class="l">Cité par les IA</div><div class="v">${citedTotal}<span style="font-size:15px;color:var(--gris)"> / ${answeredTotal}</span></div><div class="n">réponses testées</div></div>
   </div>
 
   <h2>Progression des positions Google</h2>
-  <p class="lead">Position moyenne sur vos mots-clés cibles, mois après mois. Plus la courbe descend, mieux c'est (position 1 = en haut de Google).</p>
+  <p class="lead">Position de vos mots-clés cibles, avec le mouvement depuis le rapport précédent. Position 1 = tout en haut de Google, donc plus le chiffre est petit, mieux c'est.</p>
   <div class="card"><canvas id="posChart"></canvas></div>
   <table>
-    <thead><tr><th>Mot-clé</th><th>Intention</th><th class="num">Position ce mois</th><th>En tête aujourd'hui</th></tr></thead>
-    <tbody>${serp.map((s) => `<tr><td>${esc(s.keyword)}</td><td>${esc(s.intent)}</td><td class="num pos">${s.position != null ? s.position : '<span style="color:var(--gris)">non classé</span>'}</td><td style="color:var(--gris)">${esc(s.leader || "")}</td></tr>`).join("")}</tbody>
+    <thead><tr><th>Mot-clé</th><th>Intention</th><th class="num">Position</th><th class="num">Évolution</th><th>En tête aujourd'hui</th></tr></thead>
+    <tbody>${serp.map((s) => {
+      const mv = movement(s.position, prevPos[s.keyword], hasPrev)
+      const posCell = s.position != null
+        ? (s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${s.position}</a>` : String(s.position))
+        : '<span style="color:var(--gris)">non classé</span>'
+      return `<tr><td>${esc(s.keyword)}</td><td>${esc(s.intent)}</td><td class="num pos">${posCell}</td><td class="num ${mv.cls}">${mv.txt}</td><td style="color:var(--gris)">${esc(s.leader || "")}</td></tr>`
+    }).join("")}</tbody>
   </table>
+  <p class="note">La colonne « Évolution » apparaît dès le 2ᵉ rapport : ce mois pose la référence pour les mots-clés qui viennent d'être ajoutés.</p>
+
+  ${opportunities.length ? `<h2>À un pas de la page 1</h2>
+  <p class="lead">Ces mots-clés sont en page 2 ou 3 (positions 11 à 30). Ce sont les gains les plus rapides à aller chercher le mois prochain.</p>
+  <table>
+    <thead><tr><th>Mot-clé</th><th>Intention</th><th class="num">Position</th></tr></thead>
+    <tbody>${opportunities.map((s) => `<tr><td>${esc(s.keyword)}</td><td>${esc(s.intent)}</td><td class="num pos">${s.position}</td></tr>`).join("")}</tbody>
+  </table>` : ""}
 
   <h2>Visibilité globale sur Google</h2>
-  <p class="lead">Nombre de mots-clés du site positionnés dans le top 20 de Google, et trafic mensuel estimé, sur les derniers mois.</p>
+  <p class="lead">Combien de mots-clés du site sont bien placés dans Google, et le trafic que ça rapporte, mois après mois.</p>
   <div class="card"><canvas id="domChart"></canvas></div>
+  <p class="note">Les barres empilent vos mots-clés par qualité de position : <span style="color:#8B0000;font-weight:600">top 3</span> (première ligne de Google), <span style="color:#c0714e;font-weight:600">4 à 10</span> (reste de la page 1), <span style="color:#e2b48c;font-weight:600">11 à 20</span> (page 2). Plus la barre est haute et foncée, meilleure est la présence. La ligne dorée est le nombre de visiteurs mensuels estimés depuis Google.</p>
 
   <h2>Articles rédigés</h2>
-  <p class="lead">Le contenu publié ce mois et depuis le début, avec les mots-clés visés par chaque article.</p>
+  <p class="lead">Le contenu publié pour le château, avec les mots-clés visés. Cliquez le titre pour lire l'article en ligne.</p>
   <table>
     <thead><tr><th>Article</th><th>Publié le</th><th>Thème</th><th>Mots-clés visés</th></tr></thead>
-    <tbody>${articles.map((a) => `<tr><td><strong>${esc(a.title)}</strong></td><td style="white-space:nowrap">${esc(a.publishedAt)}</td><td>${esc(a.category)}</td><td>${a.keywords.map((k) => `<span class="tag">${esc(k)}</span>`).join("")}</td></tr>`).join("")}</tbody>
+    <tbody>${articles.map((a) => `<tr><td><a href="${esc(a.url)}" target="_blank" rel="noopener"><strong>${esc(a.title)}</strong></a></td><td style="white-space:nowrap">${esc(a.publishedAt)}</td><td>${esc(a.category)}</td><td>${a.keywords.map((k) => `<span class="tag">${esc(k)}</span>`).join("")}</td></tr>`).join("")}</tbody>
   </table>
 
   <h2>Visibilité dans les réponses IA</h2>
-  <p class="lead">De plus en plus de clients demandent à ChatGPT, Gemini ou Perplexity « quel château pour se marier en Touraine ». Voici si le château y est cité.</p>
+  <p class="lead">De plus en plus de clients posent leur question à ChatGPT, Gemini, Perplexity ou Claude. On teste 6 questions réelles, une par activité, sur les 4 moteurs, et on regarde si le château est cité.</p>
   <table>
+    <thead><tr><th>Activité</th><th>Question posée</th><th class="num">Cité par</th></tr></thead>
+    <tbody>${perQuestion.map((q) => `<tr><td>${esc(q.theme)}</td><td style="color:var(--gris)">${esc(q.prompt)}</td><td class="num">${q.citedBy.length ? q.citedBy.map((e) => `<span class="badge">${esc(e)}</span>`).join("") : '<span class="no">non cité</span>'}</td></tr>`).join("")}</tbody>
+  </table>
+  <table style="margin-top:18px">
     <thead><tr><th>Moteur</th><th class="num">Château cité</th><th>Concurrents cités à sa place</th></tr></thead>
     <tbody>${llm.map((e) => {
       const c = e.rows.filter((r) => r.cited).length
       const n = e.rows.filter((r) => !r.error).length
       const comps = [...new Set(e.rows.flatMap((r) => r.competitors))]
-      return `<tr><td>${esc(e.engine)}</td><td class="num"><span class="${c > 0 ? "yes" : "no"}">${c} / ${n}</span></td><td style="color:var(--gris)">${comps.length ? comps.map(esc).join(", ") : "—"}</td></tr>`
+      return `<tr><td>${esc(e.engine)}</td><td class="num"><span class="${c > 0 ? "yes" : "no"}">${c} / ${n}</span></td><td style="color:var(--gris)">${comps.length ? comps.map(esc).join(", ") : "aucun"}</td></tr>`
     }).join("")}</tbody>
   </table>
+  <p class="note">Les réponses des IA varient d'un jour à l'autre : lisez ce bloc comme une tendance, pas comme une note figée.</p>
 
   <h2>Netlinking</h2>
-  <p class="lead">Les autres sites qui pointent vers le château, un signal de confiance pour Google.</p>
+  <p class="lead">Les autres sites qui pointent vers le château, un signal de confiance pour Google. Évolution sur les derniers mois et détail des principaux domaines.</p>
   <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
-    <div class="kpi"><div class="l">Backlinks</div><div class="v">${backlinks.backlinks.toLocaleString("fr-FR")}</div></div>
-    <div class="kpi"><div class="l">Domaines référents</div><div class="v">${backlinks.referringDomains.toLocaleString("fr-FR")}</div></div>
+    <div class="kpi"><div class="l">Backlinks</div><div class="v">${fr(blNow.backlinks)}</div><div class="n">${deltaBadge(deltaBl)} vs mois dernier</div></div>
+    <div class="kpi"><div class="l">Domaines référents</div><div class="v">${fr(blNow.referringDomains)}</div><div class="n">${deltaBadge(deltaRd)} vs mois dernier</div></div>
     <div class="kpi"><div class="l">Qualité (spam)</div><div class="v">${backlinks.spamScore} %</div><div class="n">${backlinks.spamScore <= 10 ? "faible, sain" : backlinks.spamScore <= 30 ? "modéré" : "à surveiller"}</div></div>
   </div>
+  <div class="card"><canvas id="blChart"></canvas></div>
+  ${refDomains.length ? `<table style="margin-top:16px">
+    <thead><tr><th>Principaux domaines référents</th><th class="num">Liens</th><th class="num">Autorité</th></tr></thead>
+    <tbody>${refDomains.slice(0, 10).map((r) => `<tr><td><a href="https://${esc(r.domain)}" target="_blank" rel="noopener nofollow">${esc(r.domain)}</a></td><td class="num">${fr(r.backlinks)}</td><td class="num">${r.rank}</td></tr>`).join("")}</tbody>
+  </table>
+  <p class="note">« Autorité » = score de popularité du domaine (0 à 1000) estimé par DataForSEO. Plus il est élevé, plus le lien pèse.</p>` : ""}
 
-  <footer>Rapport généré automatiquement pour le Château de la Huberdière — ${esc(monthLabel)}.<br>Données Google (SERP), profil Google Business, moteurs IA et blog du château.</footer>
+  <footer>
+    ${archivesHtml}
+    Rapport généré automatiquement pour le Château de la Huberdière, ${esc(monthLabel)}.<br>
+    Sources : Google (positions et trafic estimé), profil Google Business, moteurs IA (ChatGPT, Gemini, Perplexity, Claude), DataForSEO et le blog du château.
+  </footer>
 </div>
 
 <script>
 const HISTORY = ${JSON.stringify(history)};
 const KW = ${JSON.stringify(KEYWORDS.map((k) => k.keyword))};
-const palette = ["#8B0000","#B08D57","#5C4B3C","#2E7D32","#3b6ea5","#8B7355","#a0508b","#417d7a","#c06014"];
+const BL = ${JSON.stringify(blSorted.slice(-8))};
+const palette = ["#8B0000","#B08D57","#5C4B3C","#2E7D32","#3b6ea5","#8B7355","#a0508b","#417d7a","#c06014","#6a7b53","#9c4f2f","#4a6b8a","#7d5a3c"];
+// Graphe 1 : position par mot-clé (mois avec données de position).
 (function(){
   const POS = HISTORY.filter(h => h.positions);
   const labels = POS.map(h => h.monthLabel || h.month);
@@ -304,21 +424,46 @@ const palette = ["#8B0000","#B08D57","#5C4B3C","#2E7D32","#3b6ea5","#8B7355","#a
     }
   });
 })();
+// Graphe 2 : visibilité globale, barres empilées par palier + trafic estimé.
 (function(){
   const DOM = HISTORY.filter(h => h.domain);
   if (!DOM.length) { document.getElementById("domChart").closest(".card").style.display = "none"; return; }
   const labels = DOM.map(h => h.monthLabel || h.month);
+  const t3 = DOM.map(h => h.domain.top3);
+  const t410 = DOM.map(h => Math.max(0, h.domain.top10 - h.domain.top3));
+  const t1120 = DOM.map(h => Math.max(0, h.domain.top20 - h.domain.top10));
   new Chart(document.getElementById("domChart"), {
-    type: "bar",
     data: { labels, datasets: [
-      { type: "bar", label: "Mots-clés en top 20", data: DOM.map(h => h.domain.top20), backgroundColor: "#8B0000", yAxisID: "y", order: 2 },
+      { type: "bar", label: "Top 3", data: t3, backgroundColor: "#8B0000", stack: "kw", yAxisID: "y", order: 3 },
+      { type: "bar", label: "Positions 4 à 10", data: t410, backgroundColor: "#c0714e", stack: "kw", yAxisID: "y", order: 3 },
+      { type: "bar", label: "Positions 11 à 20", data: t1120, backgroundColor: "#e2b48c", stack: "kw", yAxisID: "y", order: 3 },
       { type: "line", label: "Visiteurs/mois estimés", data: DOM.map(h => h.domain.etv), borderColor: "#B08D57", backgroundColor: "#B08D57", yAxisID: "y1", tension: .3, borderWidth: 2, pointRadius: 3, order: 1 },
     ] },
     options: {
       responsive: true,
       scales: {
-        y: { position: "left", beginAtZero: true, title: { display: true, text: "Mots-clés top 20" }, ticks: { precision: 0 } },
+        y: { stacked: true, position: "left", beginAtZero: true, title: { display: true, text: "Mots-clés bien placés" }, ticks: { precision: 0 } },
         y1: { position: "right", beginAtZero: true, grid: { drawOnChartArea: false }, title: { display: true, text: "Visiteurs/mois estimés" } },
+      },
+      plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { family: "Montserrat" } } } }
+    }
+  });
+})();
+// Graphe 3 : tendance du netlinking.
+(function(){
+  const el = document.getElementById("blChart");
+  if (!BL.length) { el.closest(".card").style.display = "none"; return; }
+  const labels = BL.map(h => { const [y,m] = h.ym.split("-"); return new Date(Date.UTC(+y, +m-1, 15)).toLocaleDateString("fr-FR",{month:"short",year:"2-digit",timeZone:"UTC"}); });
+  new Chart(el, {
+    data: { labels, datasets: [
+      { type: "bar", label: "Backlinks", data: BL.map(h => h.backlinks), backgroundColor: "#8B0000", yAxisID: "y" },
+      { type: "line", label: "Domaines référents", data: BL.map(h => h.referringDomains), borderColor: "#B08D57", backgroundColor: "#B08D57", yAxisID: "y1", tension: .3, borderWidth: 2, pointRadius: 3 },
+    ] },
+    options: {
+      responsive: true,
+      scales: {
+        y: { position: "left", beginAtZero: true, title: { display: true, text: "Backlinks" } },
+        y1: { position: "right", beginAtZero: true, grid: { drawOnChartArea: false }, title: { display: true, text: "Domaines référents" } },
       },
       plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { family: "Montserrat" } } } }
     }
@@ -328,9 +473,30 @@ const palette = ["#8B0000","#B08D57","#5C4B3C","#2E7D32","#3b6ea5","#8B7355","#a
 </body></html>`
 }
 
+// Meilleur mot-clé à mettre en avant : on privilégie le non-marque (vraie perf SEO),
+// classer sur son propre nom n'ayant pas de valeur de démonstration.
+function bestKeyword(serp) {
+  const ranked = serp.filter((s) => s.position != null)
+  const nonBrand = ranked.filter((s) => s.intent !== "Notoriété").sort((a, b) => a.position - b.position)
+  return nonBrand[0] || ranked.sort((a, b) => a.position - b.position)[0]
+}
+
+// Phrase de synthèse « faits marquants », construite à partir des données.
+function buildExec({ month, serp, articles, blNow, deltaBl, citedTotal, answeredTotal, gbp }) {
+  const bits = []
+  const best = bestKeyword(serp)
+  if (best) bits.push(`meilleure position <strong>#${best.position}</strong> sur « ${esc(best.keyword)} »`)
+  bits.push(`<strong>${articles.length}</strong> article${articles.length > 1 ? "s" : ""} en ligne`)
+  if (deltaBl != null && deltaBl !== 0) bits.push(`<strong>${deltaBl > 0 ? "+" : ""}${fr(deltaBl)}</strong> backlink${Math.abs(deltaBl) > 1 ? "s" : ""} sur le dernier mois`)
+  else bits.push(`<strong>${fr(blNow.backlinks)}</strong> backlinks`)
+  bits.push(`cité <strong>${citedTotal}/${answeredTotal}</strong> fois par les IA`)
+  if (gbp?.note != null) bits.push(`note Google <strong>${String(gbp.note).replace(".", ",")}</strong>`)
+  return `Ce mois-ci : ${bits.join(", ")}.`
+}
+
 /**
- * Génère le rapport. `prevHistory` = tableau historique existant (depuis le Blob).
- * Retourne { html, history, summary } sans rien écrire sur disque.
+ * Génère le rapport. `prevHistory` = historique existant (Blob). Retourne
+ * { html, history, summary, monthLabel, month } sans écrire sur disque.
  */
 export async function generateReport(prevHistory = [], month = null) {
   if (!process.env.DATAFORSEO_LOGIN || !process.env.DATAFORSEO_PASSWORD) {
@@ -338,10 +504,10 @@ export async function generateReport(prevHistory = [], month = null) {
   }
   const now = new Date()
   const ym = month || `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`
-  const monthLabel = new Intl.DateTimeFormat("fr-FR", { month: "short", year: "2-digit", timeZone: "UTC" }).format(new Date(`${ym}-15T00:00:00Z`))
+  const monthLabelShort = monthShort(ym)
 
-  const [serp, backlinks, gbp, llm, domainHistory] = await Promise.all([
-    pullSerp(), pullBacklinks(), pullGbp(), pullLlm(), pullDomainHistory(),
+  const [serp, backlinks, refDomains, blHistory, gbp, llm, domainHistory] = await Promise.all([
+    pullSerp(), pullBacklinks(), pullReferringDomains(), pullBacklinksHistory(), pullGbp(), pullLlm(), pullDomainHistory(),
   ])
   const articles = readArticles()
 
@@ -353,28 +519,38 @@ export async function generateReport(prevHistory = [], month = null) {
   }
   const positions = {}
   serp.forEach((s) => { positions[s.keyword] = s.position })
-  const cur = byMonth.get(ym) ?? { month: ym, monthLabel }
-  cur.monthLabel = monthLabel
+  const cur = byMonth.get(ym) ?? { month: ym, monthLabel: monthLabelShort }
+  cur.monthLabel = monthLabelShort
   cur.positions = positions
   cur.backlinks = backlinks.backlinks
   cur.referringDomains = backlinks.referringDomains
   cur.gbpNote = gbp?.note ?? null
   cur.gbpReviews = gbp?.reviews ?? null
-  cur.llmCited = llm.reduce((s, e) => s + e.rows.filter((r) => r.cited).length, 0)
-  cur.llmAnswered = llm.reduce((s, e) => s + e.rows.filter((r) => !r.error).length, 0)
+  const citedTotal = llm.reduce((s, e) => s + e.rows.filter((r) => r.cited).length, 0)
+  const answeredTotal = llm.reduce((s, e) => s + e.rows.filter((r) => !r.error).length, 0)
+  cur.llmCited = citedTotal
+  cur.llmAnswered = answeredTotal
+  cur.hasReport = true
   byMonth.set(ym, cur)
   const history = [...byMonth.values()].sort((a, b) => a.month.localeCompare(b.month))
 
-  const html = renderHtml({ month: ym, serp, backlinks, gbp, llm, articles, history })
+  const blSorted = [...blHistory].sort((a, b) => a.ym.localeCompare(b.ym))
+  const blNow = blSorted[blSorted.length - 1] ?? { backlinks: backlinks.backlinks, referringDomains: backlinks.referringDomains }
+  const blPrev = blSorted[blSorted.length - 2]
+  const deltaBl = blPrev ? blNow.backlinks - blPrev.backlinks : null
+
+  const exec = buildExec({ month: ym, serp, articles, blNow, deltaBl, citedTotal, answeredTotal, gbp })
+  const html = renderHtml({ month: ym, serp, backlinks, refDomains, blHistory, gbp, llm, articles, history, exec })
+
   const summary = {
     month: ym,
     articles: articles.length,
     ranked: serp.filter((s) => s.position != null).length,
     keywords: serp.length,
-    llmCited: cur.llmCited,
-    llmAnswered: cur.llmAnswered,
-    backlinks: backlinks.backlinks,
+    llmCited: citedTotal,
+    llmAnswered: answeredTotal,
+    backlinks: blNow.backlinks,
     gbpNote: gbp?.note ?? null,
   }
-  return { html, history, summary, monthLabel: new Intl.DateTimeFormat("fr-FR", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${ym}-15T00:00:00Z`)) }
+  return { html, history, summary, monthLabel: monthLong(ym), month: ym }
 }
