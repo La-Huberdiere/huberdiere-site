@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "crons": [{ "path": "/api/cron/rapport", "schedule": "0 6 3 * *" }],
   "redirects": [
     { "source": "/contact-9", "destination": "/contact", "permanent": true },
     { "source": "/mariage-chateau-touraine", "destination": "/mariage", "permanent": true },
