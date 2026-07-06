@@ -41,6 +41,10 @@
         "href": "/restauration"
       },
       {
+        "label": "Galerie",
+        "href": "/galerie"
+      },
+      {
         "label": "Contact",
         "href": "/contact"
       }
@@ -88,6 +92,10 @@
         {
           "label": "Activités & alentours",
           "href": "/activites"
+        },
+        {
+          "label": "Galerie",
+          "href": "/galerie"
         },
         {
           "label": "Accès & situation",
@@ -144,6 +152,10 @@
         "href": "/restauration"
       },
       {
+        "label": "Gallery",
+        "href": "/galerie"
+      },
+      {
         "label": "Contact",
         "href": "/contact"
       }
@@ -191,6 +203,10 @@
         {
           "label": "Activities & surroundings",
           "href": "/activites"
+        },
+        {
+          "label": "Gallery",
+          "href": "/galerie"
         },
         {
           "label": "Access & location",
@@ -247,6 +263,10 @@
         "href": "/restauration"
       },
       {
+        "label": "Galleria",
+        "href": "/galerie"
+      },
+      {
         "label": "Contatti",
         "href": "/contact"
       }
@@ -294,6 +314,10 @@
         {
           "label": "Attività e dintorni",
           "href": "/activites"
+        },
+        {
+          "label": "Galleria",
+          "href": "/galerie"
         },
         {
           "label": "Come arrivare e posizione",

@@ -1,0 +1,38 @@
+---
+import Base from "../layouts/Base.astro";
+import GalleryPage from "../components/GalleryPage.astro";
+import { galleryChapters, galleryTotal, galleryUI } from "../lib/gallery";
+import { SITE, breadcrumbSchema } from "../lib/seo";
+
+const lang = "fr" as const;
+const ui = galleryUI[lang];
+const chapters = galleryChapters(lang);
+const imageGallery = {
+  "@context": "https://schema.org",
+  "@type": "ImageGallery",
+  name: ui.metaTitle,
+  description: ui.metaDesc,
+  url: `${SITE.url}/galerie`,
+  numberOfItems: galleryTotal,
+  about: { "@type": "LodgingBusiness", name: SITE.name },
+  associatedMedia: chapters.map((c) => ({
+    "@type": "ImageObject",
+    contentUrl: `${SITE.url}${c.photos[0].full}`,
+    caption: c.title,
+  })),
+};
+const breadcrumb = breadcrumbSchema([
+  { name: "Accueil", path: "/" },
+  { name: ui.title, path: "/galerie" },
+]);
+---
+<Base
+  title={ui.metaTitle}
+  description={ui.metaDesc}
+  lang={lang}
+  path="/galerie"
+  image={chapters[0].photos[0].full}
+  schemas={[imageGallery, breadcrumb]}
+>
+  <GalleryPage lang={lang} />
+</Base>
