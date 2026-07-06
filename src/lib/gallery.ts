@@ -162,7 +162,7 @@ export const galleryUI: Record<Lang, {
   fr: {
     eyebrow: "Touraine · Vallée de la Loire",
     title: "Galerie",
-    lead: `${galleryTotal} photographies du domaine, chambre par chambre, saison après saison.`,
+    lead: `Le domaine en photographies, chambre par chambre, saison après saison.`,
     hint: "Cliquez une photo pour l'ouvrir en plein écran.",
     close: "Fermer",
     prev: "Précédente",
@@ -174,7 +174,7 @@ export const galleryUI: Record<Lang, {
   en: {
     eyebrow: "Touraine · Loire Valley",
     title: "Gallery",
-    lead: `${galleryTotal} photographs of the estate, room by room, season after season.`,
+    lead: `The estate in photographs, room by room, season after season.`,
     hint: "Click a photo to open it full screen.",
     close: "Close",
     prev: "Previous",
@@ -186,7 +186,7 @@ export const galleryUI: Record<Lang, {
   it: {
     eyebrow: "Turenna · Valle della Loira",
     title: "Galleria",
-    lead: `${galleryTotal} fotografie della tenuta, camera dopo camera, stagione dopo stagione.`,
+    lead: `La tenuta in fotografie, camera dopo camera, stagione dopo stagione.`,
     hint: "Clicca una foto per aprirla a schermo intero.",
     close: "Chiudi",
     prev: "Precedente",

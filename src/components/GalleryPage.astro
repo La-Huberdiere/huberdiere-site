@@ -6,7 +6,6 @@ const chapters = galleryChapters(lang);
 // Photo maîtresse du hero = l'ouverture du chapitre « château & parc » (façade large).
 const parc = chapters.find((c) => c.id === "chateau-parc");
 const hero = parc?.photos[0] ?? chapters[0].photos[0];
-const orientClass = (o: string) => (o === "land" ? "t-land" : o === "port" ? "t-port" : "t-sq");
 ---
 <section class="page-hero gallery-hero" id="hero">
   <img src={hero.full} alt={hero.alt} fetchpriority="high" width={hero.w} height={hero.h} />
@@ -34,18 +33,15 @@ const orientClass = (o: string) => (o === "land" ? "t-land" : o === "port" ? "t-
       <header class="gchapter__head">
         <span class="gc-num">{c.numeral}</span>
         <h2>{c.title}</h2>
-        <span class="gc-count">{c.count}</span>
         <p class="gc-intro">{c.intro}</p>
       </header>
+      <button type="button" class="tile tile--lead" data-full={c.photos[0].full} data-alt={c.photos[0].alt} aria-label={c.photos[0].alt}>
+        <img src={c.photos[0].thumb} alt={c.photos[0].alt} loading="lazy" decoding="async" width={c.photos[0].w} height={c.photos[0].h} />
+        <span class="tile__cue" aria-hidden="true"><i>⤢</i></span>
+      </button>
       <div class="mosaic">
-        {c.photos.map((p, i) => (
-          <button
-            type="button"
-            class={`tile ${i === 0 ? "t-lead" : orientClass(p.orient)}`}
-            data-full={p.full}
-            data-alt={p.alt}
-            aria-label={p.alt}
-          >
+        {c.photos.slice(1).map((p) => (
+          <button type="button" class="tile" data-full={p.full} data-alt={p.alt} aria-label={p.alt}>
             <img src={p.thumb} alt={p.alt} loading="lazy" decoding="async" width={p.w} height={p.h} />
             <span class="tile__cue" aria-hidden="true"><i>⤢</i></span>
           </button>
@@ -126,8 +122,10 @@ const orientClass = (o: string) => (o === "land" ? "t-land" : o === "port" ? "t-
   .gallery-wrap { max-width: 1360px; margin: 0 auto; padding: clamp(48px, 7vw, 96px) clamp(18px, 5vw, 64px) 40px; }
 
   /* En-tête de chapitre : numéral maison + titre serif + compteur, intro sur une ligne. */
-  .gchapter { scroll-margin-top: 128px; }
-  .gchapter + .gchapter { margin-top: clamp(56px, 8vw, 104px); }
+  /* padding:0 annule le `section{padding:140px 48px}` global qui créait de grands
+     vides en haut/bas de chaque chapitre (l'espacement horizontal vient de .gallery-wrap). */
+  .gchapter { padding: 0; scroll-margin-top: 128px; }
+  .gchapter + .gchapter { margin-top: clamp(40px, 4vw, 60px); }
   .gchapter__head {
     display: grid;
     grid-template-columns: auto auto 1fr;
@@ -151,30 +149,30 @@ const orientClass = (o: string) => (o === "land" ? "t-land" : o === "port" ? "t-
   .gc-count::after { content: " ●"; color: var(--burgundy); font-size: 7px; vertical-align: middle; }
   .gc-intro { grid-column: 2 / 4; grid-row: 2; margin: 12px 0 0; font-size: 15px; font-weight: 300; color: var(--ink-2); max-width: 640px; }
 
-  /* Mosaïque asymétrique : les tuiles s'étirent selon l'orientation, packing dense. */
+  /* Grille uniforme : rangées régulières, aucun vide (seule la dernière rangée
+     peut être partielle, ce qui est propre). Pas de spans = pas de bas en dents de scie. */
   .mosaic {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    grid-auto-rows: 150px;
-    grid-auto-flow: dense;
     gap: 10px;
+    margin-top: 10px;
   }
   .tile {
     position: relative;
     min-width: 0;
-    min-height: 0;
     padding: 0;
     border: 0;
     margin: 0;
+    aspect-ratio: 3 / 2;
     background: var(--bg-deep);
     overflow: hidden;
     cursor: pointer;
     outline-offset: 3px;
   }
   .tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .t-land { grid-column: span 2; }
-  .t-port { grid-row: span 2; }
-  .t-lead { grid-column: span 2; grid-row: span 2; }
+  /* Photo maîtresse pleine largeur en tête de chapitre (bande éditoriale). */
+  .tile--lead { aspect-ratio: auto; }
+  .tile--lead img { height: clamp(300px, 38vw, 480px); }
   /* Repère d'agrandissement (pas de zoom d'image au survol, tell d'UI générée). */
   .tile__cue {
     position: absolute;
@@ -254,12 +252,12 @@ const orientClass = (o: string) => (o === "land" ? "t-land" : o === "port" ? "t-
   .lb-next { right: 8px; top: 50%; transform: translateY(-50%); }
 
   @media (max-width: 999px) {
-    .mosaic { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 132px; }
+    .mosaic { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
   @media (max-width: 639px) {
     .gallery-hero .inner { padding-left: 22px; padding-right: 22px; }
-    .mosaic { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 122px; gap: 7px; }
-    .t-lead { grid-column: span 2; }
+    .mosaic { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+    .tile--lead img { height: clamp(220px, 55vw, 320px); }
     .gchapter__head { grid-template-columns: auto 1fr; }
     .gc-count { grid-column: 1 / 3; grid-row: 2; justify-self: start; margin-top: 6px; }
     .gc-intro { grid-column: 1 / 3; grid-row: 3; }
