@@ -28,13 +28,15 @@ export const SITE = {
   checkoutTime: "11:00",
   priceRange: "€€€",
   ogImage: "/og/og-default.jpg",
-  // Réseaux sociaux + fiche Google Business Profile (renforce le graphe d'entité et le
-  // SEO local). Instagram/Facebook récupérés du Wix (2026-06-25) ; fiche Google = URL Maps
-  // stable par cid (cid 5728274181919890705, ajouté 2026-06-28).
+  // Réseaux sociaux + profils tiers (renforce le graphe d'entité et le SEO/GEO local).
+  // Instagram/Facebook récupérés du Wix (2026-06-25) ; fiche Google = URL Maps stable par
+  // cid (2026-06-28) ; Booking + TripAdvisor (fiches réelles vérifiées, 2026-07-06).
   sameAs: [
     "https://www.instagram.com/chateaudelahuberdiere",
     "https://www.facebook.com/people/Chateau-de-la-Huberdière/100093953672278/",
     "https://www.google.com/maps?cid=5728274181919890705",
+    "https://www.booking.com/hotel/fr/chateau-de-la-huberdiere-nazelles-negron.html",
+    "https://www.tripadvisor.com/Hotel_Review-g315796-d26858423-Reviews-Chateau_de_la_Huberdiere-Nazelles_Negron_Amboise_Indre_et_Loire_Centre_Val_de_Loire.html",
   ] as string[],
 };
 
