@@ -36,7 +36,7 @@ const actIds = ["sejour", "mariage", "seminaire", "famille", "retraite"];
 
 <!-- HERO -->
 <section class="hero" id="hero">
-  <Image src={hero} alt="Château de la Huberdière vu depuis l'étang" widths={[768, 1280, 1920, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />
+  <Image quality={68} src={hero} alt="Château de la Huberdière vu depuis l'étang" widths={[768, 1280, 1920]} sizes="100vw" loading="eager" fetchpriority="high" />
   <div class="hero-content">
     <div class="container">
       <div class="hero-inner">
@@ -63,7 +63,7 @@ const actIds = ["sejour", "mariage", "seminaire", "famille", "retraite"];
       <div class="sign">{c.intro.sign}</div>
     </div>
     <div class="visual reveal">
-      <Image src={intro} alt="Façade du château et son escalier en balustrade" widths={[500, 900, 1200]} sizes="(max-width:960px) 100vw, 45vw" />
+      <Image quality={68} src={intro} alt="Façade du château et son escalier en balustrade" widths={[500, 900, 1200]} sizes="(max-width:960px) 100vw, 45vw" />
     </div>
   </div>
 </section>
@@ -84,7 +84,7 @@ const actIds = ["sejour", "mariage", "seminaire", "famille", "retraite"];
         c.activities.map((a, i) => (
           <article class="act reveal" id={actIds[i]}>
             <div class="act-visual">
-              <Image src={actImages[i]} alt={actAlts[i]} widths={[600, 900, 1200]} sizes="(max-width:960px) 100vw, 45vw" />
+              <Image quality={68} src={actImages[i]} alt={actAlts[i]} widths={[600, 900, 1200]} sizes="(max-width:960px) 100vw, 45vw" />
             </div>
             <div class="act-text">
               <div class="num">{a.num}</div>
@@ -117,12 +117,12 @@ const actIds = ["sejour", "mariage", "seminaire", "famille", "retraite"];
     <h2 class="section-title">{c.galleryHead.titlePlain}<span class="italic">{c.galleryHead.titleItalic}</span></h2>
   </div>
   <div class="gallery-grid">
-    <figure class="g1 reveal"><Image src={g1} alt="Façade et cour du château" widths={[600, 1000, 1400]} sizes="50vw" /></figure>
-    <figure class="g2 reveal"><Image src={g2} alt="Piscine et parasols dans le parc" widths={[600, 1000, 1400]} sizes="50vw" /></figure>
-    <figure class="g3 reveal"><Image src={g3} alt="Salle à manger aux boiseries" widths={[400, 700, 900]} sizes="40vw" /></figure>
-    <figure class="g4 reveal"><Image src={g4} alt="Salon avec cheminée de marbre" widths={[300, 500, 700]} sizes="25vw" /></figure>
-    <figure class="g5 reveal"><Image src={g5} alt="Table dressée en terrasse" widths={[400, 700, 900]} sizes="40vw" /></figure>
-    <figure class="g6 reveal"><Image src={g6} alt="Piscine et jardins du domaine" widths={[600, 1000, 1400]} sizes="60vw" /></figure>
+    <figure class="g1 reveal"><Image quality={68} src={g1} alt="Façade et cour du château" widths={[600, 1000, 1400]} sizes="50vw" /></figure>
+    <figure class="g2 reveal"><Image quality={68} src={g2} alt="Piscine et parasols dans le parc" widths={[600, 1000, 1400]} sizes="50vw" /></figure>
+    <figure class="g3 reveal"><Image quality={68} src={g3} alt="Salle à manger aux boiseries" widths={[400, 700, 900]} sizes="40vw" /></figure>
+    <figure class="g4 reveal"><Image quality={68} src={g4} alt="Salon avec cheminée de marbre" widths={[300, 500, 700]} sizes="25vw" /></figure>
+    <figure class="g5 reveal"><Image quality={68} src={g5} alt="Table dressée en terrasse" widths={[400, 700, 900]} sizes="40vw" /></figure>
+    <figure class="g6 reveal"><Image quality={68} src={g6} alt="Piscine et jardins du domaine" widths={[600, 1000, 1400]} sizes="60vw" /></figure>
   </div>
 </section>
 
@@ -143,7 +143,7 @@ const actIds = ["sejour", "mariage", "seminaire", "famille", "retraite"];
       </div>
     </div>
     <div class="visual reveal">
-      <Image src={loc} alt="Les jardins du château" widths={[500, 900, 1200]} sizes="(max-width:960px) 100vw, 45vw" />
+      <Image quality={68} src={loc} alt="Les jardins du château" widths={[500, 900, 1200]} sizes="(max-width:960px) 100vw, 45vw" />
     </div>
   </div>
 </section>

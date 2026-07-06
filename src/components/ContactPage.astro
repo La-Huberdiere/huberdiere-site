@@ -9,7 +9,7 @@ const lang = (Astro.currentLocale as "fr" | "en" | "it") ?? "fr";
 const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
 ---
 <section class="page-hero">
-  <Image src={pHero} alt={c.hero.titleLine1} widths={[768, 1280, 1920]} sizes="100vw" loading="eager" fetchpriority="high" />
+  <Image quality={68} src={pHero} alt={c.hero.titleLine1} widths={[768, 1280, 1920]} sizes="100vw" loading="eager" fetchpriority="high" />
   <div class="inner">
     <div class="eyebrow">{c.hero.eyebrow}</div>
     <h1>{c.hero.titleLine1}<br /><span class="italic">{c.hero.titleLine2Italic}</span></h1>

@@ -39,7 +39,7 @@ const captionFeature =
 ---
 
 <section class="free-hero">
-  <Image src={imgs.hero} alt={entry.title} widths={[768, 1280, 1920]} sizes="100vw" loading="eager" fetchpriority="high" />
+  <Image quality={68} src={imgs.hero} alt={entry.title} widths={[768, 1280, 1920]} sizes="100vw" loading="eager" fetchpriority="high" />
   <div class="fh-inner">
     <span class="fh-eyebrow">{locator}</span>
     <h1>{entry.title}</h1>
@@ -53,7 +53,7 @@ const captionFeature =
 </section>
 
 <figure class="free-feature">
-  <Image src={imgs.feature} alt={captionFeature} widths={[768, 1280, 1760]} sizes="100vw" />
+  <Image quality={68} src={imgs.feature} alt={captionFeature} widths={[768, 1280, 1760]} sizes="100vw" />
   <figcaption>{captionFeature}</figcaption>
 </figure>
 
