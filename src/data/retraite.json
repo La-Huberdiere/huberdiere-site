@@ -95,6 +95,33 @@
         "text": "À une heure de Paris (TGV Saint-Pierre-des-Corps) puis trente minutes de voiture, ou via l'A10. Une arrivée fluide pour vos participants."
       }
     ],
+    "activitiesHead": {
+      "eyebrow": "Au-delà du yoga",
+      "title": "Toutes les disciplines de retraite",
+      "intro": "Le lieu accueille bien plus que le yoga. Chaque discipline trouve son espace, en intérieur comme en pleine nature."
+    },
+    "activities": [
+      {
+        "title": "Yoga & pilates",
+        "text": "Sessions en plein air dans le parc ou à l'abri dans l'Orangerie, du yoga au lever du soleil aux pratiques douces de fin de journée."
+      },
+      {
+        "title": "Méditation & pleine conscience",
+        "text": "Marches méditatives, cercles de parole et vrais temps de silence, portés par le calme de quatorze hectares préservés."
+      },
+      {
+        "title": "Résidence & atelier d'écriture",
+        "text": "L'Orangerie devient salle de travail équipée de tables, les salons offrent des coins plus feutrés pour lire, écrire et échanger."
+      },
+      {
+        "title": "Développement personnel & coaching",
+        "text": "Séminaires de développement personnel, retraites de digital detox et stages de reconversion, loin de toute sollicitation."
+      },
+      {
+        "title": "Ateliers créatifs & gastronomie",
+        "text": "Peinture, théâtre, master class de musique, ou atelier culinaire autour des racines italiennes de Lodovica."
+      }
+    ],
     "faqHead": {
       "eyebrow": "Questions fréquentes",
       "title": "Organiser votre retraite ou votre stage"
@@ -234,6 +261,33 @@
         "text": "An hour from Paris (TGV to Saint-Pierre-des-Corps) followed by a thirty-minute drive, or via the A10. A hassle-free journey for your participants."
       }
     ],
+    "activitiesHead": {
+      "eyebrow": "Beyond yoga",
+      "title": "Every kind of retreat",
+      "intro": "The venue is home to far more than yoga. Each discipline finds its own space, both indoors and out in nature."
+    },
+    "activities": [
+      {
+        "title": "Yoga & pilates",
+        "text": "Sessions outdoors in the grounds or indoors in the Orangery, from sunrise yoga to gentler practices at the end of the day."
+      },
+      {
+        "title": "Meditation & mindfulness",
+        "text": "Meditative walks, talking circles and genuine moments of silence, carried by the calm of fourteen unspoilt hectares."
+      },
+      {
+        "title": "Writing residencies & workshops",
+        "text": "The Orangery becomes a workroom set up with tables, while the lounges offer quieter corners for reading, writing and sharing."
+      },
+      {
+        "title": "Personal development & coaching",
+        "text": "Personal development seminars, digital detox retreats and career-change courses, far from any distraction."
+      },
+      {
+        "title": "Creative & culinary workshops",
+        "text": "Painting, theatre, music masterclasses, or a cookery workshop exploring Lodovica's Italian roots."
+      }
+    ],
     "faqHead": {
       "eyebrow": "Frequently Asked Questions",
       "title": "Organise your retreat or course"
@@ -371,6 +425,33 @@
       {
         "title": "Accessibilità e logistica",
         "text": "A un'ora da Parigi (TGV Saint-Pierre-des-Corps) e poi trenta minuti in auto, oppure tramite l'A10. Un arrivo senza intoppi per i vostri partecipanti."
+      }
+    ],
+    "activitiesHead": {
+      "eyebrow": "Oltre lo yoga",
+      "title": "Ogni tipo di ritiro",
+      "intro": "La struttura accoglie molto più dello yoga. Ogni disciplina trova il proprio spazio, al chiuso come in mezzo alla natura."
+    },
+    "activities": [
+      {
+        "title": "Yoga e pilates",
+        "text": "Sessioni all'aperto nel parco o al riparo nell'Orangerie, dallo yoga all'alba alle pratiche dolci di fine giornata."
+      },
+      {
+        "title": "Meditazione e mindfulness",
+        "text": "Passeggiate meditative, cerchi di condivisione e veri momenti di silenzio, sostenuti dalla quiete di quattordici ettari incontaminati."
+      },
+      {
+        "title": "Residenze e laboratori di scrittura",
+        "text": "L'Orangerie diventa una sala di lavoro attrezzata con tavoli, mentre i saloni offrono angoli più intimi per leggere, scrivere e confrontarsi."
+      },
+      {
+        "title": "Crescita personale e coaching",
+        "text": "Seminari di crescita personale, ritiri di digital detox e corsi di riconversione professionale, lontani da ogni distrazione."
+      },
+      {
+        "title": "Laboratori creativi e gastronomia",
+        "text": "Pittura, teatro, master class di musica, oppure un laboratorio culinario dedicato alle origini italiane di Lodovica."
       }
     ],
     "faqHead": {

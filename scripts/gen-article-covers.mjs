@@ -12,17 +12,21 @@ import path from "node:path";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ASSETS = path.join(__dirname, "../src/assets");
+const PUBLIC = path.join(__dirname, "../public");
 const OUT = path.join(__dirname, "../public/images/articles");
 
 const W = 1200, H = 630;
 
-// slug → photo source (dans src/assets). Couvertures « propres », sans texte.
+// slug → photo source. Couvertures « propres », sans texte. Par défaut la photo est
+// lue dans src/assets ; un champ `dir` optionnel pointe une photo de la bibliothèque
+// (public/images/bibliotheque) pour un thème précis (séminaire, château…).
 const COVERS = [
   { slug: "chambres-hotes-amboise-chateau", photo: "SD_23.jpg" },
   { slug: "organiser-mariage-au-chateau", photo: "SD_6.jpg" },
   { slug: "visiter-chateaux-de-la-loire", photo: "SD_3.jpg" },
   { slug: "organiser-retraite-yoga-chateau", photo: "BD_5.jpg" },
-  { slug: "bienvenue-au-chateau", photo: "SD_9.jpg" },
+  { slug: "organiser-seminaire-au-chateau", dir: PUBLIC, photo: "images/bibliotheque/seminaire/seminaire-02.jpg" },
+  { slug: "louer-chateau-entre-amis-famille", dir: PUBLIC, photo: "images/bibliotheque/chateau-exterieur/chateau-exterieur-05.jpg" },
 ];
 
 // Dégradé très doux, sans aucun texte (rien à rogner quel que soit le recadrage).
@@ -44,7 +48,7 @@ async function main() {
   const { mkdir } = await import("node:fs/promises");
   await mkdir(OUT, { recursive: true });
   for (const c of COVERS) {
-    const base = await sharp(path.join(ASSETS, c.photo))
+    const base = await sharp(path.join(c.dir ?? ASSETS, c.photo))
       .resize(W, H, { fit: "cover", position: "centre" })
       .toBuffer();
     await sharp(base)
