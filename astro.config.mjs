@@ -11,6 +11,10 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
   site: "https://www.chateaudelahuberdiere.com",
   output: "static",
+  // URLs sans slash final, alignées sur les canonical/hreflang (sinon le sitemap
+  // émet /mariage/ alors que la page se déclare canonique en /mariage → signal
+  // contradictoire et budget de crawl gaspillé).
+  trailingSlash: "never",
   adapter: vercel({ maxDuration: 60 }),
   integrations: [
     react(),

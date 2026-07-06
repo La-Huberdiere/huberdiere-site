@@ -18,9 +18,14 @@ export const SITE = {
     addressCountry: "FR",
   },
   geo: { latitude: 47.44645, longitude: 0.93489 },
-  // Note d'avis : désormais pilotée par src/data/reviews.json (l'aggregateRating
-  // n'est émis QUE si des avis réels sont affichés sur la home, cf. lodgingBusinessSchema).
-  rating: { value: "9.5", best: "10", count: "42" },
+  // Note d'avis : pilotée par src/data/reviews.json (l'aggregateRating n'est émis
+  // QUE si des avis réels sont affichés sur la home, cf. lodgingBusinessSchema).
+  // Classement officiel Atout France (revendiqué par le client).
+  starRating: "3",
+  // 10 chambres (chiffre canonique), horaires standard hôtellerie.
+  numberOfRooms: 10,
+  checkinTime: "16:00",
+  checkoutTime: "11:00",
   priceRange: "€€€",
   ogImage: "/og/og-default.jpg",
   // Réseaux sociaux + fiche Google Business Profile (renforce le graphe d'entité et le
@@ -34,6 +39,11 @@ export const SITE = {
 };
 
 const abs = (path: string) => (path.startsWith("http") ? path : `${SITE.url}${path}`);
+
+/** Langue de contenu → étiquette BCP 47 (pour inLanguage). */
+export type Lang = "fr" | "en" | "it";
+const LANG_TAG: Record<Lang, string> = { fr: "fr-FR", en: "en-GB", it: "it-IT" };
+const langTag = (l: Lang = "fr") => LANG_TAG[l] ?? "fr-FR";
 
 /** Organisation / entité émettrice du site (présent sur toutes les pages). */
 export function organizationSchema() {
@@ -52,14 +62,14 @@ export function organizationSchema() {
 }
 
 /** Le site lui-même + boîte de recherche potentielle (sitelinks searchbox). */
-export function webSiteSchema() {
+export function webSiteSchema(lang: Lang = "fr") {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": `${SITE.url}/#website`,
     url: SITE.url,
     name: SITE.name,
-    inLanguage: "fr-FR",
+    inLanguage: langTag(lang),
     publisher: { "@id": `${SITE.url}/#organization` },
   };
 }
@@ -89,6 +99,8 @@ export function lodgingBusinessSchema(opts?: {
   amenities?: string[];
   reviews?: ReviewInput[];
   rating?: { value: string; best: string; count: string };
+  lang?: Lang;
+  description?: string;
 }) {
   const hasReviews = (opts?.reviews?.length ?? 0) > 0;
   const best = opts?.rating?.best ?? "10";
@@ -100,11 +112,17 @@ export function lodgingBusinessSchema(opts?: {
     "@type": "LodgingBusiness",
     "@id": `${SITE.url}/#lodging`,
     name: SITE.name,
-    description: SITE.description,
+    description: opts?.description ?? SITE.description,
     url: SITE.url,
+    inLanguage: langTag(opts?.lang ?? "fr"),
     telephone: `+${SITE.phone.replace(/\D/g, "")}`,
     email: SITE.email,
     priceRange: SITE.priceRange,
+    starRating: { "@type": "Rating", ratingValue: SITE.starRating, bestRating: "5" },
+    numberOfRooms: SITE.numberOfRooms,
+    checkinTime: SITE.checkinTime,
+    checkoutTime: SITE.checkoutTime,
+    currenciesAccepted: "EUR",
     image: (opts?.images ?? [SITE.ogImage]).map(abs),
     address: { "@type": "PostalAddress", ...SITE.address },
     geo: { "@type": "GeoCoordinates", latitude: SITE.geo.latitude, longitude: SITE.geo.longitude },
@@ -183,7 +201,17 @@ export function activitySchemas(opts: { m: any; slug: string; lang: "fr" | "en" 
   const { m, slug, lang } = opts;
   const prefix = lang === "fr" ? "" : `/${lang}`;
   const home = lang === "fr" ? "Accueil" : "Home";
-  const pageName = String(m.title).split(/[—|]/)[0].trim();
+  // Libellé court pour le fil d'Ariane et le Service : on part du <title> SEO et on
+  // en retire le suffixe de marque puis les qualificatifs après séparateur. NB : le
+  // remplacement du tiret cadratin par « · » avait cassé l'ancien split sur [—|],
+  // qui laissait passer le title complet (marque dupliquée) dans le breadcrumb.
+  const pageName =
+    m.shortName ||
+    String(m.title)
+      .replace(/\s*[|·—]\s*(Château de la Huberdière|La Huberdière).*$/i, "")
+      .replace(/,\s*Château de la Huberdière.*$/i, "")
+      .split(/\s*[|·—]\s*/)[0]
+      .trim();
   const out: object[] = [
     breadcrumbSchema([
       { name: home, path: `${prefix}/` },
@@ -209,6 +237,7 @@ export function articleSchema(opts: {
   section?: string;
   keywords?: string[];
   wordCount?: number;
+  lang?: Lang;
 }) {
   const author = opts.author
     ? {
@@ -232,7 +261,7 @@ export function articleSchema(opts: {
     ...(opts.section ? { articleSection: opts.section } : {}),
     ...(opts.keywords && opts.keywords.length ? { keywords: opts.keywords.join(", ") } : {}),
     ...(opts.wordCount ? { wordCount: opts.wordCount } : {}),
-    inLanguage: "fr-FR",
+    inLanguage: langTag(opts.lang ?? "fr"),
     isPartOf: { "@id": `${SITE.url}/#website` },
     author,
     publisher: { "@id": `${SITE.url}/#organization` },

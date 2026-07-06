@@ -23,6 +23,7 @@ const homeHref = lang === "fr" ? "/" : `/${lang}`;
   <a href={homeHref} class="brand" aria-label={s.brandName}>
     <Image src={logo} alt={s.brandName} class="brand-logo" widths={[180, 360]} sizes="180px" loading="eager" />
   </a>
+  <a href={reserveLink} class="book book--bar" target="_blank" rel="noopener">{s.reserveLabel}</a>
   <button class="menu-toggle" id="menuToggle" aria-label="Menu" aria-expanded="false" aria-controls="siteNav">
     <span></span><span></span><span></span>
   </button>

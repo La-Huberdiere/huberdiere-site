@@ -14,6 +14,9 @@
     { "source": "/restauration-chateau-huberdiere-touraine", "destination": "/restauration", "permanent": true },
     { "source": "/activites-chateau-huberdiere-touraine", "destination": "/activites", "permanent": true },
     { "source": "/members", "destination": "/", "permanent": true },
+    { "source": "/blog/bienvenue-au-chateau", "destination": "/blog/organiser-mariage-au-chateau", "permanent": true },
+    { "source": "/en/blog/bienvenue-au-chateau", "destination": "/en/blog/organiser-mariage-au-chateau", "permanent": true },
+    { "source": "/it/blog/bienvenue-au-chateau", "destination": "/it/blog/organiser-mariage-au-chateau", "permanent": true },
     { "source": "/article/:slug*", "destination": "/blog", "permanent": true },
     { "source": "/event-details/:slug*", "destination": "/", "permanent": true }
   ],

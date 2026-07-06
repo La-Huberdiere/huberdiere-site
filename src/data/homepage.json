@@ -157,8 +157,8 @@
     },
     "activitiesHead": {
       "eyebrow": "For all your occasions",
-      "titlePlain": "A castle, ",
-      "titleItalic": "five ways to be admitted there.",
+      "titlePlain": "A château, ",
+      "titleItalic": "five ways to experience it.",
       "intro": "A stay, a wedding, a corporate seminar, a family gathering or a retreat: every moment is tailored with you in mind, and just for you."
     },
     "activities": [
@@ -217,7 +217,7 @@
       {
         "num": "V · Retreats and workshops",
         "titlePlain": "Workshops, retreats, ",
-        "titleItalic": "moments frozen in time.",
+        "titleItalic": "moments out of time.",
         "text": "Yoga courses, creative retreats, writing workshops, meditation sessions. La Huberdière offers its light-filled rooms, gardens and tranquillity to groups of 6 to 21 people for immersive experiences.",
         "points": [
           "Bright lounges and outdoor areas available",
@@ -294,7 +294,7 @@
     "activitiesHead": {
       "eyebrow": "Tutte le vostre occasioni",
       "titlePlain": "Un castello, ",
-      "titleItalic": "cinque modi per essere ammessi.",
+      "titleItalic": "cinque modi per viverlo.",
       "intro": "Un soggiorno, un matrimonio, un seminario aziendale, una riunione di famiglia o un ritiro: ogni momento viene ideato insieme a voi e pensato esclusivamente per voi."
     },
     "activities": [

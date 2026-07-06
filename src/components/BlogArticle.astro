@@ -42,6 +42,7 @@ const schemas = [
     section: cat,
     keywords,
     wordCount: wordCount(html),
+    lang,
   }),
   ...(faq.length ? [faqSchema(faq.map((f) => ({ question: f.q, answer: f.a })))] : []),
 ];

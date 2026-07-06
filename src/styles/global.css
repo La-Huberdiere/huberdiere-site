@@ -61,6 +61,13 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
   padding:11px 22px;letter-spacing:.2em;transition:all .35s;
 }
 .nav .book:hover{background:#6e0808;border-color:#6e0808;color:#fff}
+/* Bouton « Réserver » persistant dans la barre : masqué en desktop (celui du nav suffit),
+   affiché dès que le menu passe en burger pour qu'il reste toujours visible et cliquable
+   (sinon il disparaissait dans le panneau, cf. retour Patrick 06/07). */
+.book--bar{display:none;background:var(--burgundy);color:#fff;border:1px solid var(--burgundy);
+  font-family:'Montserrat',sans-serif;font-size:11px;font-weight:400;text-transform:uppercase;
+  letter-spacing:.2em;text-decoration:none;padding:11px 22px;transition:all .35s}
+.book--bar:hover{background:#6e0808;border-color:#6e0808;color:#fff}
 .menu-toggle{display:none;background:none;border:0;cursor:pointer;padding:8px;flex-direction:column;gap:5px;color:inherit;z-index:60}
 .menu-toggle span{display:block;width:24px;height:2px;background:currentColor;transition:transform .3s,opacity .3s}
 .site-header.nav-open .menu-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg)}
@@ -71,7 +78,10 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
 @media(max-width:1300px){
   .site-header{padding:16px 22px}
   .site-header.nav-open{background:var(--bg);color:var(--ink)}
-  .menu-toggle{display:flex}
+  .menu-toggle{display:flex;margin-left:14px}
+  .book--bar{display:inline-flex;align-items:center;margin-left:auto;padding:10px 18px;letter-spacing:.16em}
+  /* En burger, on garde le CTA dans la barre : on retire le doublon du panneau. */
+  .nav .book{display:none}
   .nav{
     position:absolute;top:100%;left:0;right:0;
     flex-direction:column;align-items:flex-start;gap:18px;
@@ -266,7 +276,7 @@ section{padding:140px 48px;position:relative}
 .offer-list{max-width:940px;margin:0 auto;border-top:1px solid var(--line)}
 .offer-row{display:grid;grid-template-columns:120px 1fr;gap:48px;align-items:baseline;padding:46px 0;border-bottom:1px solid var(--line)}
 .offer-num{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(42px,5vw,64px);line-height:.9;color:var(--burgundy)}
-.offer-body h3{font-size:26px;margin-bottom:14px;color:var(--ink)}
+.offer-body h2{font-size:26px;margin-bottom:14px;color:var(--ink)}
 .offer-body p{font-size:15px;color:var(--ink-2);font-weight:300;line-height:1.9;margin:0;max-width:580px}
 @media(max-width:760px){
   .offer-row{grid-template-columns:1fr;gap:12px;padding:34px 0}

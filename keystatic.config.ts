@@ -233,7 +233,24 @@ const mariageSchema = {
     fields.object({
       name: fields.text({ label: "Nom de la chambre" }),
       size: fields.text({ label: "Surface" }),
+      tag: fields.text({ label: "Étiquette (sur-titre, ex. « Chambre nuptiale »)" }),
+      photos: fields.array(
+        fields.image({
+          label: "Photo",
+          directory: "public/images/rooms",
+          publicPath: "/images/rooms/",
+        }),
+        { label: "Photos de la chambre (défilement carrousel)", itemLabel: (p) => (p.value ? "Photo" : "Photo") }
+      ),
+      bed: fields.text({ label: "Lit (ex. « King size », « Baldaquin Queen »)" }),
+      floor: fields.text({ label: "Étage (préciser « sans ascenseur » si concerné)" }),
+      orientation: fields.text({ label: "Orientation / exposition" }),
+      ac: fields.text({ label: "Climatisation (laisser vide si pas de clim ; sinon « Réversible »)" }),
+      bathroom: fields.text({ label: "Salle de bain (baignoire / douche)" }),
+      view: fields.text({ label: "Vue" }),
+      amenities: fields.text({ label: "Équipements (ex. « Plateau de courtoisie · Wifi 6 »)" }),
       text: fields.text({ label: "Description", multiline: true }),
+      note: fields.text({ label: "À savoir (mention importante, ex. « 2e étage sans ascenseur »)", multiline: true }),
     }),
     { label: "Chambres (liste, optionnel)", itemLabel: (p) => p.fields.name.value || "Chambre" }
   ),

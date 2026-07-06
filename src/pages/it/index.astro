@@ -2,7 +2,20 @@
 import Base from "../../layouts/Base.astro";
 import Home from "../../components/Home.astro";
 import data from "../../data/homepage.json";
+import reviews from "../../data/reviews.json";
+import { lodgingBusinessSchema } from "../../lib/seo";
+
+// Stesso stabilimento (@id #lodging condiviso), descritto nella lingua della pagina.
+const lodging = lodgingBusinessSchema({
+  lang: "it",
+  description:
+    "Hotel di charme 3 stelle del XVI secolo nel cuore della Valle della Loira, vicino ad Amboise (Touraine). Matrimoni, soggiorni, seminari aziendali, ritiri ed eventi privati, a 2 ore e 20 da Parigi.",
+  images: ["/og/og-default.jpg"],
+  amenities: ["Parco privato recintato", "Piscina riscaldata", "Sala ricevimenti", "Wi-Fi gratuito", "Parcheggio", "Colazione"],
+  reviews: reviews.items,
+  rating: { value: reviews.ratingValue, best: reviews.bestRating, count: reviews.reviewCount },
+});
 ---
-<Base lang="it" path="/">
+<Base lang="it" path="/" schemas={[lodging]}>
   <Home c={data.it} lang="it" />
 </Base>

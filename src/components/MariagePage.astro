@@ -4,12 +4,31 @@ import pHero from "../assets/SD_5.jpg";
 import v1 from "../assets/SD_6.jpg";
 import v2 from "../assets/SD_9.jpg";
 import { reader } from "../lib/content";
+import { octorateUrl } from "../lib/octorate";
 
 // Textes en props selon la langue ; image de hero variable par activité.
 const { m, cible = "mariage", heroImg } = Astro.props;
 const hero = heroImg ?? pHero;
 
 const lang = (Astro.currentLocale as "fr" | "en" | "it") ?? "fr";
+
+// Libellés des champs pratiques d'une chambre (lit, étage, orientation, clim, salle
+// de bain, vue) + textes de la section chambres, localisés. Les valeurs, elles,
+// vivent dans les données (traduites) ; ici on ne traduit que les étiquettes d'UI.
+const roomLabels = {
+  fr: { bed: "Lit", floor: "Étage", orientation: "Orientation", ac: "Climatisation", bathroom: "Salle de bain", view: "Vue", amenities: "Équipements", noAc: "Sans climatisation", note: "À savoir", cta: "Vérifier les disponibilités", ctaHint: "Consultation libre : vous n'indiquez vos dates qu'au moment de réserver.", ctaLead: "Une chambre vous plaît ? Vérifiez les disponibilités et réservez en ligne.", prev: "Photo précédente", next: "Photo suivante", photo: "photo", goTo: "Aller à la photo" },
+  en: { bed: "Bed", floor: "Floor", orientation: "Aspect", ac: "Air conditioning", bathroom: "Bathroom", view: "View", amenities: "Amenities", noAc: "No air conditioning", note: "Good to know", cta: "Check availability", ctaHint: "Browse freely: you only enter your dates when you book.", ctaLead: "Found a room you like? Check availability and book online.", prev: "Previous photo", next: "Next photo", photo: "photo", goTo: "Go to photo" },
+  it: { bed: "Letto", floor: "Piano", orientation: "Esposizione", ac: "Aria condizionata", bathroom: "Bagno", view: "Vista", amenities: "Servizi", noAc: "Senza aria condizionata", note: "Da sapere", cta: "Verifica le disponibilità", ctaHint: "Consultazione libera: le date si inseriscono solo al momento della prenotazione.", ctaLead: "Una camera ti piace? Verifica le disponibilità e prenota online.", prev: "Foto precedente", next: "Foto successiva", photo: "foto", goTo: "Vai alla foto" },
+}[lang];
+const reserveLink = octorateUrl();
+
+// Optimisation images chambres : version WebP servie en priorité (fallback JPEG),
+// et texte alt descriptif (nom de chambre + château) pour le SEO/GEO local.
+const webpOf = (p: string) => p.replace(/\.(jpe?g|png)$/i, ".webp");
+const roomAlt = (name: string, idx: number) =>
+  idx === 0
+    ? `Chambre ${name}, Château de la Huberdière`
+    : `Chambre ${name} · ${roomLabels.photo} ${idx + 1}`;
 
 // Maillage réciproque : la page argent renvoie vers les articles du blog liés
 // (le blog est FR seulement, on n'affiche le bloc que sur les pages FR).
@@ -69,7 +88,7 @@ const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
       <div class="offer-row reveal">
         <div class="offer-num">{card.num}</div>
         <div class="offer-body">
-          <h3>{card.title}</h3>
+          <h2>{card.title}</h2>
           <p>{card.text}</p>
         </div>
       </div>
@@ -119,15 +138,78 @@ const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
       {m.roomsHead?.title && <h2 class="section-title">{m.roomsHead.title}</h2>}
     </div>
     <div class="rooms-list">
-      {m.rooms.map((r) => (
-        <div class="room-row reveal">
-          <div class="room-head">
-            <h3>{r.name}</h3>
-            {r.size && <span class="room-size">{r.size}</span>}
-          </div>
-          <p>{r.text}</p>
-        </div>
-      ))}
+      {m.rooms.map((r, i) => {
+        const fields = [
+          ["bed", r.bed], ["floor", r.floor], ["orientation", r.orientation],
+          ["ac", r.ac], ["bathroom", r.bathroom], ["view", r.view],
+        ].filter(([, v]) => v && String(v).trim());
+        const photos = (r.photos ?? []).filter((p: string) => p && String(p).trim());
+        return (
+          <article class={`room-card reveal${i % 2 === 1 ? " room-card--reverse" : ""}${photos.length ? "" : " room-card--nomedia"}`}>
+            {photos.length === 1 && (
+              <figure class="room-card__media">
+                <picture>
+                  <source srcset={webpOf(photos[0])} type="image/webp" />
+                  <img src={photos[0]} alt={roomAlt(r.name, 0)} loading="lazy" decoding="async" />
+                </picture>
+              </figure>
+            )}
+            {photos.length > 1 && (
+              <div class="room-card__media room-gallery" data-gallery>
+                <div class="room-gallery__track">
+                  {photos.map((src: string, idx: number) => (
+                    <figure class="room-gallery__slide">
+                      <picture>
+                        <source srcset={webpOf(src)} type="image/webp" />
+                        <img src={src} alt={roomAlt(r.name, idx)} loading="lazy" decoding="async" />
+                      </picture>
+                    </figure>
+                  ))}
+                </div>
+                <button class="room-gallery__nav room-gallery__nav--prev" type="button" aria-label={roomLabels.prev}>&#8249;</button>
+                <button class="room-gallery__nav room-gallery__nav--next" type="button" aria-label={roomLabels.next}>&#8250;</button>
+                <div class="room-gallery__dots">
+                  {photos.map((_: string, idx: number) => (
+                    <button class="room-gallery__dot" type="button" aria-label={`${roomLabels.goTo} ${idx + 1}`} data-idx={idx}></button>
+                  ))}
+                </div>
+              </div>
+            )}
+            <div class="room-card__body">
+              <div class="room-card__head">
+                {r.tag && <span class="section-eyebrow">{r.tag}</span>}
+                <h3>{r.name}</h3>
+                {r.size && <span class="room-size">{r.size}</span>}
+              </div>
+              {fields.length > 0 && (
+                <dl class="room-fields">
+                  {fields.map(([key, val]) => (
+                    <div class="room-field">
+                      <dt>{roomLabels[key as keyof typeof roomLabels]}</dt>
+                      <dd>{val}</dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
+              {!(r.ac && String(r.ac).trim()) && (
+                <p class="room-fine">{roomLabels.noAc}</p>
+              )}
+              {r.amenities && r.amenities.trim() && (
+                <p class="room-amenities"><span>{roomLabels.amenities}</span>{r.amenities}</p>
+              )}
+              {r.text && <p class="room-desc">{r.text}</p>}
+              {r.note && r.note.trim() && (
+                <p class="room-know"><span>{roomLabels.note}</span>{r.note}</p>
+              )}
+            </div>
+          </article>
+        );
+      })}
+    </div>
+    <div class="rooms-cta">
+      <p>{roomLabels.ctaLead}</p>
+      <a href={reserveLink} class="btn-burgundy" target="_blank" rel="noopener">{roomLabels.cta}</a>
+      <span class="rooms-cta__hint">{roomLabels.ctaHint}</span>
     </div>
   </section>
 )}
@@ -271,6 +353,38 @@ const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
   })();
 </script>
 
+<script>
+  // Carrousel de photos par chambre : défilement natif scroll-snap + flèches + points.
+  // Pas d'autoplay (consigne « ne pas nuire »). Le point actif suit le scroll (swipe compris).
+  function initRoomGalleries() {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.querySelectorAll<HTMLElement>("[data-gallery]").forEach((g) => {
+      const track = g.querySelector<HTMLElement>(".room-gallery__track");
+      const slides = g.querySelectorAll(".room-gallery__slide");
+      const dots = Array.from(g.querySelectorAll<HTMLElement>(".room-gallery__dot"));
+      if (!track || slides.length < 2) return;
+      const current = () => Math.round(track.scrollLeft / track.clientWidth);
+      const setActive = (i: number) =>
+        dots.forEach((d, k) => d.setAttribute("aria-current", String(k === i)));
+      const go = (i: number) => {
+        const n = Math.max(0, Math.min(slides.length - 1, i));
+        track.scrollTo({ left: n * track.clientWidth, behavior: reduce ? "auto" : "smooth" });
+      };
+      g.querySelector(".room-gallery__nav--prev")?.addEventListener("click", () => go(current() - 1));
+      g.querySelector(".room-gallery__nav--next")?.addEventListener("click", () => go(current() + 1));
+      dots.forEach((d, i) => d.addEventListener("click", () => go(i)));
+      let raf = 0;
+      track.addEventListener("scroll", () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => setActive(current()));
+      });
+      setActive(0);
+    });
+  }
+  initRoomGalleries();
+  document.addEventListener("astro:page-load", initRoomGalleries);
+</script>
+
 <style>
   .stats-band { padding: 56px 24px; background: #fbfaf6; border-bottom: 1px solid #ece6d8; }
   .stats-row {
@@ -320,24 +434,98 @@ const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
   }
   .activity-item p { color: #646464; line-height: 1.65; margin: 0; font-size: 0.94rem; }
 
-  /* Chambres : rangées éditoriales avec surface, pas des cartes-icônes */
+  /* Chambres : fiches éditoriales (photo + libellés pratiques), consultables sans dates */
   .rooms { padding: 100px 24px 20px; }
-  .rooms-list { max-width: 880px; margin: 0 auto; }
-  .room-row { padding: 28px 0; border-bottom: 1px solid #ece6d8; }
-  .room-head {
-    display: flex; align-items: baseline; justify-content: space-between;
-    gap: 16px; margin-bottom: 10px;
+  .rooms-list { max-width: 1040px; margin: 0 auto; }
+  .room-card {
+    display: grid; grid-template-columns: minmax(0, 44%) 1fr; gap: 44px;
+    align-items: center; padding: 44px 0; border-top: 1px solid #e6dfce;
   }
-  .room-head h3 {
+  .room-card--reverse .room-card__media { order: 2; }
+  .room-card--nomedia { grid-template-columns: 1fr; max-width: 760px; margin: 0 auto; }
+  .room-card__media { margin: 0; }
+  .room-card__media picture, .room-gallery__slide picture { display: block; width: 100%; }
+  .room-card__media img {
+    width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block;
+  }
+  /* Carrousel de photos par chambre (défilement natif scroll-snap + flèches + points) */
+  .room-gallery { position: relative; }
+  .room-gallery__track {
+    display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+    scroll-behavior: smooth; scrollbar-width: none; -ms-overflow-style: none;
+  }
+  .room-gallery__track::-webkit-scrollbar { display: none; }
+  .room-gallery__slide { flex: 0 0 100%; scroll-snap-align: center; margin: 0; }
+  .room-gallery__slide img { aspect-ratio: 4 / 5; }
+  .room-gallery__nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 40px; height: 40px; border: 0; border-radius: 50%; cursor: pointer;
+    background: rgba(244, 242, 236, 0.86); color: #2e3a48; font-size: 22px; line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.25s, color 0.25s; z-index: 2;
+  }
+  .room-gallery__nav:hover { background: #8b0000; color: #fff; }
+  .room-gallery__nav:focus-visible { outline: 2px solid #8b0000; outline-offset: 2px; }
+  .room-gallery__nav--prev { left: 12px; }
+  .room-gallery__nav--next { right: 12px; }
+  .room-gallery__dots {
+    position: absolute; bottom: 12px; left: 0; right: 0; z-index: 2;
+    display: flex; gap: 7px; justify-content: center;
+  }
+  .room-gallery__dot {
+    width: 7px; height: 7px; border-radius: 50%; border: 0; padding: 0; cursor: pointer;
+    background: rgba(244, 242, 236, 0.6); box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+    transition: background 0.25s, transform 0.25s;
+  }
+  .room-gallery__dot[aria-current="true"] { background: #8b0000; transform: scale(1.25); }
+  .room-gallery__dot:focus-visible { outline: 2px solid #8b0000; outline-offset: 2px; }
+  .room-card__head {
+    display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 14px; margin-bottom: 20px;
+  }
+  .room-card__head .section-eyebrow { flex-basis: 100%; margin: 0; }
+  .room-card__head h3 {
     font-family: "Playfair Display", Georgia, serif;
-    color: #2e3a48; font-size: 1.3rem; margin: 0;
+    color: #2e3a48; font-size: 1.65rem; margin: 0;
   }
   .room-size {
     flex: none; font-family: "Montserrat", sans-serif;
-    font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase;
-    color: #8b0000; white-space: nowrap;
+    font-size: 0.72rem; letter-spacing: 0.08em; color: #8b0000;
+    border: 1px solid #8b0000; border-radius: 999px; padding: 3px 11px; white-space: nowrap;
   }
-  .room-row p { color: #646464; line-height: 1.7; margin: 0; }
+  .room-fields {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px; margin: 0 0 20px;
+  }
+  .room-field { padding: 10px 0; border-bottom: 1px solid #e6dfce; }
+  .room-field dt {
+    font-family: "Montserrat", sans-serif; font-size: 0.62rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #8a857a; margin-bottom: 3px;
+  }
+  .room-field dd { margin: 0; font-size: 0.9rem; color: #2e3a48; }
+  .room-fine { font-size: 0.74rem; color: #a19b8f; margin: 0 0 10px; font-style: italic; letter-spacing: 0.01em; }
+  .room-amenities { font-size: 0.82rem; color: #646464; margin: 0 0 16px; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .room-amenities span {
+    font-family: "Montserrat", sans-serif; font-size: 0.6rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #8a857a; font-weight: 600; white-space: nowrap;
+  }
+  .room-desc { color: #646464; line-height: 1.75; margin: 0 0 16px; }
+  .room-know {
+    display: flex; gap: 10px; align-items: baseline; margin: 0;
+    background: #faf4ee; border-left: 2px solid #8b0000; padding: 9px 14px;
+    font-size: 0.86rem; color: #212121; line-height: 1.55;
+  }
+  .room-know span {
+    font-family: "Montserrat", sans-serif; font-size: 0.6rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #8b0000; font-weight: 600; white-space: nowrap;
+  }
+  .rooms-cta {
+    max-width: 1040px; margin: 40px auto 0; text-align: center;
+    padding: 44px 24px; background: #efece2; border: 1px solid #e6dfce;
+  }
+  .rooms-cta p {
+    font-family: "Playfair Display", Georgia, serif; font-size: 1.35rem;
+    color: #212121; margin: 0 0 20px;
+  }
+  .rooms-cta__hint { display: block; margin-top: 16px; font-size: 0.8rem; color: #646464; }
 
   /* Témoignage : citation pleine largeur sur fond crème */
   .testimonial { padding: 110px 24px; background: #fbfaf6; border-top: 1px solid #ece6d8; border-bottom: 1px solid #ece6d8; }
@@ -418,6 +606,10 @@ const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
     .activities-list { grid-template-columns: 1fr; gap: 0 0; }
     .activities { padding: 70px 22px 10px; }
     .rooms { padding: 70px 22px 10px; }
+    .room-card { grid-template-columns: 1fr; gap: 22px; padding: 34px 0; }
+    .room-card--reverse .room-card__media { order: 0; }
+    .room-card__media img { aspect-ratio: 3 / 2; }
+    .room-gallery__slide img { aspect-ratio: 3 / 2; }
     .testimonial { padding: 72px 22px; }
     .faq { padding: 64px 22px 20px; }
     .reads-grid { grid-template-columns: 1fr; }

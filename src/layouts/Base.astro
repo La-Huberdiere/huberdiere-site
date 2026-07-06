@@ -79,7 +79,7 @@ const ogHost = import.meta.env.PUBLIC_OG_HOST || Astro.site;
 const ogImage = new URL(image ?? SITE.ogImage, ogHost).href;
 
 // Données structurées : Organisation + WebSite partout, + schemas de la page.
-const allSchemas = [organizationSchema(), webSiteSchema(), ...schemas];
+const allSchemas = [organizationSchema(), webSiteSchema(lang), ...schemas];
 const robots = noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large";
 
 // Mesure d'audience (activée par variables d'env, sinon rien ne se charge).

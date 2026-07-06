@@ -81,52 +81,207 @@
       {
         "name": "Paradis Sauvage",
         "size": "37 m²",
-        "text": "La chambre nuptiale par excellence. Moulures au plafond, papier peint signé Moooi alterné de velours gris et lit à baldaquin queen-size trônant au milieu de la pièce. Double exposition sud et ouest, salle de bain avec baignoire. Premier étage, romantisme intemporel."
+        "text": "La chambre nuptiale par excellence. Les moulures courent tout autour du plafond et des décorations en bois surmontent les portes anciennes. Un somptueux papier peint signé Moooi orne les panneaux, en alternance avec un sensuel velours gris. Le lit à baldaquin trône au milieu de la pièce, entouré de mobilier ancien. L'atmosphère est d'un romantisme intemporel.",
+        "tag": "Chambre nuptiale",
+        "bed": "Lit à baldaquin Queen-size",
+        "floor": "Premier étage, sans ascenseur",
+        "orientation": "Sud et ouest (double exposition)",
+        "ac": "",
+        "bathroom": "Baignoire",
+        "note": "",
+        "photos": [
+          "/images/rooms/paradis-sauvage-01.jpg",
+          "/images/rooms/paradis-sauvage-04.jpg",
+          "/images/rooms/paradis-sauvage-03.jpg",
+          "/images/rooms/paradis-sauvage-02.jpg",
+          "/images/rooms/paradis-sauvage-06.jpg"
+        ],
+        "view": "",
+        "amenities": "Plateau de courtoisie · Wifi 6"
       },
       {
         "name": "Giboulée",
         "size": "22 m²",
-        "text": "Une ambiance inspirée de la marine et de l'aéronautique, grandes passions de Patrick : une hélice d'avion de la Grande Guerre côtoie instruments et livres de navigation. Lit king-size, orientation sud avec vue sur le parc, salle de bain avec douche."
+        "text": "Une ambiance inspirée de la marine et de l'aéronautique, grandes passions de Patrick. Une hélice d'avion de la Grande Guerre côtoie des instruments et des livres de l'univers de la navigation.",
+        "tag": "Esprit marine",
+        "bed": "Lit King-size",
+        "orientation": "Sud",
+        "ac": "",
+        "bathroom": "Douche",
+        "view": "Parc",
+        "photos": [
+          "/images/rooms/giboulee-01.jpg",
+          "/images/rooms/giboulee-03.jpg",
+          "/images/rooms/giboulee-02.jpg",
+          "/images/rooms/giboulee-04.jpg"
+        ],
+        "floor": "Premier étage, sans ascenseur",
+        "amenities": "Plateau de courtoisie · Wifi 6",
+        "note": ""
       },
       {
         "name": "Pêche",
         "size": "22 m²",
-        "text": "Située dans la tour est, elle tient son nom de la couleur unique de ses murs, inspirée du fruit de l'été et du cocktail Bellini. Grande salle de bain avec baignoire sur pied, climatisation réversible. Deuxième étage."
+        "text": "Située dans la tour est, la chambre Pêche prend le nom de la couleur unique de ses murs, inspirée par le fruit emblématique de l'été et par le cocktail Bellini.",
+        "tag": "Tour est",
+        "floor": "Deuxième étage, sans ascenseur",
+        "ac": "Réversible",
+        "bathroom": "Grande salle de bain avec baignoire sur pied",
+        "note": "",
+        "photos": [
+          "/images/rooms/peche-01.jpg",
+          "/images/rooms/peche-04.jpg",
+          "/images/rooms/peche-02.jpg",
+          "/images/rooms/peche-03.jpg",
+          "/images/rooms/peche-07.jpg"
+        ],
+        "bed": "Lit King-size",
+        "orientation": "Sud",
+        "view": "Parc",
+        "amenities": "Plateau de courtoisie · Wifi 6"
       },
       {
         "name": "Thé",
         "size": "30 m²",
-        "text": "La deuxième plus belle chambre du château, dans l'autre tour. Panneaux tendus de tissu aux tons orangés, marbre de cheminée dans les camaïeux de jaune, abat-jour fait d'un carré Hermès. Double exposition est et sud sur le parc, dressing spacieux."
+        "text": "La deuxième plus belle chambre du château se trouve dans l'autre tour. Les panneaux sont ornés d'un tissu tendu aux tons orangés. Le marbre de la cheminée reprend les camaïeux de jaune, et l'abat-jour de la lampe est fait d'un carré Hermès.",
+        "tag": "Chambre de la tour",
+        "orientation": "Est et sud (double exposition)",
+        "ac": "",
+        "view": "Parc",
+        "photos": [
+          "/images/rooms/the-05.jpg",
+          "/images/rooms/the-04.jpg",
+          "/images/rooms/the-02.jpg",
+          "/images/rooms/the-03.jpg",
+          "/images/rooms/the-07.jpg"
+        ],
+        "bed": "Lit King-size",
+        "floor": "Premier étage, sans ascenseur",
+        "bathroom": "Douche",
+        "amenities": "Dressing spacieux · Plateau de courtoisie · Wifi 6",
+        "note": ""
       },
       {
         "name": "Mirage",
         "size": "37 m²",
-        "text": "Sous la charpente du XVIᵉ siècle de la plus ancienne tour, la grande chambre familiale tient son nom de la couleur lila de ses murs et de son plafond. Lit king-size et deux lits 90 x 200, assez spacieuse pour un lit bébé supplémentaire et de la place pour jouer."
+        "text": "Sous la charpente du XVIᵉ siècle de la tour la plus ancienne du château se cache la grande chambre familiale Mirage, qui porte le nom de la couleur lila qui habille ses murs et son plafond. Parfaite pour accueillir les familles, assez spacieuse pour installer un lit bébé supplémentaire et laisser de la place pour jouer.",
+        "tag": "Chambre familiale",
+        "bed": "Lit King-size + 2 lits 90 × 200",
+        "ac": "Réversible",
+        "photos": [
+          "/images/rooms/mirage-01.jpg",
+          "/images/rooms/mirage-04.jpg",
+          "/images/rooms/mirage-03.jpg",
+          "/images/rooms/mirage-02.jpg",
+          "/images/rooms/mirage-05.jpg"
+        ],
+        "floor": "Deuxième étage, sans ascenseur",
+        "orientation": "Sud",
+        "bathroom": "Baignoire",
+        "view": "",
+        "amenities": "Plateau de courtoisie · Wifi 6",
+        "note": ""
       },
       {
         "name": "Allium",
         "size": "26 m²",
-        "text": "Chambre triple avec lit king-size et un troisième lit ancien de 110 x 190. Au premier étage, sa fenêtre s'ouvre face au tapis vert, grande ouverture de la forêt qui entoure l'étang. Grande salle de bain avec douche."
+        "text": "Chambre triple, Allium offre un lit king-size et un troisième lit ancien de 110 × 190. Au premier étage, dans la partie centrale de la bâtisse, sa fenêtre s'ouvre juste en face du beau « tapis vert », la grande trouée de la forêt qui entoure l'étang.",
+        "tag": "Chambre triple",
+        "bed": "Lit King-size + lit ancien 110 × 190",
+        "floor": "Premier étage, sans ascenseur",
+        "orientation": "Sud",
+        "ac": "",
+        "bathroom": "Grande salle de bain avec douche",
+        "view": "Sur le tapis vert et l'étang",
+        "note": "",
+        "photos": [
+          "/images/rooms/allium-01.jpg",
+          "/images/rooms/allium-06.jpg",
+          "/images/rooms/allium-05.jpg",
+          "/images/rooms/allium-03.jpg",
+          "/images/rooms/allium-07.jpg"
+        ],
+        "amenities": "Plateau de courtoisie · Wifi 6"
       },
       {
         "name": "Bouquet",
         "size": "15 m²",
-        "text": "Plus petite et néanmoins très cosy, un cadre parfait pour des nuits douces. Son nom lui vient de son papier peint floral. Une chambre lumineuse grâce à son grand velux, orientation sud."
+        "text": "Plus petite et néanmoins très cosy, la chambre Bouquet offre un cadre parfait pour des nuits douces. Son nom lui vient de son papier peint floral. Une chambre lumineuse grâce à son grand velux.",
+        "orientation": "Sud",
+        "ac": "Réversible",
+        "photos": [
+          "/images/rooms/bouquet-01.jpg",
+          "/images/rooms/bouquet-03.jpg",
+          "/images/rooms/bouquet-02.jpg",
+          "/images/rooms/bouquet-04.jpg"
+        ],
+        "tag": "Cosy",
+        "bed": "Lit King-size",
+        "floor": "Deuxième étage, sans ascenseur",
+        "bathroom": "Douche",
+        "view": "",
+        "amenities": "Plateau de courtoisie · Wifi 6",
+        "note": ""
       },
       {
         "name": "Cactus",
         "size": "17 m²",
-        "text": "Une chambre fun, la seule sans vue sur le parc. Sa grande salle de bain lumineuse, décorée d'œuvres au fusain, participe à sa douceur. En été, la plus fraîche de toutes nos chambres. Orientation nord."
+        "text": "Cactus est une chambre fun. Même si elle est la seule à ne pas offrir de vue sur le parc, sa grande salle de bain lumineuse, décorée d'œuvres au fusain, participe à sa douceur. En été, c'est la plus fraîche de toutes nos chambres.",
+        "orientation": "Nord",
+        "ac": "",
+        "bathroom": "Douche",
+        "view": "",
+        "note": "",
+        "photos": [
+          "/images/rooms/cactus-01.jpg",
+          "/images/rooms/cactus-04.jpg",
+          "/images/rooms/cactus-02.jpg",
+          "/images/rooms/cactus-03.jpg",
+          "/images/rooms/cactus-05.jpg"
+        ],
+        "tag": "Junior Suite",
+        "bed": "Lit King-size (ou twins)",
+        "floor": "Premier étage, sans ascenseur",
+        "amenities": "Plateau de courtoisie · Wifi 6"
       },
       {
         "name": "Ponceau",
         "size": "15 m²",
-        "text": "Un lit ancien de 100 x 190, un espace privilégié pour qui voyage seul ou accompagne un couple."
+        "text": "Ponceau et Bleu Indien, chambres jumelles, offrent chacune un lit ancien de 100 × 190. Un espace privilégié pour les personnes qui voyagent seules ou qui accompagnent un couple.",
+        "tag": "Chambre simple",
+        "bed": "Lit ancien 100 × 190",
+        "ac": "Réversible",
+        "photos": [
+          "/images/rooms/ponceau-03.jpg",
+          "/images/rooms/ponceau-02.jpg",
+          "/images/rooms/ponceau-04.jpg",
+          "/images/rooms/ponceau-01.jpg"
+        ],
+        "floor": "Deuxième étage, sans ascenseur",
+        "orientation": "Sud",
+        "bathroom": "Douche",
+        "view": "",
+        "amenities": "Plateau de courtoisie · Wifi 6",
+        "note": ""
       },
       {
         "name": "Bleu Indien",
         "size": "15 m²",
-        "text": "Sa jumelle, avec son lit ancien de 100 x 190, idéale pour une personne voyageant seule ou accompagnant un couple."
+        "text": "Bleu Indien et Ponceau, chambres jumelles, offrent chacune un lit ancien de 100 × 190. Un espace privilégié pour les personnes qui voyagent seules ou qui accompagnent un couple.",
+        "tag": "Chambre simple",
+        "bed": "Lit ancien 100 × 190",
+        "ac": "Réversible",
+        "photos": [
+          "/images/rooms/bleu-indien-01.jpg",
+          "/images/rooms/bleu-indien-02.jpg",
+          "/images/rooms/bleu-indien-03.jpg"
+        ],
+        "floor": "Deuxième étage, sans ascenseur",
+        "orientation": "Sud",
+        "bathroom": "Douche",
+        "view": "",
+        "amenities": "Plateau de courtoisie · Wifi 6",
+        "note": ""
       }
     ],
     "testimonial": {
@@ -246,52 +401,207 @@
       {
         "name": "Paradis Sauvage",
         "size": "37 m²",
-        "text": "The ultimate bridal suite. Ceiling mouldings, Moooi wallpaper alternating with grey velvet, and a queen-size four-poster bed taking pride of place in the centre of the room. Double aspect facing south and west, en-suite bathroom with a bath. First floor, timeless romance."
+        "text": "The quintessential bridal suite. Mouldings run all the way round the ceiling and wooden decorations adorn the period doors. Sumptuous Moooi wallpaper adorns the panelling, alternating with sensual grey velvet. The four-poster bed takes centre stage in the room, surrounded by antique furniture. The atmosphere is one of timeless romance.",
+        "tag": "Bridal suite",
+        "bed": "Queen-size four-poster bed",
+        "floor": "First floor, no lift",
+        "orientation": "South and west (double aspect)",
+        "ac": "",
+        "bathroom": "Bath",
+        "note": "",
+        "photos": [
+          "/images/rooms/paradis-sauvage-01.jpg",
+          "/images/rooms/paradis-sauvage-04.jpg",
+          "/images/rooms/paradis-sauvage-03.jpg",
+          "/images/rooms/paradis-sauvage-02.jpg",
+          "/images/rooms/paradis-sauvage-06.jpg"
+        ],
+        "amenities": "Welcome tray · Wi-Fi 6",
+        "view": ""
       },
       {
         "name": "Giboulée",
         "size": "22 m²",
-        "text": "The décor is inspired by the navy and aviation, Patrick’s great passions: a First World War aeroplane propeller sits alongside navigational instruments and books. King-size bed, south-facing with a view of the park, en-suite bathroom with shower."
+        "text": "An atmosphere inspired by the navy and aviation, Patrick’s great passions. A aeroplane propeller from the Great War sits alongside instruments and books from the world of navigation.",
+        "tag": "Nautical style",
+        "bed": "King-size bed",
+        "orientation": "South",
+        "ac": "",
+        "bathroom": "Shower",
+        "view": "Park",
+        "photos": [
+          "/images/rooms/giboulee-01.jpg",
+          "/images/rooms/giboulee-03.jpg",
+          "/images/rooms/giboulee-02.jpg",
+          "/images/rooms/giboulee-04.jpg"
+        ],
+        "floor": "First floor, no lift",
+        "amenities": "Welcome tray · Wi-Fi 6",
+        "note": ""
       },
       {
         "name": "Pêche",
         "size": "22 m²",
-        "text": "Located in the east tower, it takes its name from the unique colour of its walls, inspired by the summer fruit and the Bellini cocktail. Large bathroom with a freestanding bath, reversible air conditioning. Second floor."
+        "text": "Located in the east tower, the Pêche room takes its name from the unique colour of its walls, inspired by the iconic summer fruit and the Bellini cocktail.",
+        "tag": "East Tower",
+        "floor": "Second floor, no lift",
+        "ac": "Reversible",
+        "bathroom": "Large bathroom with a freestanding bath",
+        "note": "",
+        "photos": [
+          "/images/rooms/peche-01.jpg",
+          "/images/rooms/peche-04.jpg",
+          "/images/rooms/peche-02.jpg",
+          "/images/rooms/peche-03.jpg",
+          "/images/rooms/peche-07.jpg"
+        ],
+        "bed": "King-size bed",
+        "orientation": "South",
+        "view": "Park",
+        "amenities": "Welcome tray · Wi-Fi 6"
       },
       {
         "name": "Thé",
         "size": "30 m²",
-        "text": "The second most beautiful bedroom in the château, in the other tower. Panels draped in orange-toned fabric, a marble fireplace in shades of yellow, and a lampshade made from a Hermès square. Double aspect to the east and south overlooking the grounds, with a spacious walk-in wardrobe."
+        "text": "The second most beautiful room in the château is in the other tower. The panelling is adorned with a stretched fabric in shades of orange. The marble of the fireplace echoes the shades of yellow, and the lampshade is made from a Hermès square.",
+        "tag": "Tower Room",
+        "orientation": "East and south (double aspect)",
+        "ac": "",
+        "view": "Park",
+        "photos": [
+          "/images/rooms/the-05.jpg",
+          "/images/rooms/the-04.jpg",
+          "/images/rooms/the-02.jpg",
+          "/images/rooms/the-03.jpg",
+          "/images/rooms/the-07.jpg"
+        ],
+        "bed": "King-size bed",
+        "floor": "First floor, no lift",
+        "bathroom": "Shower",
+        "amenities": "Spacious walk-in wardrobe · Welcome tray · Wi-Fi 6",
+        "note": ""
       },
       {
         "name": "Mirage",
         "size": "37 m²",
-        "text": "Beneath the 16th-century roof structure of the oldest tower, the large family room takes its name from the lilac colour of its walls and ceiling. It features a king-size bed and two 90 x 200 beds, and is spacious enough for an extra cot and plenty of room to play."
+        "text": "Hidden beneath the 16th-century roof structure of the castle’s oldest tower lies the spacious Mirage family room, named after the lilac colour that adorns its walls and ceiling. Perfect for families, it is spacious enough to accommodate an extra cot and still leave room for the children to play.",
+        "tag": "Family room",
+        "bed": "King-size bed + 2 beds (90 × 200)",
+        "ac": "Reversible",
+        "photos": [
+          "/images/rooms/mirage-01.jpg",
+          "/images/rooms/mirage-04.jpg",
+          "/images/rooms/mirage-03.jpg",
+          "/images/rooms/mirage-02.jpg",
+          "/images/rooms/mirage-05.jpg"
+        ],
+        "floor": "Second floor, no lift",
+        "orientation": "South",
+        "bathroom": "Bath",
+        "amenities": "Welcome tray · Wi-Fi 6",
+        "view": "",
+        "note": ""
       },
       {
         "name": "Allium",
         "size": "26 m²",
-        "text": "Triple room with a king-size bed and a third antique bed measuring 110 x 190. On the first floor, the window overlooks the green meadow, a wide clearing in the forest surrounding the pond. Large en-suite bathroom with a shower."
+        "text": "The triple room, Allium, features a king-size bed and a third antique bed measuring 110 × 190. Located on the first floor, in the central part of the building, its window looks out directly onto the beautiful ‘green carpet’ – the large clearing in the forest surrounding the pond.",
+        "tag": "Triple room",
+        "bed": "King-size bed + antique bed 110 × 190",
+        "floor": "First floor, no lift",
+        "orientation": "South",
+        "ac": "",
+        "bathroom": "Large bathroom with a shower",
+        "view": "On the green carpet and the pond",
+        "note": "",
+        "photos": [
+          "/images/rooms/allium-01.jpg",
+          "/images/rooms/allium-06.jpg",
+          "/images/rooms/allium-05.jpg",
+          "/images/rooms/allium-03.jpg",
+          "/images/rooms/allium-07.jpg"
+        ],
+        "amenities": "Welcome tray · Wi-Fi 6"
       },
       {
         "name": "Bouquet",
         "size": "15 m²",
-        "text": "Smaller yet very cosy, it’s the perfect setting for a peaceful night’s sleep. It takes its name from its floral wallpaper. The room is bright thanks to its large south-facing skylight."
+        "text": "Smaller yet very cosy, the Bouquet room offers the perfect setting for a restful night’s sleep. It takes its name from its floral wallpaper. The room is bright thanks to its large skylight.",
+        "orientation": "South",
+        "ac": "Reversible",
+        "photos": [
+          "/images/rooms/bouquet-01.jpg",
+          "/images/rooms/bouquet-03.jpg",
+          "/images/rooms/bouquet-02.jpg",
+          "/images/rooms/bouquet-04.jpg"
+        ],
+        "tag": "Cosy",
+        "bed": "King-size bed",
+        "floor": "Second floor, no lift",
+        "bathroom": "Shower",
+        "amenities": "Welcome tray · Wi-Fi 6",
+        "view": "",
+        "note": ""
       },
       {
         "name": "Cactus",
         "size": "17 m²",
-        "text": "A fun room, the only one without a view of the park. Its large, light-filled bathroom, decorated with charcoal drawings, adds to its cosy atmosphere. In summer, it’s the coolest of all our rooms. North-facing."
+        "text": "Cactus is a fun room. Although it’s the only one without a view of the park, its large, light-filled bathroom, decorated with charcoal drawings, adds to its charm. In summer, it’s the coolest of all our rooms.",
+        "orientation": "North",
+        "ac": "",
+        "bathroom": "Shower",
+        "view": "",
+        "note": "",
+        "photos": [
+          "/images/rooms/cactus-01.jpg",
+          "/images/rooms/cactus-04.jpg",
+          "/images/rooms/cactus-02.jpg",
+          "/images/rooms/cactus-03.jpg",
+          "/images/rooms/cactus-05.jpg"
+        ],
+        "tag": "Junior Suite",
+        "bed": "King-size bed (or twin beds)",
+        "floor": "First floor, no lift",
+        "amenities": "Welcome tray · Wi-Fi 6"
       },
       {
         "name": "Ponceau",
         "size": "15 m²",
-        "text": "An antique bed measuring 100 x 190, a cosy space for those travelling alone or accompanying a couple."
+        "text": "Ponceau and Bleu Indien, twin rooms, each feature an antique bed measuring 100 × 190. An ideal space for those travelling alone or accompanying a couple.",
+        "tag": "Single room",
+        "bed": "Antique bed, 100 × 190",
+        "ac": "Reversible",
+        "photos": [
+          "/images/rooms/ponceau-03.jpg",
+          "/images/rooms/ponceau-02.jpg",
+          "/images/rooms/ponceau-04.jpg",
+          "/images/rooms/ponceau-01.jpg"
+        ],
+        "floor": "Second floor, no lift",
+        "orientation": "South",
+        "bathroom": "Shower",
+        "amenities": "Welcome tray · Wi-Fi 6",
+        "view": "",
+        "note": ""
       },
       {
         "name": "Bleu Indien",
         "size": "15 m²",
-        "text": "Its twin room, with its antique 100 x 190 bed, is ideal for a solo traveller or someone accompanying a couple."
+        "text": "‘Bleu Indien’ and ‘Ponceau’, twin rooms, each feature an antique bed measuring 100 × 190. An ideal space for those travelling alone or accompanying a couple.",
+        "tag": "Single room",
+        "bed": "Antique bed, 100 × 190",
+        "ac": "Reversible",
+        "photos": [
+          "/images/rooms/bleu-indien-01.jpg",
+          "/images/rooms/bleu-indien-02.jpg",
+          "/images/rooms/bleu-indien-03.jpg"
+        ],
+        "floor": "Second floor, no lift",
+        "orientation": "South",
+        "bathroom": "Shower",
+        "amenities": "Welcome tray · Wi-Fi 6",
+        "view": "",
+        "note": ""
       }
     ],
     "testimonial": {
@@ -411,52 +721,207 @@
       {
         "name": "Paradis Sauvage",
         "size": "37 m²",
-        "text": "La camera nuziale per eccellenza. Modanature sul soffitto, carta da parati firmata Moooi alternata a velluto grigio e un letto a baldacchino queen-size che troneggia al centro della stanza. Doppia esposizione a sud e a ovest, bagno con vasca. Primo piano, romanticismo senza tempo."
+        "text": "La camera nuziale per eccellenza. Le modanature corrono lungo tutto il perimetro del soffitto e le decorazioni in legno sovrastano le porte d’epoca. Una sontuosa carta da parati firmata Moooi adorna i pannelli, alternandosi a un sensuale velluto grigio. Il letto a baldacchino troneggia al centro della stanza, circondato da mobili d'epoca. L'atmosfera è di un romanticismo senza tempo.",
+        "tag": "Camera nuziale",
+        "bed": "Letto a baldacchino queen-size",
+        "floor": "Primo piano, senza ascensore",
+        "orientation": "Sud e ovest (doppia esposizione)",
+        "ac": "",
+        "bathroom": "Vasca da bagno",
+        "note": "",
+        "photos": [
+          "/images/rooms/paradis-sauvage-01.jpg",
+          "/images/rooms/paradis-sauvage-04.jpg",
+          "/images/rooms/paradis-sauvage-03.jpg",
+          "/images/rooms/paradis-sauvage-02.jpg",
+          "/images/rooms/paradis-sauvage-06.jpg"
+        ],
+        "amenities": "Vassoio di benvenuto · Wi-Fi 6",
+        "view": ""
       },
       {
         "name": "Giboulée",
         "size": "22 m²",
-        "text": "Un’atmosfera ispirata alla marina e all’aeronautica, grandi passioni di Patrick: un’elica di aereo della Grande Guerra fa da cornice a strumenti e libri di navigazione. Letto king-size, esposizione a sud con vista sul parco, bagno con doccia."
+        "text": "Un'atmosfera ispirata alla marina e all'aeronautica, le grandi passioni di Patrick. Un'elica di aereo della Grande Guerra fa da cornice a strumenti e libri dedicati al mondo della navigazione.",
+        "tag": "Stile marinaro",
+        "bed": "Letto king-size",
+        "orientation": "Sud",
+        "ac": "",
+        "bathroom": "Doccia",
+        "view": "Parco",
+        "photos": [
+          "/images/rooms/giboulee-01.jpg",
+          "/images/rooms/giboulee-03.jpg",
+          "/images/rooms/giboulee-02.jpg",
+          "/images/rooms/giboulee-04.jpg"
+        ],
+        "floor": "Primo piano, senza ascensore",
+        "amenities": "Vassoio di benvenuto · Wi-Fi 6",
+        "note": ""
       },
       {
         "name": "Pêche",
         "size": "22 m²",
-        "text": "Situata nella torre est, deve il suo nome al colore unico delle sue pareti, ispirato al frutto estivo e al cocktail Bellini. Ampio bagno con vasca su piedistallo, aria condizionata reversibile. Secondo piano."
+        "text": "Situata nella torre est, la camera \"Pêche\" prende il nome dal colore unico delle sue pareti, ispirato al frutto simbolo dell'estate e al cocktail Bellini.",
+        "tag": "Torre est",
+        "floor": "Secondo piano, senza ascensore",
+        "ac": "Riversibile",
+        "bathroom": "Ampio bagno con vasca da bagno su piedistallo",
+        "note": "",
+        "photos": [
+          "/images/rooms/peche-01.jpg",
+          "/images/rooms/peche-04.jpg",
+          "/images/rooms/peche-02.jpg",
+          "/images/rooms/peche-03.jpg",
+          "/images/rooms/peche-07.jpg"
+        ],
+        "bed": "Letto king-size",
+        "orientation": "Sud",
+        "view": "Parco",
+        "amenities": "Vassoio di benvenuto · Wi-Fi 6"
       },
       {
         "name": "Thé",
         "size": "30 m²",
-        "text": "La seconda camera più bella del castello, nell'altra torre. Pannelli rivestiti di tessuto dai toni aranciati, marmo del camino in sfumature di giallo, paralume realizzato con un quadrato di tessuto Hermès. Doppia esposizione a est e a sud sul parco, spaziosa cabina armadio."
+        "text": "La seconda camera più bella del castello si trova nell'altra torre. I pannelli sono decorati con un tessuto teso dai toni aranciati. Il marmo del camino riprende le sfumature del giallo, mentre il paralume della lampada è realizzato con un quadrato di tessuto Hermès.",
+        "tag": "Camera nella torre",
+        "orientation": "Est e sud (doppia esposizione)",
+        "ac": "",
+        "view": "Parco",
+        "photos": [
+          "/images/rooms/the-05.jpg",
+          "/images/rooms/the-04.jpg",
+          "/images/rooms/the-02.jpg",
+          "/images/rooms/the-03.jpg",
+          "/images/rooms/the-07.jpg"
+        ],
+        "bed": "Letto king-size",
+        "floor": "Primo piano, senza ascensore",
+        "bathroom": "Doccia",
+        "amenities": "Spaziosa cabina armadio · Set di cortesia · Wi-Fi 6",
+        "note": ""
       },
       {
         "name": "Mirage",
         "size": "37 m²",
-        "text": "Sotto la travatura del XVI secolo della torre più antica, la grande camera familiare prende il nome dal colore lilla delle pareti e del soffitto. Letto king-size e due letti da 90 x 200; abbastanza spaziosa per ospitare un lettino aggiuntivo e con spazio a sufficienza per giocare."
+        "text": "Sotto la struttura in legno del XVI secolo della torre più antica del castello si nasconde la grande camera familiare Mirage, che prende il nome dal colore lilla che riveste le pareti e il soffitto. Perfetta per ospitare le famiglie, è abbastanza spaziosa da consentire l’aggiunta di un lettino per bambini e lasciare spazio per giocare.",
+        "tag": "Camera familiare",
+        "bed": "Letto king-size + 2 letti da 90 × 200",
+        "ac": "Riversibile",
+        "photos": [
+          "/images/rooms/mirage-01.jpg",
+          "/images/rooms/mirage-04.jpg",
+          "/images/rooms/mirage-03.jpg",
+          "/images/rooms/mirage-02.jpg",
+          "/images/rooms/mirage-05.jpg"
+        ],
+        "floor": "Secondo piano, senza ascensore",
+        "orientation": "Sud",
+        "bathroom": "Vasca da bagno",
+        "amenities": "Vassoio di benvenuto · Wi-Fi 6",
+        "view": "",
+        "note": ""
       },
       {
         "name": "Allium",
         "size": "26 m²",
-        "text": "Camera tripla con letto king-size e un terzo letto antico da 110 x 190. Al primo piano, la finestra si affaccia sul tappeto verde, un’ampia radura del bosco che circonda lo stagno. Ampio bagno con doccia."
+        "text": "Camera tripla: la camera “Allium” dispone di un letto king-size e di un terzo letto antico da 110 × 190. Situata al primo piano, nella parte centrale dell’edificio, la sua finestra si affaccia proprio sul bellissimo «tappeto verde», l’ampia radura nella foresta che circonda lo stagno.",
+        "tag": "Camera tripla",
+        "bed": "Letto king-size + letto antico 110 × 190",
+        "floor": "Primo piano, senza ascensore",
+        "orientation": "Sud",
+        "ac": "",
+        "bathroom": "Ampio bagno con doccia",
+        "view": "Sul tappeto verde e sullo stagno",
+        "note": "",
+        "photos": [
+          "/images/rooms/allium-01.jpg",
+          "/images/rooms/allium-06.jpg",
+          "/images/rooms/allium-05.jpg",
+          "/images/rooms/allium-03.jpg",
+          "/images/rooms/allium-07.jpg"
+        ],
+        "amenities": "Vassoio di benvenuto · Wi-Fi 6"
       },
       {
         "name": "Bouquet",
         "size": "15 m²",
-        "text": "Più piccola ma comunque molto accogliente, è l’ambiente perfetto per notti tranquille. Il suo nome deriva dalla carta da parati a motivi floreali. Una camera luminosa grazie al grande lucernario esposto a sud."
+        "text": "Più piccola ma comunque molto accogliente, la camera Bouquet offre l'ambiente perfetto per notti tranquille. Il suo nome deriva dalla carta da parati a motivi floreali. Una camera luminosa grazie al suo grande lucernario.",
+        "orientation": "Sud",
+        "ac": "Riversibile",
+        "photos": [
+          "/images/rooms/bouquet-01.jpg",
+          "/images/rooms/bouquet-03.jpg",
+          "/images/rooms/bouquet-02.jpg",
+          "/images/rooms/bouquet-04.jpg"
+        ],
+        "tag": "Accogliente",
+        "bed": "Letto king-size",
+        "floor": "Secondo piano, senza ascensore",
+        "bathroom": "Doccia",
+        "amenities": "Vassoio di benvenuto · Wi-Fi 6",
+        "view": "",
+        "note": ""
       },
       {
         "name": "Cactus",
         "size": "17 m²",
-        "text": "Una camera divertente, l'unica senza vista sul parco. Il suo ampio e luminoso bagno, decorato con disegni a carboncino, contribuisce a renderla accogliente. In estate, è la più fresca tra tutte le nostre camere. Esposizione a nord."
+        "text": "Cactus è una camera divertente. Anche se è l'unica a non avere vista sul parco, il suo ampio e luminoso bagno, decorato con disegni a carboncino, contribuisce a renderla accogliente. In estate è la più fresca tra tutte le nostre camere.",
+        "orientation": "Nord",
+        "ac": "",
+        "bathroom": "Doccia",
+        "view": "",
+        "note": "",
+        "photos": [
+          "/images/rooms/cactus-01.jpg",
+          "/images/rooms/cactus-04.jpg",
+          "/images/rooms/cactus-02.jpg",
+          "/images/rooms/cactus-03.jpg",
+          "/images/rooms/cactus-05.jpg"
+        ],
+        "tag": "Junior Suite",
+        "bed": "Letto king-size (o due letti singoli)",
+        "floor": "Primo piano, senza ascensore",
+        "amenities": "Vassoio di benvenuto · Wi-Fi 6"
       },
       {
         "name": "Ponceau",
         "size": "15 m²",
-        "text": "Un letto antico da 100 x 190, uno spazio esclusivo per chi viaggia da solo o accompagna una coppia."
+        "text": "Le camere doppie “Ponceau” e “Bleu Indien” dispongono entrambe di un letto antico da 100 × 190. Uno spazio ideale per chi viaggia da solo o accompagna una coppia.",
+        "tag": "Camera singola",
+        "bed": "Letto antico 100 × 190",
+        "ac": "Riversibile",
+        "photos": [
+          "/images/rooms/ponceau-03.jpg",
+          "/images/rooms/ponceau-02.jpg",
+          "/images/rooms/ponceau-04.jpg",
+          "/images/rooms/ponceau-01.jpg"
+        ],
+        "floor": "Secondo piano, senza ascensore",
+        "orientation": "Sud",
+        "bathroom": "Doccia",
+        "amenities": "Vassoio di benvenuto · Wi-Fi 6",
+        "view": "",
+        "note": ""
       },
       {
         "name": "Bleu Indien",
         "size": "15 m²",
-        "text": "La sua camera gemella, con il suo letto antico da 100 x 190, ideale per chi viaggia da solo o accompagna una coppia."
+        "text": "Le camere gemelle “Bleu Indien” e “Ponceau” dispongono ciascuna di un letto antico da 100 × 190. Uno spazio esclusivo per chi viaggia da solo o accompagna una coppia.",
+        "tag": "Camera singola",
+        "bed": "Letto antico 100 × 190",
+        "ac": "Riversibile",
+        "photos": [
+          "/images/rooms/bleu-indien-01.jpg",
+          "/images/rooms/bleu-indien-02.jpg",
+          "/images/rooms/bleu-indien-03.jpg"
+        ],
+        "floor": "Secondo piano, senza ascensore",
+        "orientation": "Sud",
+        "bathroom": "Doccia",
+        "amenities": "Vassoio di benvenuto · Wi-Fi 6",
+        "view": "",
+        "note": ""
       }
     ],
     "testimonial": {
