@@ -41,6 +41,13 @@ const {
 
 const s = settingsData[lang];
 
+// Libellés localisés de la visionneuse photo (lightbox globale : markup + script en bas de page).
+const pvL = ({
+  fr: { label: "Photo agrandie", close: "Fermer", prev: "Photo précédente", next: "Photo suivante" },
+  en: { label: "Enlarged photo", close: "Close", prev: "Previous photo", next: "Next photo" },
+  it: { label: "Foto ingrandita", close: "Chiudi", prev: "Foto precedente", next: "Foto successiva" },
+} as Record<string, { label: string; close: string; prev: string; next: string }>)[lang] ?? { label: "Photo", close: "Fermer", prev: "Précédente", next: "Suivante" };
+
 const defaults = {
   fr: {
     title: "Château de la Huberdière · Hôtel de charme, mariage & séminaire en Val de Loire",
@@ -197,6 +204,15 @@ const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
     <Footer settings={s} lang={lang} />
     <CookieBanner lang={lang} />
 
+    {/* Visionneuse photo globale : rend cliquable/agrandissable toute image de contenu (hors header/footer). */}
+    <div class="pv-lightbox" id="pvLightbox" role="dialog" aria-modal="true" aria-label={pvL.label} hidden>
+      <button class="pv-btn pv-close" id="pvClose" type="button" aria-label={pvL.close}>&times;</button>
+      <button class="pv-btn pv-nav pv-prev" id="pvPrev" type="button" aria-label={pvL.prev}>&#8249;</button>
+      <img class="pv-img" id="pvImg" src="" alt="" />
+      <button class="pv-btn pv-nav pv-next" id="pvNext" type="button" aria-label={pvL.next}>&#8250;</button>
+      <span class="pv-count" id="pvCount" aria-hidden="true"></span>
+    </div>
+
     <script is:inline>
       // Tracking Google Ads : capture les identifiants de clic (gclid/gbraid/wbraid)
       // à l'arrivée et les stocke 90 jours en cookie first-party, pour les rattacher
@@ -234,6 +250,95 @@ const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
         { threshold: 0.12 }
       );
       document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+    </script>
+
+    <script>
+      // Visionneuse photo globale : toute image de contenu devient cliquable et
+      // s'affiche en grand. Exclut header/footer/logo, images-liens et vignettes.
+      // Navigation par groupe (carrousels chambres, galeries) au clavier et au swipe.
+      (function () {
+        const lb = document.getElementById("pvLightbox");
+        // La page /galerie a déjà sa propre visionneuse (#lightbox) : on ne doublonne pas.
+        if (!lb || document.getElementById("lightbox")) return;
+        const img = document.getElementById("pvImg");
+        const countEl = document.getElementById("pvCount");
+        const prevBtn = document.getElementById("pvPrev");
+        const nextBtn = document.getElementById("pvNext");
+        const closeBtn = document.getElementById("pvClose");
+        const GROUP_SEL = ".room-gallery, .landing-gallery, .gallery, .gallery-grid";
+        let group = [], idx = 0, lastFocus = null;
+
+        function eligible(el) {
+          if (!(el instanceof HTMLImageElement)) return false;
+          if (el.closest("header, .site-header, footer, a, [data-no-zoom]")) return false;
+          if (el.classList.contains("brand-logo")) return false;
+          const w = el.naturalWidth || 0;
+          if (w && w < 200) return false; // écarte avatars / icônes une fois chargés
+          return true;
+        }
+        function hiRes(el) {
+          let best = el.currentSrc || el.src, bestW = 0;
+          if (el.srcset) {
+            el.srcset.split(",").forEach((part) => {
+              const seg = part.trim().split(/\s+/);
+              const wd = seg[1] && seg[1].endsWith("w") ? parseInt(seg[1]) : 0;
+              if (seg[0] && wd >= bestW) { bestW = wd; best = seg[0]; }
+            });
+          }
+          return best;
+        }
+        function groupOf(el) {
+          const cont = el.closest(GROUP_SEL);
+          return cont ? Array.prototype.filter.call(cont.querySelectorAll("img"), eligible) : [el];
+        }
+        function show(i) {
+          idx = (i + group.length) % group.length;
+          const el = group[idx];
+          img.src = hiRes(el);
+          img.alt = el.alt || "";
+          const many = group.length > 1;
+          prevBtn.hidden = !many; nextBtn.hidden = !many;
+          countEl.textContent = many ? idx + 1 + " / " + group.length : "";
+        }
+        function open(el) {
+          group = groupOf(el);
+          idx = group.indexOf(el); if (idx < 0) idx = 0;
+          lastFocus = document.activeElement;
+          lb.hidden = false;
+          document.body.style.overflow = "hidden";
+          show(idx);
+          closeBtn.focus();
+        }
+        function close() {
+          lb.hidden = true;
+          document.body.style.overflow = "";
+          img.removeAttribute("src");
+          if (lastFocus && lastFocus.focus) lastFocus.focus();
+        }
+        document.addEventListener("click", (e) => {
+          const el = e.target && e.target.closest && e.target.closest("img");
+          if (el && eligible(el)) { e.preventDefault(); open(el); }
+        });
+        const mark = () => document.querySelectorAll("img").forEach((el) => { if (eligible(el)) el.classList.add("pv-zoomable"); });
+        mark();
+        window.addEventListener("load", mark);
+        closeBtn.addEventListener("click", close);
+        prevBtn.addEventListener("click", () => show(idx - 1));
+        nextBtn.addEventListener("click", () => show(idx + 1));
+        lb.addEventListener("click", (e) => { if (e.target === lb) close(); });
+        document.addEventListener("keydown", (e) => {
+          if (lb.hidden) return;
+          if (e.key === "Escape") close();
+          else if (e.key === "ArrowLeft") show(idx - 1);
+          else if (e.key === "ArrowRight") show(idx + 1);
+        });
+        let sx = 0;
+        lb.addEventListener("touchstart", (e) => { sx = e.changedTouches[0].clientX; }, { passive: true });
+        lb.addEventListener("touchend", (e) => {
+          const dx = e.changedTouches[0].clientX - sx;
+          if (group.length > 1 && Math.abs(dx) > 40) show(idx + (dx < 0 ? 1 : -1));
+        }, { passive: true });
+      })();
     </script>
   </body>
 </html>

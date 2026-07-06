@@ -51,6 +51,28 @@
         "lbl": "de couloir de nage"
       }
     ],
+    "brief": [
+      {
+        "label": "Chambres",
+        "value": "10 chambres et suites de caractère, 21 couchages, salle de bain privative."
+      },
+      {
+        "label": "Table",
+        "value": "Petit-déjeuner maison inclus ; table d'hôtes le soir sur réservation."
+      },
+      {
+        "label": "Cadre",
+        "value": "Parc clos de 14 hectares et piscine chauffée d'avril à octobre."
+      },
+      {
+        "label": "Esprit",
+        "value": "Hôtel de charme 3 étoiles, avec l'esprit d'une maison d'hôtes de famille."
+      },
+      {
+        "label": "Situation",
+        "value": "À 10 minutes d'Amboise, à 2 h 20 de Paris."
+      }
+    ],
     "extrasHead": {
       "eyebrow": "Le domaine",
       "title": "Bien plus qu'une chambre"
@@ -371,6 +393,28 @@
         "lbl": "swimming lane"
       }
     ],
+    "brief": [
+      {
+        "label": "Rooms",
+        "value": "10 rooms and suites full of character, 21 beds, en-suite bathrooms."
+      },
+      {
+        "label": "Dining",
+        "value": "Home-made breakfast included; table d'hôtes dinner in the evening on request."
+      },
+      {
+        "label": "Setting",
+        "value": "A 14-hectare enclosed park and a heated pool from April to October."
+      },
+      {
+        "label": "Spirit",
+        "value": "A 3-star boutique hotel with the spirit of a family guest house."
+      },
+      {
+        "label": "Location",
+        "value": "10 minutes from Amboise, 2 hours 20 minutes from Paris."
+      }
+    ],
     "extrasHead": {
       "eyebrow": "The estate",
       "title": "Much more than just a bedroom"
@@ -689,6 +733,28 @@
       {
         "big": "16 m",
         "lbl": "corsia di nuoto"
+      }
+    ],
+    "brief": [
+      {
+        "label": "Camere",
+        "value": "10 camere e suite di carattere, 21 posti letto, bagno privato."
+      },
+      {
+        "label": "Ristorazione",
+        "value": "Colazione fatta in casa inclusa; tavola dell'oste la sera su prenotazione."
+      },
+      {
+        "label": "Contesto",
+        "value": "Parco recintato di 14 ettari e piscina riscaldata da aprile a ottobre."
+      },
+      {
+        "label": "Spirito",
+        "value": "Hotel di charme 3 stelle, con lo spirito di una casa d'ospiti di famiglia."
+      },
+      {
+        "label": "Posizione",
+        "value": "A 10 minuti da Amboise, a 2 ore e 20 minuti da Parigi."
       }
     ],
     "extrasHead": {

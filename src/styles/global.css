@@ -298,3 +298,21 @@ section{padding:140px 48px;position:relative}
 .lead-form button:disabled{opacity:.55;cursor:default}
 .form-status{min-height:20px;margin:16px 0 0;font-size:13px;color:var(--burgundy);text-align:center}
 @media(max-width:560px){.lead-form .row{grid-template-columns:1fr}}
+
+/* ---------- Visionneuse photo globale (lightbox) ---------- */
+.pv-zoomable{cursor:zoom-in}
+.pv-lightbox{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;background:rgba(20,18,16,.94);padding:24px}
+.pv-lightbox[hidden]{display:none}
+.pv-img{max-width:92vw;max-height:88vh;object-fit:contain;box-shadow:0 20px 60px rgba(0,0,0,.5);animation:pvIn .25s ease}
+@keyframes pvIn{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:none}}
+.pv-btn{position:absolute;background:rgba(244,242,236,.92);color:#1c1a17;border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,color .2s}
+.pv-btn:hover{background:var(--burgundy);color:#fff}
+.pv-btn:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.pv-close{top:20px;right:22px;width:44px;height:44px;border-radius:50%;font-size:26px;line-height:1}
+.pv-nav{top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:50%;font-size:30px;line-height:1}
+.pv-nav[hidden]{display:none}
+.pv-prev{left:22px}
+.pv-next{right:22px}
+.pv-count{position:absolute;bottom:20px;left:0;right:0;text-align:center;color:#f4f2ec;font-family:'Montserrat',sans-serif;font-size:.8rem;letter-spacing:.1em}
+@media(prefers-reduced-motion:reduce){.pv-img{animation:none}}
+@media(max-width:640px){.pv-nav{width:44px;height:44px;font-size:26px}.pv-prev{left:10px}.pv-next{right:10px}.pv-img{max-width:96vw;max-height:82vh}.pv-close{top:12px;right:12px}}

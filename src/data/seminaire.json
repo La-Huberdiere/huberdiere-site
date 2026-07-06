@@ -52,6 +52,28 @@
         "lbl": "de Paris"
       }
     ],
+    "brief": [
+      {
+        "label": "Capacité",
+        "value": "Jusqu'à 20 collaborateurs logés, en séminaire résidentiel privatisé."
+      },
+      {
+        "label": "Espaces",
+        "value": "L'Orangerie de 200 m² et 4 salons modulables pour vos sessions."
+      },
+      {
+        "label": "Formules",
+        "value": "À partir de 70 € HT par personne, de la journée d'étude au séjour complet."
+      },
+      {
+        "label": "Cadre",
+        "value": "Domaine privatisé de 14 hectares, au vert et sans distraction."
+      },
+      {
+        "label": "Situation",
+        "value": "Près d'Amboise, à 2 h 20 de Paris et 30 minutes de Tours."
+      }
+    ],
     "extrasHead": {
       "eyebrow": "Sur place",
       "title": "Les activités pour votre séminaire"
@@ -182,6 +204,28 @@
         "lbl": "in Paris"
       }
     ],
+    "brief": [
+      {
+        "label": "Capacity",
+        "value": "Up to 20 team members accommodated, for a private residential seminar."
+      },
+      {
+        "label": "Spaces",
+        "value": "The 200 m² Orangery and 4 versatile lounges for your sessions."
+      },
+      {
+        "label": "Packages",
+        "value": "From €70 excl. VAT per person, from a study day to a full residential stay."
+      },
+      {
+        "label": "Setting",
+        "value": "A private 14-hectare estate, in the countryside and free of distractions."
+      },
+      {
+        "label": "Location",
+        "value": "Near Amboise, 2 hours 20 minutes from Paris and 30 minutes from Tours."
+      }
+    ],
     "extrasHead": {
       "eyebrow": "On site",
       "title": "Activities for your seminar"
@@ -310,6 +354,28 @@
       {
         "big": "2 h 20",
         "lbl": "di Parigi"
+      }
+    ],
+    "brief": [
+      {
+        "label": "Capacità",
+        "value": "Fino a 20 collaboratori alloggiati, in seminario residenziale a uso esclusivo."
+      },
+      {
+        "label": "Spazi",
+        "value": "L'Orangerie di 200 m² e 4 saloni modulabili per le vostre sessioni."
+      },
+      {
+        "label": "Formule",
+        "value": "A partire da 70 € IVA escl. a persona, dalla giornata di studio al soggiorno completo."
+      },
+      {
+        "label": "Contesto",
+        "value": "Tenuta privata di 14 ettari, immersa nel verde e senza distrazioni."
+      },
+      {
+        "label": "Posizione",
+        "value": "Vicino ad Amboise, a 2 ore e 20 minuti da Parigi e 30 minuti da Tours."
       }
     ],
     "extrasHead": {

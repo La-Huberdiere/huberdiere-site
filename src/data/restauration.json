@@ -51,6 +51,28 @@
         "lbl": "fait maison, sur place"
       }
     ],
+    "brief": [
+      {
+        "label": "Service",
+        "value": "Le soir uniquement, sur réservation, réservé aux résidents du château."
+      },
+      {
+        "label": "Planches",
+        "value": "Planches à partager tous les soirs, sauf le dimanche."
+      },
+      {
+        "label": "Dîner italien",
+        "value": "Le jeudi : menu fixe familial préparé par Lodovica."
+      },
+      {
+        "label": "Petit-déjeuner",
+        "value": "Maison, servi de 8 h 30 à 10 h 30."
+      },
+      {
+        "label": "Cadre",
+        "value": "En salle ou en terrasse, hors événements privés."
+      }
+    ],
     "extrasHead": {
       "eyebrow": "Notre table",
       "title": "Une cuisine sincère et locale"
@@ -175,6 +197,28 @@
         "lbl": "homemade, on the premises"
       }
     ],
+    "brief": [
+      {
+        "label": "Service",
+        "value": "Evenings only, on request, reserved for guests staying at the château."
+      },
+      {
+        "label": "Sharing boards",
+        "value": "Sharing boards every evening, except Sundays."
+      },
+      {
+        "label": "Italian dinner",
+        "value": "On Thursdays: a set family-style menu cooked by Lodovica."
+      },
+      {
+        "label": "Breakfast",
+        "value": "Home-made, served from 8:30 to 10:30 am."
+      },
+      {
+        "label": "Setting",
+        "value": "Indoors or on the terrace, outside of private events."
+      }
+    ],
     "extrasHead": {
       "eyebrow": "Our table",
       "title": "Authentic, locally sourced cuisine"
@@ -297,6 +341,28 @@
       {
         "big": "100%",
         "lbl": "fatto in casa, sul posto"
+      }
+    ],
+    "brief": [
+      {
+        "label": "Servizio",
+        "value": "Solo la sera, su prenotazione, riservato agli ospiti del castello."
+      },
+      {
+        "label": "Taglieri",
+        "value": "Taglieri da condividere tutte le sere, tranne la domenica."
+      },
+      {
+        "label": "Cena italiana",
+        "value": "Il giovedì: menu fisso familiare preparato da Lodovica."
+      },
+      {
+        "label": "Colazione",
+        "value": "Fatta in casa, servita dalle 8:30 alle 10:30."
+      },
+      {
+        "label": "Contesto",
+        "value": "In sala o in terrazza, al di fuori degli eventi privati."
       }
     ],
     "extrasHead": {

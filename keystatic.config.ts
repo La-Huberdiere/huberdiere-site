@@ -193,6 +193,13 @@ const mariageSchema = {
     }),
     { label: "Chiffres clés (bande sous le hero)", itemLabel: (p) => p.fields.big.value || "Chiffre" }
   ),
+  brief: fields.array(
+    fields.object({
+      label: fields.text({ label: "Intitulé (ex. « Capacité », « Situation »)" }),
+      value: fields.text({ label: "Fait (phrase autonome et factuelle)", multiline: true }),
+    }),
+    { label: "Encart « En bref » (fiche factuelle en tête de page)", itemLabel: (p) => p.fields.label.value || "Fait" }
+  ),
   extrasHead: fields.object(
     {
       eyebrow: fields.text({ label: "Sur-titre" }),

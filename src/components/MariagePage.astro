@@ -26,6 +26,10 @@ const roomLabels = {
 }[lang];
 const reserveLink = octorateUrl();
 
+// En-tête de l'encart « En bref » (fiche factuelle en tête de page). C'est un
+// libellé d'interface, localisé ici ; les faits, eux, vivent dans les données.
+const briefLabel = { fr: "En bref", en: "In brief", it: "In breve" }[lang];
+
 // Optimisation images chambres : version WebP servie en priorité (fallback JPEG),
 // et texte alt descriptif (nom de chambre + château) pour le SEO/GEO local.
 const webpOf = (p: string) => p.replace(/\.(jpe?g|png)$/i, ".webp");
@@ -73,6 +77,22 @@ const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
     <p>{m.hero.lead}</p>
   </div>
 </section>
+
+{m.brief && m.brief.length > 0 && (
+  <section class="brief">
+    <div class="brief-card reveal">
+      <span class="brief-label">{briefLabel}</span>
+      <dl class="brief-list">
+        {m.brief.map((b) => (
+          <div class="brief-row">
+            <dt>{b.label}</dt>
+            <dd>{b.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+)}
 
 {m.stats && m.stats.length > 0 && (
   <section class="stats-band">
@@ -412,6 +432,32 @@ const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
 </script>
 
 <style>
+  /* Encart « En bref » : fiche factuelle à filet bordeaux, en tête de page.
+     Faits autonomes (capacité, situation, tarif) pour la citabilité IA.
+     Pas une grille de cards icône+titre (banni par la charte anti-IA). */
+  .brief { padding: 64px 24px 8px; }
+  .brief-card {
+    max-width: 940px; margin: 0 auto;
+    border-top: 2px solid #8b0000; padding-top: 28px;
+  }
+  .brief-label {
+    display: block; font-family: "Montserrat", sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: #8b0000; margin-bottom: 18px;
+  }
+  .brief-list { margin: 0; }
+  .brief-row {
+    display: grid; grid-template-columns: 190px 1fr; gap: 8px 32px;
+    padding: 16px 0; border-bottom: 1px solid #e6dfce; align-items: baseline;
+  }
+  .brief-row dt {
+    font-family: "Montserrat", sans-serif; font-size: 0.68rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: #8a857a; margin: 0;
+  }
+  .brief-row dd {
+    margin: 0; color: #2e3a48; font-size: 1rem; line-height: 1.55;
+  }
+
   .stats-band { padding: 56px 24px; background: #fbfaf6; border-bottom: 1px solid #ece6d8; }
   .stats-row {
     max-width: 980px; margin: 0 auto;
@@ -649,6 +695,9 @@ const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
   }
 
   @media (max-width: 860px) {
+    .brief { padding: 44px 22px 4px; }
+    .brief-row { grid-template-columns: 1fr; gap: 4px; padding: 14px 0; }
+    .brief-row dd { font-size: 0.96rem; }
     .stats-row { grid-template-columns: 1fr; gap: 24px; }
     .extras-grid { grid-template-columns: 1fr; }
     .extras { padding: 70px 22px 10px; }

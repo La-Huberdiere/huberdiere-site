@@ -51,6 +51,28 @@
         "lbl": "de Paris"
       }
     ],
+    "brief": [
+      {
+        "label": "Capacité",
+        "value": "De 30 à 150 convives en réception, 21 couchages sur place en 10 chambres."
+      },
+      {
+        "label": "Privatisation",
+        "value": "Le domaine entier réservé à vous seuls, aucun autre événement en parallèle."
+      },
+      {
+        "label": "Tarif indicatif",
+        "value": "Week-end du vendredi au dimanche, de 4 000 € à 8 000 € selon la saison."
+      },
+      {
+        "label": "Boissons",
+        "value": "Aucun droit de bouchon : vous apportez vos vins et champagnes."
+      },
+      {
+        "label": "Situation",
+        "value": "Nazelles-Négron, près d'Amboise, à 2 h 20 de Paris."
+      }
+    ],
     "extrasHead": {
       "eyebrow": "L'art de recevoir",
       "title": "Tout pour votre grand jour"
@@ -172,6 +194,28 @@
         "lbl": "in Paris"
       }
     ],
+    "brief": [
+      {
+        "label": "Capacity",
+        "value": "From 30 to 150 guests for the reception, 21 beds on site across 10 rooms."
+      },
+      {
+        "label": "Exclusive hire",
+        "value": "The whole estate reserved for you alone, with no other event running at the same time."
+      },
+      {
+        "label": "Indicative rate",
+        "value": "A weekend from Friday to Sunday, from €4,000 to €8,000 depending on the season."
+      },
+      {
+        "label": "Drinks",
+        "value": "No corkage fee: bring your own wines and champagnes."
+      },
+      {
+        "label": "Location",
+        "value": "Nazelles-Négron, near Amboise, 2 hours 20 minutes from Paris."
+      }
+    ],
     "extrasHead": {
       "eyebrow": "The Art of Hospitality",
       "title": "Everything you need for your big day"
@@ -291,6 +335,28 @@
       {
         "big": "2 h 20",
         "lbl": "di Parigi"
+      }
+    ],
+    "brief": [
+      {
+        "label": "Capacità",
+        "value": "Da 30 a 150 invitati per il ricevimento, 21 posti letto in loco in 10 camere."
+      },
+      {
+        "label": "Uso esclusivo",
+        "value": "L'intera tenuta riservata solo a voi, senza alcun altro evento in contemporanea."
+      },
+      {
+        "label": "Tariffa indicativa",
+        "value": "Fine settimana dal venerdì alla domenica, da 4.000 € a 8.000 € a seconda della stagione."
+      },
+      {
+        "label": "Bevande",
+        "value": "Nessun diritto di tappo: portate i vostri vini e champagne."
+      },
+      {
+        "label": "Posizione",
+        "value": "Nazelles-Négron, vicino ad Amboise, a 2 ore e 20 minuti da Parigi."
       }
     ],
     "extrasHead": {

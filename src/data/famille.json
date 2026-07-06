@@ -51,6 +51,28 @@
         "lbl": "de Paris"
       }
     ],
+    "brief": [
+      {
+        "label": "Capacité",
+        "value": "21 couchages en 10 chambres, jusqu'à 21 personnes en privatisation."
+      },
+      {
+        "label": "Espaces",
+        "value": "4 salons pour un grand dîner jusqu'à 22 convives, cuisine à disposition."
+      },
+      {
+        "label": "Cadre",
+        "value": "Parc clos de 14 hectares et piscine chauffée d'avril à octobre."
+      },
+      {
+        "label": "Formule",
+        "value": "Le château entier privatisé pour un week-end en famille ou entre amis."
+      },
+      {
+        "label": "Situation",
+        "value": "Près d'Amboise, à 2 h 20 de Paris."
+      }
+    ],
     "extrasHead": {
       "eyebrow": "Détente, cohésion, évasion",
       "title": "De quoi occuper toutes les générations"
@@ -176,6 +198,28 @@
         "lbl": "in Paris"
       }
     ],
+    "brief": [
+      {
+        "label": "Capacity",
+        "value": "21 beds across 10 rooms, up to 21 people on an exclusive-hire basis."
+      },
+      {
+        "label": "Spaces",
+        "value": "4 lounges for a large dinner of up to 22 guests, with a kitchen at your disposal."
+      },
+      {
+        "label": "Setting",
+        "value": "A 14-hectare enclosed park and a heated pool from April to October."
+      },
+      {
+        "label": "Format",
+        "value": "The whole château to yourselves for a weekend with family or friends."
+      },
+      {
+        "label": "Location",
+        "value": "Near Amboise, 2 hours 20 minutes from Paris."
+      }
+    ],
     "extrasHead": {
       "eyebrow": "Relaxation, team-building, a change of scenery",
       "title": "Something to keep all generations entertained"
@@ -299,6 +343,28 @@
       {
         "big": "2 h 20",
         "lbl": "di Parigi"
+      }
+    ],
+    "brief": [
+      {
+        "label": "Capacità",
+        "value": "21 posti letto in 10 camere, fino a 21 persone in uso esclusivo."
+      },
+      {
+        "label": "Spazi",
+        "value": "4 saloni per una grande cena fino a 22 ospiti, con cucina a disposizione."
+      },
+      {
+        "label": "Contesto",
+        "value": "Parco recintato di 14 ettari e piscina riscaldata da aprile a ottobre."
+      },
+      {
+        "label": "Formula",
+        "value": "L'intero castello a vostra disposizione per un fine settimana in famiglia o tra amici."
+      },
+      {
+        "label": "Posizione",
+        "value": "Vicino ad Amboise, a 2 ore e 20 minuti da Parigi."
       }
     ],
     "extrasHead": {

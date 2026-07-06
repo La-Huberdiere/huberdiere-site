@@ -43,6 +43,16 @@ export const SITE = {
 
 const abs = (path: string) => (path.startsWith("http") ? path : `${SITE.url}${path}`);
 
+/** Photos réelles du domaine pour le schema LodgingBusiness (extérieur, salon,
+ *  chambre, table). De vraies images valent mieux que l'OG générique pour Google
+ *  et les moteurs IA. Chemins publics servis tels quels. */
+export const LODGING_IMAGES = [
+  "/images/bibliotheque/chateau-exterieur/chateau-exterieur-05.jpg",
+  "/images/bibliotheque/salons-interieurs/salons-interieurs-01.jpg",
+  "/images/bibliotheque/chambres/chambre-01.jpg",
+  "/images/bibliotheque/restauration/restauration-01.jpg",
+];
+
 /** Langue de contenu → étiquette BCP 47 (pour inLanguage). */
 export type Lang = "fr" | "en" | "it";
 const LANG_TAG: Record<Lang, string> = { fr: "fr-FR", en: "en-GB", it: "it-IT" };

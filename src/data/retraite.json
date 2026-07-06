@@ -51,6 +51,28 @@
         "lbl": "de Paris"
       }
     ],
+    "brief": [
+      {
+        "label": "Capacité",
+        "value": "Jusqu'à 20 participants logés en 10 suites privatives."
+      },
+      {
+        "label": "Espaces",
+        "value": "L'Orangerie de 200 m² et 4 salons modulables pour vos sessions."
+      },
+      {
+        "label": "Disciplines",
+        "value": "Yoga, méditation, bien-être, écriture, développement personnel."
+      },
+      {
+        "label": "Cadre",
+        "value": "14 hectares de nature préservée, château privatisé au calme."
+      },
+      {
+        "label": "Situation",
+        "value": "À 5 km d'Amboise, à 2 h 20 de Paris."
+      }
+    ],
     "extrasHead": {
       "eyebrow": "Le domaine",
       "title": "Des espaces pensés pour la transmission"
@@ -168,6 +190,28 @@
         "lbl": "in Paris"
       }
     ],
+    "brief": [
+      {
+        "label": "Capacity",
+        "value": "Up to 20 participants accommodated in 10 private suites."
+      },
+      {
+        "label": "Spaces",
+        "value": "The 200 m² Orangery and 4 versatile lounges for your sessions."
+      },
+      {
+        "label": "Disciplines",
+        "value": "Yoga, meditation, wellbeing, writing, personal development."
+      },
+      {
+        "label": "Setting",
+        "value": "14 hectares of unspoilt nature, a private château in complete quiet."
+      },
+      {
+        "label": "Location",
+        "value": "5 km from Amboise, 2 hours 20 minutes from Paris."
+      }
+    ],
     "extrasHead": {
       "eyebrow": "The estate",
       "title": "Spaces designed to foster learning"
@@ -283,6 +327,28 @@
       {
         "big": "2 h 20",
         "lbl": "di Parigi"
+      }
+    ],
+    "brief": [
+      {
+        "label": "Capacità",
+        "value": "Fino a 20 partecipanti alloggiati in 10 suite private."
+      },
+      {
+        "label": "Spazi",
+        "value": "L'Orangerie di 200 m² e 4 saloni modulabili per le vostre sessioni."
+      },
+      {
+        "label": "Discipline",
+        "value": "Yoga, meditazione, benessere, scrittura, crescita personale."
+      },
+      {
+        "label": "Contesto",
+        "value": "14 ettari di natura incontaminata, castello privato e tranquillo."
+      },
+      {
+        "label": "Posizione",
+        "value": "A 5 km da Amboise, a 2 ore e 20 minuti da Parigi."
       }
     ],
     "extrasHead": {
