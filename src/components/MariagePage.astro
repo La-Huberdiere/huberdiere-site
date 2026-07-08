@@ -30,6 +30,14 @@ const reserveLink = octorateUrl();
 // libellé d'interface, localisé ici ; les faits, eux, vivent dans les données.
 const briefLabel = { fr: "En bref", en: "In brief", it: "In breve" }[lang];
 
+// Renvoi vers la page galerie, sous la bande de photos de chaque landing.
+const galleryHref = lang === "fr" ? "/galerie" : `/${lang}/galerie`;
+const galleryCtaLabel = {
+  fr: "Voir plus de photos",
+  en: "See more photos",
+  it: "Vedi altre foto",
+}[lang];
+
 // Optimisation images chambres : version WebP servie en priorité (fallback JPEG),
 // et texte alt descriptif (nom de chambre + château) pour le SEO/GEO local.
 const webpOf = (p: string) => p.replace(/\.(jpe?g|png)$/i, ".webp");
@@ -315,6 +323,9 @@ const midCtaLead = {
         </figure>
       ))}
     </div>
+    <p class="gallery-more reveal">
+      <a href={galleryHref}>{galleryCtaLabel}</a>
+    </p>
   </section>
 ) : (
   <section class="gallery">
@@ -322,6 +333,9 @@ const midCtaLead = {
       <figure class="reveal" style="grid-column:1/2;grid-row:1/2"><Image quality={68} src={v1} alt="Entrée fleurie du château" widths={[600, 1000, 1400]} sizes="50vw" /></figure>
       <figure class="reveal" style="grid-column:2/3;grid-row:1/2"><Image quality={68} src={v2} alt="Grande salle dressée pour un dîner" widths={[600, 1000, 1400]} sizes="50vw" /></figure>
     </div>
+    <p class="gallery-more reveal">
+      <a href={galleryHref}>{galleryCtaLabel}</a>
+    </p>
   </section>
 )}
 
@@ -676,6 +690,19 @@ const midCtaLead = {
     .landing-gallery figure:nth-child(3) { grid-column: span 1; }
     .landing-gallery figure:nth-child(4) { grid-column: span 2; }
   }
+
+  /* Renvoi vers la galerie complète, sous la bande de photos. */
+  .gallery-more { max-width: 1200px; margin: 26px auto 0; padding: 0 24px; text-align: right; }
+  .gallery-more a {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: "Montserrat", sans-serif; font-size: 0.82rem;
+    letter-spacing: 0.12em; text-transform: uppercase; color: #8b0000;
+    text-decoration: none; padding-bottom: 4px; border-bottom: 1px solid #8b0000;
+    transition: opacity 0.2s ease;
+  }
+  .gallery-more a::after { content: "\2192"; font-size: 1.05em; }
+  .gallery-more a:hover { opacity: 0.65; }
+  @media (max-width: 760px) { .gallery-more { text-align: left; padding: 0 22px; } }
 
   /* Témoignage : citation pleine largeur sur fond crème */
   .testimonial { padding: 110px 24px; background: #fbfaf6; border-top: 1px solid #ece6d8; border-bottom: 1px solid #ece6d8; }
