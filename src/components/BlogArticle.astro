@@ -279,6 +279,11 @@ const schemas = [
   .article-layout { display: grid; grid-template-columns: minmax(0, 1fr) 308px; gap: 56px; align-items: start; }
   .article-main { min-width: 0; }
   .article-main .prose { margin: 0; max-width: 720px; }
+  /* Liens dans le corps de l'article (netlinking) : bordeaux souligné, bien visibles.
+     Le corps est injecté via set:html, donc ses <a> ne portent pas le scope Astro :
+     cibler avec :global() sinon la règle ne s'applique pas. */
+  .article-main .prose :global(a) { color: #8b0000; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: rgba(139, 0, 0, 0.45); transition: text-decoration-color 0.2s ease, color 0.2s ease; }
+  .article-main .prose :global(a:hover) { color: #6d0000; text-decoration-color: #8b0000; }
 
   .article-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 30px 0 0; }
   .article-tags .tag {
