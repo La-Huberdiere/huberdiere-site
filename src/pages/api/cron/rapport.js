@@ -9,9 +9,9 @@ import { generateReport } from "../../../lib/rapport-seo.mjs"
 
 const HISTORY_PATH = "rapport/history.json"
 const HTML_PATH = "rapport/index.html"
-// Domaine public encore sur Wix (bascule DNS vers Vercel en attente) : on sert le
-// rapport via l'alias stable du projet. À rebasculer sur le domaine final après cutover.
-const REPORT_URL = "https://huberdiere-site.vercel.app/rapport"
+// Domaine basculé sur Vercel (6/07) : le rapport est servi sur le domaine final,
+// protégé par mot de passe (cf. src/pages/rapport.js).
+const REPORT_URL = "https://www.chateaudelahuberdiere.com/rapport"
 const SENDER = { name: "Reporting Huberdière", email: "hello@chateaudelahuberdiere.com" }
 
 async function loadHistory() {
@@ -36,6 +36,7 @@ async function sendEmail(summary, monthLabel) {
       <p>Bonjour,</p>
       <p>Le point SEO du Château de la Huberdière pour <strong>${monthLabel}</strong> est en ligne.</p>
       <p><a href="${REPORT_URL}" style="color:#8B0000;font-weight:600">Ouvrir le rapport</a></p>
+      <p style="color:#646464;font-size:13px">Accès protégé, mot de passe : <strong>SEOHUBERDIERE</strong> (à saisir une seule fois).</p>
       <p style="color:#646464;font-size:14px">
         ${summary.articles} articles publiés · ${summary.ranked}/${summary.keywords} mots-clés classés ·
         cité par les IA ${summary.llmCited}/${summary.llmAnswered}${summary.gbpNote != null ? ` · note Google ${String(summary.gbpNote).replace(".", ",")}` : ""}.
