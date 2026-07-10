@@ -31,22 +31,30 @@ async function sendEmail(summary, monthLabel) {
     .split(",").map((e) => ({ email: e.trim() })).filter((e) => e.email)
   const cc = (process.env.REPORT_EMAIL_CC || "alexis@morain.fr")
     .split(",").map((e) => ({ email: e.trim() })).filter((e) => e.email)
+  const s = summary
+  const art = s.articles === 0 ? "pas de nouvel article ce mois-ci"
+    : s.articles === 1 ? "un nouvel article publié sur le blog"
+    : `${s.articles} nouveaux articles publiés sur le blog`
+  const kw = s.ranked === 0
+    ? `aucun de vos ${s.keywords} mots-clés suivis n'est encore positionné sur Google`
+    : `${s.ranked} de vos ${s.keywords} mots-clés suivis ${s.ranked > 1 ? "sont positionnés" : "est positionné"} sur Google`
+  const gbp = s.gbpNote != null ? `, et votre note Google se maintient à ${String(s.gbpNote).replace(".", ",")}/5` : ""
   const html = `
-    <div style="font-family:Helvetica,Arial,sans-serif;color:#212121;line-height:1.6">
-      <p>Bonjour,</p>
-      <p>Le point SEO du Château de la Huberdière pour <strong>${monthLabel}</strong> est en ligne.</p>
-      <p><a href="${REPORT_URL}?m=${summary.month}" style="color:#8B0000;font-weight:600">Ouvrir le rapport</a></p>
-      <p style="color:#646464;font-size:13px">Accès protégé, mot de passe : <strong>SEOHUBERDIERE</strong> (à saisir une seule fois).</p>
-      <p style="color:#646464;font-size:14px">
-        ${summary.articles} articles publiés · ${summary.ranked}/${summary.keywords} mots-clés classés ·
-        cité par les IA ${summary.llmCited}/${summary.llmAnswered}${summary.gbpNote != null ? ` · note Google ${String(summary.gbpNote).replace(".", ",")}` : ""}.
+    <div style="font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;color:#212121;line-height:1.65;font-size:15px;max-width:520px">
+      <p>Bonjour à tous les deux,</p>
+      <p>Voici votre point référencement pour <strong>${monthLabel}</strong>. J'ai tout mis au propre dans le rapport en ligne :</p>
+      <p style="margin:22px 0">
+        <a href="${REPORT_URL}?m=${s.month}" style="color:#8B0000;font-weight:600;font-size:16px">Ouvrir le rapport →</a><br>
+        <span style="color:#646464;font-size:13px">mot de passe <strong>SEOHUBERDIERE</strong>, à saisir une seule fois sur votre navigateur</span>
       </p>
-      <p style="color:#646464;font-size:13px">Bonne lecture,<br>Alexis</p>
+      <p>En deux mots ce mois-ci : ${art}, et ${kw}. Côté intelligences artificielles, le château a été cité ${s.llmCited} fois sur ${s.llmAnswered} questions testées${gbp}.</p>
+      <p>Le rapport reprend l'évolution mois par mois et ce sur quoi je travaille pour la suite. Une question, un doute ? Répondez simplement à ce message.</p>
+      <p style="margin-top:24px">Bonne lecture,<br>Alexis</p>
     </div>`
   const res = await fetch("https://api.brevo.com/v3/smtp/email", {
     method: "POST",
     headers: { "api-key": key, "content-type": "application/json", accept: "application/json" },
-    body: JSON.stringify({ sender: SENDER, to, cc, subject: `Rapport SEO Huberdière · ${monthLabel}`, htmlContent: html }),
+    body: JSON.stringify({ sender: SENDER, replyTo: { email: "alexis@morain.fr", name: "Alexis Morain" }, to, cc, subject: `Votre point référencement · ${monthLabel}`, htmlContent: html }),
   })
   if (!res.ok) console.error("[rapport] Brevo:", res.status, (await res.text()).slice(0, 200))
   return res.ok
