@@ -204,12 +204,44 @@ function parseUA(s = "") {
   return { browser, os, device };
 }
 
+// Normalise une source UTM (souvent abrégée) en libellé propre pour la notif.
+// Ex. utm_source=ig, utm_medium=social -> « Réseaux sociaux (Instagram) ».
+const SOURCE_NAMES = {
+  ig: "Instagram", instagram: "Instagram", insta: "Instagram",
+  fb: "Facebook", facebook: "Facebook", meta: "Facebook",
+  li: "LinkedIn", linkedin: "LinkedIn",
+  yt: "YouTube", youtube: "YouTube",
+  tt: "TikTok", tiktok: "TikTok",
+  x: "X", twitter: "X", pinterest: "Pinterest", snapchat: "Snapchat",
+  google: "Google", gbp: "Fiche Google", "google-business": "Fiche Google",
+  newsletter: "Newsletter", brevo: "Newsletter", email: "Email",
+  "mariages-net": "Mariages.net", grandsgites: "Grands Gîtes",
+  "gites-de-france": "Gîtes de France", abcsalles: "ABC Salles",
+};
+const SOCIAL_SOURCES = new Set([
+  "ig", "instagram", "insta", "fb", "facebook", "meta", "li", "linkedin",
+  "yt", "youtube", "tt", "tiktok", "x", "twitter", "pinterest", "snapchat",
+]);
+const DIRECTORY_SOURCES = new Set([
+  "mariages-net", "grandsgites", "gites-de-france", "abcsalles", "zankyou",
+  "booking", "airbnb", "tripadvisor",
+]);
+
+function labelFromUtm(data) {
+  const s = (data.utm_source || "").toLowerCase().trim();
+  const m = (data.utm_medium || "").toLowerCase().trim();
+  const name = SOURCE_NAMES[s] || data.utm_source;
+  if (SOCIAL_SOURCES.has(s) || m === "social") return `Réseaux sociaux (${name})`;
+  if (DIRECTORY_SOURCES.has(s) || m === "referral") return `Annuaire / plateforme (${name})`;
+  if (["newsletter", "brevo", "email"].includes(s) || m === "email") return "Newsletter";
+  if (s === "gbp" || s === "google-business" || m === "gbp") return "Fiche Google";
+  return m ? `${name} / ${m}` : name;
+}
+
 // Déduit un canal lisible à partir de l'UTM (prioritaire) puis du referrer d'entrée.
 // Remplace l'ancien « Lien externe » opaque qui ne nommait aucune source.
 function classifyChannel(data) {
-  if (data.utm_source) {
-    return data.utm_medium ? `${data.utm_source} / ${data.utm_medium}` : data.utm_source;
-  }
+  if (data.utm_source) return labelFromUtm(data);
   const r = (data.referrer || "").toLowerCase();
   if (!r) return "Accès direct";
   if (/(google|bing|yahoo|duckduckgo|qwant|ecosia|search\.brave)\./.test(r)) return "Recherche organique (SEO)";
