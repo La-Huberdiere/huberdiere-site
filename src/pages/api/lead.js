@@ -204,19 +204,40 @@ function parseUA(s = "") {
   return { browser, os, device };
 }
 
+// Déduit un canal lisible à partir de l'UTM (prioritaire) puis du referrer d'entrée.
+// Remplace l'ancien « Lien externe » opaque qui ne nommait aucune source.
+function classifyChannel(data) {
+  if (data.utm_source) {
+    return data.utm_medium ? `${data.utm_source} / ${data.utm_medium}` : data.utm_source;
+  }
+  const r = (data.referrer || "").toLowerCase();
+  if (!r) return "Accès direct";
+  if (/(google|bing|yahoo|duckduckgo|qwant|ecosia|search\.brave)\./.test(r)) return "Recherche organique (SEO)";
+  if (/(instagram|facebook|fb\.com|fb\.me|l\.facebook|lm\.facebook|t\.co|twitter|x\.com|linkedin|lnkd\.in|pinterest|youtube|youtu\.be|tiktok|snapchat)\./.test(r))
+    return "Réseaux sociaux";
+  if (/(mariages\.net|zankyou|abcsalles|1001salles|mariage\.net|grandsgites|gites-de-france|booking\.|airbnb|tripadvisor|le-guide-des-chateaux|chateauxhotels)/.test(r))
+    return "Annuaire / plateforme";
+  try {
+    return `Référent : ${new URL(data.referrer).hostname.replace(/^www\./, "")}`;
+  } catch (e) {
+    return "Lien externe";
+  }
+}
+
 // Mail de notification interne, brandé, avec un maximum de contexte sur le lead.
 function notifyHtml(data, cibleLabel, meta) {
   const full = `${data.prenom || ""} ${data.nom || ""}`.trim() || data.email;
-  const origin = data.utm_source ? data.utm_source : data.referrer ? "Lien externe" : "Accès direct";
+  const origin = classifyChannel(data);
   const rows = [
     ["Activité", cibleLabel],
-    ["Origine", origin],
+    ["Canal (détecté)", origin],
     ["Source (utm_source)", data.utm_source],
     ["Support (utm_medium)", data.utm_medium],
     ["Campagne (utm_campaign)", data.utm_campaign],
     ["Mot-clé (utm_term)", data.utm_term],
     ["Contenu (utm_content)", data.utm_content],
     ["Page du formulaire", data.page],
+    ["Page d'entrée (1re visite)", data.landing],
     ["Provenance (referrer)", data.referrer],
     ["Langue", meta.lang],
     ["Localisation", meta.location],

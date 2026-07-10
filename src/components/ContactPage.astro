@@ -84,12 +84,19 @@ const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
       const data = Object.fromEntries(new FormData(form).entries());
       data.lang = (document.documentElement.lang || "fr").slice(0, 2);
       const qp = new URLSearchParams(location.search);
-      data.utm_medium = qp.get("utm_medium") || "";
-      data.utm_term = qp.get("utm_term") || "";
-      data.utm_content = qp.get("utm_content") || "";
-      data.page = location.pathname + location.search;
-      data.referrer = document.referrer || "";
       const cookie = (n) => (document.cookie.match(new RegExp("(?:^|; )" + n + "=([^;]*)")) || [])[1] || "";
+      // Attribution : UTM de l'URL courante (last-touch taggé) sinon first-touch du cookie ;
+      // referrer = la vraie porte d'entrée figée à l'arrivée, sinon document.referrer.
+      let attr = {};
+      try { attr = JSON.parse(decodeURIComponent(cookie("ht_attr")) || "{}"); } catch (e) {}
+      data.utm_source = qp.get("utm_source") || attr.us || "";
+      data.utm_medium = qp.get("utm_medium") || attr.um || "";
+      data.utm_campaign = qp.get("utm_campaign") || attr.uc || "";
+      data.utm_term = qp.get("utm_term") || attr.ut || "";
+      data.utm_content = qp.get("utm_content") || attr.un || "";
+      data.page = location.pathname + location.search;
+      data.referrer = attr.ref || document.referrer || "";
+      data.landing = attr.lp || "";
       data.gclid = decodeURIComponent(cookie("gclid"));
       data.gbraid = decodeURIComponent(cookie("gbraid"));
       data.wbraid = decodeURIComponent(cookie("wbraid"));

@@ -229,6 +229,38 @@ const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
           var v = p.get(k);
           if (v) document.cookie = k + "=" + encodeURIComponent(v) + ";path=/;max-age=7776000;samesite=lax";
         });
+
+        // Attribution first-touch : on fige la vraie porte d'entrée (referrer externe +
+        // UTM) au tout premier chargement et on la garde 90 jours. La navigation interne
+        // n'écrase plus la source (le bug qui faisait ressortir « Lien externe » = la page
+        // elle-même). Non réécrit tant qu'un cookie exploitable existe (vrai first-touch).
+        function ck(n) {
+          return (document.cookie.match(new RegExp("(?:^|; )" + n + "=([^;]*)")) || [])[1] || "";
+        }
+        if (!ck("ht_attr")) {
+          var ref = document.referrer || "";
+          var ext = "";
+          try {
+            var here = location.hostname.replace(/^www\./, "");
+            if (ref && new URL(ref).hostname.replace(/^www\./, "") !== here) ext = ref;
+          } catch (e) {}
+          var attr = {
+            ref: ext,
+            us: p.get("utm_source") || "",
+            um: p.get("utm_medium") || "",
+            uc: p.get("utm_campaign") || "",
+            ut: p.get("utm_term") || "",
+            un: p.get("utm_content") || "",
+            lp: location.pathname,
+          };
+          // On ne pose le cookie que s'il y a une source exploitable (referrer externe ou
+          // UTM). Une 1re visite en accès direct reste ouverte : un futur passage taggé
+          // (lien Insta/fiche Google avec UTM) pourra renseigner l'attribution.
+          if (attr.ref || attr.us) {
+            document.cookie =
+              "ht_attr=" + encodeURIComponent(JSON.stringify(attr)) + ";path=/;max-age=7776000;samesite=lax";
+          }
+        }
       })();
     </script>
     <script>
