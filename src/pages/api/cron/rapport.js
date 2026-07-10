@@ -27,22 +27,25 @@ async function loadHistory() {
 async function sendEmail(summary, monthLabel) {
   const key = process.env.BREVO_API_KEY
   if (!key) { console.log("[rapport] BREVO_API_KEY absente, email ignoré."); return false }
-  const to = (process.env.REPORT_EMAIL_TO || "alexis@morain.fr")
+  const to = (process.env.REPORT_EMAIL_TO || "contact@chateaudelahuberdiere.com")
+    .split(",").map((e) => ({ email: e.trim() })).filter((e) => e.email)
+  const cc = (process.env.REPORT_EMAIL_CC || "alexis@morain.fr")
     .split(",").map((e) => ({ email: e.trim() })).filter((e) => e.email)
   const html = `
     <div style="font-family:Helvetica,Arial,sans-serif;color:#212121;line-height:1.6">
-      <p>Le rapport SEO du Château de la Huberdière pour <strong>${monthLabel}</strong> est en ligne.</p>
+      <p>Bonjour,</p>
+      <p>Le point SEO du Château de la Huberdière pour <strong>${monthLabel}</strong> est en ligne.</p>
       <p><a href="${REPORT_URL}" style="color:#8B0000;font-weight:600">Ouvrir le rapport</a></p>
       <p style="color:#646464;font-size:14px">
         ${summary.articles} articles publiés · ${summary.ranked}/${summary.keywords} mots-clés classés ·
         cité par les IA ${summary.llmCited}/${summary.llmAnswered}${summary.gbpNote != null ? ` · note Google ${String(summary.gbpNote).replace(".", ",")}` : ""}.
       </p>
-      <p style="color:#646464;font-size:13px">Prêt à transférer au client.</p>
+      <p style="color:#646464;font-size:13px">Bonne lecture,<br>Alexis</p>
     </div>`
   const res = await fetch("https://api.brevo.com/v3/smtp/email", {
     method: "POST",
     headers: { "api-key": key, "content-type": "application/json", accept: "application/json" },
-    body: JSON.stringify({ sender: SENDER, to, subject: `Rapport SEO Huberdière — ${monthLabel}`, htmlContent: html }),
+    body: JSON.stringify({ sender: SENDER, to, cc, subject: `Rapport SEO Huberdière · ${monthLabel}`, htmlContent: html }),
   })
   if (!res.ok) console.error("[rapport] Brevo:", res.status, (await res.text()).slice(0, 200))
   return res.ok
