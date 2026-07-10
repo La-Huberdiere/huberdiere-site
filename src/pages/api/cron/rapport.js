@@ -67,14 +67,21 @@ export async function GET({ request, url }) {
   if (!ok) return new Response("unauthorized", { status: 401 })
 
   try {
+    const override = url.searchParams.get("month") // override optionnel YYYY-MM
+    // Le cron tourne les 28-31 (cf. vercel.json). On ne génère qu'au VRAI dernier jour
+    // du mois → le mois courant EST le mois à rapporter (31 juillet = rapport de juillet).
+    // Un override manuel (?month=YYYY-MM) court-circuite cette garde.
+    if (!override) {
+      const now = new Date()
+      const t = new Date(now); t.setUTCDate(now.getUTCDate() + 1)
+      if (t.getUTCMonth() === now.getUTCMonth()) {
+        return new Response(JSON.stringify({ ok: true, skipped: "pas le dernier jour du mois" }), {
+          status: 200, headers: { "content-type": "application/json" },
+        })
+      }
+    }
     const prev = await loadHistory()
-    // Sans override, on rapporte le MOIS ÉCOULÉ : le cron tourne le 1er, donc le run
-    // du 1er août = « rapport de juillet » (bilan du mois qui vient de se clôturer).
-    const now = new Date()
-    const prevYm = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 1, 1))
-    const defaultMonth = `${prevYm.getUTCFullYear()}-${String(prevYm.getUTCMonth() + 1).padStart(2, "0")}`
-    const month = url.searchParams.get("month") || defaultMonth // override optionnel YYYY-MM
-    const { html, history, summary, monthLabel, month: ym } = await generateReport(prev, month)
+    const { html, history, summary, monthLabel, month: ym } = await generateReport(prev, override)
 
     await put(HISTORY_PATH, JSON.stringify(history, null, 2), {
       access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json",
