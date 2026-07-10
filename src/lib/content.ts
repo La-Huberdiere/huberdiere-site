@@ -35,14 +35,25 @@ import { withToc } from "./blog";
 
 type ArticleCol = "articles" | "articlesEn" | "articlesIt";
 
-/** Liste des articles d'une collection, triés du plus récent au plus ancien. */
+// Publication programmée : un article n'est visible qu'à partir de sa date
+// (comparaison AAAA-MM-JJ contre la date du build, UTC). Une date future le masque
+// PARTOUT (liste, pages détail, articles liés, OG, sitemap) jusqu'au build du jour J.
+// Le cron /api/cron/rebuild redéploie chaque jour → publication automatique. Un article
+// sans date reste visible (jamais masqué par erreur).
+const buildYMD = () => new Date().toISOString().slice(0, 10);
+export const isLive = (a: any) => {
+  const d = String(a?.publishedAt ?? "");
+  return !d || d <= buildYMD();
+};
+
+/** Liste des articles d'une collection, publiés, triés du plus récent au plus ancien. */
 export async function listArticles(col: ArticleCol) {
   const c = (reader.collections as any)[col];
   const slugs: string[] = await c.list();
   const all = await Promise.all(
     slugs.map(async (slug: string) => ({ slug, ...(await c.read(slug)) }))
   );
-  return all.sort((x: any, y: any) =>
+  return all.filter(isLive).sort((x: any, y: any) =>
     String(y.publishedAt || "").localeCompare(String(x.publishedAt || ""))
   );
 }
@@ -51,9 +62,10 @@ export async function listArticles(col: ArticleCol) {
 export async function articleStaticPaths(col: ArticleCol) {
   const c = (reader.collections as any)[col];
   const slugs: string[] = await c.list();
-  const all = await Promise.all(
+  // Filtre publication : on ne génère pas les pages des articles à date future.
+  const all = (await Promise.all(
     slugs.map(async (slug: string) => ({ slug, entry: await c.read(slug) }))
-  );
+  )).filter((o: any) => isLive(o.entry));
   return Promise.all(
     all.map(async ({ slug, entry }: any) => {
       const body = await entry.body();
