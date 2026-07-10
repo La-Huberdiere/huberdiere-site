@@ -20,6 +20,22 @@ const basePath = `/blog/${slug}`; // sans préfixe de langue (Base ajoute le pr�
 const path = lp(lang, basePath); // chemin localisé pour le schema + le fil d'Ariane
 const bookingUrl = octorateUrl();
 
+// Routage des CTA par cible (catégorie de l'article), aligné sur le routage ROIste du site :
+// - devis (mariage, séminaire, famille, retraite, restauration) → formulaire « Nous contacter »
+//   de la PAGE correspondante (ancre #final), jamais Octorate.
+// - séjour / art de vivre → réservation B2C directe via Octorate + contact générique /contact.
+const CATID = (entry.category as string) || "";
+const MONEY_PAGE: Record<string, string> = {
+  mariage: "/mariage", seminaire: "/seminaire", famille: "/famille",
+  retraite: "/retraite", restauration: "/restauration", sejour: "/sejour",
+};
+const DEVIS_CATS = ["mariage", "seminaire", "famille", "retraite", "restauration"];
+const STAY_CATS = ["sejour", "art-de-vivre"];
+const moneyPage = MONEY_PAGE[CATID] ?? null;
+// Formulaire « Nous contacter » ciblé : celui de la page money si devis, sinon /contact.
+const contactHref = moneyPage && DEVIS_CATS.includes(CATID) ? `${moneyPage}#final` : "/contact";
+const showOctorate = STAY_CATS.includes(CATID);
+
 // Image de partage social (og:image) avec titre incrusté, GÉNÉRÉE AU BUILD par
 // l'endpoint src/pages/og/articles/**.jpg.ts (satori + resvg). Toujours présente,
 // donc tout nouvel article créé dans Keystatic obtient son image automatiquement.
@@ -116,10 +132,20 @@ const schemas = [
           </div>
         </aside>
 
+        {showOctorate && (
+          <section class="book-cta reveal">
+            <div>
+              <p class="book-cta-kicker">{T.railKicker}</p>
+              <p class="book-cta-text">{T.railText}</p>
+            </div>
+            <a class="btn-burgundy" href={bookingUrl} target="_blank" rel="noopener">{T.railBtn}</a>
+          </section>
+        )}
+
         <section class="article-cta reveal">
           <h2>{T.ctaTitle}</h2>
           <p>{T.ctaText}</p>
-          <a class="btn-burgundy" href={lp(lang, "/contact")}>{T.ctaBtn}</a>
+          <a class="btn-burgundy" href={lp(lang, contactHref)}>{T.ctaBtn}</a>
         </section>
 
         {related.length > 0 && (
@@ -156,8 +182,10 @@ const schemas = [
           <div class="rail-card">
             <p class="rail-kicker">{T.railKicker}</p>
             <p class="rail-card-text">{T.railText}</p>
-            <a class="btn-burgundy rail-btn" href={bookingUrl} target="_blank" rel="noopener">{T.railBtn}</a>
-            <a class="rail-link" href={lp(lang, "/contact")}>{T.railLink}</a>
+            {showOctorate && (
+              <a class="btn-burgundy rail-btn" href={bookingUrl} target="_blank" rel="noopener">{T.railBtn}</a>
+            )}
+            <a class="rail-link" href={lp(lang, contactHref)}>{T.railLink}</a>
           </div>
 
           <form class="rail-nl" id="railNl" data-lang={lang} data-ok={T.nlOk} data-err={T.nlErr} novalidate>
@@ -278,6 +306,10 @@ const schemas = [
   .author-role { font-family: "Montserrat", sans-serif; font-size: 0.82rem; color: #8b0000; margin: 2px 0 10px; }
   .author-bio { font-family: "Montserrat", sans-serif; font-size: 0.92rem; color: #646464; line-height: 1.6; margin: 0; }
 
+  .book-cta { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin: 44px 0; padding: 26px 30px; background: #fbfaf6; border: 1px solid #e2dccc; max-width: 720px; }
+  .book-cta-kicker { font-family: "Montserrat", sans-serif; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8b0000; margin: 0 0 6px; }
+  .book-cta-text { font-family: "Montserrat", sans-serif; color: #2e3a48; margin: 0; max-width: 44ch; line-height: 1.5; }
+  .book-cta .btn-burgundy { white-space: nowrap; }
   .article-cta { text-align: center; margin: 52px 0; padding: 44px 24px; background: #2e3a48; color: #fff; max-width: 720px; }
   .article-cta h2 { font-family: "Playfair Display", Georgia, serif; font-weight: 500; margin: 0 0 10px; color: #fff; }
   .article-cta p { color: #d7d2c8; margin: 0 0 22px; font-family: "Montserrat", sans-serif; }

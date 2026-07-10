@@ -59,8 +59,15 @@ export async function articleStaticPaths(col: ArticleCol) {
       const body = await entry.body();
       const node = (body as any)?.node ?? body;
       const { html, toc } = withToc(renderMarkdocNode(node));
-      const related = all
-        .filter((o: any) => o.slug !== slug && o.entry.category === entry.category)
+      // Articles similaires : même catégorie en priorité, puis complétés par les autres
+      // (du plus récent au plus ancien) pour toujours proposer jusqu'à 3 lectures, même
+      // quand un cluster ne compte encore qu'un seul article.
+      const candidates = all.filter((o: any) => o.slug !== slug);
+      const byDateDesc = (a: any, b: any) =>
+        String(b.entry.publishedAt ?? "").localeCompare(String(a.entry.publishedAt ?? ""));
+      const sameCat = candidates.filter((o: any) => o.entry.category === entry.category).sort(byDateDesc);
+      const otherCat = candidates.filter((o: any) => o.entry.category !== entry.category).sort(byDateDesc);
+      const related = [...sameCat, ...otherCat]
         .slice(0, 3)
         .map((o: any) => ({ slug: o.slug, title: o.entry.title, cover: o.entry.cover, category: o.entry.category }));
       return { params: { slug }, props: { slug, entry, html, toc, related } };
