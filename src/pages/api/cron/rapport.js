@@ -68,7 +68,12 @@ export async function GET({ request, url }) {
 
   try {
     const prev = await loadHistory()
-    const month = url.searchParams.get("month") // override optionnel YYYY-MM
+    // Sans override, on rapporte le MOIS ÉCOULÉ : le cron tourne le 1er, donc le run
+    // du 1er août = « rapport de juillet » (bilan du mois qui vient de se clôturer).
+    const now = new Date()
+    const prevYm = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 1, 1))
+    const defaultMonth = `${prevYm.getUTCFullYear()}-${String(prevYm.getUTCMonth() + 1).padStart(2, "0")}`
+    const month = url.searchParams.get("month") || defaultMonth // override optionnel YYYY-MM
     const { html, history, summary, monthLabel, month: ym } = await generateReport(prev, month)
 
     await put(HISTORY_PATH, JSON.stringify(history, null, 2), {
