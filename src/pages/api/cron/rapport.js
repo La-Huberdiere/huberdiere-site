@@ -35,7 +35,7 @@ async function sendEmail(summary, monthLabel) {
     <div style="font-family:Helvetica,Arial,sans-serif;color:#212121;line-height:1.6">
       <p>Bonjour,</p>
       <p>Le point SEO du Château de la Huberdière pour <strong>${monthLabel}</strong> est en ligne.</p>
-      <p><a href="${REPORT_URL}" style="color:#8B0000;font-weight:600">Ouvrir le rapport</a></p>
+      <p><a href="${REPORT_URL}?m=${summary.month}" style="color:#8B0000;font-weight:600">Ouvrir le rapport</a></p>
       <p style="color:#646464;font-size:13px">Accès protégé, mot de passe : <strong>SEOHUBERDIERE</strong> (à saisir une seule fois).</p>
       <p style="color:#646464;font-size:14px">
         ${summary.articles} articles publiés · ${summary.ranked}/${summary.keywords} mots-clés classés ·
