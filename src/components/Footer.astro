@@ -17,6 +17,13 @@ const legalLabels = {
   en: { ml: "Legal notice", pc: "Privacy policy" },
   it: { ml: "Note legali", pc: "Informativa privacy" },
 }[lang as "fr" | "en" | "it"];
+
+// Crédit de conception (visible, assumé). Ancre = nom propre, pas mot-clé.
+const creditLabel = {
+  fr: "Conception et référencement",
+  en: "Design and SEO",
+  it: "Design e SEO",
+}[lang as "fr" | "en" | "it"];
 ---
 <NewsletterSignup lang={lang} />
 <footer class="site-footer">
@@ -50,6 +57,9 @@ const legalLabels = {
     <span>{f.bottomLeft}</span>
     <span>{f.bottomRight}</span>
   </div>
+  <div class="footer-credit">
+    <span>{creditLabel} : <a href="https://alexis.morain.fr" target="_blank" rel="noopener">Alexis Morain</a></span>
+  </div>
 </footer>
 
 <style>
@@ -63,4 +73,15 @@ const legalLabels = {
   .footer-legal a { color: inherit; opacity: 0.85; text-decoration: none; }
   .footer-legal a:hover { opacity: 1; text-decoration: underline; }
   .footer-legal .sep { opacity: 0.5; margin: 0 8px; }
+  .footer-credit {
+    max-width: 1280px;
+    margin: 14px auto 0;
+    padding: 0 24px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 10.5px;
+    letter-spacing: 0.05em;
+    opacity: 0.4;
+  }
+  .footer-credit a { color: inherit; text-decoration: none; }
+  .footer-credit a:hover { opacity: 1; text-decoration: underline; }
 </style>
