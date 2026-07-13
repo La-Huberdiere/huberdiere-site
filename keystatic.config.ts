@@ -465,6 +465,7 @@ export default config({
         "sejour",
         "restauration",
         "contact",
+        "galerie",
       ],
       "Le blog": ["articles"],
       "Réglages du site": ["settings", "reviews"],
@@ -528,6 +529,60 @@ export default config({
       format: { data: "json" },
       previewUrl: "/contact",
       schema: langSections(contactSchema),
+    }),
+    galerie: singleton({
+      label: "Galerie photo (page /galerie)",
+      path: "src/data/galerie",
+      format: { data: "json" },
+      previewUrl: "/galerie",
+      schema: {
+        leadFr: fields.text({
+          label: "Phrase d'intro de la page : FR",
+          multiline: true,
+          description: "La ligne sous le titre « Galerie », en haut de la page.",
+        }),
+        leadEn: fields.text({ label: "Phrase d'intro de la page : EN", multiline: true }),
+        leadIt: fields.text({ label: "Phrase d'intro de la page : IT", multiline: true }),
+        chapters: fields.array(
+          fields.object({
+            titleFr: fields.text({ label: "Titre du chapitre : FR" }),
+            titleEn: fields.text({ label: "Titre du chapitre : EN" }),
+            titleIt: fields.text({ label: "Titre du chapitre : IT" }),
+            introFr: fields.text({ label: "Texte du chapitre : FR", multiline: true }),
+            introEn: fields.text({ label: "Texte du chapitre : EN", multiline: true }),
+            introIt: fields.text({ label: "Texte du chapitre : IT", multiline: true }),
+            themes: fields.multiselect({
+              label: "Thèmes de photos affichés dans ce chapitre",
+              description:
+                "Les photos viennent de la bibliothèque du château, rangée par thème. Cochez les thèmes à regrouper dans ce chapitre.",
+              options: [
+                { label: "Chambres", value: "chambres" },
+                { label: "Château (extérieur)", value: "chateau-exterieur" },
+                { label: "Jardin & fleurs", value: "jardin-fleurs" },
+                { label: "Piscine", value: "piscine" },
+                { label: "Salons (intérieurs)", value: "salons-interieurs" },
+                { label: "Table & restauration", value: "restauration" },
+                { label: "Mariage", value: "mariage" },
+                { label: "Séminaire", value: "seminaire" },
+                { label: "Retraite & yoga", value: "retraite-yoga" },
+                { label: "Famille", value: "famille" },
+                { label: "Fondateurs", value: "fondateurs" },
+              ],
+            }),
+            hidden: fields.checkbox({
+              label: "Masquer ce chapitre",
+              description: "Coché, le chapitre n'apparaît pas sur le site (les photos restent en réserve).",
+              defaultValue: false,
+            }),
+          }),
+          {
+            label: "Chapitres de la galerie",
+            description:
+              "L'ordre des chapitres ici est l'ordre affiché sur le site. Les photos et leur qualité ne changent pas : on choisit seulement les textes, l'ordre et les thèmes regroupés.",
+            itemLabel: (p) => p.fields.titleFr.value || "Chapitre",
+          }
+        ),
+      },
     }),
     settings: singleton({
       label: "Réglages header & footer (FR · EN · IT)",

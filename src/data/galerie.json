@@ -1,0 +1,57 @@
+{
+  "leadFr": "Le domaine en photographies, chambre par chambre, saison après saison.",
+  "leadEn": "The estate in photographs, room by room, season after season.",
+  "leadIt": "La tenuta in fotografie, camera dopo camera, stagione dopo stagione.",
+  "chapters": [
+    {
+      "titleFr": "Les chambres",
+      "titleEn": "The rooms",
+      "titleIt": "Le camere",
+      "introFr": "Dix chambres, aucune identique. Poutres, parquets et tissus choisis pièce par pièce.",
+      "introEn": "Ten rooms, no two alike. Beams, parquet and fabrics chosen one by one.",
+      "introIt": "Dieci camere, nessuna uguale. Travi, parquet e tessuti scelti uno a uno.",
+      "themes": ["chambres"],
+      "hidden": false
+    },
+    {
+      "titleFr": "Le château & le parc",
+      "titleEn": "The château & grounds",
+      "titleIt": "Il castello e il parco",
+      "introFr": "Quatorze hectares, une demeure du XVIᵉ siècle, un étang et une piscine chauffée.",
+      "introEn": "Fourteen hectares, a 16th-century house, a pond and a heated pool.",
+      "introIt": "Quattordici ettari, una dimora del XVI secolo, uno stagno e una piscina riscaldata.",
+      "themes": ["chateau-exterieur", "jardin-fleurs", "piscine"],
+      "hidden": false
+    },
+    {
+      "titleFr": "Les salons",
+      "titleEn": "The lounges",
+      "titleIt": "I saloni",
+      "introFr": "Les pièces de réception, entre feux de cheminée et grandes tablées.",
+      "introEn": "The reception rooms, from fireside corners to long shared tables.",
+      "introIt": "Le sale di ricevimento, tra camini accesi e grandi tavolate.",
+      "themes": ["salons-interieurs"],
+      "hidden": false
+    },
+    {
+      "titleFr": "La table",
+      "titleEn": "The table",
+      "titleIt": "La tavola",
+      "introFr": "Petits-déjeuners maison, planches à partager et dîners italiens, servis aux résidents.",
+      "introEn": "Homemade breakfasts, sharing boards and Italian dinners, served to guests.",
+      "introIt": "Colazioni fatte in casa, taglieri da condividere e cene italiane, per gli ospiti.",
+      "themes": ["restauration"],
+      "hidden": false
+    },
+    {
+      "titleFr": "Célébrations",
+      "titleEn": "Celebrations",
+      "titleIt": "Celebrazioni",
+      "introFr": "Mariages, séminaires, retraites et réunions de famille, quand le château se privatise.",
+      "introEn": "Weddings, seminars, retreats and family gatherings, when the château is yours alone.",
+      "introIt": "Matrimoni, seminari, ritiri e riunioni di famiglia, quando il castello è tutto vostro.",
+      "themes": ["mariage", "seminaire", "retraite-yoga", "famille"],
+      "hidden": false
+    }
+  ]
+}

@@ -5,6 +5,7 @@
 // chambres + événements voulu. Les 4 photos « fondateurs » restent hors galerie
 // (elles vivent sur /notre-histoire).
 import manifestRaw from "../../public/images/bibliotheque/manifest.json";
+import galerieData from "../data/galerie.json";
 
 export type Lang = "fr" | "en" | "it";
 
@@ -33,8 +34,10 @@ export type Chapter = {
   photos: Photo[];
 };
 
-// Chapitres : ordre d'affichage + thèmes regroupés + textes FR/EN/IT.
-const CHAPTERS: {
+// Chapitres par défaut : ordre, thèmes regroupés, textes et alt SEO FR/EN/IT.
+// Sert de repli si le fichier CMS src/data/galerie.json est vide, et de source
+// des textes « alt » (non exposés dans le CMS) via le thème principal.
+const DEFAULT_CHAPTERS: {
   id: string;
   numeral: string;
   themes: string[];
@@ -104,6 +107,52 @@ const CHAPTERS: {
   },
 ];
 
+// ---- Chapitres effectifs : pilotés par le CMS (src/data/galerie.json) ----
+// Les fondateurs éditent titres, intros, ordre, thèmes et visibilité dans Keystatic.
+// Les photos (et leurs dimensions) restent servies depuis la bibliothèque + manifest.
+type CmsChapter = {
+  titleFr?: string; titleEn?: string; titleIt?: string;
+  introFr?: string; introEn?: string; introIt?: string;
+  themes?: string[];
+  hidden?: boolean;
+};
+type EffectiveChapter = {
+  themes: string[];
+  title: Record<Lang, string>;
+  intro: Record<Lang, string>;
+  alt: Record<Lang, string>;
+};
+
+const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
+
+// alt SEO conservé : on retrouve le chapitre par défaut qui partage le thème
+// principal, sinon on retombe sur un alt générique bâti depuis le titre.
+const altForThemes = (themes: string[]): Record<Lang, string> => {
+  const primary = themes[0];
+  const match = DEFAULT_CHAPTERS.find((d) => d.themes[0] === primary);
+  if (match) return match.alt;
+  return {
+    fr: "Château de la Huberdière",
+    en: "Château de la Huberdière",
+    it: "Château de la Huberdière",
+  };
+};
+
+const effectiveChapters = (): EffectiveChapter[] => {
+  const cms = (galerieData as { chapters?: CmsChapter[] }).chapters ?? [];
+  const usable = cms.filter((c) => !c.hidden && (c.themes?.length ?? 0) > 0);
+  if (usable.length === 0) {
+    // Repli intégral sur les chapitres codés en dur.
+    return DEFAULT_CHAPTERS.map((d) => ({ themes: d.themes, title: d.title, intro: d.intro, alt: d.alt }));
+  }
+  return usable.map((c) => ({
+    themes: c.themes as string[],
+    title: { fr: c.titleFr || "", en: c.titleEn || c.titleFr || "", it: c.titleIt || c.titleFr || "" },
+    intro: { fr: c.introFr || "", en: c.introEn || c.introFr || "", it: c.introIt || c.introFr || "" },
+    alt: altForThemes(c.themes as string[]),
+  }));
+};
+
 const orientOf = (w: number, h: number): Photo["orient"] => {
   const r = w / h;
   if (r >= 1.15) return "land";
@@ -120,31 +169,33 @@ const withLeadFirst = (photos: Photo[]): Photo[] => {
 };
 
 export function galleryChapters(lang: Lang): Chapter[] {
-  return CHAPTERS.map((c) => {
-    const items = manifest.items.filter((it) => c.themes.includes(it.theme));
-    const rel = (file: string) => file.replace(/^bibliotheque\//, "");
-    const photos: Photo[] = items.map((it) => ({
-      full: `/images/${it.file}`,
-      thumb: `/images/galerie-thumb/${rel(it.file)}`,
-      w: it.w,
-      h: it.h,
-      orient: orientOf(it.w, it.h),
-      alt: c.alt[lang],
+  const rel = (file: string) => file.replace(/^bibliotheque\//, "");
+  return effectiveChapters()
+    .map((c) => {
+      const items = manifest.items.filter((it) => c.themes.includes(it.theme));
+      const photos: Photo[] = items.map((it) => ({
+        full: `/images/${it.file}`,
+        thumb: `/images/galerie-thumb/${rel(it.file)}`,
+        w: it.w,
+        h: it.h,
+        orient: orientOf(it.w, it.h),
+        alt: c.alt[lang],
+      }));
+      return { config: c, photos: withLeadFirst(photos) };
+    })
+    .filter((x) => x.photos.length > 0)
+    .map(({ config, photos }, i) => ({
+      id: config.themes[0],
+      numeral: ROMAN[i] || String(i + 1),
+      title: config.title[lang],
+      intro: config.intro[lang],
+      count: photos.length,
+      photos,
     }));
-    const ordered = withLeadFirst(photos);
-    return {
-      id: c.id,
-      numeral: c.numeral,
-      title: c.title[lang],
-      intro: c.intro[lang],
-      count: ordered.length,
-      photos: ordered,
-    };
-  });
 }
 
 export const galleryTotal = manifest.items.filter((it) =>
-  CHAPTERS.some((c) => c.themes.includes(it.theme))
+  effectiveChapters().some((c) => c.themes.includes(it.theme))
 ).length;
 
 // Libellés d'interface localisés (hors données photo).
@@ -162,7 +213,7 @@ export const galleryUI: Record<Lang, {
   fr: {
     eyebrow: "Touraine · Vallée de la Loire",
     title: "Galerie",
-    lead: `Le domaine en photographies, chambre par chambre, saison après saison.`,
+    lead: (galerieData as { leadFr?: string }).leadFr || `Le domaine en photographies, chambre par chambre, saison après saison.`,
     hint: "Cliquez une photo pour l'ouvrir en plein écran.",
     close: "Fermer",
     prev: "Précédente",
@@ -174,7 +225,7 @@ export const galleryUI: Record<Lang, {
   en: {
     eyebrow: "Touraine · Loire Valley",
     title: "Gallery",
-    lead: `The estate in photographs, room by room, season after season.`,
+    lead: (galerieData as { leadEn?: string }).leadEn || `The estate in photographs, room by room, season after season.`,
     hint: "Click a photo to open it full screen.",
     close: "Close",
     prev: "Previous",
@@ -186,7 +237,7 @@ export const galleryUI: Record<Lang, {
   it: {
     eyebrow: "Turenna · Valle della Loira",
     title: "Galleria",
-    lead: `La tenuta in fotografie, camera dopo camera, stagione dopo stagione.`,
+    lead: (galerieData as { leadIt?: string }).leadIt || `La tenuta in fotografie, camera dopo camera, stagione dopo stagione.`,
     hint: "Clicca una foto per aprirla a schermo intero.",
     close: "Chiudi",
     prev: "Precedente",
