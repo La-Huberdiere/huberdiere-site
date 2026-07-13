@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "astro build && node scripts/patch-vercel-404.mjs",
   "crons": [
     { "path": "/api/cron/rapport", "schedule": "0 6 28-31 * *" },
     { "path": "/api/cron/rebuild", "schedule": "0 5 * * *" }

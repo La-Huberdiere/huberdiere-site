@@ -24,9 +24,9 @@ export default defineConfig({
         defaultLocale: "fr",
         locales: { fr: "fr-FR", en: "en-GB", it: "it-IT" },
       },
-      // Exclut les pages sans valeur d'indexation (remerciement, éditeur).
+      // Exclut les pages sans valeur d'indexation (remerciement, 404, éditeur).
       filter: (page) =>
-        !/\/merci|\/keystatic/.test(page),
+        !/\/merci|\/404|\/keystatic/.test(page),
     }),
   ],
   // Multilingue calé sur le site Wix actuel : FR par défaut (sans préfixe),
