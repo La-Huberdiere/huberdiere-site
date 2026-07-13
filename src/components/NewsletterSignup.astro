@@ -2,32 +2,9 @@
 // Bloc d'inscription newsletter (footer, toutes pages). Envoie vers /api/newsletter
 // (Brevo, liste newsletter_form) sans quitter la page. Émet le goal Umami newsletter_signup.
 const { lang = "fr" } = Astro.props;
-const T = {
-  fr: {
-    title: "La lettre du château",
-    lead: "Saisons, événements et inspirations, quelques fois par an. Pas de spam.",
-    placeholder: "Votre email",
-    button: "S'inscrire",
-    ok: "Merci, votre inscription est bien prise en compte.",
-    err: "Une erreur est survenue. Réessayez dans un instant.",
-  },
-  en: {
-    title: "The château newsletter",
-    lead: "Seasons, events and inspiration, a few times a year. No spam.",
-    placeholder: "Your email",
-    button: "Subscribe",
-    ok: "Thank you, your subscription is confirmed.",
-    err: "Something went wrong. Please try again in a moment.",
-  },
-  it: {
-    title: "La newsletter del castello",
-    lead: "Stagioni, eventi e ispirazioni, qualche volta l'anno. Niente spam.",
-    placeholder: "La tua email",
-    button: "Iscriviti",
-    ok: "Grazie, la tua iscrizione è confermata.",
-    err: "Si è verificato un errore. Riprova tra un istante.",
-  },
-}[lang as "fr" | "en" | "it"];
+// Textes éditables depuis Keystatic (singleton « Textes du site »).
+import siteTexts from "../data/site-texts.json";
+const T = ((siteTexts as any)[lang] ?? (siteTexts as any).fr).newsletter;
 ---
 <section class="newsletter" aria-label={T.title}>
   <div class="nl-inner">

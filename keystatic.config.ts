@@ -338,6 +338,63 @@ const contactSchema = {
   responseLine: fields.text({ label: "Ligne « réponse sous 24h »" }),
 };
 
+// Textes système : pages « Merci » et « 404 », bandeau cookies, encart newsletter.
+// Petits textes visibles sur le site mais qui ne sont pas des pages éditoriales.
+const linkPair = () =>
+  fields.array(
+    fields.object({
+      label: fields.text({ label: "Libellé" }),
+      href: fields.text({ label: "Lien" }),
+    }),
+    { label: "Liens", itemLabel: (p) => p.fields.label.value || "Lien" }
+  );
+
+const siteTextsSchema = {
+  thanks: fields.object(
+    {
+      eyebrow: fields.text({ label: "Sur-titre" }),
+      titleLine1: fields.text({ label: "Titre (ligne 1)" }),
+      titleLine2Italic: fields.text({ label: "Titre (ligne 2, en italique)" }),
+      lead: fields.text({ label: "Texte", multiline: true }),
+      response: fields.text({ label: "Ligne « réponse sous 24h »" }),
+      home: fields.text({ label: "Bouton retour à l'accueil" }),
+      exploreTitle: fields.text({ label: "Titre « en attendant, explorez »" }),
+      links: linkPair(),
+    },
+    { label: "Page « Merci » (après envoi d'un formulaire)" }
+  ),
+  notFound: fields.object(
+    {
+      eyebrow: fields.text({ label: "Sur-titre" }),
+      title: fields.text({ label: "Titre" }),
+      text: fields.text({ label: "Texte", multiline: true }),
+      home: fields.text({ label: "Bouton retour à l'accueil" }),
+      links: linkPair(),
+    },
+    { label: "Page « 404 » (page introuvable)" }
+  ),
+  cookies: fields.object(
+    {
+      text: fields.text({ label: "Texte du bandeau", multiline: true }),
+      accept: fields.text({ label: "Bouton accepter" }),
+      refuse: fields.text({ label: "Bouton refuser" }),
+      link: fields.text({ label: "Libellé du lien confidentialité" }),
+    },
+    { label: "Bandeau cookies" }
+  ),
+  newsletter: fields.object(
+    {
+      title: fields.text({ label: "Titre" }),
+      lead: fields.text({ label: "Sous-titre", multiline: true }),
+      placeholder: fields.text({ label: "Champ email (texte d'invite)" }),
+      button: fields.text({ label: "Bouton" }),
+      ok: fields.text({ label: "Message de succès" }),
+      err: fields.text({ label: "Message d'erreur" }),
+    },
+    { label: "Encart newsletter (bas de page)" }
+  ),
+};
+
 // ---- Singletons : une entrée par page, contenu nesté par langue ----
 // Sections Français / English / Italiano dans le même écran d'édition : on édite
 // la page d'accueil et on voit/corrige directement le wording IT en dessous.
@@ -478,7 +535,7 @@ export default config({
         "galerie",
       ],
       "Le blog": ["articles"],
-      "Réglages du site": ["settings", "reviews"],
+      "Réglages du site": ["settings", "reviews", "siteTexts"],
       "Autres pages": ["pages"],
       "Traductions automatiques (ne pas modifier)": ["pagesEn", "pagesIt", "articlesEn", "articlesIt"],
     },
@@ -599,6 +656,12 @@ export default config({
       path: "src/data/settings",
       format: { data: "json" },
       schema: langSections(settingsSchema),
+    }),
+    siteTexts: singleton({
+      label: "Textes du site (Merci, 404, cookies, newsletter)",
+      path: "src/data/site-texts",
+      format: { data: "json" },
+      schema: langSections(siteTextsSchema),
     }),
     reviews: singleton({
       label: "Avis clients (home)",

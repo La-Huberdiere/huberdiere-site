@@ -1,21 +1,18 @@
 ---
 import Base from "../layouts/Base.astro";
+// Texte éditable depuis Keystatic (singleton « Textes du site »). La page 404
+// est servie en français (Astro ne génère qu'une seule page d'erreur).
+import siteTexts from "../data/site-texts.json";
+const nf = siteTexts.fr.notFound;
 ---
 <Base title="Page introuvable · Château de la Huberdière" lang="fr" path="/404" noindex={true}>
   <main class="notfound">
-    <p class="nf-eyebrow">Erreur 404</p>
-    <h1>Cette page s'est égarée dans le parc</h1>
-    <p class="nf-text">
-      La page que vous cherchez n'existe pas ou a été déplacée. Revenez à l'accueil
-      ou laissez-vous guider vers nos pages principales.
-    </p>
-    <a class="nf-cta" href="/">Retour à l'accueil</a>
+    <p class="nf-eyebrow">{nf.eyebrow}</p>
+    <h1>{nf.title}</h1>
+    <p class="nf-text">{nf.text}</p>
+    <a class="nf-cta" href="/">{nf.home}</a>
     <nav class="nf-links" aria-label="Pages principales">
-      <a href="/mariage">Mariage</a>
-      <a href="/sejour">Hôtel de charme</a>
-      <a href="/seminaire">Séminaire</a>
-      <a href="/famille">Réunions de famille</a>
-      <a href="/contact">Contact</a>
+      {nf.links.map((l) => <a href={l.href}>{l.label}</a>)}
     </nav>
   </main>
 </Base>

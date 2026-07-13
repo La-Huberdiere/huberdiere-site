@@ -1,0 +1,131 @@
+{
+  "fr": {
+    "thanks": {
+      "eyebrow": "Demande envoyée",
+      "titleLine1": "Merci, votre demande",
+      "titleLine2Italic": "est bien arrivée.",
+      "lead": "Nous revenons vers vous sous 24 heures avec une première réponse. À très bientôt au Château de la Huberdière.",
+      "response": "Réponse sous 24 heures",
+      "home": "Retour à l'accueil",
+      "exploreTitle": "En attendant, explorez le domaine",
+      "links": [
+        { "label": "Le mariage au château", "href": "/mariage" },
+        { "label": "L'hôtel de charme", "href": "/sejour" },
+        { "label": "Le journal du château", "href": "/blog" }
+      ]
+    },
+    "notFound": {
+      "eyebrow": "Erreur 404",
+      "title": "Cette page s'est égarée dans le parc",
+      "text": "La page que vous cherchez n'existe pas ou a été déplacée. Revenez à l'accueil ou laissez-vous guider vers nos pages principales.",
+      "home": "Retour à l'accueil",
+      "links": [
+        { "label": "Mariage", "href": "/mariage" },
+        { "label": "Hôtel de charme", "href": "/sejour" },
+        { "label": "Séminaire", "href": "/seminaire" },
+        { "label": "Réunions de famille", "href": "/famille" },
+        { "label": "Contact", "href": "/contact" }
+      ]
+    },
+    "cookies": {
+      "text": "Nous utilisons des cookies de mesure d'audience pour améliorer le site. Vous pouvez accepter ou refuser.",
+      "accept": "Accepter",
+      "refuse": "Refuser",
+      "link": "Politique de confidentialité"
+    },
+    "newsletter": {
+      "title": "La lettre du château",
+      "lead": "Saisons, événements et inspirations, quelques fois par an. Pas de spam.",
+      "placeholder": "Votre email",
+      "button": "S'inscrire",
+      "ok": "Merci, votre inscription est bien prise en compte.",
+      "err": "Une erreur est survenue. Réessayez dans un instant."
+    }
+  },
+  "en": {
+    "thanks": {
+      "eyebrow": "Request sent",
+      "titleLine1": "Thank you, your request",
+      "titleLine2Italic": "has been received.",
+      "lead": "We will get back to you within 24 hours with a first reply. See you soon at Château de la Huberdière.",
+      "response": "Reply within 24 hours",
+      "home": "Back to home",
+      "exploreTitle": "In the meantime, explore the estate",
+      "links": [
+        { "label": "Weddings at the château", "href": "/mariage" },
+        { "label": "The boutique hotel", "href": "/sejour" },
+        { "label": "The château journal", "href": "/blog" }
+      ]
+    },
+    "notFound": {
+      "eyebrow": "Error 404",
+      "title": "This page wandered off into the grounds",
+      "text": "The page you are looking for does not exist or has moved. Head back home or let us guide you to our main pages.",
+      "home": "Back to home",
+      "links": [
+        { "label": "Weddings", "href": "/mariage" },
+        { "label": "Boutique hotel", "href": "/sejour" },
+        { "label": "Seminars", "href": "/seminaire" },
+        { "label": "Family gatherings", "href": "/famille" },
+        { "label": "Contact", "href": "/contact" }
+      ]
+    },
+    "cookies": {
+      "text": "We use analytics cookies to improve the site. You can accept or decline.",
+      "accept": "Accept",
+      "refuse": "Decline",
+      "link": "Privacy policy"
+    },
+    "newsletter": {
+      "title": "The château newsletter",
+      "lead": "Seasons, events and inspiration, a few times a year. No spam.",
+      "placeholder": "Your email",
+      "button": "Subscribe",
+      "ok": "Thank you, your subscription is confirmed.",
+      "err": "Something went wrong. Please try again in a moment."
+    }
+  },
+  "it": {
+    "thanks": {
+      "eyebrow": "Richiesta inviata",
+      "titleLine1": "Grazie, la tua richiesta",
+      "titleLine2Italic": "è ben arrivata.",
+      "lead": "Ti risponderemo entro 24 ore con una prima risposta. A presto al Château de la Huberdière.",
+      "response": "Risposta entro 24 ore",
+      "home": "Torna alla home",
+      "exploreTitle": "Nel frattempo, scopri la tenuta",
+      "links": [
+        { "label": "Matrimoni al castello", "href": "/mariage" },
+        { "label": "L'hotel di charme", "href": "/sejour" },
+        { "label": "Il giornale del castello", "href": "/blog" }
+      ]
+    },
+    "notFound": {
+      "eyebrow": "Errore 404",
+      "title": "Questa pagina si è persa nel parco",
+      "text": "La pagina che cerchi non esiste o è stata spostata. Torna alla home o lasciati guidare verso le nostre pagine principali.",
+      "home": "Torna alla home",
+      "links": [
+        { "label": "Matrimoni", "href": "/mariage" },
+        { "label": "Hotel di charme", "href": "/sejour" },
+        { "label": "Seminari", "href": "/seminaire" },
+        { "label": "Riunioni di famiglia", "href": "/famille" },
+        { "label": "Contatti", "href": "/contact" }
+      ]
+    },
+    "cookies": {
+      "text": "Utilizziamo cookie di analisi per migliorare il sito. Puoi accettare o rifiutare.",
+      "accept": "Accetta",
+      "refuse": "Rifiuta",
+      "link": "Informativa sulla privacy"
+    },
+    "newsletter": {
+      "title": "La newsletter del castello",
+      "lead": "Stagioni, eventi e ispirazioni, qualche volta l'anno. Niente spam.",
+      "placeholder": "La tua email",
+      "button": "Iscriviti",
+      "ok": "Grazie, la tua iscrizione è confermata.",
+      "err": "Si è verificato un errore. Riprova tra un istante."
+    }
+  }
+}

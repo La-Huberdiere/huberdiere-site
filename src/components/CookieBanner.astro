@@ -2,26 +2,9 @@
 // Bannière de consentement RGPD. Pilote le Consent Mode v2 (défini dans Base.astro).
 // Refus par défaut : rien n'est tracké tant que l'utilisateur n'a pas accepté.
 const { lang = "fr" } = Astro.props;
-const t = {
-  fr: {
-    text: "Nous utilisons des cookies de mesure d'audience pour améliorer le site. Vous pouvez accepter ou refuser.",
-    accept: "Accepter",
-    refuse: "Refuser",
-    link: "Politique de confidentialité",
-  },
-  en: {
-    text: "We use analytics cookies to improve the site. You can accept or decline.",
-    accept: "Accept",
-    refuse: "Decline",
-    link: "Privacy policy",
-  },
-  it: {
-    text: "Utilizziamo cookie di analisi per migliorare il sito. Puoi accettare o rifiutare.",
-    accept: "Accetta",
-    refuse: "Rifiuta",
-    link: "Informativa sulla privacy",
-  },
-}[lang as "fr" | "en" | "it"];
+// Texte éditable depuis Keystatic (singleton « Textes du site »).
+import siteTexts from "../data/site-texts.json";
+const t = ((siteTexts as any)[lang] ?? (siteTexts as any).fr).cookies;
 const policyHref = "/politique-de-confidentialite";
 ---
 
