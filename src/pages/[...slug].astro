@@ -1,16 +1,19 @@
 ---
 import Base from "../layouts/Base.astro";
 import FreePage from "../components/FreePage.astro";
+import LegalPage from "../components/LegalPage.astro";
 import { pageStaticPaths } from "../lib/content";
 
 // Rend toute "page libre" FR créée dans Keystatic (collection Pages libres).
 // Une page « tarifs » dans Keystatic apparaît automatiquement sur /tarifs.
+// Le champ « Type de mise en page » choisit le rendu : éditorial (photo) ou sobre (légal).
 export async function getStaticPaths() {
   return pageStaticPaths("pages");
 }
 
 const { entry, html } = Astro.props;
 const { slug } = Astro.params;
+const isSimple = entry.layout === "simple";
 ---
 <Base
   title={`${entry.title} · Château de la Huberdière`}
@@ -18,5 +21,7 @@ const { slug } = Astro.params;
   lang="fr"
   path={`/${slug}`}
 >
-  <FreePage entry={entry} html={html} lang="fr" path={`/${slug}`} slug={slug} />
+  {isSimple
+    ? <LegalPage entry={entry} html={html} />
+    : <FreePage entry={entry} html={html} lang="fr" path={`/${slug}`} slug={slug} />}
 </Base>

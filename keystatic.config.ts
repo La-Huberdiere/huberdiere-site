@@ -437,6 +437,16 @@ const pagesCollection = (label: string, dir: string, previewBase: string) =>
         slug: { label: "Adresse (URL)", description: "L'adresse de la page, ex. « tarifs » → /tarifs" },
       }),
       description: fields.text({ label: "Méta description (SEO)", multiline: true }),
+      layout: fields.select({
+        label: "Type de mise en page",
+        description:
+          "« Éditoriale » = grande photo et mise en page magazine (comme Activités). « Sobre » = texte seul, sans photo ni bouton, pour les pages légales.",
+        options: [
+          { label: "Éditoriale (avec photo)", value: "editorial" },
+          { label: "Sobre (page légale, texte seul)", value: "simple" },
+        ],
+        defaultValue: "editorial",
+      }),
       heroImage: fields.image({
         label: "Image de bandeau (optionnelle)",
         directory: "public/images/pages",

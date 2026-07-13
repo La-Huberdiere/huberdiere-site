@@ -1,6 +1,7 @@
 ---
 import Base from "../../layouts/Base.astro";
 import FreePage from "../../components/FreePage.astro";
+import LegalPage from "../../components/LegalPage.astro";
 import { pageStaticPaths } from "../../lib/content";
 
 // Pages libres traduites (collection pages-en). Slugs identiques au FR.
@@ -10,6 +11,7 @@ export async function getStaticPaths() {
 
 const { entry, html } = Astro.props;
 const { slug } = Astro.params;
+const isSimple = entry.layout === "simple";
 ---
 <Base
   title={`${entry.title} · Château de la Huberdière`}
@@ -17,5 +19,7 @@ const { slug } = Astro.params;
   lang="en"
   path={`/${slug}`}
 >
-  <FreePage entry={entry} html={html} lang="en" path={`/${slug}`} slug={slug} />
+  {isSimple
+    ? <LegalPage entry={entry} html={html} />
+    : <FreePage entry={entry} html={html} lang="en" path={`/${slug}`} slug={slug} />}
 </Base>

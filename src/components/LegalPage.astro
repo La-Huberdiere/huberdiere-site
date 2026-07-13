@@ -1,0 +1,47 @@
+---
+// Page libre en mise en page sobre (pages légales : mentions légales, confidentialité).
+// Pas de hero photo, pas de lettrine, pas de bloc d'appel : juste le texte, lisible.
+// Choisie quand la page a le champ « Type de mise en page » = Sobre dans Keystatic.
+const { entry, html } = Astro.props;
+---
+<main class="legal">
+  <h1>{entry.title}</h1>
+  <div class="legal-prose" set:html={html} />
+</main>
+
+<style>
+  .legal {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: clamp(120px, 16vw, 160px) 24px 110px;
+    font-family: "Montserrat", sans-serif;
+    color: #2e3a48;
+    line-height: 1.7;
+  }
+  .legal h1 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    color: #212121;
+    margin: 0 0 32px;
+  }
+  .legal-prose :global(h2) {
+    font-family: "Playfair Display", Georgia, serif;
+    font-weight: 500;
+    color: #8b0000;
+    font-size: 1.3rem;
+    margin: 40px 0 12px;
+  }
+  .legal-prose :global(h3) {
+    font-family: "Playfair Display", Georgia, serif;
+    font-weight: 500;
+    color: #212121;
+    font-size: 1.1rem;
+    margin: 28px 0 10px;
+  }
+  .legal-prose :global(p) { margin: 0 0 14px; color: #4a4a4a; }
+  .legal-prose :global(ul) { margin: 0 0 18px; padding-left: 22px; color: #4a4a4a; }
+  .legal-prose :global(li) { margin: 0 0 8px; }
+  .legal-prose :global(a) { color: #8b0000; text-decoration: underline; text-underline-offset: 2px; }
+  .legal-prose :global(strong) { color: #212121; font-weight: 600; }
+</style>
