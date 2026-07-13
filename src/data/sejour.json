@@ -685,12 +685,12 @@
   },
   "it": {
     "title": "Hotel di charme vicino ad Amboise · Château de la Huberdière, Valle della Loira",
-    "description": "Un hotel di charme in un castello vicino ad Amboise, nel cuore dei Castelli della Loira. Dieci camere d'eccezione dotate di aria condizionata, un parco di 14 ettari, una piscina a corsie e la cucina casalinga: l'atmosfera di una pensione, il servizio di un hotel a 3 stelle.",
+    "description": "Un hotel di charme in un castello vicino ad Amboise, nel cuore dei Castelli della Loira. Dieci camere d'eccezione dotate di aria condizionata, un parco di 14 ettari, una piscina a corsie e la cucina casalinga: l'atmosfera di un bed & breakfast, il servizio di un hotel a 3 stelle.",
     "hero": {
       "eyebrow": "Hotel di charme · nei pressi di Amboise",
       "titleLine1": "Un hotel di charme",
       "titleLine2Italic": "al castello.",
-      "lead": "Un hotel di charme in un castello della Valle della Loira, a pochi minuti da Amboise. Dieci camere d'eccezione, il servizio di un hotel a 3 stelle, l'atmosfera accogliente di una pensione."
+      "lead": "Un hotel di charme in un castello della Valle della Loira, a pochi minuti da Amboise. Dieci camere d'eccezione, il servizio di un hotel a 3 stelle, l'atmosfera accogliente di un bed & breakfast."
     },
     "intro": [
       "A due passi da Amboise, il castello vi accoglie come un hotel fuori dal comune: dieci camere arredate con gusto, ognuna con la propria personalità e il bagno privato, tutte climatizzate e situate al secondo piano. L'atmosfera di una camera per gli ospiti, il comfort e il servizio di un hotel a 3 stelle. Una base ideale per visitare i castelli della Loira ed esplorare la Touraine.",
@@ -704,7 +704,7 @@
       },
       {
         "num": "II",
-        "title": "Lo spirito della pensione",
+        "title": "Lo spirito del bed & breakfast",
         "text": "Il comfort e il servizio di un hotel a 3 stelle, l'accoglienza calorosa e la cucina di una casa di famiglia."
       },
       {
@@ -1000,8 +1000,8 @@
     },
     "faq": [
       {
-        "q": "Siete un hotel o una pensione?",
-        "a": "Il castello è un hotel di charme a 3 stelle. Qui si respirano l'atmosfera, la cordialità e l'accoglienza di una pensione, con il livello di servizio, il comfort e i servizi di un hotel."
+        "q": "Siete un hotel o un bed & breakfast?",
+        "a": "Il castello è un hotel di charme a 3 stelle. Qui si respirano l'atmosfera, la cordialità e l'accoglienza di un bed & breakfast, con il livello di servizio, il comfort e i servizi di un hotel."
       },
       {
         "q": "A che distanza da Amboise si trova il castello?",
