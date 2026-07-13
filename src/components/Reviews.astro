@@ -1,7 +1,7 @@
 ---
 // Section avis clients. Ne s'affiche QUE si reviews.items contient de vrais avis.
-// Le texte des avis n'est pas traduit (il garde la langue d'origine de l'auteur) ;
-// seuls l'intitulé de section et le libellé de note sont localisés.
+// Les avis sont traduits par langue (textEn/textIt) ; à défaut, on retombe sur le
+// texte FR d'origine. L'intitulé de section et le libellé de note sont localisés.
 import reviews from "../data/reviews.json";
 
 const { lang = "fr" } = Astro.props;
@@ -12,8 +12,16 @@ const items = reviews.items as Array<{
   source?: string;
   rating?: number | string;
   text: string;
+  textEn?: string;
+  textIt?: string;
   date?: string;
 }>;
+
+// Texte de l'avis dans la langue courante (repli FR).
+const quoteText = (r: { text: string; textEn?: string; textIt?: string }) =>
+  lang === "en" ? r.textEn ?? r.text : lang === "it" ? r.textIt ?? r.text : r.text;
+// Guillemets localisés : « … » (FR/IT), “ … ” (EN).
+const q = lang === "en" ? { o: "“", c: "”" } : { o: "« ", c: " »" };
 
 // Notes affichées par source (Booking + Google). Séparateur décimal localisé
 // (virgule en FR/IT, point en EN), libellé « avis » traduit.
@@ -36,7 +44,7 @@ const ratingLines = ratings.map(
     <div class="reviews-grid">
       {items.map((r) => (
         <figure class="review-card reveal">
-          <blockquote>« {r.text} »</blockquote>
+          <blockquote>{q.o}{quoteText(r)}{q.c}</blockquote>
           <figcaption>
             <span class="rv-author">{r.author}</span>
             {r.location && <span class="rv-loc">{r.location}</span>}

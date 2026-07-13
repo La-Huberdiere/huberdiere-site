@@ -19,7 +19,9 @@
       "source": "Booking.com",
       "rating": "",
       "date": "",
-      "text": "L'accueil des maîtres de maison, venus nous chercher dans le village. Le bâtiment et le parc exceptionnels. La nourriture délicieuse."
+      "text": "L'accueil des maîtres de maison, venus nous chercher dans le village. Le bâtiment et le parc exceptionnels. La nourriture délicieuse.",
+      "textEn": "The welcome from our hosts, who came to collect us in the village. The building and grounds are exceptional. The food delicious.",
+      "textIt": "L'accoglienza dei padroni di casa, venuti a prenderci in paese. L'edificio e il parco eccezionali. Il cibo delizioso."
     },
     {
       "author": "Brigitte",
@@ -27,7 +29,9 @@
       "source": "Booking.com",
       "rating": "",
       "date": "",
-      "text": "Un long week-end parfait dans un écrin de verdure au calme, où l'on peut voir biche et vol de héron. Lodovica et Patrick sont des hôtes charmants et très à l'écoute."
+      "text": "Un long week-end parfait dans un écrin de verdure au calme, où l'on peut voir biche et vol de héron. Lodovica et Patrick sont des hôtes charmants et très à l'écoute.",
+      "textEn": "A perfect long weekend in a peaceful green setting, where you can spot deer and herons in flight. Lodovica and Patrick are charming, attentive hosts.",
+      "textIt": "Un lungo weekend perfetto in un angolo di verde tranquillo, dove si possono vedere caprioli e aironi in volo. Lodovica e Patrick sono padroni di casa affascinanti e molto attenti."
     },
     {
       "author": "Isabelle",
@@ -35,7 +39,9 @@
       "source": "Booking.com",
       "rating": "",
       "date": "",
-      "text": "L'accueil bienveillant des hôtes, la décoration raffinée et une literie haut de gamme pour un séjour ressourçant. La table d'hôte délicieuse. Ce fut un séjour enchanteur, à refaire sans modération. Nous reviendrons."
+      "text": "L'accueil bienveillant des hôtes, la décoration raffinée et une literie haut de gamme pour un séjour ressourçant. La table d'hôte délicieuse. Ce fut un séjour enchanteur, à refaire sans modération. Nous reviendrons.",
+      "textEn": "The kind welcome from the hosts, the refined decor and top-quality bedding for a restorative stay. The table d'hôtes delicious. It was an enchanting stay, well worth repeating. We will be back.",
+      "textIt": "L'accoglienza premurosa dei padroni di casa, l'arredamento raffinato e una biancheria da letto di alta gamma per un soggiorno rigenerante. La tavola dell'ospite deliziosa. È stato un soggiorno incantevole, da rifare senza esitazione. Torneremo."
     },
     {
       "author": "Frank",
@@ -43,7 +49,9 @@
       "source": "Booking.com",
       "rating": "",
       "date": "",
-      "text": "L'endroit est très calme et magnifique. Le goût du détail, la piscine très intimiste, le succulent petit-déjeuner, les charmants propriétaires."
+      "text": "L'endroit est très calme et magnifique. Le goût du détail, la piscine très intimiste, le succulent petit-déjeuner, les charmants propriétaires.",
+      "textEn": "The place is wonderfully quiet and beautiful. The eye for detail, the intimate pool, the delicious breakfast, the charming owners.",
+      "textIt": "Il luogo è molto tranquillo e magnifico. La cura del dettaglio, la piscina molto intima, la squisita colazione, i proprietari affascinanti."
     },
     {
       "author": "Mélanie",
@@ -51,7 +59,9 @@
       "source": "Booking.com",
       "rating": "",
       "date": "",
-      "text": "Tout ! Le lieu, l'environnement, la propriété, la piscine, le confort des chambres, la propreté, le petit-déjeuner, la table d'hôtes, sans oublier la gentillesse de nos hôtes et du personnel."
+      "text": "Tout ! Le lieu, l'environnement, la propriété, la piscine, le confort des chambres, la propreté, le petit-déjeuner, la table d'hôtes, sans oublier la gentillesse de nos hôtes et du personnel.",
+      "textEn": "Everything! The place, the setting, the property, the pool, the comfort of the rooms, the cleanliness, the breakfast, the table d'hôtes, and not forgetting the kindness of our hosts and the staff.",
+      "textIt": "Tutto! Il luogo, l'ambiente, la proprietà, la piscina, il comfort delle camere, la pulizia, la colazione, la tavola dell'ospite, senza dimenticare la gentilezza dei padroni di casa e del personale."
     },
     {
       "author": "Serge",
@@ -59,7 +69,9 @@
       "source": "Booking.com",
       "rating": "",
       "date": "",
-      "text": "Magnifique demeure, décoration de grande qualité. Les chambres et la literie sont exceptionnelles. Les propriétaires très accueillants, on se sent bien dans ce lieu. Excellent petit-déjeuner."
+      "text": "Magnifique demeure, décoration de grande qualité. Les chambres et la literie sont exceptionnelles. Les propriétaires très accueillants, on se sent bien dans ce lieu. Excellent petit-déjeuner.",
+      "textEn": "A magnificent residence with high-quality decor. The rooms and bedding are exceptional. The owners very welcoming; you feel at ease in this place. Excellent breakfast.",
+      "textIt": "Dimora magnifica, arredamento di grande qualità. Le camere e la biancheria da letto sono eccezionali. I proprietari molto accoglienti, ci si sente bene in questo luogo. Colazione eccellente."
     }
   ]
 }

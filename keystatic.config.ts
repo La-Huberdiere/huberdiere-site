@@ -710,7 +710,9 @@ export default config({
             source: fields.text({ label: "Source (ex. Booking, Google)" }),
             rating: fields.text({ label: "Note de cet avis (ex. 10, optionnel)" }),
             date: fields.text({ label: "Date AAAA-MM-JJ (optionnel)" }),
-            text: fields.text({ label: "Avis", multiline: true }),
+            text: fields.text({ label: "Avis (français)", multiline: true }),
+            textEn: fields.text({ label: "Avis (anglais)", multiline: true }),
+            textIt: fields.text({ label: "Avis (italien)", multiline: true }),
           }),
           {
             label: "Avis affichés",
