@@ -147,188 +147,188 @@
     }
   },
   "en": {
-    "title": "Rent a château for a large group · Loire Valley | La Huberdière",
-    "description": "Rent an entire château for a family or friends’ get-together: sleeps 21 in 10 private suites, set in 14-hectare grounds, with home-cooked meals. Large capacity, 2 hours 20 minutes from Paris.",
+    "title": "Hire a château for a large group · Loire Valley | La Huberdière",
+    "description": "Hire an entire château to gather family or friends: 21 beds across 10 private suites, 14 hectares of grounds and a home table d'hôtes. Large-group capacity, 2 hrs 20 from Paris.",
     "hero": {
-      "eyebrow": "Rent the château · Loire Valley",
-      "titleLine1": "Rent a castle",
-      "titleLine2Italic": "to bring his family together.",
-      "lead": "The château, exclusively for your group: sleeps 21, set in 14-hectare grounds, and featuring a large, convivial dining table. The perfect place to bring the whole family together. Just 2 hours and 20 minutes from Paris."
+      "eyebrow": "Hire the château · Loire Valley",
+      "titleLine1": "Hire a château",
+      "titleLine2Italic": "to gather your loved ones.",
+      "lead": "The château for your group's exclusive use: 21 beds, fourteen hectares of grounds and a large, welcoming table. Enough to bring the whole family together in one place. 2 hrs 20 from Paris."
     },
     "intro": [
-      "Between Amboise and Chenonceau, hire the entire château for your family: twenty-one beds in ten luxury suites, each with its own en-suite bathroom. Plenty of space to bring all generations together in one place, without compromising on privacy.",
-      "Fourteen hectares of woodland, ponds and meadows, perfect for walks and cycle rides through the vineyards, and a generous home-cooked table d’hôte, where Lodovica brings the warmth of her Italian roots to create generous, convivial buffets."
+      "Between Amboise and Chenonceau, hire the whole château for your tribe: twenty-one beds in ten prestige suites, each with its own private bathroom. Large-group capacity to bring every generation together in one place, without compromising on privacy.",
+      "Fourteen hectares of woods, ponds and meadows for walks and cycling through the vineyards, and a large home table d'hôtes where Lodovica brings the warmth of her Italian roots for generous, convivial buffets."
     ],
     "cards": [
       {
         "num": "I",
         "title": "Freedom & nature",
-        "text": "14 hectares of woodland, ponds and meadows. Walking and cycling through the vineyards, in complete tranquillity, lulled by birdsong."
+        "text": "14 hectares of woods, ponds and meadows. Hiking and cycling through the vineyards, in absolute calm to the sound of birdsong."
       },
       {
         "num": "II",
         "title": "Privacy & comfort",
-        "text": "Castle living without compromise: 10 luxury suites, each with its own en-suite bathroom."
+        "text": "Château life without compromise: 10 prestige suites, each with its own private bathroom."
       },
       {
         "num": "III",
-        "title": "Sharing & fine dining",
-        "text": "The heart of the gathering beats around the table: generous home-cooked food, ideal for large, convivial buffets."
+        "title": "Sharing & good food",
+        "text": "The heart of the gathering beats around the table: generous home cooking, ideal for large, convivial buffets."
       }
     ],
     "final": {
       "eyebrow": "Your family gathering",
-      "titleLine1": "Let’s bring together your",
-      "titleLine2Italic": "family at the castle.",
-      "text": "Let us know your dates and the number of guests. We’ll put together a bespoke weekend for you.",
-      "submitLabel": "Receive a proposal",
-      "responseLine": "We’ll get back to you within 24 hours"
+      "titleLine1": "Let's bring your",
+      "titleLine2Italic": "family together at the château.",
+      "text": "Tell us your dates and the number of guests. We'll imagine your bespoke weekend.",
+      "submitLabel": "Request a proposal",
+      "responseLine": "Reply within 24 hours"
     },
     "stats": [
       {
         "big": "21",
-        "lbl": "accommodation in 10 suites"
+        "lbl": "beds across 10 suites"
       },
       {
         "big": "14 ha",
-        "lbl": "wooded park"
+        "lbl": "of wooded grounds"
       },
       {
-        "big": "2 h 20",
-        "lbl": "in Paris"
+        "big": "2 hrs 20",
+        "lbl": "from Paris"
       }
     ],
     "brief": [
       {
         "label": "Capacity",
-        "value": "21 beds across 10 rooms, up to 21 people on an exclusive-hire basis."
+        "value": "21 beds across 10 rooms, up to 21 people for exclusive use."
       },
       {
         "label": "Spaces",
-        "value": "4 lounges for a large dinner of up to 22 guests, with a kitchen at your disposal."
+        "value": "4 drawing rooms for a large dinner of up to 22 guests, kitchen available."
       },
       {
         "label": "Setting",
-        "value": "A 14-hectare enclosed park and a heated pool from April to October."
+        "value": "14 hectares of walled grounds and a heated pool from April to October."
       },
       {
-        "label": "Format",
-        "value": "The whole château to yourselves for a weekend with family or friends."
+        "label": "Package",
+        "value": "The whole château for exclusive use over a weekend with family or friends."
       },
       {
         "label": "Location",
-        "value": "Near Amboise, 2 hours 20 minutes from Paris."
+        "value": "Near Amboise, 2 hrs 20 from Paris."
       }
     ],
     "extrasHead": {
-      "eyebrow": "Relaxation, team-building, a change of scenery",
-      "title": "Something to keep all generations entertained"
+      "eyebrow": "Relaxation, togetherness, escape",
+      "title": "Something for every generation"
     },
     "extras": [
       {
-        "title": "Wellbeing & relaxation",
-        "text": "A 16-metre swimming lane, heated from April to October, and its pool house, for relaxing moments with the family."
+        "title": "Well-being & leisure",
+        "text": "A 16-metre lap pool heated from April to October and its pool house, for relaxed moments with the family."
       },
       {
         "title": "Relaxation",
-        "text": "Professional massages by appointment or yoga sessions organised on request."
+        "text": "Professional massages by appointment or yoga sessions arranged on request."
       },
       {
         "title": "Leisure & music",
-        "text": "Self-service musical instruments and board games in the château’s reception rooms."
+        "text": "Instruments and board games freely available in the château's drawing rooms."
       },
       {
-        "title": "Culinary workshops",
+        "title": "Gourmet workshops",
         "text": "Italian cookery classes or workshops led by a Michelin-starred chef, to create memories around the table."
       },
       {
-        "title": "Hot-air balloons & castles",
-        "text": "Take off from the park and fly over the Loire Valley, Chenonceau and Amboise in just a few minutes."
+        "title": "Hot-air balloon & châteaux",
+        "text": "Take off from the grounds to fly over the Loire Valley, with Chenonceau and Amboise just minutes away."
       },
       {
         "title": "Vineyards & nature",
-        "text": "Walks through the vineyards and forests, tours and tastings at local wineries."
+        "text": "Walks through the vineyards and forests, tours and tastings in the local cellars."
       }
     ],
     "faqHead": {
-      "eyebrow": "Frequently Asked Questions",
-      "title": "Gather your group at the château"
+      "eyebrow": "Frequently asked questions",
+      "title": "Gathering your group at the château"
     },
     "faq": [
       {
-        "q": "How many people can the castle accommodate?",
-        "a": "The castle, when hired exclusively, accommodates 21 people in 10 private suites, each with its own bathroom. It is a large-capacity holiday home, ideal for groups and large families."
+        "q": "How many people can the château host?",
+        "a": "For exclusive use, the château sleeps 21 people in 10 private suites, each with its own bathroom. It is a large-capacity holiday cottage, ideal for groups and large families."
       },
       {
-        "q": "Is it possible to hire the whole castle for a weekend?",
-        "a": "Yes, the estate is available for exclusive use for the duration of a weekend or a holiday, just for you and your guests."
+        "q": "Can we hire the whole château for a weekend?",
+        "a": "Yes, the estate is given over entirely for the length of a weekend or a stay, for you and your guests alone."
       },
       {
-        "q": "Is this venue suitable for a birthday party or a family reunion?",
-        "a": "Exactly: birthdays, family reunions, get-togethers with friends. The large communal dining table is the perfect setting for convivial meals."
+        "q": "Is the place suitable for a birthday or a family reunion?",
+        "a": "Absolutely: birthdays, cousins' reunions, get-togethers with friends. The large home table d'hôtes hosts convivial meals."
       },
       {
-        "q": "Can we organise a big family dinner where we’re all together?",
-        "a": "Yes. Our four elegant dining rooms and our Orangery are ideal for hosting large, convivial gatherings, whatever the weather. The dining room can accommodate up to 22 guests."
+        "q": "Can we hold a big family dinner all together?",
+        "a": "Yes. Our 4 refined drawing rooms and our Orangery let you set large, convivial tables whatever the weather. The dining room seats up to 22 guests."
       },
       {
-        "q": "Do we need to cook, or do you offer a catering service?",
-        "a": "It’s entirely up to you. You can use the fully fitted kitchen or let Lodovica take care of your meals; she prepares hearty home-cooked meals with an Italian twist, perfect for large gatherings."
+        "q": "Do we cook ourselves or do you offer a catering service?",
+        "a": "It's up to you. You can use the fully equipped kitchen or entrust your meals to Lodovica, who prepares generous home cooking with Italian accents, ideal for large tables."
       },
       {
-        "q": "Is it safe for young children and accessible to older people?",
-        "a": "The estate is a fourteen-hectare nature reserve. The pond is not fenced off and poses a real danger to young children: adult supervision is essential. As a historic residence, the château does not have a lift; access to the upstairs suites is via the stairs, which should be taken into account by guests with reduced mobility."
+        "q": "Is it safe for young children and accessible for older guests?",
+        "a": "The estate is a natural park of fourteen hectares. The pond is not fenced and poses a real danger for young children: adult supervision is essential. As a historic residence, the château has no lift; access to the upstairs suites is by staircase, something to bear in mind for guests with reduced mobility."
       },
       {
-        "q": "Are pets allowed?",
-        "a": "We will assess each situation on request. Please let us know which pet you have when you make your enquiry."
+        "q": "Are pets welcome?",
+        "a": "On request, we consider each situation. Let us know about your companion when you enquire."
       },
       {
         "q": "How far is it from Paris?",
-        "a": "About 2 hours and 20 minutes from Paris, in Touraine, near Amboise, in the heart of the Loire Valley."
+        "a": "About 2 hrs 20 from Paris, in Touraine, near Amboise, in the heart of the Loire Châteaux."
       }
     ],
     "testimonial": {
-      "text": "A perfect long weekend in a peaceful, leafy setting, where you can spot deer and watch herons in flight. Lodovica and Patrick are charming hosts who really listen to their guests.",
+      "text": "A perfect long weekend in a peaceful green haven, where you can spot deer and herons in flight. Lodovica and Patrick are charming, attentive hosts.",
       "author": "Brigitte"
     }
   },
   "it": {
-    "title": "Affittare un castello per un gruppo numeroso · Valle della Loira | La Huberdière",
-    "description": "Affittate un intero castello per riunire la famiglia o gli amici: 21 posti letto in 10 suite private, un parco di 14 ettari e cucina casalinga. Ampia capacità ricettiva, a 2 ore e 20 minuti da Parigi.",
+    "title": "Affittare un castello per un grande gruppo · Valle della Loira | La Huberdière",
+    "description": "Affittate un castello intero per riunire famiglia o amici: 21 posti letto in 10 suite private, parco di 14 ettari e tavola dell'ospite fatta in casa. Grande capienza, a 2 ore e 20 da Parigi.",
     "hero": {
       "eyebrow": "Affittare il castello · Valle della Loira",
       "titleLine1": "Affittare un castello",
-      "titleLine2Italic": "per riunire i suoi cari.",
-      "lead": "Il castello a disposizione esclusiva del vostro gruppo: 21 posti letto, un parco di quattordici ettari e un grande tavolo dove mangiare in compagnia. L’ideale per riunire tutta la famiglia in un unico posto. A 2 ore e 20 minuti da Parigi."
+      "titleLine2Italic": "per riunire i vostri cari.",
+      "lead": "Il castello in affitto esclusivo solo per il vostro gruppo: 21 posti letto, quattordici ettari di parco e una grande tavola conviviale. Abbastanza per riunire tutta la famiglia nello stesso posto. A 2 ore e 20 da Parigi."
     },
     "intro": [
-      "Tra Amboise e Chenonceau, affittate l'intero castello per la vostra famiglia allargata: ventuno posti letto in dieci suite di prestigio, ciascuna con bagno privato. Una grande capienza per riunire tutte le generazioni sotto lo stesso tetto, senza rinunciare alla privacy.",
-      "Quattordici ettari di boschi, laghetti e prati per passeggiate e gite in bicicletta tra i vigneti, e un’ampia tavola degli ospiti dove Lodovica infonde il calore delle sue origini italiane in generosi buffet all’insegna della convivialità."
+      "Tra Amboise e Chenonceau, affittate l'intero castello per la vostra tribù: ventuno posti letto in dieci suite di prestigio, ciascuna con bagno privato. Una grande capienza per riunire tutte le generazioni nello stesso posto, senza rinunciare all'intimità.",
+      "Quattordici ettari di boschi, stagni e prati per le passeggiate e le pedalate tra le vigne, e una grande tavola dell'ospite fatta in casa dove Lodovica porta il calore delle sue radici italiane per generosi buffet conviviali."
     ],
     "cards": [
       {
         "num": "I",
         "title": "Libertà e natura",
-        "text": "14 ettari di boschi, laghetti e prati. Escursioni a piedi e in bicicletta tra i vigneti, in un silenzio assoluto cullati dal canto degli uccelli."
+        "text": "14 ettari di boschi, stagni e prati. Escursioni e pedalate tra le vigne, in assoluta tranquillità cullati dal canto degli uccelli."
       },
       {
         "num": "II",
-        "title": "Privacy e comfort",
-        "text": "Una vita da principe senza compromessi: 10 suite di lusso, ciascuna con bagno privato."
+        "title": "Intimità e comfort",
+        "text": "La vita di castello senza compromessi: 10 suite di prestigio, ciascuna con bagno privato."
       },
       {
         "num": "III",
-        "title": "Condivisione e gastronomia",
-        "text": "Il cuore dell'incontro batte attorno al tavolo: una cucina casalinga abbondante, ideale per grandi buffet in compagnia."
+        "title": "Convivialità e buona cucina",
+        "text": "Il cuore della riunione batte attorno alla tavola: una generosa cucina fatta in casa, ideale per grandi buffet conviviali."
       }
     ],
     "final": {
       "eyebrow": "La vostra riunione di famiglia",
-      "titleLine1": "Mettiamo insieme il vostro",
+      "titleLine1": "Riuniamo la vostra",
       "titleLine2Italic": "famiglia al castello.",
-      "text": "Comunicateci le date e il numero di ospiti. Organizzeremo per voi un weekend su misura.",
-      "submitLabel": "Ricevere un'offerta",
+      "text": "Diteci le vostre date e il numero di ospiti. Immagineremo il vostro weekend su misura.",
+      "submitLabel": "Ricevere una proposta",
       "responseLine": "Risposta entro 24 ore"
     },
     "stats": [
@@ -338,105 +338,105 @@
       },
       {
         "big": "14 ha",
-        "lbl": "di un parco boscoso"
+        "lbl": "di parco boscoso"
       },
       {
-        "big": "2 h 20",
-        "lbl": "di Parigi"
+        "big": "2 ore e 20",
+        "lbl": "da Parigi"
       }
     ],
     "brief": [
       {
-        "label": "Capacità",
-        "value": "21 posti letto in 10 camere, fino a 21 persone in uso esclusivo."
+        "label": "Capienza",
+        "value": "21 posti letto in 10 camere, fino a 21 persone in affitto esclusivo."
       },
       {
         "label": "Spazi",
-        "value": "4 saloni per una grande cena fino a 22 ospiti, con cucina a disposizione."
+        "value": "4 salotti per una grande cena fino a 22 ospiti, cucina a disposizione."
       },
       {
-        "label": "Contesto",
+        "label": "Cornice",
         "value": "Parco recintato di 14 ettari e piscina riscaldata da aprile a ottobre."
       },
       {
         "label": "Formula",
-        "value": "L'intero castello a vostra disposizione per un fine settimana in famiglia o tra amici."
+        "value": "L'intero castello in affitto esclusivo per un weekend in famiglia o tra amici."
       },
       {
         "label": "Posizione",
-        "value": "Vicino ad Amboise, a 2 ore e 20 minuti da Parigi."
+        "value": "Vicino ad Amboise, a 2 ore e 20 da Parigi."
       }
     ],
     "extrasHead": {
       "eyebrow": "Relax, coesione, evasione",
-      "title": "C'è qualcosa per tutte le generazioni"
+      "title": "Qualcosa per ogni generazione"
     },
     "extras": [
       {
         "title": "Benessere e relax",
-        "text": "Una corsia da nuoto di 16 metri, riscaldata da aprile a ottobre, con annessa pool house, per momenti di relax in famiglia."
+        "text": "Una corsia di nuoto di 16 metri riscaldata da aprile a ottobre e la sua pool house, per i momenti di relax in famiglia."
       },
       {
-        "title": "Rilassamento",
+        "title": "Relax",
         "text": "Massaggi professionali su appuntamento o sessioni di yoga organizzate su richiesta."
       },
       {
-        "title": "Tempo libero e musica",
-        "text": "Strumenti e giochi da tavolo a disposizione degli ospiti nelle sale del castello."
+        "title": "Svago e musica",
+        "text": "Strumenti musicali e giochi da tavolo a libero uso nei salotti del castello."
       },
       {
-        "title": "Laboratori gastronomici",
-        "text": "Corsi di cucina italiana o laboratori tenuti da uno chef stellato, per creare ricordi intorno alla tavola."
+        "title": "Laboratori gourmet",
+        "text": "Corsi di cucina italiana o laboratori guidati da uno chef stellato, per creare ricordi attorno alla tavola."
       },
       {
         "title": "Mongolfiera e castelli",
-        "text": "Un decollo dal parco per sorvolare la Valle della Loira, Chenonceau e Amboise in pochi minuti."
+        "text": "Un decollo dal parco per sorvolare la Valle della Loira, con Chenonceau e Amboise a pochi minuti."
       },
       {
         "title": "Vigneti e natura",
-        "text": "Passeggiate tra i vigneti e nei boschi, visite e degustazioni nelle cantine locali."
+        "text": "Passeggiate tra le vigne e i boschi, visite e degustazioni nelle cantine locali."
       }
     ],
     "faqHead": {
       "eyebrow": "Domande frequenti",
-      "title": "Organizzate un incontro con il vostro gruppo al castello"
+      "title": "Riunire il vostro gruppo al castello"
     },
     "faq": [
       {
         "q": "Quante persone può ospitare il castello?",
-        "a": "Il castello, affittabile in esclusiva, può ospitare 21 persone in 10 suite private, ciascuna con bagno privato. Si tratta di una struttura ricettiva di grande capienza, ideale per gruppi e famiglie numerose."
+        "a": "In affitto esclusivo, il castello ospita 21 persone in 10 suite private, ciascuna con bagno. È una casa vacanze di grande capienza, ideale per gruppi e famiglie numerose."
       },
       {
-        "q": "È possibile affittare l'intero castello per un fine settimana?",
-        "a": "Sì, la tenuta viene interamente riservata per un fine settimana o un soggiorno, solo per voi e i vostri ospiti."
+        "q": "Possiamo affittare l'intero castello per un weekend?",
+        "a": "Sì, la tenuta si privatizza interamente per la durata di un weekend o di un soggiorno, per voi e i vostri invitati soltanto."
       },
       {
-        "q": "Il locale è adatto per festeggiare un compleanno o una riunione di famiglia?",
-        "a": "Esatto: compleanni, riunioni di famiglia, ritrovi tra amici. Il grande tavolo comune della casa è il luogo ideale per pasti in compagnia."
+        "q": "Il luogo è adatto a un compleanno o a un raduno di famiglia?",
+        "a": "Assolutamente: compleanni, raduni di cugini, ritrovi tra amici. La grande tavola dell'ospite fatta in casa accoglie i pasti conviviali."
       },
       {
-        "q": "Si può organizzare una grande cena di famiglia tutti insieme?",
-        "a": "Sì. I nostri quattro raffinati saloni e la nostra Orangerie consentono di allestire grandi tavolate conviviali, indipendentemente dalle condizioni meteorologiche. La sala da pranzo può ospitare fino a 22 commensali."
+        "q": "Possiamo organizzare una grande cena di famiglia tutti insieme?",
+        "a": "Sì. I nostri 4 eleganti salotti e la nostra Orangerie permettono di apparecchiare grandi tavolate conviviali, con qualsiasi tempo. La sala da pranzo accoglie fino a 22 ospiti."
       },
       {
-        "q": "Dobbiamo cucinare noi o offrite un servizio di ristorazione?",
-        "a": "Dipende da voi. Potete usare la cucina attrezzata oppure affidare i vostri pasti a Lodovica, che prepara una cucina casalinga abbondante con tocchi italiani, ideale per tavolate numerose."
+        "q": "Cuciniamo noi o offrite un servizio di ristorazione?",
+        "a": "Come preferite. Potete usare la cucina attrezzata oppure affidare i vostri pasti a Lodovica, che prepara una generosa cucina fatta in casa dagli accenti italiani, ideale per le grandi tavolate."
       },
       {
         "q": "È sicuro per i bambini piccoli e accessibile agli anziani?",
-        "a": "La tenuta è un parco naturale di quattordici ettari. Il laghetto non è recintato e rappresenta un pericolo reale per i bambini piccoli: è indispensabile la sorveglianza di un adulto. Trattandosi di una dimora storica, il castello non dispone di ascensore; l'accesso alle suite al piano superiore avviene tramite le scale, cosa di cui devono tenere conto le persone con mobilità ridotta."
+        "a": "La tenuta è un parco naturale di quattordici ettari. Lo stagno non è recintato e rappresenta un pericolo reale per i bambini piccoli: la sorveglianza di un adulto è indispensabile. Trattandosi di una dimora storica, il castello non dispone di ascensore; l'accesso alle suite al piano avviene tramite le scale, aspetto da considerare per le persone con mobilità ridotta."
       },
       {
-        "q": "Gli animali sono ammessi?",
-        "a": "Su richiesta, valutiamo ogni singolo caso. Indicateci il vostro animale da compagnia al momento della richiesta."
+        "q": "Gli animali sono i benvenuti?",
+        "a": "Su richiesta, valutiamo ogni situazione. Segnalateci il vostro compagno a quattro zampe al momento della richiesta."
       },
       {
-        "q": "A che distanza si trova da Parigi?",
-        "a": "A circa 2 ore e 20 minuti da Parigi, in Touraine, vicino ad Amboise, nel cuore dei Castelli della Loira."
+        "q": "A che distanza da Parigi?",
+        "a": "Circa 2 ore e 20 da Parigi, in Turenna, vicino ad Amboise, nel cuore dei Castelli della Loira."
       }
     ],
     "testimonial": {
-      "text": "Un lungo weekend perfetto in un angolo di verde immerso nella tranquillità, dove si possono avvistare caprioli e aironi in volo. Lodovica e Patrick sono padroni di casa affascinanti e molto attenti alle esigenze degli ospiti.",
+      "text": "Un lungo weekend perfetto in uno scrigno di verde e tranquillità, dove si possono vedere cerbiatti e aironi in volo. Lodovica e Patrick sono padroni di casa incantevoli e molto attenti.",
       "author": "Brigitte"
     }
   }

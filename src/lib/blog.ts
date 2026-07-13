@@ -198,6 +198,22 @@ export function slugifyHeading(s: string): string {
 export interface TocItem { id: string; text: string; level: number }
 
 /**
+ * Décode les entités HTML d'un fragment de texte de titre. Le HTML rendu par
+ * markdoc échappe déjà le texte (« & » devient « &amp; ») ; comme le sommaire
+ * est ré-injecté par Astro en tant qu'expression (donc ré-échappé), il faut
+ * repartir du texte BRUT sinon on obtient un double échappement (« &amp;amp; »).
+ */
+function decodeEntities(s: string): string {
+  return s
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#0?39;|&#x27;|&apos;/g, "'")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&");
+}
+
+/**
  * Injecte des id d'ancre sur les h2/h3 du HTML rendu et renvoie la table des
  * matières (h2 + h3). Sert le sommaire cliquable + le scroll-spy de l'article.
  */
@@ -205,7 +221,7 @@ export function withToc(html: string): { html: string; toc: TocItem[] } {
   const toc: TocItem[] = [];
   const used = new Set<string>();
   const out = html.replace(/<h([23])([^>]*)>([\s\S]*?)<\/h\1>/g, (_m, lvl, attrs, inner) => {
-    const text = inner.replace(/<[^>]+>/g, "").trim();
+    const text = decodeEntities(inner.replace(/<[^>]+>/g, "").trim());
     let id = slugifyHeading(text);
     const base = id;
     let n = 2;

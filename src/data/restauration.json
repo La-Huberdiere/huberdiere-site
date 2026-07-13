@@ -146,187 +146,187 @@
     ]
   },
   "en": {
-    "title": "Table d’hôte meals and dinners at the château in Touraine, Château de la Huberdière",
-    "description": "In the evening, home-cooked meals with Italian and Tours-style flavours: platters to share every evening except Sundays, and a 100% Italian dinner on Thursdays, by reservation only. Produce from our vegetable garden and local producers in Touraine.",
+    "title": "Table d'hôtes and dinners at the château in Touraine, Château de la Huberdière",
+    "description": "In the evening, home cooking with Italian and Touraine flavours: sharing boards every evening except Sunday, and an all-Italian dinner on Thursdays, by reservation. Produce from the kitchen garden and Touraine growers.",
     "hero": {
-      "eyebrow": "Catering · Table d'hôtes",
-      "titleLine1": "Let’s eat",
-      "titleLine2Italic": "at the castle.",
-      "lead": "Come evening, enjoy home-cooked meals prepared on the premises using produce from our vegetable garden and local farmers in Touraine, served indoors or outdoors in a picturesque setting."
+      "eyebrow": "Dining · Table d'hôtes",
+      "titleLine1": "At the table",
+      "titleLine2Italic": "at the château.",
+      "lead": "As evening falls, home cooking prepared on site with produce from the kitchen garden and Touraine growers, served indoors or out, in a bucolic setting."
     },
     "intro": [
-      "La Table de la Huberdière is best experienced in the evening. Every evening of the week except Sundays, platters to share showcase local cheeses, charcuterie and vegetables, in a simple and friendly atmosphere. Lunch is not served.",
-      "On Thursdays, it’s time for a 100% Italian dinner: a set menu, in the spirit of a family meal, which must be booked in advance. Nothing gourmet or stuffy – just the sort of home-cooked food that Lodovica prepares."
+      "The table at la Huberdière comes alive in the evening. Every evening of the week except Sunday, sharing boards celebrate the region's cheeses, charcuterie and vegetables, in a simple and convivial atmosphere. The dining service is not offered at midday.",
+      "On Thursdays, it's time for an all-Italian dinner: a set menu, in the spirit of a family meal, to be booked in advance. Nothing gastronomic or stiff, just the cooking Lodovica prepares as if at home."
     ],
     "cards": [
       {
         "num": "I",
-        "title": "Plates to share",
-        "text": "Every evening except Sundays: cheeses, fine cured meats and locally sourced vegetables, perfect for sharing in a relaxed atmosphere."
+        "title": "Sharing boards",
+        "text": "Every evening except Sunday: cheeses, fine charcuterie and regional vegetables, to share with ease."
       },
       {
         "num": "II",
-        "title": "Thursday’s Italian dinner",
-        "text": "Every Thursday evening, a set menu featuring 100% Italian cuisine, by reservation only. A hearty, unpretentious family meal."
+        "title": "The Thursday Italian dinner",
+        "text": "Every Thursday evening, an all-Italian set menu, by reservation. A family meal, generous and unfussy."
       },
       {
         "num": "III",
         "title": "Breakfast included",
-        "text": "Served every morning for guests staying at the château. Included in the room rate."
+        "text": "Served every morning for those staying at the château. Included with the room."
       }
     ],
     "final": {
-      "eyebrow": "Let’s eat",
+      "eyebrow": "At the table",
       "titleLine1": "Book your",
-      "titleLine2Italic": "dinner at the château.",
-      "text": "To book your meals or find out more, please write to us. We’ll tailor our suggestions to suit your preferences.",
-      "submitLabel": "Contact us",
-      "responseLine": "We’ll get back to you within 24 hours"
+      "titleLine2Italic": "table at the château.",
+      "text": "To book your meals or find out more, write to us. We tailor our suggestions to your wishes.",
+      "submitLabel": "Write to us",
+      "responseLine": "Reply within 24 hours"
     },
     "stats": [
       {
         "big": "6 nights / 7",
-        "lbl": "plates to share"
+        "lbl": "sharing boards"
       },
       {
-        "big": "Thursdays",
-        "lbl": "a 100% Italian dinner"
+        "big": "On Thursdays",
+        "lbl": "all-Italian dinner"
       },
       {
         "big": "100%",
-        "lbl": "homemade, on the premises"
+        "lbl": "homemade, on site"
       }
     ],
     "brief": [
       {
         "label": "Service",
-        "value": "Evenings only, on request, reserved for guests staying at the château."
+        "value": "Evenings only, by reservation, reserved for château residents."
       },
       {
-        "label": "Sharing boards",
-        "value": "Sharing boards every evening, except Sundays."
+        "label": "Boards",
+        "value": "Sharing boards every evening, except Sunday."
       },
       {
         "label": "Italian dinner",
-        "value": "On Thursdays: a set family-style menu cooked by Lodovica."
+        "value": "On Thursdays: a family set menu prepared by Lodovica."
       },
       {
         "label": "Breakfast",
-        "value": "Home-made, served from 8:30 to 10:30 am."
+        "value": "Homemade, served from 8.30 to 10.30."
       },
       {
         "label": "Setting",
-        "value": "Indoors or on the terrace, outside of private events."
+        "value": "In the dining room or on the terrace, outside private events."
       }
     ],
     "extrasHead": {
       "eyebrow": "Our table",
-      "title": "Authentic, locally sourced cuisine"
+      "title": "Honest, local cooking"
     },
     "extras": [
       {
-        "title": "The vegetable garden & the growers",
-        "text": "Vegetables from the kitchen garden, cheeses and cured meats from Touraine: authentic cuisine, a far cry from mass-produced fare."
+        "title": "The kitchen garden & the growers",
+        "text": "Vegetables from the kitchen garden, Touraine cheeses and charcuterie: honest cooking, far from industrial formulas."
       },
       {
-        "title": "The Italian spirit",
-        "text": "Lodovica’s Mediterranean flavours, especially on Thursday evenings for her Italian dinner."
+        "title": "The Italian soul",
+        "text": "Lodovica's Mediterranean flavours, above all on Thursday evenings, for her Italian dinner."
       },
       {
         "title": "For your events",
-        "text": "Weddings, seminars and family gatherings have their own dedicated catering service, separate from that provided for holidaymakers."
+        "text": "Weddings, seminars and family gatherings have their own dedicated catering, separate from the table for stays."
       }
     ],
     "activitiesHead": {
-      "eyebrow": "As the day goes on",
-      "title": "What’s served at the château",
-      "intro": "All our meals are home-cooked, using produce from our vegetable garden or from local growers. We give preference to organic produce."
+      "eyebrow": "Through the day",
+      "title": "What we serve at the château",
+      "intro": "All our meals are homemade, with produce from the kitchen garden or local growers. Organic is our first choice."
     },
     "activities": [
       {
         "title": "Breakfast",
-        "text": "Included in the room rate, served from 8.30 am to 10.30 am: hot drinks, freshly squeezed orange juice, Manse fruit juices, fresh cut fruit, bread and pastries, avocado toast, cheese, yoghurt and homemade granola. Eggs available on request (€3 extra)."
+        "text": "Included in the room price, served from 8.30 to 10.30: hot drinks, freshly squeezed oranges, Manse fruit juices, fresh cut fruit, bread and pastries, avocado toast, cheese, yoghurt and homemade granola. Eggs on request (3 € supplement)."
       },
       {
-        "title": "Plates for sharing",
-        "text": "Served from 6 pm to 8.30 pm: salads, tomatoes and buffalo mozzarella, a platter of local cheeses, grilled vegetables, Parma ham with melon or figs, Apulian olives, artichokes and shavings of Parmesan. Ask for our list of gourmet dishes."
+        "title": "Sharing plates",
+        "text": "Served from 6 to 8.30 pm: salads, tomatoes and buffalo mozzarella, a board of local cheeses, grilled vegetables, Parma ham with melon or figs, Puglia olives, artichokes and shavings of parmesan. Ask for our list of gourmet plates."
       },
       {
-        "title": "An Italian dinner under the stars",
-        "text": "On Thursday evenings, enjoy an Italian dinner and a taste of the ‘dolce vita’ in Tours. A set menu is served at 8 pm, on the terrace weather permitting, or otherwise in the château’s dining rooms. Booking required."
+        "title": "Italian dinner under the stars",
+        "text": "On Thursday evenings, an Italian dinner to savour the Touraine dolce vita. A set menu served at 8 pm, on the terrace if the weather allows, otherwise in the château's drawing rooms. By reservation."
       },
       {
-        "title": "Picnics, cocktails & brunch",
-        "text": "Available on request for any event. A mini-bar stocked with soft drinks is available on the ground floor."
+        "title": "Picnic, cocktails & brunch",
+        "text": "On request, for any event. A mini-bar of soft drinks is available on the ground floor."
       }
     ],
     "faqHead": {
-      "eyebrow": "Frequently Asked Questions",
+      "eyebrow": "Frequently asked questions",
       "title": "Our table, in practice"
     },
     "faq": [
       {
-        "q": "Is the restaurant open to the public?",
-        "a": "No. Dining is reserved for guests staying at the château, with the exception of private events, for which there is a special package."
+        "q": "Is the table open to the public?",
+        "a": "No. Dining is reserved for those staying at the château, apart from private events, which have their own dedicated offer."
       },
       {
         "q": "What time is breakfast served?",
-        "a": "From 8.30 am to 10.30 am, included in the room rate. Eggs are available on request, at an additional cost of €3."
+        "a": "From 8.30 to 10.30, included in the room price. Eggs are offered on request, with a 3 € supplement."
       },
       {
-        "q": "Do you serve lunch?",
-        "a": "No, the catering service is available in the evening only. At lunchtime, you are free to enjoy the park and its facilities, both indoors and outdoors."
+        "q": "Do you serve at midday?",
+        "a": "No, the dining service is offered in the evening only. At midday, you are free to enjoy the grounds and its spaces, both indoors and out."
       },
       {
-        "q": "On which evenings are the platters to share available?",
-        "a": "Every evening of the week except Sundays."
+        "q": "Which evenings are the sharing boards offered?",
+        "a": "Every evening of the week except Sunday."
       },
       {
-        "q": "Do we need to book the Italian dinner on Thursday?",
-        "a": "Yes. Thursday’s dinner is a set menu featuring 100% Italian cuisine, which must be booked in advance. It’s home-style cooking, without any gourmet pretensions."
+        "q": "Do we need to book the Thursday Italian dinner?",
+        "a": "Yes. The Thursday dinner is an all-Italian set menu, to be booked in advance. Home cooking, with no gastronomic pretension."
       },
       {
-        "q": "Can the menus be adapted to suit different dietary requirements?",
-        "a": "Yes, the menus can be adapted to suit vegetarian, gluten-free and other dietary requirements."
+        "q": "Can the menus be adapted to dietary needs?",
+        "a": "Yes, the menus can be adapted: vegetarian, gluten-free and other requests."
       }
     ]
   },
   "it": {
-    "title": "Cena con gli ospiti e cene al castello in Touraine, Château de la Huberdière",
-    "description": "La sera, cucina casalinga dai sapori italiani e di Tours: taglieri da condividere tutte le sere tranne la domenica, e una cena 100% italiana il giovedì, su prenotazione. Prodotti dell'orto e dei produttori della Touraine.",
+    "title": "Tavola dell'ospite e cene al castello in Turenna, Château de la Huberdière",
+    "description": "La sera, una cucina fatta in casa dai sapori italiani e della Turenna: taglieri da condividere ogni sera tranne la domenica, e una cena tutta italiana il giovedì, su prenotazione. Prodotti dell'orto e dei produttori della Turenna.",
     "hero": {
-      "eyebrow": "Ristorazione · Cena in famiglia",
+      "eyebrow": "Ristorazione · Tavola dell'ospite",
       "titleLine1": "A tavola",
       "titleLine2Italic": "al castello.",
-      "lead": "Alla sera, piatti fatti in casa preparati sul posto con i prodotti dell'orto e dei produttori della Touraine, serviti all'interno o all'aperto, in un ambiente bucolico."
+      "lead": "Al calar della sera, una cucina fatta in casa preparata in loco con i prodotti dell'orto e dei produttori della Turenna, servita al coperto o all'aperto, in una cornice bucolica."
     },
     "intro": [
-      "Il ristorante La Table de la Huberdière è il posto giusto dove andare la sera. Tutte le sere della settimana, tranne la domenica, vengono serviti piatti da condividere a base di formaggi, salumi e verdure della regione, in un’atmosfera semplice e conviviale. A pranzo il servizio di ristorazione non è disponibile.",
-      "Il giovedì è il momento di una cena 100% italiana: un menu fisso, nello spirito di un pasto in famiglia, da prenotare in anticipo. Niente di gastronomico né di formale, solo la cucina che Lodovica prepara proprio come a casa."
+      "La tavola della Huberdière si vive di sera. Ogni sera della settimana tranne la domenica, i taglieri da condividere valorizzano formaggi, salumi e verdure della regione, in un'atmosfera semplice e conviviale. Il servizio di ristorazione non è disponibile a pranzo.",
+      "Il giovedì spazio a una cena tutta italiana: un menù fisso, nello spirito di un pasto di famiglia, da prenotare in anticipo. Niente di gastronomico o ingessato, solo la cucina che Lodovica prepara come a casa."
     ],
     "cards": [
       {
         "num": "I",
-        "title": "Le tavole da condividere",
-        "text": "Tutte le sere tranne la domenica: formaggi, salumi pregiati e verdure locali, da gustare in tutta semplicità."
+        "title": "I taglieri da condividere",
+        "text": "Ogni sera tranne la domenica: formaggi, salumi pregiati e verdure della regione, da condividere in tutta semplicità."
       },
       {
         "num": "II",
         "title": "La cena italiana del giovedì",
-        "text": "Ogni giovedì sera, un menu fisso 100% italiano, su prenotazione. Un pasto in famiglia, abbondante e senza pretese."
+        "text": "Ogni giovedì sera, un menù fisso tutto italiano, su prenotazione. Un pasto di famiglia, generoso e senza formalità."
       },
       {
         "num": "III",
         "title": "Colazione inclusa",
-        "text": "Viene servita ogni mattina agli ospiti che soggiornano al castello. È inclusa nel prezzo della camera."
+        "text": "Servita ogni mattina per chi soggiorna al castello. Inclusa nella camera."
       }
     ],
     "final": {
       "eyebrow": "A tavola",
-      "titleLine1": "Prenota il tuo",
-      "titleLine2Italic": "cena al castello.",
-      "text": "Per prenotare i vostri pasti o per saperne di più, scriveteci. Adattiamo le nostre proposte alle vostre esigenze.",
-      "submitLabel": "Contattaci",
+      "titleLine1": "Prenota la tua",
+      "titleLine2Italic": "tavola al castello.",
+      "text": "Per prenotare i vostri pasti o saperne di più, scriveteci. Adattiamo le nostre proposte ai vostri desideri.",
+      "submitLabel": "Scriverci",
       "responseLine": "Risposta entro 24 ore"
     },
     "stats": [
@@ -336,11 +336,11 @@
       },
       {
         "big": "Il giovedì",
-        "lbl": "cena 100% italiana"
+        "lbl": "cena tutta italiana"
       },
       {
         "big": "100%",
-        "lbl": "fatto in casa, sul posto"
+        "lbl": "fatto in casa, in loco"
       }
     ],
     "brief": [
@@ -350,90 +350,90 @@
       },
       {
         "label": "Taglieri",
-        "value": "Taglieri da condividere tutte le sere, tranne la domenica."
+        "value": "Taglieri da condividere ogni sera, tranne la domenica."
       },
       {
         "label": "Cena italiana",
-        "value": "Il giovedì: menu fisso familiare preparato da Lodovica."
+        "value": "Il giovedì: menù fisso familiare preparato da Lodovica."
       },
       {
         "label": "Colazione",
-        "value": "Fatta in casa, servita dalle 8:30 alle 10:30."
+        "value": "Fatta in casa, servita dalle 8.30 alle 10.30."
       },
       {
-        "label": "Contesto",
+        "label": "Cornice",
         "value": "In sala o in terrazza, al di fuori degli eventi privati."
       }
     ],
     "extrasHead": {
-      "eyebrow": "Il nostro tavolo",
-      "title": "Una cucina genuina e a km zero"
+      "eyebrow": "La nostra tavola",
+      "title": "Una cucina sincera e locale"
     },
     "extras": [
       {
         "title": "L'orto e i produttori",
-        "text": "Verdure dell'orto, formaggi e salumi della Touraine: una cucina genuina, lontana dalle formule industriali."
+        "text": "Verdure dell'orto, formaggi e salumi della Turenna: una cucina sincera, lontana dalle formule industriali."
       },
       {
         "title": "L'anima italiana",
-        "text": "I sapori mediterranei di Lodovica, soprattutto il giovedì sera, in occasione della sua cena italiana."
+        "text": "I sapori mediterranei di Lodovica, soprattutto il giovedì sera, per la sua cena italiana."
       },
       {
         "title": "Per i vostri eventi",
-        "text": "Matrimoni, seminari e riunioni di famiglia dispongono di un servizio di ristorazione dedicato, distinto da quello previsto per i soggiorni."
+        "text": "Matrimoni, seminari e riunioni di famiglia dispongono di una ristorazione dedicata, distinta dalla tavola dei soggiorni."
       }
     ],
     "activitiesHead": {
       "eyebrow": "Nel corso della giornata",
-      "title": "Cosa si serve al castello",
-      "intro": "Tutti i nostri piatti sono fatti in casa, con prodotti dell'orto o provenienti da produttori locali. Diamo la preferenza ai prodotti biologici."
+      "title": "Ciò che serviamo al castello",
+      "intro": "Tutti i nostri pasti sono fatti in casa, con i prodotti dell'orto o dei produttori locali. Diamo la priorità al biologico."
     },
     "activities": [
       {
         "title": "La colazione",
-        "text": "Incluso nel prezzo della camera, servito dalle 8:30 alle 10:30: bevande calde, succo d’arancia appena spremuto, succhi di frutta Manse, frutta fresca tagliata, pane e dolci da fornaio, toast all’avocado, formaggio, yogurt e muesli fatto in casa. Uova su richiesta (supplemento di 3 €)."
+        "text": "Inclusa nel prezzo della camera, servita dalle 8.30 alle 10.30: bevande calde, spremute d'arancia, succhi di frutta Manse, frutta fresca tagliata, pane e viennoiserie, avocado toast, formaggio, yogurt e granola fatta in casa. Uova su richiesta (supplemento di 3 €)."
       },
       {
         "title": "I piatti da condividere",
-        "text": "Serviti dalle 18:00 alle 20:30: insalate, pomodori e mozzarella di bufala, tagliere di formaggi locali, verdure grigliate, prosciutto di Parma con melone o fichi, olive pugliesi, carciofi e scaglie di parmigiano. Chiedete il menu dei nostri piatti gourmet."
+        "text": "Serviti dalle 18 alle 20.30: insalate, pomodori e mozzarella di bufala, tagliere di formaggi locali, verdure grigliate, prosciutto di Parma con melone o fichi, olive pugliesi, carciofi e scaglie di parmigiano. Chiedete l'elenco dei nostri piatti gourmet."
       },
       {
         "title": "Cena italiana sotto le stelle",
-        "text": "Il giovedì sera, una cena italiana per assaporare la dolce vita di Tours. Menu fisso servito alle 20:00, sulla terrazza se il tempo lo permette, altrimenti nelle sale del castello. Su prenotazione."
+        "text": "Il giovedì sera, una cena italiana per assaporare la dolce vita della Turenna. Menù fisso servito alle 20, in terrazza se il tempo lo permette, altrimenti nei salotti del castello. Su prenotazione."
       },
       {
         "title": "Picnic, cocktail e brunch",
-        "text": "Su richiesta, per qualsiasi evento. Al piano terra è disponibile un minibar con bevande analcoliche."
+        "text": "Su richiesta, per ogni evento. Un mini-bar di bibite analcoliche è a disposizione al piano terra."
       }
     ],
     "faqHead": {
       "eyebrow": "Domande frequenti",
-      "title": "Il nostro tavolo, in pratica"
+      "title": "La nostra tavola, in pratica"
     },
     "faq": [
       {
-        "q": "Il ristorante è aperto al pubblico?",
-        "a": "No. Il servizio di ristorazione è riservato agli ospiti che soggiornano nel castello, ad eccezione degli eventi privati, per i quali è prevista un'offerta dedicata."
+        "q": "La tavola è aperta al pubblico?",
+        "a": "No. La ristorazione è riservata a chi soggiorna al castello, al di fuori degli eventi privati, che godono di un'offerta dedicata."
       },
       {
         "q": "A che ora viene servita la colazione?",
-        "a": "Dalle 8:30 alle 10:30, incluso nel prezzo della camera. Le uova sono disponibili su richiesta, con un supplemento di 3 €."
+        "a": "Dalle 8.30 alle 10.30, inclusa nel prezzo della camera. Le uova sono proposte su richiesta, con un supplemento di 3 €."
       },
       {
-        "q": "Servite il pranzo?",
-        "a": "No, il servizio di ristorazione è disponibile solo la sera. A pranzo potrete godervi liberamente il parco e i suoi spazi, sia al chiuso che all’aperto."
+        "q": "Servite a pranzo?",
+        "a": "No, il servizio di ristorazione è disponibile solo la sera. A pranzo, potete godervi liberamente il parco e i suoi spazi, sia al coperto sia all'aperto."
       },
       {
-        "q": "In quali sere vengono proposti i piatti da condividere?",
-        "a": "Tutte le sere della settimana tranne la domenica."
+        "q": "In quali sere vengono proposti i taglieri da condividere?",
+        "a": "Ogni sera della settimana tranne la domenica."
       },
       {
-        "q": "È necessario prenotare la cena italiana del giovedì?",
-        "a": "Sì. La cena del giovedì prevede un menù fisso 100% italiano, da prenotare in anticipo. Una cucina casalinga, senza pretese gastronomiche."
+        "q": "Bisogna prenotare la cena italiana del giovedì?",
+        "a": "Sì. La cena del giovedì è un menù fisso tutto italiano, da prenotare in anticipo. Una cucina familiare, senza pretese gastronomiche."
       },
       {
-        "q": "È possibile adattare i menù alle diverse esigenze alimentari?",
-        "a": "Sì, i menu sono personalizzabili: vegetariani, senza glutine e altre richieste."
+        "q": "I menù possono essere adattati alle esigenze alimentari?",
+        "a": "Sì, i menù si adattano: vegetariano, senza glutine e altre richieste."
       }
     ]
   }

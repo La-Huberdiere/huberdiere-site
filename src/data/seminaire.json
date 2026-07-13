@@ -152,78 +152,78 @@
     ]
   },
   "en": {
-    "title": "Corporate seminar at the château · Loire Valley | La Huberdière",
-    "description": "Organise your seminar at a château in the Loire Valley: exclusive use of the estate for up to 20 staff members with accommodation, 4 versatile function rooms, and a plenary session for up to 100 people, just 2 hours and 20 minutes from Paris.",
+    "title": "Corporate seminar at a château · Loire Valley | La Huberdière",
+    "description": "Host your seminar at a château in the Loire Valley: private estate for up to 20 staff housed, 4 modular lounges, plenary for up to 100 people, 2 hrs 20 from Paris.",
     "hero": {
       "eyebrow": "Seminar at the château · Loire Valley",
-      "titleLine1": "Your seminar at the château",
+      "titleLine1": "Your seminar at the Château",
       "titleLine2Italic": "de la Huberdière.",
-      "lead": "A private château for your corporate seminars: work, team-building and tranquillity all in one place, just 2 hours and 20 minutes from Paris."
+      "lead": "A private château for your corporate seminars: work, team spirit and serenity in one place, 2 hrs 20 from Paris."
     },
     "intro": [
-      "Bring your teams together for a seminar at the château: La Huberdière can be hired exclusively for your executive committee meetings, masterclasses and team-building days. Ten suites with en-suite bathrooms can accommodate up to 20 staff members, and four versatile function rooms can be adapted to suit your working requirements.",
-      "Fourteen hectares of wooded grounds for outdoor team-building activities, a swimming pool heated from April to October, and wholesome, gourmet Italian cuisine: everything is designed to ensure a balance between productive sessions and moments to truly unwind.",
-      "For business events, four versatile function rooms and the Orangery can accommodate plenary sessions for up to 100 people, equipped with a projector and flipchart, whilst the grounds are ideal for outdoor sessions."
+      "Bring your teams together for a seminar at the château: la Huberdière is yours alone for board meetings, masterclasses and team-building days. Ten suites with private bathrooms house up to 20 staff, and four modular lounges adapt to your working formats.",
+      "Fourteen hectares of wooded grounds for outdoor team-building, a heated lap pool from April to October, healthy and flavourful Italian cooking: everything is designed to alternate productive sessions with real moments to breathe.",
+      "On the work side, four modular lounges and the Orangery allow plenary sessions of up to 100 people, fitted with a video projector and flip chart, while the grounds lend themselves to outdoor sessions."
     ],
     "cards": [
       {
         "num": "I",
-        "title": "Natural immersion",
-        "text": "The tranquillity of the surrounding countryside allows you to work in peace and helps your staff switch off."
+        "title": "Immersed in nature",
+        "text": "The calm of the surrounding nature to work in serenity and help your staff disconnect."
       },
       {
         "num": "II",
-        "title": "Elegant décor",
-        "text": "From the elegance of our 10 suites to the comfort of our 4 lounges, every detail provides a prestigious working environment."
+        "title": "Refined setting",
+        "text": "From the elegance of our 10 suites to the comfort of our 4 lounges, every detail offers a prestigious working setting."
       },
       {
         "num": "III",
         "title": "Creative energy",
-        "text": "Simple yet refined Italian cuisine, designed to provide healthy, delicious energy throughout the day."
+        "text": "Simple, refined Italian cooking, designed to bring healthy, flavourful energy throughout the day."
       }
     ],
     "final": {
       "eyebrow": "Your seminar",
-      "titleLine1": "Let’s talk about your",
+      "titleLine1": "Let's talk about your",
       "titleLine2Italic": "next seminar.",
-      "text": "Please let us know your dates, the number of participants and your objectives. We will send you a bespoke proposal.",
-      "submitLabel": "Receive a proposal",
-      "responseLine": "We’ll get back to you within 24 hours"
+      "text": "Tell us your dates, the number of participants and your goals. We'll send you a tailor-made proposal.",
+      "submitLabel": "Request a proposal",
+      "responseLine": "Reply within 24 hours"
     },
     "stats": [
       {
         "big": "10",
-        "lbl": "suites, for up to 20 staff members"
+        "lbl": "suites, up to 20 staff"
       },
       {
         "big": "14 ha",
-        "lbl": "wooded park"
+        "lbl": "of wooded grounds"
       },
       {
-        "big": "2 h 20",
-        "lbl": "in Paris"
+        "big": "2 hrs 20",
+        "lbl": "from Paris"
       }
     ],
     "brief": [
       {
         "label": "Capacity",
-        "value": "Up to 20 team members accommodated, for a private residential seminar."
+        "value": "Up to 20 staff housed, in a private residential seminar."
       },
       {
         "label": "Spaces",
-        "value": "The 200 m² Orangery and 4 versatile lounges for your sessions."
+        "value": "The 200 m² Orangery and 4 modular lounges for your sessions."
       },
       {
         "label": "Packages",
-        "value": "From €70 excl. VAT per person, from a study day to a full residential stay."
+        "value": "From €70 excl. VAT per person, from a study day to a full stay."
       },
       {
         "label": "Setting",
-        "value": "A private 14-hectare estate, in the countryside and free of distractions."
+        "value": "A private 14-hectare estate, out in the green and free of distraction."
       },
       {
         "label": "Location",
-        "value": "Near Amboise, 2 hours 20 minutes from Paris and 30 minutes from Tours."
+        "value": "Near Amboise, 2 hrs 20 from Paris and 30 minutes from Tours."
       }
     ],
     "extrasHead": {
@@ -232,114 +232,114 @@
     },
     "extras": [
       {
-        "title": "Wellbeing & relaxation",
-        "text": "A 16-metre swimming lane, heated from April to October, and its pool house, for breaks between meetings."
+        "title": "Wellness & downtime",
+        "text": "A 16-metre lap pool heated from April to October with its pool house, for breaks between meetings."
       },
       {
         "title": "Relaxation & harmony",
-        "text": "Professional massages by appointment or yoga sessions organised on request."
+        "text": "Professional massages by appointment or yoga sessions arranged on request."
       },
       {
         "title": "Leisure & music",
-        "text": "Self-service musical instruments and board games, as well as games of pétanque or table tennis in the park."
+        "text": "Instruments and board games freely available, games of pétanque or table tennis in the grounds."
       },
       {
-        "title": "A culinary bond",
-        "text": "Strengthen your bonds through good food, with Italian cookery classes or workshops led by a Michelin-starred chef."
+        "title": "Team spirit through food",
+        "text": "Strengthen bonds through food, with Italian cookery classes or workshops led by a Michelin-starred chef."
       },
       {
-        "title": "Hot-air balloon ride",
-        "text": "A flight from the castle grounds, taking in the highlights of the Loire Valley."
+        "title": "Hot-air balloon flight",
+        "text": "A take-off from the château grounds to fly over the jewels of the Loire Valley."
       },
       {
-        "title": "Heritage & castles",
-        "text": "Chenonceau, Amboise, Blois or Chambord, just a few minutes’ drive from the estate."
+        "title": "Heritage & châteaux",
+        "text": "Chenonceau, Amboise, Blois or Chambord, just minutes from the estate."
       }
     ],
     "faqHead": {
-      "eyebrow": "Frequently Asked Questions",
-      "title": "Your seminar at the château: practical information"
+      "eyebrow": "Frequently asked questions",
+      "title": "Your seminar at the château, in practice"
     },
     "faq": [
       {
-        "q": "How many staff can the château accommodate?",
-        "a": "Up to 20 staff members can be accommodated on site in 10 suites, and plenary sessions for up to 100 people can be held at the Orangerie."
+        "q": "How many staff can the château host?",
+        "a": "Up to 20 staff housed on site in 10 suites, and plenary sessions of up to 100 people in the Orangery."
       },
       {
         "q": "What workspaces are available?",
-        "a": "Four versatile function rooms and the Orangery, equipped with a video projector and a flipchart, plus the grounds for outdoor sessions."
+        "a": "Four modular lounges and the Orangery, fitted with a video projector and flip chart, plus the grounds for outdoor sessions."
       },
       {
-        "q": "Are there any team-building activities on offer?",
-        "a": "Yes, fourteen hectares of parkland for outdoor activities, a swimming lane and plenty of on-site entertainment."
+        "q": "Do you offer team-building activities?",
+        "a": "Yes, fourteen hectares of grounds for outdoor activities, a lap pool and plenty of on-site entertainment."
       },
       {
-        "q": "How far is it from Paris and Tours?",
-        "a": "About 2 hours 20 minutes from Paris and 30 minutes from Tours, in Touraine near Amboise."
+        "q": "How far from Paris and Tours?",
+        "a": "About 2 hrs 20 from Paris and 30 minutes from Tours, in Touraine near Amboise."
       },
       {
-        "q": "Is the seminar being privatised exclusively?",
-        "a": "Yes, the domain is reserved exclusively for your company; no other group will share it."
+        "q": "Is the seminar on an exclusive-use basis?",
+        "a": "Yes, the estate is reserved for your company alone, with no other group at the same time."
       },
       {
-        "q": "What are your pricing plans?",
-        "a": "Study day: fully equipped room, two coffee breaks and a buffet lunch, from €70 (excl. VAT) per person. Residential seminar with half-board: study day, one night’s accommodation in a single room and breakfast, from €250 (excl. VAT) per person. Full board: half-board plus a served dinner (starter, main course, cheese, dessert), from €290 excl. VAT per person."
+        "q": "What are your pricing packages?",
+        "a": "Study day: equipped room, two coffee breaks and a buffet lunch, from €70 excl. VAT per person. Half-board residential seminar: study day, single-room night and breakfast, from €250 excl. VAT per person. Full board: half board plus a served dinner (starter, main, cheese, dessert), from €290 excl. VAT per person."
       },
       {
         "q": "What technical equipment is included?",
-        "a": "Each seminar room is equipped with a video projector, a flipchart, and paper and pens for your staff. Sound systems, Wi-Fi and screens are also available to meet your requirements."
+        "a": "Each seminar room has a video projector, a flip chart, plus paper and pens for your staff. Sound system, wifi and screens complete the equipment to suit your needs."
       },
       {
-        "q": "How many rooms are needed for a residential seminar?",
-        "a": "Ten elegant suites, each with its own en-suite bathroom. Accommodation is available for single occupancy or as a twin room with separate beds."
+        "q": "How many rooms for a residential seminar?",
+        "a": "Ten refined suites, each with its own private bathroom. Accommodation can be single or twin occupancy with separate beds."
       },
       {
-        "q": "Do you provide a list of service providers?",
-        "a": "Yes. You are free to make your own choices, but we can recommend a selection of caterers, florists, photographers and other service providers who know the venue inside out."
+        "q": "Do you offer a list of suppliers?",
+        "a": "Yes. You remain free to choose, but we offer a selection of caterers, florists, photographers and other suppliers who know the estate perfectly."
       },
       {
-        "q": "What sort of cuisine do you serve?",
-        "a": "Homemade Italian cuisine that brings out the flavours of vegetables from our own vegetable patch and from selected local producers."
+        "q": "What kind of cuisine do you offer?",
+        "a": "Home-made Italian cooking that brings out the flavours of vegetables from the kitchen garden and selected local producers."
       }
     ]
   },
   "it": {
     "title": "Seminario aziendale al castello · Valle della Loira | La Huberdière",
-    "description": "Organizzate il vostro seminario in un castello nella Valle della Loira: tenuta riservata in esclusiva per un massimo di 20 collaboratori con pernottamento, 4 sale modulabili, sala plenaria con capienza fino a 100 persone, a 2 ore e 20 minuti da Parigi.",
+    "description": "Organizzate il vostro seminario al castello nella Valle della Loira: tenuta privatizzata fino a 20 collaboratori alloggiati, 4 saloni modulabili, plenaria fino a 100 persone, a 2 ore e 20 da Parigi.",
     "hero": {
       "eyebrow": "Seminario al castello · Valle della Loira",
-      "titleLine1": "Il vostro seminario al castello",
-      "titleLine2Italic": "di Huberdière.",
-      "lead": "Un castello a vostra disposizione per i vostri seminari aziendali: lavoro, coesione e serenità in un unico luogo, a 2 ore e 20 minuti da Parigi."
+      "titleLine1": "Il vostro seminario al Château",
+      "titleLine2Italic": "de la Huberdière.",
+      "lead": "Un castello privatizzato per i vostri seminari aziendali: lavoro, coesione e serenità in un solo luogo, a 2 ore e 20 da Parigi."
     },
     "intro": [
-      "Riunite i vostri team per un seminario al castello: La Huberdière è a vostra disposizione in esclusiva per i vostri comitati direttivi, master class e giornate di team building. Dieci suite con bagno privato possono ospitare fino a 20 collaboratori, mentre quattro saloni modulabili si adattano alle vostre esigenze lavorative.",
-      "Quattordici ettari di parco alberato per attività di team building all’aria aperta, una piscina riscaldata da aprile a ottobre, una cucina italiana sana e gustosa: tutto è pensato per alternare sessioni produttive a veri momenti di relax.",
-      "Per quanto riguarda gli spazi di lavoro, quattro sale modulabili e l’Orangerie consentono di ospitare riunioni plenarie fino a 100 persone, dotate di videoproiettore e lavagna a fogli mobili, mentre il parco si presta perfettamente alle sessioni all’aperto."
+      "Riunite i vostri team per un seminario al castello: la Huberdière si privatizza per i vostri comitati di direzione, masterclass e giornate di coesione. Dieci suite con bagno privato ospitano fino a 20 collaboratori, e quattro saloni modulabili si adattano ai vostri formati di lavoro.",
+      "Quattordici ettari di parco boscoso per le attività di team building all'aperto, una corsia di nuoto riscaldata da aprile a ottobre, una cucina italiana sana e golosa: tutto è pensato per alternare sessioni produttive e veri momenti di respiro.",
+      "Sul fronte lavoro, quattro saloni modulabili e l'Orangerie consentono plenarie fino a 100 persone, dotati di videoproiettore e lavagna a fogli mobili, mentre il parco si presta alle sessioni all'aperto."
     ],
     "cards": [
       {
         "num": "I",
         "title": "Immersione naturale",
-        "text": "La tranquillità della natura circostante per lavorare in tutta serenità e favorire il distacco dalla routine lavorativa dei vostri collaboratori."
+        "text": "La quiete della natura circostante per lavorare in serenità e favorire la disconnessione dei vostri collaboratori."
       },
       {
         "num": "II",
-        "title": "Arredamento raffinato",
-        "text": "Dall'eleganza delle nostre 10 suite al comfort delle nostre 4 sale, ogni dettaglio offre un ambiente di lavoro prestigioso."
+        "title": "Ambiente raffinato",
+        "text": "Dall'eleganza delle nostre 10 suite al comfort dei nostri 4 saloni, ogni dettaglio offre una cornice di lavoro prestigiosa."
       },
       {
         "num": "III",
         "title": "Energia creativa",
-        "text": "Una cucina italiana semplice e raffinata, pensata per fornire energia sana e gustosa per tutta la giornata."
+        "text": "Una cucina italiana semplice e raffinata, pensata per portare un'energia sana e golosa per tutta la giornata."
       }
     ],
     "final": {
       "eyebrow": "Il vostro seminario",
       "titleLine1": "Parliamo del vostro",
       "titleLine2Italic": "prossimo seminario.",
-      "text": "Comunicateci le date, il numero di partecipanti e i vostri obiettivi. Vi invieremo una proposta su misura.",
-      "submitLabel": "Ricevere un'offerta",
+      "text": "Diteci le vostre date, il numero di partecipanti e i vostri obiettivi. Vi invieremo una proposta su misura.",
+      "submitLabel": "Ricevere una proposta",
       "responseLine": "Risposta entro 24 ore"
     },
     "stats": [
@@ -349,17 +349,17 @@
       },
       {
         "big": "14 ha",
-        "lbl": "di un parco boscoso"
+        "lbl": "di parco boscoso"
       },
       {
-        "big": "2 h 20",
-        "lbl": "di Parigi"
+        "big": "2 ore e 20",
+        "lbl": "da Parigi"
       }
     ],
     "brief": [
       {
         "label": "Capacità",
-        "value": "Fino a 20 collaboratori alloggiati, in seminario residenziale a uso esclusivo."
+        "value": "Fino a 20 collaboratori alloggiati, in seminario residenziale privatizzato."
       },
       {
         "label": "Spazi",
@@ -367,41 +367,41 @@
       },
       {
         "label": "Formule",
-        "value": "A partire da 70 € IVA escl. a persona, dalla giornata di studio al soggiorno completo."
+        "value": "A partire da 70 € IVA esclusa a persona, dalla giornata di studio al soggiorno completo."
       },
       {
-        "label": "Contesto",
-        "value": "Tenuta privata di 14 ettari, immersa nel verde e senza distrazioni."
+        "label": "Ambiente",
+        "value": "Tenuta privatizzata di 14 ettari, nel verde e senza distrazioni."
       },
       {
         "label": "Posizione",
-        "value": "Vicino ad Amboise, a 2 ore e 20 minuti da Parigi e 30 minuti da Tours."
+        "value": "Vicino ad Amboise, a 2 ore e 20 da Parigi e 30 minuti da Tours."
       }
     ],
     "extrasHead": {
-      "eyebrow": "Sul posto",
+      "eyebrow": "In loco",
       "title": "Le attività per il vostro seminario"
     },
     "extras": [
       {
         "title": "Benessere e relax",
-        "text": "Una corsia da nuoto di 16 metri, riscaldata da aprile a ottobre, con annessa pool house, per le pause tra una riunione e l’altra."
+        "text": "Una corsia di nuoto di 16 metri riscaldata da aprile a ottobre con la sua pool house, per le pause tra due riunioni."
       },
       {
-        "title": "Rilassamento e armonia",
+        "title": "Relax e armonia",
         "text": "Massaggi professionali su appuntamento o sessioni di yoga organizzate su richiesta."
       },
       {
-        "title": "Tempo libero e musica",
-        "text": "Strumenti musicali e giochi da tavolo a disposizione degli ospiti, partite di bocce o di ping-pong nel parco."
+        "title": "Svago e musica",
+        "text": "Strumenti e giochi da tavolo a libero servizio, partite di pétanque o di ping-pong nel parco."
       },
       {
-        "title": "Coesione gastronomica",
-        "text": "Rafforzate i legami attraverso il piacere della buona tavola, con corsi di cucina italiana o laboratori tenuti da uno chef stellato."
+        "title": "Coesione golosa",
+        "text": "Rafforzate i legami con la buona tavola, con corsi di cucina italiana o laboratori condotti da uno chef stellato."
       },
       {
         "title": "Volo in mongolfiera",
-        "text": "Partenza dal parco del castello per sorvolare i gioielli della Valle della Loira."
+        "text": "Una partenza dal parco del castello per sorvolare i gioielli della Valle della Loira."
       },
       {
         "title": "Patrimonio e castelli",
@@ -410,48 +410,48 @@
     ],
     "faqHead": {
       "eyebrow": "Domande frequenti",
-      "title": "Il vostro seminario al castello: informazioni pratiche"
+      "title": "Il vostro seminario al castello, in pratica"
     },
     "faq": [
       {
         "q": "Quanti collaboratori può ospitare il castello?",
-        "a": "Fino a 20 collaboratori possono alloggiare in loco in 10 suite, mentre l'Orangerie può ospitare riunioni plenarie con un massimo di 100 persone."
+        "a": "Fino a 20 collaboratori alloggiati in loco in 10 suite, e plenarie fino a 100 persone all'Orangerie."
       },
       {
         "q": "Quali spazi di lavoro sono disponibili?",
-        "a": "Quattro sale modulabili e l’Orangerie, dotate di videoproiettore e lavagna a fogli mobili, oltre al parco per le sessioni all’aperto."
+        "a": "Quattro saloni modulabili e l'Orangerie, dotati di videoproiettore e lavagna a fogli mobili, più il parco per le sessioni all'aperto."
       },
       {
-        "q": "Si organizzano attività di team building?",
-        "a": "Sì, quattordici ettari di parco per le attività all’aperto, una corsia di nuoto e numerose attività di intrattenimento in loco."
+        "q": "Proponete attività di team building?",
+        "a": "Sì, quattordici ettari di parco per le attività all'aperto, corsia di nuoto e numerose animazioni sul posto."
       },
       {
-        "q": "A che distanza si trova da Parigi e da Tours?",
-        "a": "A circa 2 ore e 20 minuti da Parigi e a 30 minuti da Tours, in Touraine, vicino ad Amboise."
+        "q": "A che distanza da Parigi e da Tours?",
+        "a": "Circa 2 ore e 20 da Parigi e 30 minuti da Tours, in Touraine vicino ad Amboise."
       },
       {
-        "q": "Il seminario è riservato esclusivamente a un gruppo privato?",
-        "a": "Sì, il dominio è riservato esclusivamente alla vostra azienda, senza altri gruppi in parallelo."
+        "q": "Il seminario è in affitto in esclusiva?",
+        "a": "Sì, la tenuta è riservata alla vostra sola azienda, senza altri gruppi in parallelo."
       },
       {
-        "q": "Quali sono le vostre tariffe?",
-        "a": "Giornata di studio: sala attrezzata, due pause caffè e pranzo a buffet, a partire da 70 € IVA esclusa a persona. Seminario residenziale con mezza pensione: giornata di studio, pernottamento in camera singola e colazione, a partire da 250 € IVA esclusa a persona. Pensione completa: la mezza pensione arricchita da una cena servita (antipasto, piatto principale, formaggio, dessert), a partire da 290 € IVA esclusa a persona."
+        "q": "Quali sono le vostre formule tariffarie?",
+        "a": "Giornata di studio: sala attrezzata, due pause caffè e pranzo a buffet, a partire da 70 € IVA esclusa a persona. Seminario residenziale in mezza pensione: giornata di studio, pernottamento in singola e colazione, a partire da 250 € IVA esclusa a persona. Pensione completa: la mezza pensione arricchita da una cena servita (antipasto, piatto, formaggio, dessert), a partire da 290 € IVA esclusa a persona."
       },
       {
         "q": "Quali attrezzature tecniche sono incluse?",
-        "a": "Ogni sala seminari è dotata di un videoproiettore, una lavagna a fogli mobili, oltre a carta e penne per i vostri collaboratori. Impianto audio, Wi-Fi e schermi completano l'attrezzatura in base alle vostre esigenze."
+        "a": "Ogni sala seminari dispone di un videoproiettore, di una lavagna a fogli mobili, oltre a carta e penne per i vostri collaboratori. Impianto audio, wifi e schermi completano l'attrezzatura secondo le vostre esigenze."
       },
       {
-        "q": "Quante camere servono per un seminario residenziale?",
-        "a": "Dieci suite raffinate, ciascuna con bagno privato. È possibile soggiornare in camera singola o doppia con letti separati."
+        "q": "Quante camere per un seminario residenziale?",
+        "a": "Dieci suite raffinate, ognuna con il proprio bagno privato. L'alloggio può essere in occupazione singola o doppia con letti separati."
       },
       {
-        "q": "Offrite un elenco di fornitori?",
-        "a": "Sì. Siete liberi di scegliere come preferite, ma vi proponiamo una selezione di catering, fioristi, fotografi e altri fornitori che conoscono perfettamente la tenuta."
+        "q": "Proponete una lista di fornitori?",
+        "a": "Sì. Restate liberi delle vostre scelte, ma vi proponiamo una selezione di catering, fioristi, fotografi e altri fornitori che conoscono perfettamente la tenuta."
       },
       {
         "q": "Che tipo di cucina proponete?",
-        "a": "Una cucina italiana casalinga che esalta i sapori delle verdure dell'orto e dei produttori locali selezionati."
+        "a": "Una cucina italiana della casa che esalta i sapori delle verdure dell'orto e di produttori locali selezionati."
       }
     ]
   }

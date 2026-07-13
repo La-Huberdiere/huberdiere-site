@@ -342,42 +342,42 @@
     ]
   },
   "en": {
-    "title": "A charming hotel near Amboise · Château de la Huberdière, Loire Valley",
-    "description": "A charming hotel set in a château near Amboise, in the heart of the Loire Valley. Ten exceptional air-conditioned rooms, 14-hectare grounds, a lap pool and table d’hôtes dining: the atmosphere of a bed and breakfast, with the service of a 3-star hotel.",
+    "title": "Charming Hotel near Amboise · Château de la Huberdière, Loire Valley",
+    "description": "A charming château hotel near Amboise, in the heart of the Loire Valley châteaux. Ten exceptional air-conditioned rooms, 14-hectare grounds, a lap pool and a table d'hôtes: the spirit of a bed and breakfast with the service of a 3-star hotel.",
     "hero": {
       "eyebrow": "Charming hotel · near Amboise",
-      "titleLine1": "A boutique hotel",
-      "titleLine2Italic": "at the castle.",
-      "lead": "A charming hotel set in a château in the Loire Valley, just a few minutes from Amboise. Ten exceptional rooms, the service of a 3-star hotel, and the warm, welcoming atmosphere of a guesthouse."
+      "titleLine1": "A charming hotel",
+      "titleLine2Italic": "at the château.",
+      "lead": "A charming hotel in a Loire Valley château, minutes from Amboise. Ten exceptional rooms, the service of a 3-star hotel, the warm spirit of a bed and breakfast."
     },
     "intro": [
-      "Just a stone’s throw from Amboise, the château welcomes you as a hotel unlike any other: ten delightfully decorated rooms, each with its own character and private bathroom, all air-conditioned and situated on the second floor. The charm of a bed and breakfast, combined with the comfort and service of a 3-star hotel. An ideal base for exploring the Châteaux of the Loire Valley and discovering the Touraine region.",
-      "A 14-hectare park featuring terraces, a large pond and a 16-metre swimming lane heated from April to October, a dining room that can seat up to 22 guests, and a library with Versailles-style parquet flooring that can be converted into a dance floor."
+      "A stone's throw from Amboise, the château welcomes you as a hotel unlike any other: ten delightfully decorated rooms, each with its own character and private bathroom, air-conditioned on the second floor. The spirit of a bed and breakfast, the comfort and service of a 3-star hotel. An ideal base to visit the Loire Valley châteaux and explore Touraine.",
+      "Grounds of 14 hectares with their terraces, large pond and 16-metre lap pool heated from April to October, a dining room seating up to 22 guests and a library with Versailles parquet that turns into a dance floor."
     ],
     "cards": [
       {
         "num": "I",
         "title": "Ten exceptional rooms",
-        "text": "Each room has its own décor and character, with its own private, air-conditioned bathroom on the second floor. From the bridal four-poster bed to the spacious family room."
+        "text": "Each with its own décor and character, its private bathroom, air-conditioned on the second floor. From the bridal four-poster bed to the spacious family room."
       },
       {
         "num": "II",
         "title": "The guesthouse spirit",
-        "text": "The comfort and service of a 3-star hotel, combined with the warm welcome and home-cooked meals of a family home."
+        "text": "The comfort and service of a 3-star hotel, the warm welcome and table of a lived-in family home."
       },
       {
         "num": "III",
-        "title": "A 14-hectare park",
-        "text": "Pond, terraces and a 16x3 m swimming lane with a pool house. A committed estate: locally sourced produce, organic farming and biomass heating."
+        "title": "Grounds of 14 hectares",
+        "text": "Pond, terraces and a 16x3 m lap pool with pool house. A committed estate: short supply chains, organic produce and biomass heating."
       }
     ],
     "final": {
       "eyebrow": "Your stay",
       "titleLine1": "Book your",
-      "titleLine2Italic": "stay at the castle.",
-      "text": "Please let us know your dates and the number of people. We’ll be happy to get back to you.",
-      "submitLabel": "Receive a proposal",
-      "responseLine": "We’ll get back to you within 24 hours"
+      "titleLine2Italic": "stay at the château.",
+      "text": "Tell us your dates and the number of guests. We will be glad to reply.",
+      "submitLabel": "Request a proposal",
+      "responseLine": "Reply within 24 hours"
     },
     "stats": [
       {
@@ -386,72 +386,72 @@
       },
       {
         "big": "14 ha",
-        "lbl": "private park"
+        "lbl": "of private grounds"
       },
       {
         "big": "16 m",
-        "lbl": "swimming lane"
+        "lbl": "lap pool"
       }
     ],
     "brief": [
       {
         "label": "Rooms",
-        "value": "10 rooms and suites full of character, 21 beds, en-suite bathrooms."
+        "value": "10 rooms and suites with character, sleeps 21, private bathroom."
       },
       {
-        "label": "Dining",
-        "value": "Home-made breakfast included; table d'hôtes dinner in the evening on request."
+        "label": "Table",
+        "value": "Homemade breakfast included; table d'hôtes in the evening on reservation."
       },
       {
         "label": "Setting",
-        "value": "A 14-hectare enclosed park and a heated pool from April to October."
+        "value": "Enclosed 14-hectare grounds and a pool heated from April to October."
       },
       {
         "label": "Spirit",
-        "value": "A 3-star boutique hotel with the spirit of a family guest house."
+        "value": "A 3-star charming hotel, with the spirit of a family bed and breakfast."
       },
       {
         "label": "Location",
-        "value": "10 minutes from Amboise, 2 hours 20 minutes from Paris."
+        "value": "10 minutes from Amboise, 2 hrs 20 from Paris."
       }
     ],
     "extrasHead": {
       "eyebrow": "The estate",
-      "title": "Much more than just a bedroom"
+      "title": "Far more than a room"
     },
     "extras": [
       {
-        "title": "The park",
-        "text": "Fourteen hectares, terraces, a large pond and a 16-metre swimming lane heated from April to October, complete with a pool house."
+        "title": "The grounds",
+        "text": "Fourteen hectares, terraces, a large pond and a 16-metre lap pool heated from April to October, with its pool house."
       },
       {
-        "title": "Reception areas",
-        "text": "A dining room that can seat up to 22 guests and a library with Versailles-style parquet flooring, which can be converted into a dance floor."
+        "title": "The reception spaces",
+        "text": "A dining room seating up to 22 guests and a library with Versailles parquet that turns into a dance floor."
       },
       {
         "title": "A committed estate",
-        "text": "Local and organic produce, organic cleaning products, biomass heating."
+        "text": "Short-chain and organic sourcing, organic cleaning products, biomass heating."
       },
       {
-        "title": "At the gates of the castles",
-        "text": "Amboise and the Clos Lucé are ten minutes away; Chenonceau, Villandry and Chambord are less than an hour away."
+        "title": "At the gateway to the châteaux",
+        "text": "Amboise and Clos Lucé ten minutes away; Chenonceau, Villandry and Chambord within the hour."
       }
     ],
     "roomsHead": {
       "eyebrow": "Our rooms",
-      "title": "Ten rooms, ten personalities"
+      "title": "Ten rooms, ten characters"
     },
     "rooms": [
       {
         "name": "Paradis Sauvage",
         "size": "37 m²",
-        "text": "The quintessential bridal suite. Mouldings run all the way round the ceiling and wooden decorations adorn the period doors. Sumptuous Moooi wallpaper adorns the panelling, alternating with sensual grey velvet. The four-poster bed takes centre stage in the room, surrounded by antique furniture. The atmosphere is one of timeless romance.",
-        "tag": "Bridal suite",
+        "text": "The bridal room par excellence. Mouldings run all around the ceiling and carved wooden details crown the antique doors. A sumptuous Moooi wallpaper adorns the panels, alternating with a sensual grey velvet. The four-poster bed stands at the centre of the room, surrounded by antique furniture. The atmosphere is one of timeless romance.",
+        "tag": "Bridal room",
         "bed": "Queen-size four-poster bed",
         "floor": "First floor, no lift",
-        "orientation": "South and west (double aspect)",
+        "orientation": "South and west (dual aspect)",
         "ac": "",
-        "bathroom": "Bath",
+        "bathroom": "Bathtub",
         "note": "",
         "photos": [
           "/images/rooms/paradis-sauvage-01.jpg",
@@ -460,19 +460,19 @@
           "/images/rooms/paradis-sauvage-02.jpg",
           "/images/rooms/paradis-sauvage-06.jpg"
         ],
-        "amenities": "Welcome tray · Wi-Fi 6",
-        "view": ""
+        "view": "",
+        "amenities": "Welcome tray · Wifi 6"
       },
       {
         "name": "Giboulée",
         "size": "22 m²",
-        "text": "An atmosphere inspired by the navy and aviation, Patrick’s great passions. A aeroplane propeller from the Great War sits alongside instruments and books from the world of navigation.",
-        "tag": "Nautical style",
+        "text": "An atmosphere inspired by the sea and aviation, Patrick's great passions. A Great War aircraft propeller sits alongside instruments and books from the world of navigation.",
+        "tag": "Nautical spirit",
         "bed": "King-size bed",
         "orientation": "South",
         "ac": "",
         "bathroom": "Shower",
-        "view": "Park",
+        "view": "Grounds",
         "photos": [
           "/images/rooms/giboulee-01.jpg",
           "/images/rooms/giboulee-03.jpg",
@@ -480,17 +480,17 @@
           "/images/rooms/giboulee-04.jpg"
         ],
         "floor": "First floor, no lift",
-        "amenities": "Welcome tray · Wi-Fi 6",
+        "amenities": "Welcome tray · Wifi 6",
         "note": ""
       },
       {
         "name": "Pêche",
         "size": "22 m²",
-        "text": "Located in the east tower, the Pêche room takes its name from the unique colour of its walls, inspired by the iconic summer fruit and the Bellini cocktail.",
-        "tag": "East Tower",
+        "text": "Set in the east tower, the Pêche room takes its name from the unique colour of its walls, inspired by the emblematic fruit of summer and by the Bellini cocktail.",
+        "tag": "East tower",
         "floor": "Second floor, no lift",
-        "ac": "Reversible",
-        "bathroom": "Large bathroom with a freestanding bath",
+        "ac": "Reversible air conditioning",
+        "bathroom": "Large bathroom with freestanding bathtub",
         "note": "",
         "photos": [
           "/images/rooms/peche-01.jpg",
@@ -501,17 +501,17 @@
         ],
         "bed": "King-size bed",
         "orientation": "South",
-        "view": "Park",
-        "amenities": "Welcome tray · Wi-Fi 6"
+        "view": "Grounds",
+        "amenities": "Welcome tray · Wifi 6"
       },
       {
         "name": "Thé",
         "size": "30 m²",
-        "text": "The second most beautiful room in the château is in the other tower. The panelling is adorned with a stretched fabric in shades of orange. The marble of the fireplace echoes the shades of yellow, and the lampshade is made from a Hermès square.",
-        "tag": "Tower Room",
-        "orientation": "East and south (double aspect)",
+        "text": "The château's second most beautiful room lies in the other tower. The panels are dressed with an orange-toned stretched fabric. The marble of the fireplace echoes the shades of yellow, and the lampshade is made from an Hermès scarf.",
+        "tag": "Tower room",
+        "orientation": "East and south (dual aspect)",
         "ac": "",
-        "view": "Park",
+        "view": "Grounds",
         "photos": [
           "/images/rooms/the-05.jpg",
           "/images/rooms/the-04.jpg",
@@ -522,16 +522,16 @@
         "bed": "King-size bed",
         "floor": "First floor, no lift",
         "bathroom": "Shower",
-        "amenities": "Spacious walk-in wardrobe · Welcome tray · Wi-Fi 6",
+        "amenities": "Spacious dressing room · Welcome tray · Wifi 6",
         "note": ""
       },
       {
         "name": "Mirage",
         "size": "37 m²",
-        "text": "Hidden beneath the 16th-century roof structure of the castle’s oldest tower lies the spacious Mirage family room, named after the lilac colour that adorns its walls and ceiling. Perfect for families, it is spacious enough to accommodate an extra cot and still leave room for the children to play.",
+        "text": "Beneath the 16th-century timberwork of the château's oldest tower hides the spacious Mirage family room, named after the lilac colour that dresses its walls and ceiling. Perfect for families, spacious enough to add an extra cot and leave room to play.",
         "tag": "Family room",
-        "bed": "King-size bed + 2 beds (90 × 200)",
-        "ac": "Reversible",
+        "bed": "King-size bed + 2 beds 90 × 200",
+        "ac": "Reversible air conditioning",
         "photos": [
           "/images/rooms/mirage-01.jpg",
           "/images/rooms/mirage-04.jpg",
@@ -541,22 +541,22 @@
         ],
         "floor": "Second floor, no lift",
         "orientation": "South",
-        "bathroom": "Bath",
-        "amenities": "Welcome tray · Wi-Fi 6",
+        "bathroom": "Bathtub",
         "view": "",
+        "amenities": "Welcome tray · Wifi 6",
         "note": ""
       },
       {
         "name": "Allium",
         "size": "26 m²",
-        "text": "The triple room, Allium, features a king-size bed and a third antique bed measuring 110 × 190. Located on the first floor, in the central part of the building, its window looks out directly onto the beautiful ‘green carpet’ – the large clearing in the forest surrounding the pond.",
+        "text": "A triple room, Allium offers a king-size bed and a third antique bed of 110 × 190. On the first floor, in the central part of the building, its window opens right onto the beautiful \"green carpet\", the great clearing in the forest that surrounds the pond.",
         "tag": "Triple room",
         "bed": "King-size bed + antique bed 110 × 190",
         "floor": "First floor, no lift",
         "orientation": "South",
         "ac": "",
-        "bathroom": "Large bathroom with a shower",
-        "view": "On the green carpet and the pond",
+        "bathroom": "Large bathroom with shower",
+        "view": "Onto the green carpet and the pond",
         "note": "",
         "photos": [
           "/images/rooms/allium-01.jpg",
@@ -565,14 +565,14 @@
           "/images/rooms/allium-03.jpg",
           "/images/rooms/allium-07.jpg"
         ],
-        "amenities": "Welcome tray · Wi-Fi 6"
+        "amenities": "Welcome tray · Wifi 6"
       },
       {
         "name": "Bouquet",
         "size": "15 m²",
-        "text": "Smaller yet very cosy, the Bouquet room offers the perfect setting for a restful night’s sleep. It takes its name from its floral wallpaper. The room is bright thanks to its large skylight.",
+        "text": "Smaller yet very cosy, the Bouquet room offers a perfect setting for gentle nights. Its name comes from its floral wallpaper. A bright room thanks to its large skylight.",
         "orientation": "South",
-        "ac": "Reversible",
+        "ac": "Reversible air conditioning",
         "photos": [
           "/images/rooms/bouquet-01.jpg",
           "/images/rooms/bouquet-03.jpg",
@@ -583,14 +583,14 @@
         "bed": "King-size bed",
         "floor": "Second floor, no lift",
         "bathroom": "Shower",
-        "amenities": "Welcome tray · Wi-Fi 6",
         "view": "",
+        "amenities": "Welcome tray · Wifi 6",
         "note": ""
       },
       {
         "name": "Cactus",
         "size": "17 m²",
-        "text": "Cactus is a fun room. Although it’s the only one without a view of the park, its large, light-filled bathroom, decorated with charcoal drawings, adds to its charm. In summer, it’s the coolest of all our rooms.",
+        "text": "Cactus is a fun room. Although it is the only one without a view over the grounds, its large, bright bathroom, decorated with charcoal artworks, adds to its gentle feel. In summer, it is the coolest of all our rooms.",
         "orientation": "North",
         "ac": "",
         "bathroom": "Shower",
@@ -604,17 +604,17 @@
           "/images/rooms/cactus-05.jpg"
         ],
         "tag": "Junior Suite",
-        "bed": "King-size bed (or twin beds)",
+        "bed": "King-size bed (or twins)",
         "floor": "First floor, no lift",
-        "amenities": "Welcome tray · Wi-Fi 6"
+        "amenities": "Welcome tray · Wifi 6"
       },
       {
         "name": "Ponceau",
         "size": "15 m²",
-        "text": "Ponceau and Bleu Indien, twin rooms, each feature an antique bed measuring 100 × 190. An ideal space for those travelling alone or accompanying a couple.",
+        "text": "Ponceau and Bleu Indien, twin rooms, each offer an antique bed of 100 × 190. A special space for those travelling alone or accompanying a couple.",
         "tag": "Single room",
-        "bed": "Antique bed, 100 × 190",
-        "ac": "Reversible",
+        "bed": "Antique bed 100 × 190",
+        "ac": "Reversible air conditioning",
         "photos": [
           "/images/rooms/ponceau-03.jpg",
           "/images/rooms/ponceau-02.jpg",
@@ -624,17 +624,17 @@
         "floor": "Second floor, no lift",
         "orientation": "South",
         "bathroom": "Shower",
-        "amenities": "Welcome tray · Wi-Fi 6",
         "view": "",
+        "amenities": "Welcome tray · Wifi 6",
         "note": ""
       },
       {
         "name": "Bleu Indien",
         "size": "15 m²",
-        "text": "‘Bleu Indien’ and ‘Ponceau’, twin rooms, each feature an antique bed measuring 100 × 190. An ideal space for those travelling alone or accompanying a couple.",
+        "text": "Bleu Indien and Ponceau, twin rooms, each offer an antique bed of 100 × 190. A special space for those travelling alone or accompanying a couple.",
         "tag": "Single room",
-        "bed": "Antique bed, 100 × 190",
-        "ac": "Reversible",
+        "bed": "Antique bed 100 × 190",
+        "ac": "Reversible air conditioning",
         "photos": [
           "/images/rooms/bleu-indien-01.jpg",
           "/images/rooms/bleu-indien-02.jpg",
@@ -643,82 +643,82 @@
         "floor": "Second floor, no lift",
         "orientation": "South",
         "bathroom": "Shower",
-        "amenities": "Welcome tray · Wi-Fi 6",
         "view": "",
+        "amenities": "Welcome tray · Wifi 6",
         "note": ""
       }
     ],
     "testimonial": {
-      "text": "The warm welcome from the hosts, the tasteful décor and top-quality bedding made for a rejuvenating stay. The table d’hôtes was delicious. An enchanting stay – one we’d happily repeat time and again. We’ll be back.",
+      "text": "The caring welcome of our hosts, refined décor and premium bedding for a restful stay. The table d'hôtes was delicious. An enchanting stay, to be repeated without moderation. We will be back.",
       "author": "Isabelle"
     },
     "faqHead": {
-      "eyebrow": "Frequently Asked Questions",
+      "eyebrow": "Frequently asked questions",
       "title": "Your stay at the hotel"
     },
     "faq": [
       {
-        "q": "Are you a hotel or a guesthouse?",
-        "a": "The château is a charming 3-star hotel. It combines the atmosphere, friendliness and warm welcome of a bed and breakfast with the standard of service, comfort and facilities of a hotel."
+        "q": "Are you a hotel or a bed and breakfast?",
+        "a": "The château is a 3-star charming hotel. You will find the spirit, the conviviality and the welcome of a bed and breakfast, with the level of service, comfort and amenities of a hotel."
       },
       {
         "q": "How far is the château from Amboise?",
-        "a": "The château is about ten minutes’ drive from Amboise, in Indre-et-Loire, in the heart of the Loire Valley."
+        "a": "The château is about ten minutes from Amboise, in the Indre-et-Loire, in the heart of the Loire Valley châteaux."
       },
       {
         "q": "Is breakfast included?",
-        "a": "Yes, a delicious homemade breakfast is served every morning, featuring fresh, locally sourced produce."
+        "a": "Yes, a generous homemade breakfast is served every morning, with fresh, local produce."
       },
       {
-        "q": "Is there a swimming pool?",
-        "a": "The park has a 16-metre swimming lane, which is heated from April to October."
+        "q": "Is there a pool?",
+        "a": "The grounds feature a 16-metre lap pool heated from April to October."
       },
       {
-        "q": "Is this a good starting point for visiting the châteaux of the Loire Valley?",
-        "a": "Yes. Chenonceau, Amboise, the Clos Lucé and Chambord are all within easy reach. The château is an ideal base for a holiday in the Loire Valley."
+        "q": "Is it a good base for visiting the Loire Valley châteaux?",
+        "a": "Yes. Chenonceau, Amboise, Clos Lucé and Chambord are all within reach. The château is an ideal base for a stay in the Loire Valley."
       },
       {
-        "q": "Can we book the rooms exclusively for an event?",
-        "a": "Yes, all rooms can be booked exclusively for a wedding, a seminar or a family gathering."
+        "q": "Can the rooms be hired exclusively for an event?",
+        "a": "Yes, all the rooms can be hired on an exclusive-use basis for a wedding, a seminar or a family gathering."
       }
     ]
   },
   "it": {
     "title": "Hotel di charme vicino ad Amboise · Château de la Huberdière, Valle della Loira",
-    "description": "Un hotel di charme in un castello vicino ad Amboise, nel cuore dei Castelli della Loira. Dieci camere d'eccezione dotate di aria condizionata, un parco di 14 ettari, una piscina a corsie e la cucina casalinga: l'atmosfera di un bed & breakfast, il servizio di un hotel a 3 stelle.",
+    "description": "Un hotel di charme in un castello vicino ad Amboise, nel cuore dei castelli della Loira. Dieci camere d'eccezione con aria condizionata, parco di 14 ettari, corsia di nuoto e tavola dell'ospite: lo spirito del bed & breakfast, il servizio di un hotel a 3 stelle.",
     "hero": {
-      "eyebrow": "Hotel di charme · nei pressi di Amboise",
+      "eyebrow": "Hotel di charme · vicino ad Amboise",
       "titleLine1": "Un hotel di charme",
       "titleLine2Italic": "al castello.",
-      "lead": "Un hotel di charme in un castello della Valle della Loira, a pochi minuti da Amboise. Dieci camere d'eccezione, il servizio di un hotel a 3 stelle, l'atmosfera accogliente di un bed & breakfast."
+      "lead": "Un hotel di charme in un castello della Valle della Loira, a pochi minuti da Amboise. Dieci camere d'eccezione, il servizio di un hotel a 3 stelle, lo spirito caloroso di un bed & breakfast."
     },
     "intro": [
-      "A due passi da Amboise, il castello vi accoglie come un hotel fuori dal comune: dieci camere arredate con gusto, ognuna con la propria personalità e il bagno privato, tutte climatizzate e situate al secondo piano. L'atmosfera di una camera per gli ospiti, il comfort e il servizio di un hotel a 3 stelle. Una base ideale per visitare i castelli della Loira ed esplorare la Touraine.",
-      "Un parco di 14 ettari con terrazze, un grande laghetto e una piscina da 16 metri riscaldata da aprile a ottobre, una sala da pranzo che può ospitare fino a 22 commensali e una biblioteca con pavimento in parquet stile Versailles trasformabile in pista da ballo."
+      "A due passi da Amboise, il castello vi accoglie come un hotel fuori dal comune: dieci camere deliziosamente decorate, ognuna con la propria personalità e il proprio bagno privato, con aria condizionata al secondo piano. Lo spirito del bed & breakfast, il comfort e il servizio di un hotel a 3 stelle. Una base ideale per visitare i castelli della Loira e scoprire la Touraine.",
+      "Un parco di 14 ettari con le sue terrazze, il grande stagno e la corsia di nuoto di 16 metri riscaldata da aprile a ottobre, una sala da pranzo fino a 22 ospiti e una biblioteca con parquet Versailles trasformabile in pista da ballo."
     ],
     "cards": [
       {
         "num": "I",
         "title": "Dieci camere d'eccezione",
-        "text": "Ognuna con il proprio stile d’arredo e la propria personalità, con bagno privato e aria condizionata, al secondo piano. Dal letto a baldacchino nuziale alla grande camera familiare."
+        "text": "Ognuna con la propria decorazione e personalità, il proprio bagno privato, con aria condizionata al secondo piano. Dal letto a baldacchino nuziale alla grande camera familiare."
       },
       {
         "num": "II",
         "title": "Lo spirito del bed & breakfast",
-        "text": "Il comfort e il servizio di un hotel a 3 stelle, l'accoglienza calorosa e la cucina di una casa di famiglia."
+        "text": "Il comfort e il servizio di un hotel a 3 stelle, l'accoglienza calorosa e la tavola di una casa di famiglia abitata."
       },
       {
         "num": "III",
         "title": "Un parco di 14 ettari",
-        "text": "Lago artificiale, terrazze e corsia di nuoto di 16x3 m con pool house. Una tenuta attenta all’ambiente: filiera corta, prodotti biologici e riscaldamento a biomassa."
+        "text": "Stagno, terrazze e corsia di nuoto 16x3 m con pool house. Una tenuta impegnata: filiera corta, biologico e riscaldamento a biomassa."
       }
     ],
     "final": {
       "eyebrow": "Il vostro soggiorno",
-      "titleLine1": "Prenota il tuo",
+      "titleLine1": "Prenotate il vostro",
       "titleLine2Italic": "soggiorno al castello.",
-      "text": "Comunicateci le date e il numero di persone. Saremo lieti di rispondervi.",
-      "submitLabel": "Ricevere un'offerta",
+      "text": "Diteci le vostre date e il numero di persone. Vi risponderemo con piacere.",
+      "submitLabel": "Ricevere una proposta",
       "responseLine": "Risposta entro 24 ore"
     },
     "stats": [
@@ -728,11 +728,11 @@
       },
       {
         "big": "14 ha",
-        "lbl": "di un parco privato"
+        "lbl": "di parco privato"
       },
       {
         "big": "16 m",
-        "lbl": "corsia di nuoto"
+        "lbl": "di corsia di nuoto"
       }
     ],
     "brief": [
@@ -741,37 +741,37 @@
         "value": "10 camere e suite di carattere, 21 posti letto, bagno privato."
       },
       {
-        "label": "Ristorazione",
-        "value": "Colazione fatta in casa inclusa; tavola dell'oste la sera su prenotazione."
+        "label": "Tavola",
+        "value": "Colazione fatta in casa inclusa; tavola dell'ospite la sera su prenotazione."
       },
       {
-        "label": "Contesto",
+        "label": "Cornice",
         "value": "Parco recintato di 14 ettari e piscina riscaldata da aprile a ottobre."
       },
       {
         "label": "Spirito",
-        "value": "Hotel di charme 3 stelle, con lo spirito di una casa d'ospiti di famiglia."
+        "value": "Hotel di charme a 3 stelle, con lo spirito di un bed & breakfast di famiglia."
       },
       {
         "label": "Posizione",
-        "value": "A 10 minuti da Amboise, a 2 ore e 20 minuti da Parigi."
+        "value": "A 10 minuti da Amboise, a 2 ore e 20 da Parigi."
       }
     ],
     "extrasHead": {
       "eyebrow": "La tenuta",
-      "title": "Molto più di una semplice camera"
+      "title": "Molto più di una camera"
     },
     "extras": [
       {
         "title": "Il parco",
-        "text": "Quattordici ettari, terrazze, un grande laghetto e una corsia da nuoto di 16 metri riscaldata da aprile a ottobre, con annessa pool house."
+        "text": "Quattordici ettari, terrazze, un grande stagno e una corsia di nuoto di 16 metri riscaldata da aprile a ottobre, con la sua pool house."
       },
       {
-        "title": "Gli spazi di accoglienza",
-        "text": "Una sala da pranzo che può ospitare fino a 22 commensali e una biblioteca con pavimento in parquet Versailles, trasformabile in pista da ballo."
+        "title": "Gli spazi per ricevere",
+        "text": "Una sala da pranzo fino a 22 ospiti e una biblioteca con parquet Versailles trasformabile in pista da ballo."
       },
       {
-        "title": "Un'azienda agricola impegnata",
+        "title": "Una tenuta impegnata",
         "text": "Approvvigionamento a filiera corta e biologico, prodotti per la pulizia biologici, riscaldamento a biomassa."
       },
       {
@@ -787,9 +787,9 @@
       {
         "name": "Paradis Sauvage",
         "size": "37 m²",
-        "text": "La camera nuziale per eccellenza. Le modanature corrono lungo tutto il perimetro del soffitto e le decorazioni in legno sovrastano le porte d’epoca. Una sontuosa carta da parati firmata Moooi adorna i pannelli, alternandosi a un sensuale velluto grigio. Il letto a baldacchino troneggia al centro della stanza, circondato da mobili d'epoca. L'atmosfera è di un romanticismo senza tempo.",
+        "text": "La camera nuziale per eccellenza. Le modanature corrono tutt'intorno al soffitto e decorazioni in legno sormontano le antiche porte. Una sontuosa carta da parati firmata Moooi orna i pannelli, alternandosi a un sensuale velluto grigio. Il letto a baldacchino troneggia al centro della stanza, circondato da mobili antichi. L'atmosfera è di un romanticismo senza tempo.",
         "tag": "Camera nuziale",
-        "bed": "Letto a baldacchino queen-size",
+        "bed": "Letto a baldacchino Queen-size",
         "floor": "Primo piano, senza ascensore",
         "orientation": "Sud e ovest (doppia esposizione)",
         "ac": "",
@@ -802,15 +802,15 @@
           "/images/rooms/paradis-sauvage-02.jpg",
           "/images/rooms/paradis-sauvage-06.jpg"
         ],
-        "amenities": "Vassoio di benvenuto · Wi-Fi 6",
-        "view": ""
+        "view": "",
+        "amenities": "Set di cortesia · Wifi 6"
       },
       {
         "name": "Giboulée",
         "size": "22 m²",
-        "text": "Un'atmosfera ispirata alla marina e all'aeronautica, le grandi passioni di Patrick. Un'elica di aereo della Grande Guerra fa da cornice a strumenti e libri dedicati al mondo della navigazione.",
-        "tag": "Stile marinaro",
-        "bed": "Letto king-size",
+        "text": "Un'atmosfera ispirata alla marina e all'aeronautica, grandi passioni di Patrick. Un'elica d'aereo della Grande Guerra si affianca a strumenti e libri del mondo della navigazione.",
+        "tag": "Spirito marino",
+        "bed": "Letto King-size",
         "orientation": "Sud",
         "ac": "",
         "bathroom": "Doccia",
@@ -822,17 +822,17 @@
           "/images/rooms/giboulee-04.jpg"
         ],
         "floor": "Primo piano, senza ascensore",
-        "amenities": "Vassoio di benvenuto · Wi-Fi 6",
+        "amenities": "Set di cortesia · Wifi 6",
         "note": ""
       },
       {
         "name": "Pêche",
         "size": "22 m²",
-        "text": "Situata nella torre est, la camera \"Pêche\" prende il nome dal colore unico delle sue pareti, ispirato al frutto simbolo dell'estate e al cocktail Bellini.",
+        "text": "Situata nella torre est, la camera Pêche prende il nome dal colore unico delle sue pareti, ispirato al frutto simbolo dell'estate e al cocktail Bellini.",
         "tag": "Torre est",
         "floor": "Secondo piano, senza ascensore",
-        "ac": "Riversibile",
-        "bathroom": "Ampio bagno con vasca da bagno su piedistallo",
+        "ac": "Reversibile",
+        "bathroom": "Grande bagno con vasca freestanding",
         "note": "",
         "photos": [
           "/images/rooms/peche-01.jpg",
@@ -841,16 +841,16 @@
           "/images/rooms/peche-03.jpg",
           "/images/rooms/peche-07.jpg"
         ],
-        "bed": "Letto king-size",
+        "bed": "Letto King-size",
         "orientation": "Sud",
         "view": "Parco",
-        "amenities": "Vassoio di benvenuto · Wi-Fi 6"
+        "amenities": "Set di cortesia · Wifi 6"
       },
       {
         "name": "Thé",
         "size": "30 m²",
-        "text": "La seconda camera più bella del castello si trova nell'altra torre. I pannelli sono decorati con un tessuto teso dai toni aranciati. Il marmo del camino riprende le sfumature del giallo, mentre il paralume della lampada è realizzato con un quadrato di tessuto Hermès.",
-        "tag": "Camera nella torre",
+        "text": "La seconda camera più bella del castello si trova nell'altra torre. I pannelli sono ornati da un tessuto teso dai toni aranciati. Il marmo del camino riprende le sfumature di giallo, e il paralume della lampada è fatto con un foulard Hermès.",
+        "tag": "Camera della torre",
         "orientation": "Est e sud (doppia esposizione)",
         "ac": "",
         "view": "Parco",
@@ -861,19 +861,19 @@
           "/images/rooms/the-03.jpg",
           "/images/rooms/the-07.jpg"
         ],
-        "bed": "Letto king-size",
+        "bed": "Letto King-size",
         "floor": "Primo piano, senza ascensore",
         "bathroom": "Doccia",
-        "amenities": "Spaziosa cabina armadio · Set di cortesia · Wi-Fi 6",
+        "amenities": "Ampia cabina armadio · Set di cortesia · Wifi 6",
         "note": ""
       },
       {
         "name": "Mirage",
         "size": "37 m²",
-        "text": "Sotto la struttura in legno del XVI secolo della torre più antica del castello si nasconde la grande camera familiare Mirage, che prende il nome dal colore lilla che riveste le pareti e il soffitto. Perfetta per ospitare le famiglie, è abbastanza spaziosa da consentire l’aggiunta di un lettino per bambini e lasciare spazio per giocare.",
+        "text": "Sotto le travi del XVI secolo della torre più antica del castello si nasconde la grande camera familiare Mirage, che porta il nome del colore lilla che riveste le sue pareti e il soffitto. Perfetta per accogliere le famiglie, abbastanza spaziosa da sistemare un lettino supplementare e lasciare spazio per giocare.",
         "tag": "Camera familiare",
-        "bed": "Letto king-size + 2 letti da 90 × 200",
-        "ac": "Riversibile",
+        "bed": "Letto King-size + 2 letti 90 × 200",
+        "ac": "Reversibile",
         "photos": [
           "/images/rooms/mirage-01.jpg",
           "/images/rooms/mirage-04.jpg",
@@ -884,21 +884,21 @@
         "floor": "Secondo piano, senza ascensore",
         "orientation": "Sud",
         "bathroom": "Vasca da bagno",
-        "amenities": "Vassoio di benvenuto · Wi-Fi 6",
         "view": "",
+        "amenities": "Set di cortesia · Wifi 6",
         "note": ""
       },
       {
         "name": "Allium",
         "size": "26 m²",
-        "text": "Camera tripla: la camera “Allium” dispone di un letto king-size e di un terzo letto antico da 110 × 190. Situata al primo piano, nella parte centrale dell’edificio, la sua finestra si affaccia proprio sul bellissimo «tappeto verde», l’ampia radura nella foresta che circonda lo stagno.",
+        "text": "Camera tripla, Allium offre un letto king-size e un terzo letto antico di 110 × 190. Al primo piano, nella parte centrale dell'edificio, la sua finestra si apre proprio di fronte al bel \"tappeto verde\", la grande radura della foresta che circonda lo stagno.",
         "tag": "Camera tripla",
-        "bed": "Letto king-size + letto antico 110 × 190",
+        "bed": "Letto King-size + letto antico 110 × 190",
         "floor": "Primo piano, senza ascensore",
         "orientation": "Sud",
         "ac": "",
-        "bathroom": "Ampio bagno con doccia",
-        "view": "Sul tappeto verde e sullo stagno",
+        "bathroom": "Grande bagno con doccia",
+        "view": "Sul tappeto verde e lo stagno",
         "note": "",
         "photos": [
           "/images/rooms/allium-01.jpg",
@@ -907,14 +907,14 @@
           "/images/rooms/allium-03.jpg",
           "/images/rooms/allium-07.jpg"
         ],
-        "amenities": "Vassoio di benvenuto · Wi-Fi 6"
+        "amenities": "Set di cortesia · Wifi 6"
       },
       {
         "name": "Bouquet",
         "size": "15 m²",
-        "text": "Più piccola ma comunque molto accogliente, la camera Bouquet offre l'ambiente perfetto per notti tranquille. Il suo nome deriva dalla carta da parati a motivi floreali. Una camera luminosa grazie al suo grande lucernario.",
+        "text": "Più piccola ma molto accogliente, la camera Bouquet offre una cornice perfetta per notti dolci. Il suo nome deriva dalla carta da parati floreale. Una camera luminosa grazie al suo grande lucernario.",
         "orientation": "Sud",
-        "ac": "Riversibile",
+        "ac": "Reversibile",
         "photos": [
           "/images/rooms/bouquet-01.jpg",
           "/images/rooms/bouquet-03.jpg",
@@ -922,17 +922,17 @@
           "/images/rooms/bouquet-04.jpg"
         ],
         "tag": "Accogliente",
-        "bed": "Letto king-size",
+        "bed": "Letto King-size",
         "floor": "Secondo piano, senza ascensore",
         "bathroom": "Doccia",
-        "amenities": "Vassoio di benvenuto · Wi-Fi 6",
         "view": "",
+        "amenities": "Set di cortesia · Wifi 6",
         "note": ""
       },
       {
         "name": "Cactus",
         "size": "17 m²",
-        "text": "Cactus è una camera divertente. Anche se è l'unica a non avere vista sul parco, il suo ampio e luminoso bagno, decorato con disegni a carboncino, contribuisce a renderla accogliente. In estate è la più fresca tra tutte le nostre camere.",
+        "text": "Cactus è una camera divertente. Anche se è l'unica a non offrire vista sul parco, il suo grande bagno luminoso, decorato con opere a carboncino, contribuisce alla sua dolcezza. In estate, è la più fresca di tutte le nostre camere.",
         "orientation": "Nord",
         "ac": "",
         "bathroom": "Doccia",
@@ -946,17 +946,17 @@
           "/images/rooms/cactus-05.jpg"
         ],
         "tag": "Junior Suite",
-        "bed": "Letto king-size (o due letti singoli)",
+        "bed": "Letto King-size (o twin)",
         "floor": "Primo piano, senza ascensore",
-        "amenities": "Vassoio di benvenuto · Wi-Fi 6"
+        "amenities": "Set di cortesia · Wifi 6"
       },
       {
         "name": "Ponceau",
         "size": "15 m²",
-        "text": "Le camere doppie “Ponceau” e “Bleu Indien” dispongono entrambe di un letto antico da 100 × 190. Uno spazio ideale per chi viaggia da solo o accompagna una coppia.",
+        "text": "Ponceau e Bleu Indien, camere gemelle, offrono ciascuna un letto antico di 100 × 190. Uno spazio privilegiato per chi viaggia da solo o accompagna una coppia.",
         "tag": "Camera singola",
         "bed": "Letto antico 100 × 190",
-        "ac": "Riversibile",
+        "ac": "Reversibile",
         "photos": [
           "/images/rooms/ponceau-03.jpg",
           "/images/rooms/ponceau-02.jpg",
@@ -966,17 +966,17 @@
         "floor": "Secondo piano, senza ascensore",
         "orientation": "Sud",
         "bathroom": "Doccia",
-        "amenities": "Vassoio di benvenuto · Wi-Fi 6",
         "view": "",
+        "amenities": "Set di cortesia · Wifi 6",
         "note": ""
       },
       {
         "name": "Bleu Indien",
         "size": "15 m²",
-        "text": "Le camere gemelle “Bleu Indien” e “Ponceau” dispongono ciascuna di un letto antico da 100 × 190. Uno spazio esclusivo per chi viaggia da solo o accompagna una coppia.",
+        "text": "Bleu Indien e Ponceau, camere gemelle, offrono ciascuna un letto antico di 100 × 190. Uno spazio privilegiato per chi viaggia da solo o accompagna una coppia.",
         "tag": "Camera singola",
         "bed": "Letto antico 100 × 190",
-        "ac": "Riversibile",
+        "ac": "Reversibile",
         "photos": [
           "/images/rooms/bleu-indien-01.jpg",
           "/images/rooms/bleu-indien-02.jpg",
@@ -985,13 +985,13 @@
         "floor": "Secondo piano, senza ascensore",
         "orientation": "Sud",
         "bathroom": "Doccia",
-        "amenities": "Vassoio di benvenuto · Wi-Fi 6",
         "view": "",
+        "amenities": "Set di cortesia · Wifi 6",
         "note": ""
       }
     ],
     "testimonial": {
-      "text": "L'accoglienza cordiale dei padroni di casa, l'arredamento raffinato e biancheria da letto di alta qualità per un soggiorno rigenerante. La cucina della casa è deliziosa. Un soggiorno incantevole, da ripetere senza riserve. Torneremo.",
+      "text": "L'accoglienza premurosa degli ospiti, la decorazione raffinata e una biancheria da letto di alta gamma per un soggiorno rigenerante. La tavola dell'ospite deliziosa. Un soggiorno incantevole, da rifare senza moderazione. Torneremo.",
       "author": "Isabelle"
     },
     "faqHead": {
@@ -1001,11 +1001,11 @@
     "faq": [
       {
         "q": "Siete un hotel o un bed & breakfast?",
-        "a": "Il castello è un hotel di charme a 3 stelle. Qui si respirano l'atmosfera, la cordialità e l'accoglienza di un bed & breakfast, con il livello di servizio, il comfort e i servizi di un hotel."
+        "a": "Il castello è un hotel di charme a 3 stelle. Vi si ritrovano lo spirito, la convivialità e l'accoglienza di un bed & breakfast, con il livello di servizio, il comfort e le prestazioni di un hotel."
       },
       {
         "q": "A che distanza da Amboise si trova il castello?",
-        "a": "Il castello si trova a una decina di minuti da Amboise, nel dipartimento dell'Indre-et-Loire, nel cuore dei Castelli della Loira."
+        "a": "Il castello è a una decina di minuti da Amboise, nell'Indre-et-Loire, nel cuore dei castelli della Loira."
       },
       {
         "q": "La colazione è inclusa?",
@@ -1013,15 +1013,15 @@
       },
       {
         "q": "C'è una piscina?",
-        "a": "Il parco dispone di una corsia di nuoto lunga 16 metri, riscaldata da aprile a ottobre."
+        "a": "Il parco dispone di una corsia di nuoto di 16 metri riscaldata da aprile a ottobre."
       },
       {
         "q": "È un buon punto di partenza per visitare i castelli della Loira?",
-        "a": "Sì. Chenonceau, Amboise, il Clos Lucé e Chambord sono tutti nelle vicinanze. Il castello è un punto di partenza ideale per un soggiorno nella Valle della Loira."
+        "a": "Sì. Chenonceau, Amboise, il Clos Lucé e Chambord sono a portata di mano. Il castello è una base ideale per un soggiorno nella Valle della Loira."
       },
       {
-        "q": "È possibile riservare le camere per un evento?",
-        "a": "Sì, tutte le camere possono essere riservate per un matrimonio, un seminario o una riunione di famiglia."
+        "q": "È possibile affittare le camere in esclusiva per un evento?",
+        "a": "Sì, tutte le camere possono essere affittate in esclusiva per un matrimonio, un seminario o una riunione di famiglia."
       }
     ]
   }

@@ -112,7 +112,7 @@
   },
   "en": {
     "brandName": "Château de la Huberdière",
-    "brandSub": "Touraine · Châteaux of the Loire Valley",
+    "brandSub": "Touraine · Loire Valley Châteaux",
     "reserveLabel": "Book",
     "reserveHref": "/reservation",
     "booking": {
@@ -123,8 +123,8 @@
       "checkout": "Check-out",
       "guests": "Guests",
       "submit": "Book",
-      "fallbackPre": "Engine not loading? ",
-      "fallbackLink": "Open the booking in a new tab"
+      "fallbackPre": "Booking engine not loading? ",
+      "fallbackLink": "Open booking in a new tab"
     },
     "nav": [
       {
@@ -132,11 +132,11 @@
         "href": "/sejour"
       },
       {
-        "label": "Wedding",
+        "label": "Weddings",
         "href": "/mariage"
       },
       {
-        "label": "Seminar",
+        "label": "Seminars",
         "href": "/seminaire"
       },
       {
@@ -144,7 +144,7 @@
         "href": "/famille"
       },
       {
-        "label": "Retreat",
+        "label": "Retreats",
         "href": "/retraite"
       },
       {
@@ -162,23 +162,23 @@
     ],
     "footer": {
       "name": "Château de la Huberdière",
-      "addressLine1": "Vaugadeland Valley",
+      "addressLine1": "Vallée de Vaugadeland",
       "addressLine2": "37530 Nazelles-Négron, Indre-et-Loire",
       "phone": "+33 2 47 57 52 92",
       "phoneHref": "+33247575292",
       "email": "contact@chateaudelahuberdiere.com",
-      "col2Title": "The castle",
+      "col2Title": "The château",
       "col2Links": [
         {
           "label": "Boutique hotel",
           "href": "/sejour"
         },
         {
-          "label": "Wedding",
+          "label": "Weddings",
           "href": "/mariage"
         },
         {
-          "label": "Seminar",
+          "label": "Seminars",
           "href": "/seminaire"
         },
         {
@@ -209,16 +209,16 @@
           "href": "/galerie"
         },
         {
-          "label": "Access & location",
+          "label": "Getting here & location",
           "href": "/#location"
         },
         {
-          "label": "Journal",
+          "label": "The Journal",
           "href": "/blog"
         }
       ],
       "bottomLeft": "© 2026 Château de la Huberdière · Touraine, Loire Valley",
-      "bottomRight": "2 hours 20 from Paris · between Amboise and Chambord"
+      "bottomRight": "2 hrs 20 from Paris · between Amboise and Chambord"
     }
   },
   "it": {
@@ -229,12 +229,12 @@
     "booking": {
       "eyebrow": "Prenotazione diretta",
       "title": "Prenota il tuo soggiorno",
-      "intro": "Verifica la disponibilità e prenota direttamente, al miglior prezzo, senza intermediari.",
+      "intro": "Verifica le disponibilità e prenota direttamente, al miglior prezzo, senza intermediari.",
       "checkin": "Arrivo",
       "checkout": "Partenza",
       "guests": "Ospiti",
       "submit": "Prenota",
-      "fallbackPre": "Il motore non si carica? ",
+      "fallbackPre": "Il motore di prenotazione non si carica? ",
       "fallbackLink": "Apri la prenotazione in una nuova scheda"
     },
     "nav": [
@@ -243,11 +243,11 @@
         "href": "/sejour"
       },
       {
-        "label": "Matrimonio",
+        "label": "Matrimoni",
         "href": "/mariage"
       },
       {
-        "label": "Seminario",
+        "label": "Seminari",
         "href": "/seminaire"
       },
       {
@@ -255,7 +255,7 @@
         "href": "/famille"
       },
       {
-        "label": "Ritiro",
+        "label": "Ritiri",
         "href": "/retraite"
       },
       {
@@ -273,7 +273,7 @@
     ],
     "footer": {
       "name": "Château de la Huberdière",
-      "addressLine1": "Valle di Vaugadeland",
+      "addressLine1": "Vallée de Vaugadeland",
       "addressLine2": "37530 Nazelles-Négron, Indre-et-Loire",
       "phone": "+33 2 47 57 52 92",
       "phoneHref": "+33247575292",
@@ -285,11 +285,11 @@
           "href": "/sejour"
         },
         {
-          "label": "Matrimonio",
+          "label": "Matrimoni",
           "href": "/mariage"
         },
         {
-          "label": "Seminario",
+          "label": "Seminari",
           "href": "/seminaire"
         },
         {
@@ -324,7 +324,7 @@
           "href": "/#location"
         },
         {
-          "label": "Diario",
+          "label": "Il Diario",
           "href": "/blog"
         }
       ],

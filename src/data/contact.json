@@ -16,31 +16,31 @@
   },
   "en": {
     "title": "Contact · Château de la Huberdière",
-    "description": "Contact the Château de la Huberdière in Touraine to organise a wedding, a seminar, a holiday or an event. We’ll get back to you within 24 hours.",
+    "description": "Contact the Château de la Huberdière in the Touraine for a wedding, seminar, stay or event. We reply within 24 hours.",
     "hero": {
       "eyebrow": "Contact",
-      "titleLine1": "Let’s talk about",
+      "titleLine1": "Let's talk about",
       "titleLine2Italic": "your project.",
-      "lead": "Weddings, holidays, seminars, family gatherings or retreats: tell us about your plans and we’ll get back to you within 24 hours."
+      "lead": "Wedding, stay, seminar, family gathering or retreat: tell us about your project and we'll reply within 24 hours."
     },
-    "infoTitle": "Contact us",
-    "infoNote": "The Vaugadeland Valley, ten minutes from Amboise, 2 hours 20 from Paris.",
-    "formIntro": "Please tell us about your project, your dates and the number of people involved. We’ll get back to you shortly with a proposal.",
-    "submitLabel": "Send the message",
-    "responseLine": "We’ll get back to you within 24 hours"
+    "infoTitle": "Get in touch",
+    "infoNote": "Vallée de Vaugadeland, ten minutes from Amboise, 2 hrs 20 from Paris.",
+    "formIntro": "Tell us about your project, your dates and the number of guests. We'll get back to you quickly with a proposal.",
+    "submitLabel": "Send message",
+    "responseLine": "A reply within 24 hours"
   },
   "it": {
-    "title": "Contatti · Castello di La Huberdière",
-    "description": "Contattate lo Château de la Huberdière in Touraine per un matrimonio, un seminario, un soggiorno o un evento. Risponderemo entro 24 ore.",
+    "title": "Contatti · Château de la Huberdière",
+    "description": "Contatta il Château de la Huberdière in Touraine per un matrimonio, un seminario, un soggiorno o un evento. Rispondiamo entro 24 ore.",
     "hero": {
       "eyebrow": "Contatti",
-      "titleLine1": "Parliamo di",
-      "titleLine2Italic": "il vostro progetto.",
-      "lead": "Matrimonio, soggiorno, seminario, riunione di famiglia o ritiro: raccontateci il vostro progetto, vi risponderemo entro 24 ore."
+      "titleLine1": "Parliamo del",
+      "titleLine2Italic": "vostro progetto.",
+      "lead": "Matrimonio, soggiorno, seminario, riunione di famiglia o ritiro: raccontateci il vostro progetto, vi rispondiamo entro 24 ore."
     },
-    "infoTitle": "Contattaci",
-    "infoNote": "La valle di Vaugadeland, a dieci minuti da Amboise, a 2 ore e 20 da Parigi.",
-    "formIntro": "Descriveteci il vostro progetto, le date e il numero di partecipanti. Vi ricontatteremo al più presto con un'offerta.",
+    "infoTitle": "Come contattarci",
+    "infoNote": "Vallée de Vaugadeland, a dieci minuti da Amboise, a 2 ore e 20 da Parigi.",
+    "formIntro": "Descriveteci il vostro progetto, le date e il numero di persone. Vi risponderemo rapidamente con una proposta.",
     "submitLabel": "Invia il messaggio",
     "responseLine": "Risposta entro 24 ore"
   }
