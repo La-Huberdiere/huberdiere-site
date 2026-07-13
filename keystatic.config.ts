@@ -1,6 +1,30 @@
 import { config, singleton, collection, fields } from "@keystatic/core";
+import { createElement as h } from "react";
 
-// Config Keystatic — édition multilingue du site (FR / EN / IT) sans code.
+// Blason affiché en haut de la barre latérale de l'éditeur (tuile bordeaux + « H »),
+// pour que l'espace d'édition porte l'identité du château. Rendu inline (pas de fetch),
+// lisible sur fond clair comme sombre. Couleurs de marque : bordeaux #8B0000 / crème #F4F2EC.
+const brandMark = () =>
+  h(
+    "svg",
+    { width: 28, height: 28, viewBox: "0 0 64 64", "aria-hidden": true, style: { display: "block" } },
+    h("rect", { width: 64, height: 64, rx: 13, fill: "#8B0000" }),
+    h(
+      "text",
+      {
+        x: 32,
+        y: 46,
+        textAnchor: "middle",
+        fontFamily: "Georgia, 'Playfair Display', serif",
+        fontWeight: 600,
+        fontSize: 40,
+        fill: "#F4F2EC",
+      },
+      "H"
+    )
+  );
+
+// Config Keystatic : édition multilingue du site (FR / EN / IT) sans code.
 // Éditeur : /keystatic. GitHub en prod, local en dev (cf. PUBLIC_KEYSTATIC_STORAGE).
 // Chaque page existe en 3 langues : src/data/{fr,en,it}/{page}.json (fichier plat,
 // path sans slash final). Les schémas sont factorisés et réutilisés par langue.
@@ -13,8 +37,8 @@ const useGithub =
 const settingsSchema = {
   brandName: fields.text({ label: "Nom (header)" }),
   brandSub: fields.text({ label: "Sous-titre (header)" }),
-  reserveLabel: fields.text({ label: "Bouton « Réserver » — texte" }),
-  reserveHref: fields.text({ label: "Bouton « Réserver » — lien" }),
+  reserveLabel: fields.text({ label: "Bouton « Réserver » : texte" }),
+  reserveHref: fields.text({ label: "Bouton « Réserver » : lien" }),
   booking: fields.object(
     {
       eyebrow: fields.text({ label: "Sur-titre (page réservation)" }),
@@ -39,29 +63,29 @@ const settingsSchema = {
   footer: fields.object(
     {
       name: fields.text({ label: "Nom" }),
-      addressLine1: fields.text({ label: "Adresse — ligne 1" }),
-      addressLine2: fields.text({ label: "Adresse — ligne 2" }),
+      addressLine1: fields.text({ label: "Adresse (ligne 1)" }),
+      addressLine2: fields.text({ label: "Adresse (ligne 2)" }),
       phone: fields.text({ label: "Téléphone (affiché)" }),
       phoneHref: fields.text({ label: "Téléphone (lien tel:)" }),
       email: fields.text({ label: "Email" }),
-      col2Title: fields.text({ label: "Colonne 2 — titre" }),
+      col2Title: fields.text({ label: "Colonne 2 : titre" }),
       col2Links: fields.array(
         fields.object({
           label: fields.text({ label: "Libellé" }),
           href: fields.text({ label: "Lien" }),
         }),
-        { label: "Colonne 2 — liens", itemLabel: (p) => p.fields.label.value || "Lien" }
+        { label: "Colonne 2 : liens", itemLabel: (p) => p.fields.label.value || "Lien" }
       ),
-      col3Title: fields.text({ label: "Colonne 3 — titre" }),
+      col3Title: fields.text({ label: "Colonne 3 : titre" }),
       col3Links: fields.array(
         fields.object({
           label: fields.text({ label: "Libellé" }),
           href: fields.text({ label: "Lien" }),
         }),
-        { label: "Colonne 3 — liens", itemLabel: (p) => p.fields.label.value || "Lien" }
+        { label: "Colonne 3 : liens", itemLabel: (p) => p.fields.label.value || "Lien" }
       ),
-      bottomLeft: fields.text({ label: "Bas de page — gauche" }),
-      bottomRight: fields.text({ label: "Bas de page — droite" }),
+      bottomLeft: fields.text({ label: "Bas de page (gauche)" }),
+      bottomRight: fields.text({ label: "Bas de page (droite)" }),
     },
     { label: "Footer" }
   ),
@@ -71,8 +95,8 @@ const homepageSchema = {
   hero: fields.object(
     {
       eyebrow: fields.text({ label: "Sur-titre" }),
-      titleLine1: fields.text({ label: "Titre — ligne 1" }),
-      titleLine2Italic: fields.text({ label: "Titre — ligne 2 (italique)" }),
+      titleLine1: fields.text({ label: "Titre (ligne 1)" }),
+      titleLine2Italic: fields.text({ label: "Titre (ligne 2, en italique)" }),
       lead: fields.text({ label: "Texte d'accroche", multiline: true }),
       ctaPrimary: fields.text({ label: "Bouton principal" }),
       ctaSecondary: fields.text({ label: "Bouton secondaire" }),
@@ -82,8 +106,8 @@ const homepageSchema = {
   intro: fields.object(
     {
       eyebrow: fields.text({ label: "Sur-titre" }),
-      titleLine1: fields.text({ label: "Titre — ligne 1" }),
-      titleLine2Italic: fields.text({ label: "Titre — ligne 2 (italique)" }),
+      titleLine1: fields.text({ label: "Titre (ligne 1)" }),
+      titleLine2Italic: fields.text({ label: "Titre (ligne 2, en italique)" }),
       paragraphs: fields.array(fields.text({ label: "Paragraphe", multiline: true }), {
         label: "Paragraphes",
         itemLabel: (p) => p.value.slice(0, 40) || "Paragraphe",
@@ -99,7 +123,7 @@ const homepageSchema = {
       titleItalic: fields.text({ label: "Titre (fin, italique)" }),
       intro: fields.text({ label: "Texte d'introduction", multiline: true }),
     },
-    { label: "Activités — en-tête" }
+    { label: "Activités : en-tête" }
   ),
   activities: fields.array(
     fields.object({
@@ -126,14 +150,14 @@ const homepageSchema = {
       titlePlain: fields.text({ label: "Titre (début)" }),
       titleItalic: fields.text({ label: "Titre (fin, italique)" }),
     },
-    { label: "Galerie — en-tête" }
+    { label: "Galerie : en-tête" }
   ),
   location: fields.object(
     {
       eyebrow: fields.text({ label: "Sur-titre" }),
       titleLine1Plain: fields.text({ label: "Titre ligne 1 (début)" }),
       titleLine1Italic: fields.text({ label: "Titre ligne 1 (italique)" }),
-      titleLine2: fields.text({ label: "Titre — ligne 2" }),
+      titleLine2: fields.text({ label: "Titre (ligne 2)" }),
       paragraphs: fields.array(fields.text({ label: "Paragraphe", multiline: true }), {
         label: "Paragraphes",
         itemLabel: (p) => p.value.slice(0, 40) || "Paragraphe",
@@ -151,8 +175,8 @@ const homepageSchema = {
   final: fields.object(
     {
       eyebrow: fields.text({ label: "Sur-titre" }),
-      titleLine1: fields.text({ label: "Titre — ligne 1" }),
-      titleLine2Italic: fields.text({ label: "Titre — ligne 2 (italique)" }),
+      titleLine1: fields.text({ label: "Titre (ligne 1)" }),
+      titleLine2Italic: fields.text({ label: "Titre (ligne 2, en italique)" }),
       text: fields.text({ label: "Texte", multiline: true }),
       ctaPrimary: fields.text({ label: "Bouton principal" }),
       ctaSecondary: fields.text({ label: "Bouton secondaire" }),
@@ -168,8 +192,8 @@ const mariageSchema = {
   hero: fields.object(
     {
       eyebrow: fields.text({ label: "Sur-titre" }),
-      titleLine1: fields.text({ label: "Titre — ligne 1" }),
-      titleLine2Italic: fields.text({ label: "Titre — ligne 2 (italique)" }),
+      titleLine1: fields.text({ label: "Titre (ligne 1)" }),
+      titleLine2Italic: fields.text({ label: "Titre (ligne 2, en italique)" }),
       lead: fields.text({ label: "Texte d'accroche", multiline: true }),
     },
     { label: "Hero" }
@@ -205,14 +229,14 @@ const mariageSchema = {
       eyebrow: fields.text({ label: "Sur-titre" }),
       title: fields.text({ label: "Titre de la section" }),
     },
-    { label: "Section « activités / extras » — en-tête" }
+    { label: "Section « activités / extras » : en-tête" }
   ),
   extras: fields.array(
     fields.object({
       title: fields.text({ label: "Titre" }),
       text: fields.text({ label: "Texte", multiline: true }),
     }),
-    { label: "Section « activités / extras » — items", itemLabel: (p) => p.fields.title.value || "Item" }
+    { label: "Section « activités / extras » : items", itemLabel: (p) => p.fields.title.value || "Item" }
   ),
   activitiesHead: fields.object(
     {
@@ -220,7 +244,7 @@ const mariageSchema = {
       title: fields.text({ label: "Titre de la section activités" }),
       intro: fields.text({ label: "Introduction", multiline: true }),
     },
-    { label: "Section « activités » — en-tête (optionnel)" }
+    { label: "Section « activités » : en-tête (optionnel)" }
   ),
   activities: fields.array(
     fields.object({
@@ -234,7 +258,7 @@ const mariageSchema = {
       eyebrow: fields.text({ label: "Sur-titre" }),
       title: fields.text({ label: "Titre de la section chambres" }),
     },
-    { label: "Section « chambres » — en-tête (optionnel)" }
+    { label: "Section « chambres » : en-tête (optionnel)" }
   ),
   rooms: fields.array(
     fields.object({
@@ -273,7 +297,7 @@ const mariageSchema = {
       eyebrow: fields.text({ label: "Sur-titre" }),
       title: fields.text({ label: "Titre de la section FAQ" }),
     },
-    { label: "FAQ — en-tête" }
+    { label: "FAQ : en-tête" }
   ),
   faq: fields.array(
     fields.object({
@@ -285,8 +309,8 @@ const mariageSchema = {
   final: fields.object(
     {
       eyebrow: fields.text({ label: "Sur-titre" }),
-      titleLine1: fields.text({ label: "Titre — ligne 1" }),
-      titleLine2Italic: fields.text({ label: "Titre — ligne 2 (italique)" }),
+      titleLine1: fields.text({ label: "Titre (ligne 1)" }),
+      titleLine2Italic: fields.text({ label: "Titre (ligne 2, en italique)" }),
       text: fields.text({ label: "Texte", multiline: true }),
       submitLabel: fields.text({ label: "Bouton du formulaire" }),
       responseLine: fields.text({ label: "Ligne « réponse sous 24h »" }),
@@ -301,14 +325,14 @@ const contactSchema = {
   hero: fields.object(
     {
       eyebrow: fields.text({ label: "Sur-titre" }),
-      titleLine1: fields.text({ label: "Titre — ligne 1" }),
-      titleLine2Italic: fields.text({ label: "Titre — ligne 2 (italique)" }),
+      titleLine1: fields.text({ label: "Titre (ligne 1)" }),
+      titleLine2Italic: fields.text({ label: "Titre (ligne 2, en italique)" }),
       lead: fields.text({ label: "Texte d'accroche", multiline: true }),
     },
     { label: "Hero" }
   ),
-  infoTitle: fields.text({ label: "Coordonnées — titre" }),
-  infoNote: fields.text({ label: "Coordonnées — note", multiline: true }),
+  infoTitle: fields.text({ label: "Coordonnées : titre" }),
+  infoNote: fields.text({ label: "Coordonnées : note", multiline: true }),
   formIntro: fields.text({ label: "Intro du formulaire", multiline: true }),
   submitLabel: fields.text({ label: "Bouton du formulaire" }),
   responseLine: fields.text({ label: "Ligne « réponse sous 24h »" }),
@@ -318,9 +342,20 @@ const contactSchema = {
 // Sections Français / English / Italiano dans le même écran d'édition : on édite
 // la page d'accueil et on voit/corrige directement le wording IT en dessous.
 const langSections = (schema: any) => ({
-  fr: fields.object(schema, { label: "Français" }),
-  en: fields.object(schema, { label: "English" }),
-  it: fields.object(schema, { label: "Italiano" }),
+  fr: fields.object(schema, {
+    label: "Français",
+    description: "La version de référence. C'est ici qu'on écrit et qu'on corrige le texte.",
+  }),
+  en: fields.object(schema, {
+    label: "English",
+    description:
+      "Version anglaise, traduite automatiquement depuis le français. Modifiable, mais une correction sera écrasée à la prochaine traduction.",
+  }),
+  it: fields.object(schema, {
+    label: "Italiano",
+    description:
+      "Version italienne, traduite automatiquement depuis le français. Modifiable, mais une correction sera écrasée à la prochaine traduction.",
+  }),
 });
 
 // Schéma partagé des articles de blog (identique pour les 3 langues).
@@ -419,11 +454,22 @@ export default config({
     ? { kind: "github", repo: { owner: "La-Huberdiere", name: "huberdiere-site" } }
     : { kind: "local" },
   ui: {
-    brand: { name: "Château de la Huberdière" },
+    brand: { name: "Château de la Huberdière", mark: brandMark },
     navigation: {
-      Pages: ["homepage", "mariage", "seminaire", "famille", "retraite", "sejour", "restauration", "contact"],
-      Réglages: ["settings", "reviews"],
-      Contenu: ["pages", "pagesEn", "pagesIt", "articles", "articlesEn", "articlesIt"],
+      "Les pages du site": [
+        "homepage",
+        "mariage",
+        "seminaire",
+        "famille",
+        "retraite",
+        "sejour",
+        "restauration",
+        "contact",
+      ],
+      "Le blog": ["articles"],
+      "Réglages du site": ["settings", "reviews"],
+      "Autres pages": ["pages"],
+      "Traductions automatiques (ne pas modifier)": ["pagesEn", "pagesIt", "articlesEn", "articlesIt"],
     },
   },
   singletons: {
@@ -534,10 +580,10 @@ export default config({
     }),
   },
   collections: {
-    pages: pagesCollection("Pages libres · FR", "pages", "/"),
+    pages: pagesCollection("Pages libres (mentions légales, etc.)", "pages", "/"),
     pagesEn: pagesCollection("Pages libres · EN (auto)", "pages-en", "/en"),
     pagesIt: pagesCollection("Pages libres · IT (auto)", "pages-it", "/it"),
-    articles: articlesCollection("Articles · FR", "articles", "/blog"),
+    articles: articlesCollection("Articles du blog", "articles", "/blog"),
     articlesEn: articlesCollection("Articles · EN (auto)", "articles-en", "/en/blog"),
     articlesIt: articlesCollection("Articles · IT (auto)", "articles-it", "/it/blog"),
   },
