@@ -600,6 +600,19 @@ export default config({
         bestRating: fields.text({ label: "Note maximale (ex. 10)" }),
         reviewCount: fields.text({ label: "Nombre total d'avis (ex. 42)" }),
         source: fields.text({ label: "Source principale (ex. Booking.com)" }),
+        ratings: fields.array(
+          fields.object({
+            source: fields.text({ label: "Plateforme (ex. Booking.com, Google)" }),
+            value: fields.text({ label: "Note (ex. 9.5)" }),
+            best: fields.text({ label: "Note maximale (ex. 10)" }),
+            count: fields.text({ label: "Nombre d'avis (ex. 120)" }),
+          }),
+          {
+            label: "Notes par plateforme (badges de la section avis)",
+            description: "Une ligne par plateforme. Alimente les notes affichées, ex. Booking 9,5/10 et Google 4,9/5.",
+            itemLabel: (p) => p.fields.source.value || "Plateforme",
+          }
+        ),
         head: fields.object(
           {
             fr: fields.object(
@@ -635,7 +648,7 @@ export default config({
     }),
   },
   collections: {
-    pages: pagesCollection("Pages libres (mentions légales, etc.)", "pages", "/"),
+    pages: pagesCollection("Pages libres (activités, notre histoire...)", "pages", "/"),
     pagesEn: pagesCollection("Pages libres · EN (auto)", "pages-en", "/en"),
     pagesIt: pagesCollection("Pages libres · IT (auto)", "pages-it", "/it"),
     articles: articlesCollection("Articles du blog", "articles", "/blog"),
