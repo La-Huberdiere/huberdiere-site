@@ -1,6 +1,7 @@
 // Socle SEO centralisé : constantes du site + générateurs de données structurées
 // (JSON-LD Schema.org). Tout passe par ici pour rester cohérent sur l'ensemble
 // des pages et éviter de dupliquer le balisage.
+import { localizePath } from "./routes";
 
 export const SITE = {
   url: "https://www.chateaudelahuberdiere.com",
@@ -212,7 +213,9 @@ export function faqSchema(items: { question: string; answer: string }[]) {
  *  Centralisé pour rester cohérent sur les routes FR/EN/IT. */
 export function activitySchemas(opts: { m: any; slug: string; lang: "fr" | "en" | "it" }) {
   const { m, slug, lang } = opts;
-  const prefix = lang === "fr" ? "" : `/${lang}`;
+  // `slug` = id canonique (FR) ; on construit l'URL localisée (slug traduit + préfixe).
+  const homePath = localizePath("/", lang);
+  const pagePath = localizePath(`/${slug}`, lang);
   const home = lang === "fr" ? "Accueil" : "Home";
   // Libellé court pour le fil d'Ariane et le Service : on part du <title> SEO et on
   // en retire le suffixe de marque puis les qualificatifs après séparateur. NB : le
@@ -227,10 +230,10 @@ export function activitySchemas(opts: { m: any; slug: string; lang: "fr" | "en" 
       .trim();
   const out: object[] = [
     breadcrumbSchema([
-      { name: home, path: `${prefix}/` },
-      { name: pageName, path: `${prefix}/${slug}` },
+      { name: home, path: homePath },
+      { name: pageName, path: pagePath },
     ]),
-    serviceSchema({ name: pageName, description: m.description, path: `${prefix}/${slug}` }),
+    serviceSchema({ name: pageName, description: m.description, path: pagePath }),
   ];
   if (Array.isArray(m.faq) && m.faq.length) {
     out.push(faqSchema(m.faq.map((f: any) => ({ question: f.q, answer: f.a }))));

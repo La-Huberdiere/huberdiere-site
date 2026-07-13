@@ -1,4 +1,5 @@
 // Helpers blog : libellés de catégories (FR/EN/IT) + temps de lecture + i18n.
+import { localizePath } from "./routes";
 
 export type Lang = "fr" | "en" | "it";
 
@@ -38,8 +39,7 @@ export const categoryLabel = (id?: string | null, lang: Lang = "fr") =>
 export const CATEGORY_ORDER = Object.keys(CATEGORIES_BY_LANG.fr);
 
 /** Préfixe une URL interne selon la langue (FR sans préfixe). */
-export const lp = (lang: Lang, path: string) =>
-  lang === "fr" ? path : `/${lang}${path}`;
+export const lp = (lang: Lang, path: string) => localizePath(path, lang);
 
 /** Libellés d'interface du blog, par langue. */
 export const BLOG_UI: Record<Lang, Record<string, string>> = {

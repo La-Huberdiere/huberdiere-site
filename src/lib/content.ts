@@ -14,18 +14,29 @@ export function renderMarkdocNode(node: unknown): string {
 }
 
 // --- Pages libres : chargeur partagé par les routes FR / EN / IT ---
-type PageCol = "pages" | "pagesEn" | "pagesIt";
+import { freeSlug, articleSlug, type Lang } from "./routes";
 
-/** getStaticPaths d'une page libre : rend le markdoc en HTML. */
+type PageCol = "pages" | "pagesEn" | "pagesIt";
+const LANG_OF: Record<string, Lang> = { pages: "fr", pagesEn: "en", pagesIt: "it", articles: "fr", articlesEn: "en", articlesIt: "it" };
+
+/**
+ * getStaticPaths d'une page libre. Le paramètre de route est le slug LOCALISÉ
+ * (traduit en EN/IT) ; le contenu, lui, est lu par l'id canonique (nom de fichier,
+ * identique dans les 3 langues) et exposé en prop `canonicalId`.
+ */
 export async function pageStaticPaths(col: PageCol) {
+  const lang = LANG_OF[col];
   const c = (reader.collections as any)[col];
-  const slugs: string[] = await c.list();
+  const ids: string[] = await c.list();
   return Promise.all(
-    slugs.map(async (slug: string) => {
-      const entry = await c.read(slug);
+    ids.map(async (id: string) => {
+      const entry = await c.read(id);
       const body = await entry!.body();
       const node = (body as any)?.node ?? body;
-      return { params: { slug }, props: { entry, html: renderMarkdocNode(node) } };
+      return {
+        params: { slug: freeSlug(id, lang) },
+        props: { entry, html: renderMarkdocNode(node), canonicalId: id },
+      };
     })
   );
 }
@@ -58,13 +69,20 @@ export async function listArticles(col: ArticleCol) {
   );
 }
 
-/** getStaticPaths d'un article : rend le markdoc, extrait le sommaire + les articles liés. */
+/**
+ * getStaticPaths d'un article. Le paramètre de route est le slug LOCALISÉ (EN/IT) ;
+ * le contenu est lu par l'id canonique (nom de fichier). La prop `slug` reste l'id
+ * canonique : elle sert au composant à construire son chemin « style FR » (que Base
+ * localise) et l'URL de l'image OG. Les articles liés portent aussi l'id canonique
+ * (localizePath fait la traduction au rendu du lien).
+ */
 export async function articleStaticPaths(col: ArticleCol) {
+  const lang = LANG_OF[col];
   const c = (reader.collections as any)[col];
-  const slugs: string[] = await c.list();
+  const ids: string[] = await c.list();
   // Filtre publication : on ne génère pas les pages des articles à date future.
   const all = (await Promise.all(
-    slugs.map(async (slug: string) => ({ slug, entry: await c.read(slug) }))
+    ids.map(async (id: string) => ({ slug: id, entry: await c.read(id) }))
   )).filter((o: any) => isLive(o.entry));
   return Promise.all(
     all.map(async ({ slug, entry }: any) => {
@@ -82,7 +100,8 @@ export async function articleStaticPaths(col: ArticleCol) {
       const related = [...sameCat, ...otherCat]
         .slice(0, 3)
         .map((o: any) => ({ slug: o.slug, title: o.entry.title, cover: o.entry.cover, category: o.entry.category }));
-      return { params: { slug }, props: { slug, entry, html, toc, related } };
+      // params.slug = slug localisé (l'URL) ; props.slug = id canonique (usage interne).
+      return { params: { slug: articleSlug(slug, lang) }, props: { slug, entry, html, toc, related } };
     })
   );
 }

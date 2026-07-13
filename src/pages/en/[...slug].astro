@@ -9,17 +9,16 @@ export async function getStaticPaths() {
   return pageStaticPaths("pagesEn");
 }
 
-const { entry, html } = Astro.props;
-const { slug } = Astro.params;
+const { entry, html, canonicalId } = Astro.props;
 const isSimple = entry.layout === "simple";
 ---
 <Base
   title={`${entry.title} · Château de la Huberdière`}
   description={entry.description}
   lang="en"
-  path={`/${slug}`}
+  path={`/${canonicalId}`}
 >
   {isSimple
     ? <LegalPage entry={entry} html={html} />
-    : <FreePage entry={entry} html={html} lang="en" path={`/${slug}`} slug={slug} />}
+    : <FreePage entry={entry} html={html} lang="en" path={`/${canonicalId}`} slug={canonicalId} />}
 </Base>

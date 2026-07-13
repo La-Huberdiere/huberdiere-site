@@ -9,6 +9,7 @@ import sPiscine from "../assets/SD_4.jpg";
 import sEscalier from "../assets/SD_1.jpg";
 import sFacade from "../assets/SD_3.jpg";
 import { octorateUrl } from "../lib/octorate";
+import { localizePath } from "../lib/routes";
 
 const { entry, html, lang = "fr", path = "/", slug = "" } = Astro.props;
 
@@ -30,8 +31,7 @@ const cta = {
   it: { title: "Voglia di scoprire il castello?", text: "Scriveteci il vostro progetto o le vostre date. Rispondiamo entro 24 ore.", contact: "Contattaci", book: "Prenota un soggiorno" },
 }[lang as "fr" | "en" | "it"] ?? null;
 
-const L = (href: string) => (lang === "fr" ? href : `/${lang}${href}`);
-const contactHref = L("/contact");
+const contactHref = localizePath("/contact", lang as "fr" | "en" | "it");
 const bookHref = octorateUrl();
 const captionFeature =
   lang === "it" ? "Il castello e il suo parco di quattordici ettari."

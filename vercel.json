@@ -2,43 +2,320 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "astro build && node scripts/patch-vercel-404.mjs",
   "crons": [
-    { "path": "/api/cron/rapport", "schedule": "0 6 28-31 * *" },
-    { "path": "/api/cron/rebuild", "schedule": "0 5 * * *" }
+    {
+      "path": "/api/cron/rapport",
+      "schedule": "0 6 28-31 * *"
+    },
+    {
+      "path": "/api/cron/rebuild",
+      "schedule": "0 5 * * *"
+    }
   ],
   "redirects": [
-    { "source": "/contact-9", "destination": "/contact", "permanent": true },
-    { "source": "/mariage-chateau-touraine", "destination": "/mariage", "permanent": true },
-    { "source": "/location-chateau-mariage-touraine", "destination": "/mariage", "permanent": true },
-    { "source": "/location-chateau-seminaire-touraine", "destination": "/seminaire", "permanent": true },
-    { "source": "/seminaire-entreprise-touraine-chateau-huberdiere", "destination": "/seminaire", "permanent": true },
-    { "source": "/location-chateau-reunion-famille-touraine", "destination": "/famille", "permanent": true },
-    { "source": "/lieu-retraite-stage-chateau-touraine", "destination": "/retraite", "permanent": true },
-    { "source": "/chateau-location-touraine", "destination": "/sejour", "permanent": true },
-    { "source": "/hebergement-chateau-touraine", "destination": "/sejour", "permanent": true },
-    { "source": "/restauration-chateau-huberdiere-touraine", "destination": "/restauration", "permanent": true },
-    { "source": "/activites-chateau-huberdiere-touraine", "destination": "/activites", "permanent": true },
-    { "source": "/members", "destination": "/", "permanent": true },
-    { "source": "/blog/bienvenue-au-chateau", "destination": "/blog/organiser-mariage-au-chateau", "permanent": true },
-    { "source": "/en/blog/bienvenue-au-chateau", "destination": "/en/blog/organiser-mariage-au-chateau", "permanent": true },
-    { "source": "/it/blog/bienvenue-au-chateau", "destination": "/it/blog/organiser-mariage-au-chateau", "permanent": true },
-    { "source": "/article/:slug*", "destination": "/blog", "permanent": true },
-    { "source": "/event-details/:slug*", "destination": "/", "permanent": true }
+    {
+      "source": "/contact-9",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/mariage-chateau-touraine",
+      "destination": "/mariage",
+      "permanent": true
+    },
+    {
+      "source": "/location-chateau-mariage-touraine",
+      "destination": "/mariage",
+      "permanent": true
+    },
+    {
+      "source": "/location-chateau-seminaire-touraine",
+      "destination": "/seminaire",
+      "permanent": true
+    },
+    {
+      "source": "/seminaire-entreprise-touraine-chateau-huberdiere",
+      "destination": "/seminaire",
+      "permanent": true
+    },
+    {
+      "source": "/location-chateau-reunion-famille-touraine",
+      "destination": "/famille",
+      "permanent": true
+    },
+    {
+      "source": "/lieu-retraite-stage-chateau-touraine",
+      "destination": "/retraite",
+      "permanent": true
+    },
+    {
+      "source": "/chateau-location-touraine",
+      "destination": "/sejour",
+      "permanent": true
+    },
+    {
+      "source": "/hebergement-chateau-touraine",
+      "destination": "/sejour",
+      "permanent": true
+    },
+    {
+      "source": "/restauration-chateau-huberdiere-touraine",
+      "destination": "/restauration",
+      "permanent": true
+    },
+    {
+      "source": "/activites-chateau-huberdiere-touraine",
+      "destination": "/activites",
+      "permanent": true
+    },
+    {
+      "source": "/members",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/bienvenue-au-chateau",
+      "destination": "/blog/organiser-mariage-au-chateau",
+      "permanent": true
+    },
+    {
+      "source": "/en/blog/bienvenue-au-chateau",
+      "destination": "/en/blog/organiser-mariage-au-chateau",
+      "permanent": true
+    },
+    {
+      "source": "/it/blog/bienvenue-au-chateau",
+      "destination": "/it/blog/organiser-mariage-au-chateau",
+      "permanent": true
+    },
+    {
+      "source": "/article/:slug*",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/event-details/:slug*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/en/mariage",
+      "destination": "/en/chateau-wedding-loire",
+      "permanent": true
+    },
+    {
+      "source": "/en/sejour",
+      "destination": "/en/boutique-hotel-amboise",
+      "permanent": true
+    },
+    {
+      "source": "/en/seminaire",
+      "destination": "/en/chateau-seminar-loire",
+      "permanent": true
+    },
+    {
+      "source": "/en/famille",
+      "destination": "/en/chateau-hire-large-group",
+      "permanent": true
+    },
+    {
+      "source": "/en/retraite",
+      "destination": "/en/yoga-retreat-venue",
+      "permanent": true
+    },
+    {
+      "source": "/en/restauration",
+      "destination": "/en/chateau-dining-touraine",
+      "permanent": true
+    },
+    {
+      "source": "/en/galerie",
+      "destination": "/en/gallery",
+      "permanent": true
+    },
+    {
+      "source": "/en/notre-histoire",
+      "destination": "/en/our-story",
+      "permanent": true
+    },
+    {
+      "source": "/en/activites",
+      "destination": "/en/things-to-do",
+      "permanent": true
+    },
+    {
+      "source": "/en/mentions-legales",
+      "destination": "/en/legal-notice",
+      "permanent": true
+    },
+    {
+      "source": "/en/politique-de-confidentialite",
+      "destination": "/en/privacy-policy",
+      "permanent": true
+    },
+    {
+      "source": "/en/blog/chambres-hotes-amboise-chateau",
+      "destination": "/en/blog/bed-and-breakfast-amboise",
+      "permanent": true
+    },
+    {
+      "source": "/en/blog/louer-chateau-entre-amis-famille",
+      "destination": "/en/blog/rent-chateau-group-weekend",
+      "permanent": true
+    },
+    {
+      "source": "/en/blog/organiser-mariage-au-chateau",
+      "destination": "/en/blog/chateau-wedding-planning",
+      "permanent": true
+    },
+    {
+      "source": "/en/blog/organiser-retraite-yoga-chateau",
+      "destination": "/en/blog/yoga-retreat-chateau",
+      "permanent": true
+    },
+    {
+      "source": "/en/blog/organiser-seminaire-au-chateau",
+      "destination": "/en/blog/chateau-seminar-guide",
+      "permanent": true
+    },
+    {
+      "source": "/en/blog/prix-mariage-chateau-loire",
+      "destination": "/en/blog/chateau-wedding-cost",
+      "permanent": true
+    },
+    {
+      "source": "/en/blog/visiter-chateaux-de-la-loire",
+      "destination": "/en/blog/visiting-loire-chateaux",
+      "permanent": true
+    },
+    {
+      "source": "/it/mariage",
+      "destination": "/it/matrimonio-castello-loira",
+      "permanent": true
+    },
+    {
+      "source": "/it/sejour",
+      "destination": "/it/hotel-di-charme-amboise",
+      "permanent": true
+    },
+    {
+      "source": "/it/seminaire",
+      "destination": "/it/seminario-aziendale-castello",
+      "permanent": true
+    },
+    {
+      "source": "/it/famille",
+      "destination": "/it/affittare-castello-gruppo",
+      "permanent": true
+    },
+    {
+      "source": "/it/retraite",
+      "destination": "/it/ritiro-yoga-castello",
+      "permanent": true
+    },
+    {
+      "source": "/it/restauration",
+      "destination": "/it/cena-al-castello",
+      "permanent": true
+    },
+    {
+      "source": "/it/galerie",
+      "destination": "/it/galleria",
+      "permanent": true
+    },
+    {
+      "source": "/it/contact",
+      "destination": "/it/contatti",
+      "permanent": true
+    },
+    {
+      "source": "/it/notre-histoire",
+      "destination": "/it/la-nostra-storia",
+      "permanent": true
+    },
+    {
+      "source": "/it/activites",
+      "destination": "/it/attivita",
+      "permanent": true
+    },
+    {
+      "source": "/it/mentions-legales",
+      "destination": "/it/note-legali",
+      "permanent": true
+    },
+    {
+      "source": "/it/politique-de-confidentialite",
+      "destination": "/it/privacy",
+      "permanent": true
+    },
+    {
+      "source": "/it/blog/chambres-hotes-amboise-chateau",
+      "destination": "/it/blog/bed-breakfast-castello-loira",
+      "permanent": true
+    },
+    {
+      "source": "/it/blog/louer-chateau-entre-amis-famille",
+      "destination": "/it/blog/affittare-castello-weekend",
+      "permanent": true
+    },
+    {
+      "source": "/it/blog/organiser-mariage-au-chateau",
+      "destination": "/it/blog/organizzare-matrimonio-castello",
+      "permanent": true
+    },
+    {
+      "source": "/it/blog/organiser-retraite-yoga-chateau",
+      "destination": "/it/blog/ritiro-yoga-castello-loira",
+      "permanent": true
+    },
+    {
+      "source": "/it/blog/organiser-seminaire-au-chateau",
+      "destination": "/it/blog/organizzare-seminario-castello",
+      "permanent": true
+    },
+    {
+      "source": "/it/blog/prix-mariage-chateau-loire",
+      "destination": "/it/blog/prezzo-matrimonio-castello",
+      "permanent": true
+    },
+    {
+      "source": "/it/blog/visiter-chateaux-de-la-loire",
+      "destination": "/it/blog/visitare-castelli-loira",
+      "permanent": true
+    }
   ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
-        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
-        { "key": "Permissions-Policy", "value": "geolocation=(), microphone=(), camera=()" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "geolocation=(), microphone=(), camera=()"
+        }
       ]
     },
     {
       "source": "/_astro/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     }
   ]

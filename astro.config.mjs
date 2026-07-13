@@ -20,10 +20,11 @@ export default defineConfig({
     react(),
     keystatic(),
     sitemap({
-      i18n: {
-        defaultLocale: "fr",
-        locales: { fr: "fr-FR", en: "en-GB", it: "it-IT" },
-      },
+      // Pas de bloc `i18n` ici : depuis que les slugs EN/IT sont localisés, l'auto-
+      // appariement hreflang du sitemap (qui suppose le MÊME chemin entre langues)
+      // produirait des alternates faux (ex. /it/chateau-wedding-loire inexistant).
+      // Le hreflang correct est émis dans le <head> de chaque page (Base.astro),
+      // c'est celui que Google lit en priorité. Le sitemap liste toutes les URLs.
       // Exclut les pages sans valeur d'indexation (remerciement, 404, éditeur).
       filter: (page) =>
         !/\/merci|\/404|\/keystatic/.test(page),

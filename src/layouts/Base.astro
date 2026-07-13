@@ -19,6 +19,7 @@ import Footer from "../components/Footer.astro";
 import CookieBanner from "../components/CookieBanner.astro";
 import settingsData from "../data/settings.json";
 import { SITE, organizationSchema, webSiteSchema } from "../lib/seo";
+import { localizePath } from "../lib/routes";
 
 interface Props {
   title?: string;
@@ -67,8 +68,10 @@ const defaults = {
 const metaTitle = title ?? defaults[lang].title;
 const metaDescription = description ?? defaults[lang].description;
 
-// URLs par langue pour le même contenu (FR sans préfixe, EN/IT préfixés).
-const localePath = (l: string) => (l === "fr" ? path : `/${l}${path === "/" ? "" : path}`);
+// URLs par langue pour le même contenu. `path` est toujours le chemin « style FR »
+// (id canonique) ; localizePath applique le slug traduit + le préfixe de langue.
+// Ainsi hreflang, canonical et sélecteur de langue pointent le bon slug par langue.
+const localePath = (l: string) => localizePath(path, l as "fr" | "en" | "it");
 const langs = [
   { code: "fr", label: "FR", href: localePath("fr") },
   { code: "en", label: "EN", href: localePath("en") },

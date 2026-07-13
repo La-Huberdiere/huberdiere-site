@@ -1,4 +1,6 @@
 ---
+// Page mariage IT. Le nom de fichier = le slug localisé (URL /it/matrimonio-castello-loira) ;
+// on passe à Base le chemin « style FR » /mariage pour que hreflang/canonical soient corrects.
 import Base from "../../layouts/Base.astro";
 import MariagePage from "../../components/MariagePage.astro";
 import data from "../../data/mariage.json";
@@ -7,5 +9,5 @@ const m = data.it;
 const schemas = activitySchemas({ m, slug: "mariage", lang: "it" });
 ---
 <Base title={m.title} description={m.description} lang="it" path="/mariage" image="/og/mariage.jpg" schemas={schemas}>
-  <MariagePage m={m} />
+  <MariagePage m={m} cible="mariage" />
 </Base>

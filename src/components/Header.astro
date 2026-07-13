@@ -2,8 +2,9 @@
 import { Image } from "astro:assets";
 import logo from "../assets/logo.png";
 import { octorateUrl } from "../lib/octorate";
-// Réglages + langue passés par Base. On préfixe les liens internes selon la langue
-// (FR sans préfixe, EN/IT préfixés), et on affiche le sélecteur de langue.
+import { localizePath } from "../lib/routes";
+// Réglages + langue passés par Base. On localise les liens internes (slug traduit
+// + préfixe de langue via localizePath), et on affiche le sélecteur de langue.
 // En dessous de 1200px, le menu passe en burger (styles dans global.css).
 const { settings: s, lang = "fr", langs = [] } = Astro.props;
 
@@ -11,12 +12,7 @@ const { settings: s, lang = "fr", langs = [] } = Astro.props;
 // (l'embed iframe est refusé par Octorate, cf. src/lib/octorate.ts).
 const reserveLink = octorateUrl();
 
-const localize = (href: string) => {
-  if (lang === "fr" || !href || !href.startsWith("/")) return href;
-  if (href === "/") return `/${lang}`;
-  if (href.startsWith("/#")) return `/${lang}${href.slice(1)}`;
-  return `/${lang}${href}`;
-};
+const localize = (href: string) => localizePath(href, lang as "fr" | "en" | "it");
 const homeHref = lang === "fr" ? "/" : `/${lang}`;
 ---
 <header class="site-header" id="siteHeader">

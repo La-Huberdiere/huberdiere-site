@@ -1,4 +1,6 @@
 ---
+// Galerie EN. Nom de fichier = slug localisé (URL /en/gallery) ; chemin « style FR »
+// /galerie passé à Base pour hreflang/canonical.
 import Base from "../../layouts/Base.astro";
 import GalleryPage from "../../components/GalleryPage.astro";
 import { galleryChapters, galleryTotal, galleryUI } from "../../lib/gallery";
@@ -12,7 +14,7 @@ const imageGallery = {
   "@type": "ImageGallery",
   name: ui.metaTitle,
   description: ui.metaDesc,
-  url: `${SITE.url}/en/galerie`,
+  url: `${SITE.url}/en/gallery`,
   numberOfItems: galleryTotal,
   about: { "@type": "LodgingBusiness", name: SITE.name },
   associatedMedia: chapters.map((c) => ({
@@ -22,8 +24,8 @@ const imageGallery = {
   })),
 };
 const breadcrumb = breadcrumbSchema([
-  { name: "en" === "en" ? "Home" : "Home", path: "/" },
-  { name: ui.title, path: "/galerie" },
+  { name: "Home", path: "/en" },
+  { name: ui.title, path: "/en/gallery" },
 ]);
 ---
 <Base

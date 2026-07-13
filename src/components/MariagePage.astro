@@ -6,6 +6,7 @@ import v2 from "../assets/SD_9.jpg";
 import { reader } from "../lib/content";
 import { octorateUrl } from "../lib/octorate";
 import { landingMedia } from "../lib/landingMedia";
+import { localizePath } from "../lib/routes";
 
 // Textes en props selon la langue ; image de hero variable par activité.
 const { m, cible = "mariage", heroImg } = Astro.props;
@@ -31,7 +32,7 @@ const reserveLink = octorateUrl();
 const briefLabel = { fr: "En bref", en: "In brief", it: "In breve" }[lang];
 
 // Renvoi vers la page galerie, sous la bande de photos de chaque landing.
-const galleryHref = lang === "fr" ? "/galerie" : `/${lang}/galerie`;
+const galleryHref = localizePath("/galerie", lang);
 const galleryCtaLabel = {
   fr: "Voir plus de photos",
   en: "See more photos",
