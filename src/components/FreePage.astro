@@ -8,6 +8,7 @@ import sInterieur from "../assets/SD_11.jpg";
 import sPiscine from "../assets/SD_4.jpg";
 import sEscalier from "../assets/SD_1.jpg";
 import sFacade from "../assets/SD_3.jpg";
+import { octorateUrl } from "../lib/octorate";
 
 const { entry, html, lang = "fr", path = "/", slug = "" } = Astro.props;
 
@@ -31,7 +32,7 @@ const cta = {
 
 const L = (href: string) => (lang === "fr" ? href : `/${lang}${href}`);
 const contactHref = L("/contact");
-const bookHref = "/reservation";
+const bookHref = octorateUrl();
 const captionFeature =
   lang === "it" ? "Il castello e il suo parco di quattordici ettari."
   : lang === "en" ? "The château and its fourteen-hectare grounds."
@@ -64,7 +65,7 @@ const captionFeature =
     <p>{cta.text}</p>
     <div class="cta-actions">
       <a class="btn-burgundy" href={contactHref}>{cta.contact}</a>
-      <a class="btn-ghost-line" href={bookHref}>{cta.book}</a>
+      <a class="btn-ghost-line" href={bookHref} target="_blank" rel="noopener">{cta.book}</a>
     </div>
   </section>
 )}
