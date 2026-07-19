@@ -28,6 +28,7 @@ const COVERS = [
   { slug: "organiser-seminaire-au-chateau", dir: PUBLIC, photo: "images/bibliotheque/seminaire/seminaire-02.jpg" },
   { slug: "louer-chateau-entre-amis-famille", dir: PUBLIC, photo: "images/bibliotheque/chateau-exterieur/chateau-exterieur-05.jpg" },
   { slug: "prix-mariage-chateau-loire", dir: PUBLIC, photo: "images/bibliotheque/mariage/mariage-01.jpg" },
+  { slug: "seminaire-au-vert-pres-de-paris", dir: PUBLIC, photo: "images/bibliotheque/chateau-exterieur/chateau-exterieur-01.jpg" },
 ];
 
 // Dégradé très doux, sans aucun texte (rien à rogner quel que soit le recadrage).

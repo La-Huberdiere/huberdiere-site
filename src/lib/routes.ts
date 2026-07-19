@@ -38,6 +38,7 @@ export const ARTICLE_SLUGS: Record<string, { en: string; it: string }> = {
   "organiser-retraite-yoga-chateau": { en: "yoga-retreat-chateau", it: "ritiro-yoga-castello-loira" },
   "organiser-seminaire-au-chateau": { en: "chateau-seminar-guide", it: "organizzare-seminario-castello" },
   "prix-mariage-chateau-loire": { en: "chateau-wedding-cost", it: "prezzo-matrimonio-castello" },
+  "seminaire-au-vert-pres-de-paris": { en: "corporate-retreat-near-paris", it: "seminario-nel-verde-parigi" },
   "visiter-chateaux-de-la-loire": { en: "visiting-loire-chateaux", it: "visitare-castelli-loira" },
 };
 
