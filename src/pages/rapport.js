@@ -6,6 +6,7 @@
 export const prerender = false
 
 import { head } from "@vercel/blob"
+import PLAN_DATA from "../data/calendrier-editorial.json"
 
 const HISTORY_PATH = "rapport/history.json"
 const PASSWORD = "SEOHUBERDIERE"
@@ -114,127 +115,109 @@ function indexPage(months) {
 }
 
 // Plan éditorial SEO servi à /rapport?doc=calendrier (derrière le même mot de passe).
-// Document statique, sans dépendance Blob : c'est la feuille de route de contenu
-// montrable au client, purgée des notes internes (volumes, arbitrages, slugs).
-const PLAN = [
-  {
-    mois: "Août 2026",
-    angle: "Conversion, requêtes à forte intention",
-    articles: [
-      "Combien coûte un mariage dans un château de la Loire ?",
-      "Séminaire au vert près de Paris : 8 lieux à moins de 2 h 20",
-      "Dormir dans un château de la Loire : 7 expériences",
-      "Louer un château pour une réunion de famille",
-    ],
-  },
-  {
-    mois: "Septembre 2026",
-    angle: "Rentrée B2B et week-ends",
-    articles: [
-      "Team building en Touraine : 12 activités",
-      "Séminaire de direction dans un château privatisé",
-      "Week-end romantique près d'Amboise",
-      "Week-end entre amis au château",
-    ],
-  },
-  {
-    mois: "Octobre 2026",
-    angle: "Mariage (réservations d'hiver) et art de la table",
-    articles: [
-      "Château pour un mariage en Val de Loire",
-      "Mariage intimiste, de 30 à 60 invités",
-      "La table d'hôtes en Touraine",
-      "Hôtel de charme ou esprit maison d'hôtes ?",
-    ],
-  },
-  {
-    mois: "Novembre 2026",
-    angle: "Mariage et tourisme evergreen",
-    articles: [
-      "Cérémonie laïque dans le parc du château",
-      "Checklist mariage : le rétroplanning",
-      "Que faire autour d'Amboise : 15 idées",
-      "Cuisine et terroir de Touraine",
-    ],
-  },
-  {
-    mois: "Décembre 2026",
-    angle: "Événements privés et œnotourisme",
-    articles: [
-      "Privatiser un château le temps d'un week-end",
-      "Baptême et communion au château",
-      "Les vignobles de Vouvray et Montlouis",
-      "Visiter le Clos Lucé et Chenonceau",
-    ],
-  },
-  {
-    mois: "Janvier 2027",
-    angle: "Fin du premier cycle",
-    articles: [
-      "Se marier en Touraine : 10 lieux d'exception",
-      "Offsite annuel : un programme sur 3 jours",
-      "Séminaire RSE et bien-être",
-      "Brunch dominical au château",
-    ],
-  },
-]
+// Le « quoi » (titre, pilier, justification trafic) vient de src/data/calendrier-editorial.json.
+// Le « où en est-on » (en ligne / programmé / à venir) est calculé À L'AFFICHAGE depuis les
+// vrais fichiers d'articles : la page reflète donc chaque publication (redéploy du rebuild
+// quotidien qui rafraîchit le glob, plus la date du jour) et chaque reporting, sans statut
+// codé en dur. Aucun appel réseau, aucune dépendance Blob.
+const ARTICLE_RAW = import.meta.glob("../content/articles/*.mdoc", { query: "?raw", import: "default", eager: true })
+const PUBLISHED_AT = Object.fromEntries(
+  Object.entries(ARTICLE_RAW).map(([path, raw]) => {
+    const slug = path.split("/").pop().replace(/\.mdoc$/, "")
+    const m = /^publishedAt:\s*"?(\d{4}-\d{2}-\d{2})"?/m.exec(String(raw))
+    return [slug, m ? m[1] : null]
+  }),
+)
 
-const PILIERS = [
-  "Organiser un mariage au château",
-  "Organiser un séminaire au château",
-  "L'esprit chambres d'hôtes près d'Amboise",
-  "Louer le château entre amis et en famille",
-  "Organiser une retraite de yoga au château",
-  "Visiter les châteaux de la Loire",
-]
+// Statut d'un article planifié, à partir du fichier réel :
+//   live      = fichier présent et date de publication atteinte
+//   scheduled = fichier présent mais date encore future
+//   planned   = pas encore rédigé
+function articleStatut(slug) {
+  if (!Object.prototype.hasOwnProperty.call(PUBLISHED_AT, slug)) return { key: "planned", date: null }
+  const d = PUBLISHED_AT[slug]
+  const today = new Date().toISOString().slice(0, 10)
+  if (!d || d <= today) return { key: "live", date: d }
+  return { key: "scheduled", date: d }
+}
+
+function statutBadge(st) {
+  if (st.key === "live") return `<span style="white-space:nowrap;font-size:11.5px;color:#fff;background:var(--wine);padding:2px 9px;border-radius:2px">En ligne</span>`
+  if (st.key === "scheduled") {
+    const [, mm, dd] = st.date.split("-")
+    return `<span style="white-space:nowrap;font-size:11.5px;color:var(--wine);border:1px solid #e2caca;padding:2px 9px;border-radius:2px">Programmé le ${dd}/${mm}</span>`
+  }
+  return `<span style="white-space:nowrap;font-size:11.5px;color:var(--muted);border:1px solid var(--line);padding:2px 9px;border-radius:2px">À venir</span>`
+}
 
 function calendrierPage() {
   const nav = `<div style="background:var(--wine);color:#fff;font-family:'Montserrat',system-ui,sans-serif;font-size:13px;padding:10px 18px;display:flex;align-items:center">
     <a href="/rapport" style="color:#fff;text-decoration:none;font-weight:600">← Tous les rapports</a>
   </div>`
-  const piliers = PILIERS
-    .map((p) => `<li style="border-bottom:1px solid var(--line);padding:11px 2px;color:var(--ink)">${p}</li>`)
+  const allSlugs = [...PLAN_DATA.piliers.map((p) => p.slug), ...PLAN_DATA.mois.flatMap((b) => b.articles.map((a) => a.slug))]
+  const liveTotal = allSlugs.filter((s) => articleStatut(s).key === "live").length
+  const grandTotal = allSlugs.length
+
+  const piliers = PLAN_DATA.piliers
+    .map((p) => {
+      const st = articleStatut(p.slug)
+      return `<li style="display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid var(--line);padding:12px 2px">
+        <span style="color:var(--ink)"><strong style="font-weight:600">${p.titre}</strong> <span style="color:var(--muted);font-size:12.5px">· ${p.cluster}</span></span>
+        ${statutBadge(st)}
+      </li>`
+    })
     .join("")
-  const mois = PLAN
+
+  const mois = PLAN_DATA.mois
     .map(
       (b) => `
-      <section style="margin:0 0 40px">
-        <div style="border-left:3px solid var(--wine);padding-left:16px;margin-bottom:16px">
+      <section style="margin:0 0 42px">
+        <div style="border-left:3px solid var(--wine);padding-left:16px;margin-bottom:14px">
           <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:23px;font-weight:600;margin:0;color:var(--ink)">${b.mois}</h2>
           <div style="color:var(--wine);font-size:13px;margin-top:3px">${b.angle}</div>
         </div>
-        <ol style="list-style:none;margin:0;padding:0;counter-reset:a">
+        <ol class="plan" style="list-style:none;margin:0;padding:0">
           ${b.articles
-            .map(
-              (t) => `<li style="counter-increment:a;display:flex;gap:14px;padding:10px 2px;border-bottom:1px solid var(--line)">
-                <span style="font-family:'Playfair Display',Georgia,serif;color:var(--wine);font-size:15px;min-width:22px" aria-hidden="true"></span>
-                <span style="color:var(--ink)">${t}</span>
-              </li>`,
-            )
+            .map((a) => {
+              const st = articleStatut(a.slug)
+              return `<li style="display:flex;gap:15px;padding:15px 2px;border-bottom:1px solid var(--line)">
+                <span class="num" style="font-family:'Playfair Display',Georgia,serif;color:var(--wine);font-size:15px;min-width:20px;padding-top:2px" aria-hidden="true"></span>
+                <div style="flex:1;min-width:0">
+                  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px">
+                    <span style="color:var(--ink);font-weight:600">${a.titre}</span>
+                    ${statutBadge(st)}
+                  </div>
+                  <div style="color:var(--muted);font-size:13px;margin-top:5px;line-height:1.5">${a.justification}</div>
+                  <div style="color:var(--wine);font-size:12px;margin-top:7px">Pilier ${a.cluster}</div>
+                </div>
+              </li>`
+            })
             .join("")}
         </ol>
       </section>`,
     )
     .join("")
+
   return `<!doctype html><html lang="fr"><head>${HEAD}
-<style>ol[style*="counter-reset:a"] li span:first-child::before{content:counter(a)}</style>
+<style>ol.plan{counter-reset:a}ol.plan>li{counter-increment:a}.num::before{content:counter(a)}</style>
 <title>Plan éditorial SEO, Château de la Huberdière</title></head>
 <body>
   ${nav}
-  <div style="max-width:640px;margin:0 auto;padding:52px 22px 80px">
+  <div style="max-width:660px;margin:0 auto;padding:52px 22px 80px">
     <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--wine);margin-bottom:6px">Château de la Huberdière</div>
     <h1 style="font-family:'Playfair Display',Georgia,serif;font-size:34px;font-weight:600;margin:0 0 10px;line-height:1.15">Plan éditorial SEO</h1>
-    <p style="color:var(--muted);font-size:15px;margin:0 0 30px;max-width:56ch">Six mois de contenus, quatre articles par mois. Chaque article vise une recherche précise de vos futurs clients et renvoie vers la page de réservation correspondante, pour construire mois après mois l'autorité du château sur Google et dans les moteurs de réponse par IA.</p>
+    <p style="color:var(--muted);font-size:15px;margin:0 0 8px;max-width:58ch">Six mois de contenus, quatre articles par mois. Chaque article vise une recherche précise de vos futurs clients et renvoie vers la page de réservation correspondante, pour construire mois après mois l'autorité du château sur Google et dans les moteurs de réponse par IA.</p>
+    <p style="color:var(--ink);font-size:14px;margin:0 0 30px"><strong style="color:var(--wine);font-weight:600">${liveTotal}</strong> articles déjà en ligne sur ${grandTotal} prévus.</p>
 
-    <div style="background:#fff;border:1px solid var(--line);border-top:3px solid var(--wine);padding:22px 24px;margin:0 0 42px">
-      <div style="font-family:'Playfair Display',Georgia,serif;font-size:19px;color:var(--ink);margin-bottom:4px">Les six fondations, déjà en ligne</div>
-      <p style="color:var(--muted);font-size:13.5px;margin:0 0 8px">Un article pilier par activité, socle du maillage. Les articles ci-dessous s'y rattachent.</p>
+    <div style="background:#fff;border:1px solid var(--line);border-top:3px solid var(--wine);padding:22px 24px;margin:0 0 44px">
+      <div style="font-family:'Playfair Display',Georgia,serif;font-size:19px;color:var(--ink);margin-bottom:4px">Les six fondations</div>
+      <p style="color:var(--muted);font-size:13.5px;margin:0 0 8px">Un article pilier par activité, socle du maillage interne. Les articles mensuels ci-dessous s'y rattachent.</p>
       <ul style="list-style:none;margin:0;padding:0;border-top:1px solid var(--line)">${piliers}</ul>
     </div>
 
     ${mois}
 
-    <p style="color:var(--muted);font-size:13px;margin:34px 0 0;padding-top:20px;border-top:1px solid var(--line)">Rythme de publication : quatre articles étalés sur le mois. Traduction en anglais et en italien systématique. Ce calendrier est indicatif, l'ordre peut évoluer selon la saisonnalité des réservations.</p>
+    <p style="color:var(--muted);font-size:13px;margin:34px 0 0;padding-top:20px;border-top:1px solid var(--line)">Rythme de publication : quatre articles étalés sur le mois, traduits en anglais et en italien. Le statut de chaque article se met à jour automatiquement à mesure des publications. Le calendrier reste indicatif, l'ordre peut évoluer selon la saisonnalité des réservations.</p>
   </div>
 </body></html>`
 }
