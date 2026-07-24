@@ -274,9 +274,10 @@ const schemas = [
   .article-head h1 { font-family: "Playfair Display", Georgia, serif; font-weight: 500; font-size: clamp(2rem, 4.5vw, 3rem); color: #212121; line-height: 1.15; margin: 0 0 14px; }
   .article-byline { font-family: "Montserrat", sans-serif; font-size: 0.9rem; color: #646464; margin: 0; }
 
-  /* Bandeau contenu plutôt qu'un grand hero pleine hauteur : hauteur bornée et
-     responsive, l'image recadre (object-fit) au lieu d'exiger une photo parfaite. */
-  .article-cover { width: 100%; max-width: 1180px; height: clamp(220px, 34vw, 420px); object-fit: cover; margin: 8px auto 40px; display: block; }
+  /* Image d'article contenue, alignée sur la colonne du titre plutôt qu'en pleine
+     largeur : hauteur ET largeur bornées, calée à gauche, l'image recadre
+     (object-fit) au lieu d'exiger une photo parfaite pleine page. */
+  .article-cover { width: 100%; max-width: 820px; height: clamp(200px, 26vw, 360px); object-fit: cover; margin: 8px 0 44px; display: block; }
 
   .article-layout { display: grid; grid-template-columns: minmax(0, 1fr) 308px; gap: 56px; align-items: start; }
   .article-main { min-width: 0; }
