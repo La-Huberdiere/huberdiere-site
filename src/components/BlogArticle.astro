@@ -300,7 +300,10 @@ const schemas = [
   .article-tags .tag:hover { color: #8b0000; border-color: #8b0000; }
   .article-updated { font-size: 0.82rem; color: #9a9a9a; font-style: italic; margin-top: 26px; }
 
-  .article-faq { margin: 32px 0 0; max-width: 720px; }
+  /* padding: 0 pour annuler la règle globale `section { padding: 140px 48px }`
+     (global.css) qui s'appliquait à la balise <section> de la FAQ et créait un
+     énorme vide haut/bas. L'espacement se gère par la marge, pas ce padding. */
+  .article-faq { margin: 32px 0 0; padding: 0; max-width: 720px; }
   .article-faq > h2 { font-family: "Playfair Display", Georgia, serif; font-weight: 500; font-size: 1.6rem; color: #2e3a48; margin: 0 0 18px; }
   .faq-list { border-top: 1px solid #e2dccc; }
   .article-faq details { border-bottom: 1px solid #e2dccc; }
@@ -326,7 +329,7 @@ const schemas = [
   .article-cta h2 { font-family: "Playfair Display", Georgia, serif; font-weight: 500; margin: 0 0 10px; color: #fff; }
   .article-cta p { color: #d7d2c8; margin: 0 0 22px; font-family: "Montserrat", sans-serif; }
 
-  .related { margin: 48px 0; }
+  .related { margin: 48px 0; padding: 0; } /* idem : annule le padding global des <section> */
   .related h2 { font-family: "Playfair Display", Georgia, serif; font-weight: 500; color: #2e3a48; margin: 0 0 20px; }
   .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
   .related-card { display: flex; flex-direction: column; text-decoration: none; color: inherit; border: 1px solid #e2dccc; overflow: hidden; background: #fbfaf6; transition: transform 0.2s ease, box-shadow 0.2s ease; }
