@@ -274,10 +274,16 @@ const schemas = [
   .article-head h1 { font-family: "Playfair Display", Georgia, serif; font-weight: 500; font-size: clamp(2rem, 4.5vw, 3rem); color: #212121; line-height: 1.15; margin: 0 0 14px; }
   .article-byline { font-family: "Montserrat", sans-serif; font-size: 0.9rem; color: #646464; margin: 0; }
 
-  .article-cover { width: 100%; max-width: 1180px; height: auto; margin: 8px auto 40px; display: block; }
+  /* Bandeau contenu plutôt qu'un grand hero pleine hauteur : hauteur bornée et
+     responsive, l'image recadre (object-fit) au lieu d'exiger une photo parfaite. */
+  .article-cover { width: 100%; max-width: 1180px; height: clamp(220px, 34vw, 420px); object-fit: cover; margin: 8px auto 40px; display: block; }
 
   .article-layout { display: grid; grid-template-columns: minmax(0, 1fr) 308px; gap: 56px; align-items: start; }
   .article-main { min-width: 0; }
+  /* La colonne de droite doit occuper toute la hauteur de la ligne pour que le
+     bloc `position: sticky` ait de la course : sans ça, `align-items: start`
+     dimensionne le cell à son contenu et le sticky ne colle jamais. */
+  .article-rail { align-self: stretch; }
   .article-main .prose { margin: 0; max-width: 720px; }
   /* Liens dans le corps de l'article (netlinking) : bordeaux souligné, bien visibles.
      Le corps est injecté via set:html, donc ses <a> ne portent pas le scope Astro :
@@ -293,16 +299,16 @@ const schemas = [
   .article-tags .tag:hover { color: #8b0000; border-color: #8b0000; }
   .article-updated { font-size: 0.82rem; color: #9a9a9a; font-style: italic; margin-top: 26px; }
 
-  .article-faq { margin: 48px 0 0; max-width: 720px; }
+  .article-faq { margin: 32px 0 0; max-width: 720px; }
   .article-faq > h2 { font-family: "Playfair Display", Georgia, serif; font-weight: 500; font-size: 1.6rem; color: #2e3a48; margin: 0 0 18px; }
   .faq-list { border-top: 1px solid #e2dccc; }
   .article-faq details { border-bottom: 1px solid #e2dccc; }
-  .article-faq summary { list-style: none; cursor: pointer; padding: 18px 36px 18px 0; position: relative; font-family: "Montserrat", sans-serif; font-weight: 500; font-size: 1rem; color: #212121; }
+  .article-faq summary { list-style: none; cursor: pointer; padding: 14px 36px 14px 0; position: relative; font-family: "Montserrat", sans-serif; font-weight: 500; font-size: 1rem; color: #212121; }
   .article-faq summary::-webkit-details-marker { display: none; }
   .article-faq summary::after { content: "+"; position: absolute; right: 4px; top: 50%; transform: translateY(-50%); font-size: 1.4rem; color: #8b0000; font-weight: 400; line-height: 1; transition: transform 0.2s ease; }
   .article-faq details[open] summary::after { content: "–"; }
   .article-faq summary:hover { color: #8b0000; }
-  .faq-answer p { margin: 0; padding: 0 0 20px; color: #646464; line-height: 1.75; font-family: "Montserrat", sans-serif; font-size: 0.96rem; }
+  .faq-answer p { margin: 0; padding: 0 0 16px; color: #646464; line-height: 1.75; font-family: "Montserrat", sans-serif; font-size: 0.96rem; }
 
   .author-box { display: flex; gap: 18px; align-items: flex-start; margin: 44px 0; padding: 26px; background: #fbfaf6; border: 1px solid #ece6d8; max-width: 720px; }
   .author-photo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; flex: 0 0 auto; }
@@ -330,7 +336,11 @@ const schemas = [
   .article-back { margin-top: 40px; font-family: "Montserrat", sans-serif; }
   .article-back a { color: #8b0000; }
 
-  .rail-sticky { position: sticky; top: 110px; display: flex; flex-direction: column; gap: 26px; }
+  /* max-height + overflow : si sommaire + carte + newsletter dépassent la hauteur
+     de l'écran, le rail défile en interne pour rester entièrement cliquable. */
+  .rail-sticky { position: sticky; top: 110px; display: flex; flex-direction: column; gap: 26px; max-height: calc(100vh - 130px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; padding-right: 2px; }
+  .rail-sticky::-webkit-scrollbar { width: 6px; }
+  .rail-sticky::-webkit-scrollbar-thumb { background: #d8d1c0; border-radius: 3px; }
   .rail-title { font-family: "Montserrat", sans-serif; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: #8b0000; margin: 0 0 14px; }
   .toc ul { list-style: none; margin: 0; padding: 0; border-left: 2px solid #e2dccc; }
   .toc li { margin: 0; }
