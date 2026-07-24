@@ -150,6 +150,24 @@ function statutBadge(st) {
   return `<span style="white-space:nowrap;font-size:11.5px;color:var(--muted);border:1px solid var(--line);padding:2px 9px;border-radius:2px">À venir</span>`
 }
 
+// Volume de recherche mensuel, séparateur de milliers à la française (1 600).
+const fmtVol = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+
+// Ligne de données de recherche (DataForSEO) qui justifie le choix du sujet.
+function seoLine(seo) {
+  if (!seo) return `<div style="font-size:12px;margin-top:7px;color:var(--muted)">Données de recherche au prochain brief trimestriel.</div>`
+  return `<div style="font-size:12px;margin-top:7px;color:var(--muted)">
+    <span style="color:var(--wine)">«&nbsp;${seo.motCle}&nbsp;»</span> · ${fmtVol(seo.volume)} recherches/mois · concurrence ${seo.concurrence.toLowerCase()} · potentiel ${seo.potentiel.toLowerCase()}
+  </div>`
+}
+
+// Titre cliquable seulement si l'article est en ligne (une page programmée renvoie
+// 404 tant que sa date n'est pas atteinte : pas de lien mort dans le document).
+function titreHtml(titre, slug, st) {
+  if (st.key === "live") return `<a href="/blog/${slug}" style="color:var(--ink);font-weight:600;text-decoration:none;border-bottom:1px solid #d9b3b3">${titre}</a>`
+  return `<span style="color:var(--ink);font-weight:600">${titre}</span>`
+}
+
 function calendrierPage() {
   const nav = `<div style="background:var(--wine);color:#fff;font-family:'Montserrat',system-ui,sans-serif;font-size:13px;padding:10px 18px;display:flex;align-items:center">
     <a href="/rapport" style="color:#fff;text-decoration:none;font-weight:600">← Tous les rapports</a>
@@ -162,7 +180,7 @@ function calendrierPage() {
     .map((p) => {
       const st = articleStatut(p.slug)
       return `<li style="display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid var(--line);padding:12px 2px">
-        <span style="color:var(--ink)"><strong style="font-weight:600">${p.titre}</strong> <span style="color:var(--muted);font-size:12.5px">· ${p.cluster}</span></span>
+        <span style="color:var(--ink)">${titreHtml(p.titre, p.slug, st)} <span style="color:var(--muted);font-size:12.5px">· ${p.cluster}</span></span>
         ${statutBadge(st)}
       </li>`
     })
@@ -184,10 +202,11 @@ function calendrierPage() {
                 <span class="num" style="font-family:'Playfair Display',Georgia,serif;color:var(--wine);font-size:15px;min-width:20px;padding-top:2px" aria-hidden="true"></span>
                 <div style="flex:1;min-width:0">
                   <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px">
-                    <span style="color:var(--ink);font-weight:600">${a.titre}</span>
+                    ${titreHtml(a.titre, a.slug, st)}
                     ${statutBadge(st)}
                   </div>
                   <div style="color:var(--muted);font-size:13px;margin-top:5px;line-height:1.5">${a.justification}</div>
+                  ${seoLine(a.seo)}
                   <div style="color:var(--wine);font-size:12px;margin-top:7px">Pilier ${a.cluster}</div>
                 </div>
               </li>`
@@ -217,7 +236,7 @@ function calendrierPage() {
 
     ${mois}
 
-    <p style="color:var(--muted);font-size:13px;margin:34px 0 0;padding-top:20px;border-top:1px solid var(--line)">Rythme de publication : quatre articles étalés sur le mois, traduits en anglais et en italien. Le statut de chaque article se met à jour automatiquement à mesure des publications. Le calendrier reste indicatif, l'ordre peut évoluer selon la saisonnalité des réservations.</p>
+    <p style="color:var(--muted);font-size:13px;margin:34px 0 0;padding-top:20px;border-top:1px solid var(--line)">Rythme de publication : quatre articles étalés sur le mois, traduits en anglais et en italien. Le statut et le lien de chaque article se mettent à jour automatiquement à mesure des publications. Volumes de recherche : ${PLAN_DATA.seoSource}. Le calendrier reste indicatif, l'ordre peut évoluer selon la saisonnalité des réservations.</p>
   </div>
 </body></html>`
 }
