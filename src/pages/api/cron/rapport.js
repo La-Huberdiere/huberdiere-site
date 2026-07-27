@@ -39,6 +39,8 @@ async function sendEmail(summary, monthLabel) {
     ? `aucun de vos ${s.keywords} mots-clés suivis n'est encore positionné sur Google`
     : `${s.ranked} de vos ${s.keywords} mots-clés suivis ${s.ranked > 1 ? "sont positionnés" : "est positionné"} sur Google`
   const gbp = s.gbpNote != null ? `, et votre note Google se maintient à ${String(s.gbpNote).replace(".", ",")}/5` : ""
+  const dem = s.demandes == null || s.demandes === 0 ? ""
+    : ` Côté demandes, vous avez reçu ${s.demandes} contact${s.demandes > 1 ? "s" : ""} via le site${s.demandesChatgpt > 0 ? `, dont ${s.demandesChatgpt} en provenance de ChatGPT` : ""}.`
   const html = `
     <div style="font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;color:#212121;line-height:1.65;font-size:15px;max-width:520px">
       <p>Bonjour à tous les deux,</p>
@@ -47,7 +49,7 @@ async function sendEmail(summary, monthLabel) {
         <a href="${REPORT_URL}?m=${s.month}" style="color:#8B0000;font-weight:600;font-size:16px">Ouvrir le rapport →</a><br>
         <span style="color:#646464;font-size:13px">mot de passe <strong>SEOHUBERDIERE</strong>, à saisir une seule fois sur votre navigateur</span>
       </p>
-      <p>En deux mots ce mois-ci : ${art}, et ${kw}. Côté intelligences artificielles, le château a été cité ${s.llmCited} fois sur ${s.llmAnswered} questions testées${gbp}.</p>
+      <p>En deux mots ce mois-ci : ${art}, et ${kw}. Côté intelligences artificielles, le château a été cité ${s.llmCited} fois sur ${s.llmAnswered} questions testées${gbp}.${dem}</p>
       <p>Le rapport reprend l'évolution mois par mois et ce sur quoi je travaille pour la suite. Une question, un doute ? Répondez simplement à ce message.</p>
       <p style="margin-top:24px">Bonne lecture,<br>Alexis</p>
     </div>`
@@ -81,7 +83,29 @@ export async function GET({ request, url }) {
       }
     }
     const prev = await loadHistory()
+
+    // Idempotence : un mois déjà envoyé n'est ni régénéré ni renvoyé. Évite le doublon
+    // quand un envoi anticipé (ex. veille de call) précède le run automatique de fin de
+    // mois. Contournable avec ?force=1 pour un renvoi volontaire.
+    const force = url.searchParams.get("force") === "1"
+    const now2 = new Date()
+    const ymTarget = override || `${now2.getUTCFullYear()}-${String(now2.getUTCMonth() + 1).padStart(2, "0")}`
+    if (!force && Array.isArray(prev) && prev.some((h) => h.month === ymTarget && h.emailed)) {
+      return new Response(JSON.stringify({ ok: true, skipped: "rapport déjà envoyé ce mois", month: ymTarget }), {
+        status: 200, headers: { "content-type": "application/json" },
+      })
+    }
+
     const { html, history, summary, monthLabel, month: ym } = await generateReport(prev, override)
+
+    // On envoie d'abord pour pouvoir marquer le mois comme « emailed » dans l'historique
+    // persisté (verrou du doublon). Un échec d'envoi laisse le drapeau à false → un run
+    // ultérieur retentera.
+    const emailed = await sendEmail(summary, monthLabel)
+    if (emailed) {
+      const e = history.find((h) => h.month === ym)
+      if (e) e.emailed = true
+    }
 
     await put(HISTORY_PATH, JSON.stringify(history, null, 2), {
       access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json",
@@ -94,7 +118,6 @@ export async function GET({ request, url }) {
       access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "text/html; charset=utf-8",
     })
 
-    const emailed = await sendEmail(summary, monthLabel)
     return new Response(JSON.stringify({ ok: true, summary, blob: blob.url, emailed }), {
       status: 200, headers: { "content-type": "application/json" },
     })

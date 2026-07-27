@@ -217,6 +217,125 @@ function readArticles() {
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
 const fr = (n) => Number(n || 0).toLocaleString("fr-FR")
 
+// ── Demandes entrantes (Brevo) ────────────────────────────────────────────
+// Le rapport referme la boucle business : pas seulement des positions Google, mais
+// les demandes de contact réellement reçues via les formulaires du site, ventilées
+// par activité et par canal d'origine (dont la visibilité IA).
+const CIBLE_LABEL_RAPPORT = {
+  LP_Mariage: "Mariage",
+  LP_Seminaire: "Séminaire",
+  LP_Stage: "Retraite / stage",
+  LP_Reunion_Famille: "Réunion de famille",
+  Grands_Gites: "Grand gîte / famille",
+  LP_Sejour: "Séjour",
+  LP_Restauration: "Restauration",
+  Contact_Form: "Contact (autre)",
+  Autre: "Autre",
+}
+
+// Canal lisible depuis la source figée au premier contact (utm_source ou referrer
+// d'entrée, cf. attribution first-touch du site).
+function leadChannel(src) {
+  const r = String(src || "").toLowerCase().trim()
+  if (!r) return "Accès direct / source non identifiée"
+  if (/chatgpt|openai/.test(r)) return "ChatGPT"
+  if (/perplexity|gemini|claude|copilot/.test(r)) return "Autres IA"
+  if (/google|bing|yahoo|duckduckgo|qwant|ecosia|brave/.test(r)) return "Recherche Google"
+  if (/instagram|facebook|linkedin|pinterest|tiktok|youtube|twitter|x\.com/.test(r)) return "Réseaux sociaux"
+  if (/bouche/.test(r)) return "Bouche à oreille"
+  // Domaine référent nommé : on l'affiche proprement. Un token non reconnu qui n'est
+  // pas un domaine (utm cassé, saisie parasite) retombe en non identifié, jamais brut.
+  if (r.includes(".")) return `Référent : ${r.replace(/^https?:\/\//, "").replace(/^www\./, "").split("/")[0]}`
+  return "Accès direct / source non identifiée"
+}
+
+// Emails internes / tests exclus du décompte client.
+const isTestEmail = (e) => {
+  const s = String(e || "").toLowerCase()
+  return !s || s.includes("+") || /@morain\.fr$/.test(s) || s === "alexmorain@yahoo.fr"
+}
+
+// Segmentation pure (testable hors ligne) : contacts Brevo bruts + mois AAAA-MM →
+// totaux, ventilation par activité et par canal.
+export function buildLeadsData(contacts, ym) {
+  const A = (x, k) => (x.attributes || {})[k]
+  const first = (v) => (Array.isArray(v) ? v[0] : v)
+  const rows = (Array.isArray(contacts) ? contacts : []).filter((x) => (x.createdAt || "").slice(0, 7) === ym)
+
+  let newsletter = 0
+  const demandes = []
+  for (const x of rows) {
+    const form = String(first(A(x, "FORM")) || "")
+    if (!form) continue
+    if (isTestEmail(x.email)) continue
+    if (form === "Newsletter_Form") { newsletter++; continue }
+    demandes.push({ cible: CIBLE_LABEL_RAPPORT[form] || form, canal: leadChannel(A(x, "UTM_SOURCE")) })
+  }
+
+  const tally = (arr, key) => {
+    const m = new Map()
+    for (const d of arr) m.set(d[key], (m.get(d[key]) || 0) + 1)
+    return [...m.entries()].sort((a, b) => b[1] - a[1])
+  }
+  const chatgpt = demandes.filter((d) => d.canal === "ChatGPT").length
+  const identifies = demandes.filter((d) => d.canal !== "Accès direct / source non identifiée").length
+  return { total: demandes.length, newsletter, parCible: tally(demandes, "cible"), parCanal: tally(demandes, "canal"), chatgpt, identifies }
+}
+
+async function pullLeads(ym) {
+  const key = process.env.BREVO_API_KEY
+  if (!key) { console.log("[rapport] BREVO_API_KEY absente, bloc demandes ignoré."); return null }
+  try {
+    const contacts = []
+    for (let offset = 0; offset < 6000; offset += 1000) {
+      const res = await fetch(`https://api.brevo.com/v3/contacts?limit=1000&offset=${offset}&sort=desc`, {
+        headers: { "api-key": key, accept: "application/json" },
+        signal: AbortSignal.timeout(20000),
+      })
+      if (!res.ok) throw new Error(`Brevo ${res.status}`)
+      const page = (await res.json()).contacts || []
+      contacts.push(...page)
+      if (page.length < 1000) break
+    }
+    return buildLeadsData(contacts, ym)
+  } catch (e) {
+    console.error("[rapport] pullLeads KO:", e.message)
+    return null
+  }
+}
+
+// Bloc "Demandes reçues" — placé haut dans le rapport, c'est le résultat business
+// que le client regarde en premier.
+export function renderLeads(ld, monthLabel) {
+  if (!ld) return ""
+  if (ld.total === 0 && ld.newsletter === 0) {
+    return `<h2>Demandes reçues</h2>
+    <p class="lead">Les demandes envoyées via les formulaires du site en ${esc(monthLabel)}.</p>
+    <div class="card"><p style="margin:0;color:var(--gris)">Aucune demande enregistrée sur cette période.</p></div>`
+  }
+  const cibleRows = ld.parCible.map(([c, n]) => `<tr><td>${esc(c)}</td><td class="num">${n}</td></tr>`).join("")
+  const canalRows = ld.parCanal.map(([c, n]) => {
+    const strong = c === "ChatGPT"
+    return `<tr><td>${strong ? `<strong style="color:var(--bordeaux)">${esc(c)}</strong>` : esc(c)}</td><td class="num">${n}</td></tr>`
+  }).join("")
+  const chatgptNote = ld.chatgpt > 0
+    ? `<div class="summary" style="border-left-color:var(--bordeaux)"><strong>Signal IA :</strong> ${ld.chatgpt} demande${ld.chatgpt > 1 ? "s" : ""} ${ld.chatgpt > 1 ? "sont arrivées" : "est arrivée"} via ChatGPT ce mois-ci. Les visiteurs qui interrogent une IA avant de choisir un lieu commencent à trouver le château : un premier retour du travail de visibilité sur les moteurs de réponse.</div>`
+    : ""
+  return `<h2>Demandes reçues</h2>
+  <p class="lead">Les demandes de contact envoyées via les formulaires du site en ${esc(monthLabel)}, ventilées par activité et par canal d'origine.${ld.newsletter ? ` S'ajoutent ${ld.newsletter} inscription${ld.newsletter > 1 ? "s" : ""} à la newsletter.` : ""}</p>
+  <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
+    <div class="kpi"><div class="l">Demandes de contact</div><div class="v">${ld.total}</div><div class="n">via les formulaires</div></div>
+    <div class="kpi"><div class="l">Source identifiée</div><div class="v">${ld.identifies}<span style="font-size:15px;color:var(--gris)"> / ${ld.total}</span></div><div class="n">canal d'origine connu</div></div>
+    <div class="kpi"><div class="l">Newsletter</div><div class="v">${ld.newsletter}</div><div class="n">nouvelles inscriptions</div></div>
+  </div>
+  ${chatgptNote}
+  <div class="leadsgrid" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:14px">
+    <div><table><thead><tr><th>Par activité</th><th class="num">Demandes</th></tr></thead><tbody>${cibleRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
+    <div><table><thead><tr><th>Par canal d'origine</th><th class="num">Demandes</th></tr></thead><tbody>${canalRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
+  </div>
+  <p class="note">Le canal est déduit de la première visite (recherche Google, IA, réseaux, lien direct). Une part des demandes reste en « source non identifiée » : l'ajout d'un champ « Comment nous avez-vous connus ? » dans les formulaires fiabilisera ce point.</p>`
+}
+
 // Mouvement d'une position vs le rapport précédent.
 function movement(cur, prev, hasPrev) {
   if (!hasPrev) return { txt: "", cls: "flat" } // mois de référence
@@ -230,7 +349,7 @@ function movement(cur, prev, hasPrev) {
 }
 
 function renderHtml(data) {
-  const { month, serp, backlinks, refDomains, blHistory, gbp, llm, articles, history, exec } = data
+  const { month, serp, backlinks, refDomains, blHistory, gbp, llm, articles, history, exec, leads } = data
   const monthLabel = monthLong(month)
   const rankedCount = serp.filter((s) => s.position !== null).length
   const bestPos = bestKeyword(serp)
@@ -308,7 +427,7 @@ function renderHtml(data) {
   footer .arch{margin-bottom:14px}
   footer .arch a{margin-right:12px;white-space:nowrap}
   .pos{font-weight:600}
-  @media(max-width:720px){.kpis{grid-template-columns:repeat(2,1fr)}h1{font-size:24px}}
+  @media(max-width:720px){.kpis{grid-template-columns:repeat(2,1fr)}h1{font-size:24px}.leadsgrid{grid-template-columns:1fr!important}}
   @media print{body{background:#fff}header{background:#fff;color:var(--encre);border-bottom:2px solid var(--bordeaux);padding:20px 0}header .sub{opacity:1;color:var(--gris)}h1{color:var(--bordeaux)}.card,.kpi,.summary,table{break-inside:avoid}script{display:none}}
 </style></head>
 <body>
@@ -327,6 +446,8 @@ function renderHtml(data) {
     <div class="kpi"><div class="l">Backlinks</div><div class="v">${fr(blNow.backlinks)}</div><div class="n">${deltaBadge(deltaBl)} vs mois dernier</div></div>
     <div class="kpi"><div class="l">Cité par les IA</div><div class="v">${citedTotal}<span style="font-size:15px;color:var(--gris)"> / ${answeredTotal}</span></div><div class="n">réponses testées</div></div>
   </div>
+
+  ${renderLeads(leads, monthLabel)}
 
   <h2>Progression des positions Google</h2>
   <p class="lead">Position de vos mots-clés cibles, avec le mouvement depuis le rapport précédent. Position 1 = tout en haut de Google, donc plus le chiffre est petit, mieux c'est.</p>
@@ -506,8 +627,8 @@ export async function generateReport(prevHistory = [], month = null) {
   const ym = month || `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`
   const monthLabelShort = monthShort(ym)
 
-  const [serp, backlinks, refDomains, blHistory, gbp, llm, domainHistory] = await Promise.all([
-    pullSerp(), pullBacklinks(), pullReferringDomains(), pullBacklinksHistory(), pullGbp(), pullLlm(), pullDomainHistory(),
+  const [serp, backlinks, refDomains, blHistory, gbp, llm, domainHistory, leads] = await Promise.all([
+    pullSerp(), pullBacklinks(), pullReferringDomains(), pullBacklinksHistory(), pullGbp(), pullLlm(), pullDomainHistory(), pullLeads(ym),
   ])
   const articles = readArticles()
 
@@ -530,6 +651,7 @@ export async function generateReport(prevHistory = [], month = null) {
   const answeredTotal = llm.reduce((s, e) => s + e.rows.filter((r) => !r.error).length, 0)
   cur.llmCited = citedTotal
   cur.llmAnswered = answeredTotal
+  if (leads) cur.leads = { total: leads.total, newsletter: leads.newsletter, chatgpt: leads.chatgpt }
   cur.hasReport = true
   byMonth.set(ym, cur)
   const history = [...byMonth.values()].sort((a, b) => a.month.localeCompare(b.month))
@@ -540,7 +662,7 @@ export async function generateReport(prevHistory = [], month = null) {
   const deltaBl = blPrev ? blNow.backlinks - blPrev.backlinks : null
 
   const exec = buildExec({ month: ym, serp, articles, blNow, deltaBl, citedTotal, answeredTotal, gbp })
-  const html = renderHtml({ month: ym, serp, backlinks, refDomains, blHistory, gbp, llm, articles, history, exec })
+  const html = renderHtml({ month: ym, serp, backlinks, refDomains, blHistory, gbp, llm, articles, history, exec, leads })
 
   const summary = {
     month: ym,
@@ -551,6 +673,8 @@ export async function generateReport(prevHistory = [], month = null) {
     llmAnswered: answeredTotal,
     backlinks: blNow.backlinks,
     gbpNote: gbp?.note ?? null,
+    demandes: leads?.total ?? null,
+    demandesChatgpt: leads?.chatgpt ?? 0,
   }
   return { html, history, summary, monthLabel: monthLong(ym), month: ym }
 }
