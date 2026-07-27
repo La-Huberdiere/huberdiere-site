@@ -70,10 +70,16 @@ export async function GET({ request, url }) {
 
   try {
     const override = url.searchParams.get("month") // override optionnel YYYY-MM
-    // Le cron tourne les 28-31 (cf. vercel.json). On ne génère qu'au VRAI dernier jour
-    // du mois → le mois courant EST le mois à rapporter (31 juillet = rapport de juillet).
-    // Un override manuel (?month=YYYY-MM) court-circuite cette garde.
-    if (!override) {
+    // Envoi anticipé ponctuel : le rapport doit partir un jour donné (call client) sans
+    // attendre la fin du mois. Le cron `0 6 28-31` passe déjà ce jour-là ; on lève juste
+    // la garde. L'idempotence (drapeau emailed) empêche le doublon avec le run du dernier
+    // jour. Date UTC fixe, à retirer une fois passée (envoi juillet fait avant le call du 30).
+    const EARLY_SEND = "2026-07-30"
+    const todayUtc = new Date().toISOString().slice(0, 10)
+    // Le cron tourne les 28-31 (cf. vercel.json). On ne génère qu'au VRAI dernier jour du
+    // mois (le mois courant EST le mois à rapporter), sauf jour d'envoi anticipé. Un override
+    // manuel (?month=YYYY-MM) court-circuite aussi cette garde.
+    if (!override && todayUtc !== EARLY_SEND) {
       const now = new Date()
       const t = new Date(now); t.setUTCDate(now.getUTCDate() + 1)
       if (t.getUTCMonth() === now.getUTCMonth()) {
