@@ -10,6 +10,9 @@
  * Env requis : DATAFORSEO_LOGIN, DATAFORSEO_PASSWORD.
  */
 import yaml from "js-yaml"
+// Travaux réalisés par mois (saisie manuelle d'Alexis avant l'envoi). Clé = AAAA-MM,
+// valeur = liste de phrases côté client. Absent = encart masqué, jamais de crash.
+import TRAVAUX from "../data/rapport-travaux.json"
 
 const DFS = "https://api.dataforseo.com/v3"
 const LOCATION = 2250 // France
@@ -336,6 +339,19 @@ export function renderLeads(ld, monthLabel) {
   <p class="note">Le canal est déduit de la première visite (recherche Google, IA, réseaux, lien direct). Une part des demandes reste en « source non identifiée » : l'ajout d'un champ « Comment nous avez-vous connus ? » dans les formulaires fiabilisera ce point.</p>`
 }
 
+// Encart "Ce qui a été réalisé ce mois-ci" : le travail concret livré, en langage
+// client. Alimenté à la main via src/data/rapport-travaux.json (clé AAAA-MM).
+export function renderTravaux(items) {
+  if (!Array.isArray(items) || !items.length) return ""
+  const li = items.map((t) =>
+    `<li style="position:relative;padding:9px 0 9px 28px;border-bottom:1px solid #efeada">
+      <span style="position:absolute;left:2px;top:9px;color:var(--bordeaux);font-weight:700">✓</span>${esc(t)}</li>`
+  ).join("")
+  return `<h2>Ce qui a été réalisé ce mois-ci</h2>
+  <p class="lead">Le détail concret du travail mené sur votre site et votre référencement sur la période.</p>
+  <div class="card"><ul style="margin:0;padding:0;list-style:none">${li}</ul></div>`
+}
+
 // Mouvement d'une position vs le rapport précédent.
 function movement(cur, prev, hasPrev) {
   if (!hasPrev) return { txt: "", cls: "flat" } // mois de référence
@@ -446,6 +462,8 @@ function renderHtml(data) {
     <div class="kpi"><div class="l">Backlinks</div><div class="v">${fr(blNow.backlinks)}</div><div class="n">${deltaBadge(deltaBl)} vs mois dernier</div></div>
     <div class="kpi"><div class="l">Cité par les IA</div><div class="v">${citedTotal}<span style="font-size:15px;color:var(--gris)"> / ${answeredTotal}</span></div><div class="n">réponses testées</div></div>
   </div>
+
+  ${renderTravaux(TRAVAUX[month])}
 
   ${renderLeads(leads, monthLabel)}
 
