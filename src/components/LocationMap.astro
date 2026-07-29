@@ -49,7 +49,7 @@ const directions = `https://www.google.com/maps/dir/?api=1&destination=${encodeU
       const lon = parseFloat(el.dataset.lon || "0.93489");
 
       const map = L.map(el, {
-        scrollWheelZoom: false,
+        scrollWheelZoom: true,
         zoomControl: true,
         attributionControl: true,
       }).setView([lat, lon], 13);
