@@ -342,6 +342,11 @@ export function renderLeads(ld, monthLabel) {
 // ── Fréquentation du site (Umami, analytics cookieless) ────────────────────
 const UMAMI_BASE = (process.env.UMAMI_BASE || "https://umami.morain.fr").replace(/\/+$/, "")
 const UMAMI_WEBSITE_ID = process.env.UMAMI_WEBSITE_ID || process.env.PUBLIC_UMAMI_WEBSITE_ID || ""
+// Tableau de bord Umami public partagé, proposé au client pour aller plus loin.
+const UMAMI_SHARE_URL = process.env.UMAMI_SHARE_URL || "https://umami.morain.fr/share/JFnzMWJRC8wXe752"
+// En deçà, le mois précédent n'est pas une base fiable (mise en place d'Umami en
+// cours) : on masque alors les comparaisons M-1 plutôt que d'afficher un delta faux.
+const UMAMI_MIN_BASELINE = 100
 
 // Auth Umami : soit une clé API (x-umami-api-key), soit un couple login/mot de
 // passe (self-hosted classique) échangé contre un token Bearer, mis en cache le
@@ -401,12 +406,15 @@ async function pullUmami(ym) {
     const pv = val(stats, "pageviews"), vs = val(stats, "visitors"), sess = val(stats, "visits")
     const bounces = val(stats, "bounces"), totaltime = val(stats, "totaltime")
     const pvPrev = val(statsPrev, "pageviews"), vsPrev = val(statsPrev, "visitors"), sessPrev = val(statsPrev, "visits")
+    // Le mois précédent ne sert de base que s'il a assez de données (Umami déjà en
+    // place). Sinon on n'affiche aucune comparaison M-1 (premier mois de mesure).
+    const hasBaseline = pvPrev >= UMAMI_MIN_BASELINE
     return {
-      ym, prevYm,
+      ym, prevYm, hasBaseline,
       pageviews: pv, visitors: vs, visits: sess,
-      dPageviews: pvPrev ? pv - pvPrev : null,
-      dVisitors: vsPrev ? vs - vsPrev : null,
-      dVisits: sessPrev ? sess - sessPrev : null,
+      dPageviews: hasBaseline ? pv - pvPrev : null,
+      dVisitors: hasBaseline ? vs - vsPrev : null,
+      dVisits: hasBaseline ? sess - sessPrev : null,
       bounceRate: sess ? Math.round((bounces / sess) * 100) : null,
       avgSec: sess ? Math.round(totaltime / sess) : null,
       topPages: pages.filter((r) => r.x).slice(0, 8).map((r) => ({ path: r.x, views: r.y })),
@@ -447,7 +455,7 @@ export function renderTraffic(td, monthLabel) {
   const badge = (d) => d == null ? '<span class="flat">réf.</span>' : d > 0 ? `<span class="up">▲ +${fr(d)}</span>` : d < 0 ? `<span class="down">▼ ${fr(d)}</span>` : '<span class="flat">=</span>'
   if (td.pageviews === 0 && td.visitors === 0) {
     return `<h2>Fréquentation du site</h2>
-    <p class="lead">Le trafic mesuré sur le site en ${esc(monthLabel)} (mesure anonyme, sans cookie).</p>
+    <p class="lead">Le trafic mesuré sur le site en ${esc(monthLabel)} (mesure anonyme, sans cookie). <a href="${UMAMI_SHARE_URL}" target="_blank" rel="noopener">Voir le tableau de bord détaillé &rarr;</a></p>
     <div class="card"><p style="margin:0;color:var(--gris)">Aucune visite enregistrée sur cette période.</p></div>`
   }
   const pagesRows = td.topPages.map((p) => `<tr><td>${esc(p.path)}</td><td class="num">${fr(p.views)}</td></tr>`).join("")
@@ -462,19 +470,22 @@ export function renderTraffic(td, monthLabel) {
     const strong = r.key === "organicSearch"
     return `<tr><td>${strong ? `<strong style="color:var(--bordeaux)">${esc(r.label)}</strong>` : esc(r.label)}</td><td class="num">${fr(r.visits)}</td></tr>`
   }).join("")
+  // Sous-libellé d'un KPI : comparaison M-1 seulement si le mois précédent est fiable.
+  const sub = (d, plain) => td.hasBaseline ? `${badge(d)} vs mois dernier` : plain
+  const dash = `<a href="${UMAMI_SHARE_URL}" target="_blank" rel="noopener">Voir le tableau de bord détaillé &rarr;</a>`
   return `<h2>Fréquentation du site</h2>
-  <p class="lead">Le trafic mesuré sur le site en ${esc(monthLabel)}, avec l'évolution depuis le mois précédent. Mesure anonyme et sans cookie (Umami).</p>
+  <p class="lead">Le trafic mesuré sur le site en ${esc(monthLabel)}${td.hasBaseline ? ", avec l'évolution depuis le mois précédent" : ""}. Mesure anonyme et sans cookie (Umami). ${dash}</p>
   <div class="kpis">
-    <div class="kpi"><div class="l">Visiteurs</div><div class="v">${fr(td.visitors)}</div><div class="n">${badge(td.dVisitors)} vs mois dernier</div></div>
-    <div class="kpi"><div class="l">Pages vues</div><div class="v">${fr(td.pageviews)}</div><div class="n">${badge(td.dPageviews)} vs mois dernier</div></div>
-    <div class="kpi"><div class="l">Visites</div><div class="v">${fr(td.visits)}</div><div class="n">${badge(td.dVisits)} vs mois dernier</div></div>
+    <div class="kpi"><div class="l">Visiteurs</div><div class="v">${fr(td.visitors)}</div><div class="n">${sub(td.dVisitors, "personnes uniques")}</div></div>
+    <div class="kpi"><div class="l">Pages vues</div><div class="v">${fr(td.pageviews)}</div><div class="n">${sub(td.dPageviews, "pages ouvertes")}</div></div>
+    <div class="kpi"><div class="l">Visites</div><div class="v">${fr(td.visits)}</div><div class="n">${sub(td.dVisits, "sessions")}</div></div>
     <div class="kpi"><div class="l">Durée moyenne</div><div class="v">${fmtDuration(td.avgSec)}</div><div class="n">${td.bounceRate != null ? td.bounceRate + " % en une page" : "par visite"}</div></div>
   </div>
   <div class="leadsgrid" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:14px">
     <div><table><thead><tr><th>Pages les plus vues</th><th class="num">Vues</th></tr></thead><tbody>${pagesRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
     <div><table><thead><tr><th>D'où viennent les visiteurs</th><th class="num">Visites</th></tr></thead><tbody>${refRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
   </div>
-  <p class="note">« Visiteurs » compte les personnes uniques, « visites » leurs sessions, « pages vues » le total des pages ouvertes. Le taux « en une page » mesure les visiteurs partis après une seule page. Les canaux regroupent l'origine des visites : recherche Google, réseaux sociaux, publicité, accès direct, sites référents.</p>`
+  <p class="note">« Visiteurs » compte les personnes uniques, « visites » leurs sessions, « pages vues » le total des pages ouvertes. Le taux « en une page » mesure les visiteurs partis après une seule page. Les canaux regroupent l'origine des visites : recherche Google, réseaux sociaux, publicité, accès direct, sites référents.${td.hasBaseline ? "" : " C'est le premier mois de mesure Umami : la comparaison avec le mois précédent apparaîtra au prochain rapport."}</p>`
 }
 
 // Encart "Ce qui a été réalisé ce mois-ci" : le travail concret livré, en langage
