@@ -339,6 +339,144 @@ export function renderLeads(ld, monthLabel) {
   <p class="note">Le canal est déduit de la première visite (recherche Google, IA, réseaux, lien direct). Une part des demandes reste en « source non identifiée » : l'ajout d'un champ « Comment nous avez-vous connus ? » dans les formulaires fiabilisera ce point.</p>`
 }
 
+// ── Fréquentation du site (Umami, analytics cookieless) ────────────────────
+const UMAMI_BASE = (process.env.UMAMI_BASE || "https://umami.morain.fr").replace(/\/+$/, "")
+const UMAMI_WEBSITE_ID = process.env.UMAMI_WEBSITE_ID || process.env.PUBLIC_UMAMI_WEBSITE_ID || ""
+
+// Auth Umami : soit une clé API (x-umami-api-key), soit un couple login/mot de
+// passe (self-hosted classique) échangé contre un token Bearer, mis en cache le
+// temps de l'exécution.
+let _umamiToken = null
+async function umamiAuthHeaders() {
+  if (process.env.UMAMI_API_KEY) return { "x-umami-api-key": process.env.UMAMI_API_KEY }
+  if (_umamiToken) return { authorization: `Bearer ${_umamiToken}` }
+  const user = process.env.UMAMI_USERNAME, pass = process.env.UMAMI_PASSWORD
+  if (!user || !pass) return null
+  const res = await fetch(`${UMAMI_BASE}/api/auth/login`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ username: user, password: pass }),
+    signal: AbortSignal.timeout(15000),
+  })
+  if (!res.ok) throw new Error(`Umami login ${res.status}`)
+  _umamiToken = (await res.json()).token
+  return { authorization: `Bearer ${_umamiToken}` }
+}
+
+async function umamiGet(path, headers) {
+  const res = await fetch(`${UMAMI_BASE}${path}`, { headers, signal: AbortSignal.timeout(20000) })
+  if (!res.ok) throw new Error(`Umami ${path.split("?")[0]} ${res.status}`)
+  return res.json()
+}
+
+// Bornes d'un mois AAAA-MM en millisecondes UTC.
+function monthRangeMs(ym) {
+  const [y, m] = ym.split("-").map(Number)
+  return { start: Date.UTC(y, m - 1, 1), end: Date.UTC(y, m, 1) - 1 }
+}
+
+// Tire les stats du mois + du mois précédent (deltas maison), plus le top des
+// pages et des sources. Renvoie null sans website id ou sans identifiants.
+async function pullUmami(ym) {
+  if (!UMAMI_WEBSITE_ID) { console.log("[rapport] Umami : website id absent, bloc trafic ignoré."); return null }
+  try {
+    const headers = await umamiAuthHeaders()
+    if (!headers) { console.log("[rapport] Umami : identifiants absents, bloc trafic ignoré."); return null }
+    const [y, m] = ym.split("-").map(Number)
+    const prevYm = m === 1 ? `${y - 1}-12` : `${y}-${String(m - 1).padStart(2, "0")}`
+    const cur = monthRangeMs(ym), prev = monthRangeMs(prevYm)
+    const id = UMAMI_WEBSITE_ID
+    const q = (r) => `startAt=${r.start}&endAt=${r.end}`
+    // Cette build d'Umami expose les pages via type=path (pas url) et les canaux
+    // d'acquisition déjà groupés via type=channel.
+    const arr = (v) => (Array.isArray(v) ? v : [])
+    const [stats, statsPrev, pages, channels] = await Promise.all([
+      umamiGet(`/api/websites/${id}/stats?${q(cur)}`, headers),
+      umamiGet(`/api/websites/${id}/stats?${q(prev)}`, headers),
+      umamiGet(`/api/websites/${id}/metrics?type=path&${q(cur)}&limit=8`, headers).then(arr).catch(() => []),
+      umamiGet(`/api/websites/${id}/metrics?type=channel&${q(cur)}&limit=8`, headers).then(arr).catch(() => []),
+    ])
+    // Umami v2 renvoie {value, prev} par métrique ; on ne garde que value.
+    const val = (o, k) => (o && o[k] && typeof o[k] === "object" ? o[k].value : o?.[k]) ?? 0
+    const pv = val(stats, "pageviews"), vs = val(stats, "visitors"), sess = val(stats, "visits")
+    const bounces = val(stats, "bounces"), totaltime = val(stats, "totaltime")
+    const pvPrev = val(statsPrev, "pageviews"), vsPrev = val(statsPrev, "visitors"), sessPrev = val(statsPrev, "visits")
+    return {
+      ym, prevYm,
+      pageviews: pv, visitors: vs, visits: sess,
+      dPageviews: pvPrev ? pv - pvPrev : null,
+      dVisitors: vsPrev ? vs - vsPrev : null,
+      dVisits: sessPrev ? sess - sessPrev : null,
+      bounceRate: sess ? Math.round((bounces / sess) * 100) : null,
+      avgSec: sess ? Math.round(totaltime / sess) : null,
+      topPages: pages.filter((r) => r.x).slice(0, 8).map((r) => ({ path: r.x, views: r.y })),
+      channels: channels.filter((r) => r.x).slice(0, 6).map((r) => ({ key: r.x, visits: r.y })),
+    }
+  } catch (e) {
+    console.error("[rapport] pullUmami KO:", e.message)
+    return null
+  }
+}
+
+function fmtDuration(sec) {
+  if (sec == null) return "–"
+  if (sec < 60) return `${sec} s`
+  return `${Math.floor(sec / 60)} min ${String(sec % 60).padStart(2, "0")}`
+}
+
+// Traduit les canaux d'acquisition Umami en libellés client.
+const CHANNEL_LABELS = {
+  direct: "Accès direct",
+  organicSearch: "Recherche Google",
+  paidSearch: "Publicité Google",
+  paidAds: "Publicité",
+  organicSocial: "Réseaux sociaux",
+  paidSocial: "Réseaux sociaux (payant)",
+  organicVideo: "Vidéo",
+  referral: "Sites référents",
+  email: "Email",
+  unknown: "Autre",
+}
+function channelLabel(key) {
+  return CHANNEL_LABELS[key] || (key ? key.charAt(0).toUpperCase() + key.slice(1) : "Autre")
+}
+
+// Bloc "Fréquentation du site" : le trafic Umami du mois, en résumé lisible.
+export function renderTraffic(td, monthLabel) {
+  if (!td) return ""
+  const badge = (d) => d == null ? '<span class="flat">réf.</span>' : d > 0 ? `<span class="up">▲ +${fr(d)}</span>` : d < 0 ? `<span class="down">▼ ${fr(d)}</span>` : '<span class="flat">=</span>'
+  if (td.pageviews === 0 && td.visitors === 0) {
+    return `<h2>Fréquentation du site</h2>
+    <p class="lead">Le trafic mesuré sur le site en ${esc(monthLabel)} (mesure anonyme, sans cookie).</p>
+    <div class="card"><p style="margin:0;color:var(--gris)">Aucune visite enregistrée sur cette période.</p></div>`
+  }
+  const pagesRows = td.topPages.map((p) => `<tr><td>${esc(p.path)}</td><td class="num">${fr(p.views)}</td></tr>`).join("")
+  // Umami ne classe pas toutes les visites (le direct notamment) : on complète par
+  // une ligne « reste » pour que la ventilation totalise bien les visites du mois.
+  const rows = td.channels.map((c) => ({ label: channelLabel(c.key), visits: c.visits, key: c.key }))
+  const classified = rows.reduce((s, r) => s + r.visits, 0)
+  const other = Math.max(0, td.visits - classified)
+  if (other > 0) rows.push({ label: "Accès direct / autres", visits: other, key: "_other" })
+  rows.sort((a, b) => b.visits - a.visits)
+  const refRows = rows.map((r) => {
+    const strong = r.key === "organicSearch"
+    return `<tr><td>${strong ? `<strong style="color:var(--bordeaux)">${esc(r.label)}</strong>` : esc(r.label)}</td><td class="num">${fr(r.visits)}</td></tr>`
+  }).join("")
+  return `<h2>Fréquentation du site</h2>
+  <p class="lead">Le trafic mesuré sur le site en ${esc(monthLabel)}, avec l'évolution depuis le mois précédent. Mesure anonyme et sans cookie (Umami).</p>
+  <div class="kpis">
+    <div class="kpi"><div class="l">Visiteurs</div><div class="v">${fr(td.visitors)}</div><div class="n">${badge(td.dVisitors)} vs mois dernier</div></div>
+    <div class="kpi"><div class="l">Pages vues</div><div class="v">${fr(td.pageviews)}</div><div class="n">${badge(td.dPageviews)} vs mois dernier</div></div>
+    <div class="kpi"><div class="l">Visites</div><div class="v">${fr(td.visits)}</div><div class="n">${badge(td.dVisits)} vs mois dernier</div></div>
+    <div class="kpi"><div class="l">Durée moyenne</div><div class="v">${fmtDuration(td.avgSec)}</div><div class="n">${td.bounceRate != null ? td.bounceRate + " % en une page" : "par visite"}</div></div>
+  </div>
+  <div class="leadsgrid" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:14px">
+    <div><table><thead><tr><th>Pages les plus vues</th><th class="num">Vues</th></tr></thead><tbody>${pagesRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
+    <div><table><thead><tr><th>D'où viennent les visiteurs</th><th class="num">Visites</th></tr></thead><tbody>${refRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
+  </div>
+  <p class="note">« Visiteurs » compte les personnes uniques, « visites » leurs sessions, « pages vues » le total des pages ouvertes. Le taux « en une page » mesure les visiteurs partis après une seule page. Les canaux regroupent l'origine des visites : recherche Google, réseaux sociaux, publicité, accès direct, sites référents.</p>`
+}
+
 // Encart "Ce qui a été réalisé ce mois-ci" : le travail concret livré, en langage
 // client. Alimenté à la main via src/data/rapport-travaux.json (clé AAAA-MM).
 export function renderTravaux(items) {
@@ -365,7 +503,7 @@ function movement(cur, prev, hasPrev) {
 }
 
 function renderHtml(data) {
-  const { month, serp, backlinks, refDomains, blHistory, gbp, llm, articles, history, exec, leads } = data
+  const { month, serp, backlinks, refDomains, blHistory, gbp, llm, articles, history, exec, leads, traffic } = data
   const monthLabel = monthLong(month)
   const rankedCount = serp.filter((s) => s.position !== null).length
   const bestPos = bestKeyword(serp)
@@ -466,6 +604,8 @@ function renderHtml(data) {
   ${renderTravaux(TRAVAUX[month])}
 
   ${renderLeads(leads, monthLabel)}
+
+  ${renderTraffic(traffic, monthLabel)}
 
   <h2>Progression des positions Google</h2>
   <p class="lead">Position de vos mots-clés cibles, avec le mouvement depuis le rapport précédent. Position 1 = tout en haut de Google, donc plus le chiffre est petit, mieux c'est.</p>
@@ -646,8 +786,8 @@ export async function generateReport(prevHistory = [], month = null) {
   const ym = month || `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`
   const monthLabelShort = monthShort(ym)
 
-  const [serp, backlinks, refDomains, blHistory, gbp, llm, domainHistory, leads] = await Promise.all([
-    pullSerp(), pullBacklinks(), pullReferringDomains(), pullBacklinksHistory(), pullGbp(), pullLlm(), pullDomainHistory(), pullLeads(ym),
+  const [serp, backlinks, refDomains, blHistory, gbp, llm, domainHistory, leads, traffic] = await Promise.all([
+    pullSerp(), pullBacklinks(), pullReferringDomains(), pullBacklinksHistory(), pullGbp(), pullLlm(), pullDomainHistory(), pullLeads(ym), pullUmami(ym),
   ])
   const articles = readArticles()
 
@@ -671,6 +811,7 @@ export async function generateReport(prevHistory = [], month = null) {
   cur.llmCited = citedTotal
   cur.llmAnswered = answeredTotal
   if (leads) cur.leads = { total: leads.total, newsletter: leads.newsletter, chatgpt: leads.chatgpt }
+  if (traffic) cur.traffic = { pageviews: traffic.pageviews, visitors: traffic.visitors, visits: traffic.visits }
   cur.hasReport = true
   byMonth.set(ym, cur)
   const history = [...byMonth.values()].sort((a, b) => a.month.localeCompare(b.month))
@@ -681,7 +822,7 @@ export async function generateReport(prevHistory = [], month = null) {
   const deltaBl = blPrev ? blNow.backlinks - blPrev.backlinks : null
 
   const exec = buildExec({ month: ym, serp, articles, blNow, deltaBl, citedTotal, answeredTotal, gbp })
-  const html = renderHtml({ month: ym, serp, backlinks, refDomains, blHistory, gbp, llm, articles, history, exec, leads })
+  const html = renderHtml({ month: ym, serp, backlinks, refDomains, blHistory, gbp, llm, articles, history, exec, leads, traffic })
 
   const summary = {
     month: ym,
@@ -694,6 +835,8 @@ export async function generateReport(prevHistory = [], month = null) {
     gbpNote: gbp?.note ?? null,
     demandes: leads?.total ?? null,
     demandesChatgpt: leads?.chatgpt ?? 0,
+    visiteurs: traffic?.visitors ?? null,
+    pagesVues: traffic?.pageviews ?? null,
   }
   return { html, history, summary, monthLabel: monthLong(ym), month: ym }
 }

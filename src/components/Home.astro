@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import BookingBar from "./BookingBar.astro";
 import Reviews from "./Reviews.astro";
+import LocationMap from "./LocationMap.astro";
 import settings from "../data/settings.json";
 import hero from "../assets/SD_2.jpg";
 import intro from "../assets/SD_1.jpg";
@@ -16,7 +17,13 @@ import g3 from "../assets/SD_9.jpg";
 import g4 from "../assets/SD_11.jpg";
 import g5 from "../assets/BD_1.jpg";
 import g6 from "../assets/SD_5.jpg";
-import loc from "../assets/BD_5.jpg";
+
+// Libellés localisés de la carte de localisation (composant LocationMap).
+const mapCopy = {
+  fr: { place: "Nazelles-Négron, Touraine", cta: "Itinéraire" },
+  en: { place: "Nazelles-Négron, Touraine", cta: "Directions" },
+  it: { place: "Nazelles-Négron, Touraine", cta: "Come arrivare" },
+};
 
 // Contenu (textes) passé en props selon la langue ; images partagées et optimisées.
 const { c, lang = "fr" } = Astro.props;
@@ -142,9 +149,13 @@ const actIds = ["sejour", "mariage", "seminaire", "famille", "retraite"];
         ))}
       </div>
     </div>
-    <div class="visual reveal">
-      <Image quality={68} src={loc} alt="Les jardins du château" widths={[500, 900, 1200]} sizes="(max-width:960px) 100vw, 45vw" />
-    </div>
+    <LocationMap
+      lat={47.44645}
+      lon={0.93489}
+      label="Château de la Huberdière"
+      place={mapCopy[lang]?.place ?? mapCopy.fr.place}
+      cta={mapCopy[lang]?.cta ?? mapCopy.fr.cta}
+    />
   </div>
 </section>
 

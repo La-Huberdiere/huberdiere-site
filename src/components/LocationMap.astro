@@ -1,0 +1,211 @@
+---
+// Carte interactive OpenStreetMap (Leaflet) de la localisation du château.
+// Basemap sombre CartoDB pour s'accorder au fond navy de la section, pin bordeaux
+// maison (SVG inline, aucune image d'icône Leaflet à charger), cadre filet bordeaux.
+import "leaflet/dist/leaflet.css";
+
+const {
+  lat = 47.44645,
+  lon = 0.93489,
+  label = "Château de la Huberdière",
+  place = "Nazelles-Négron, Touraine",
+  cta = "Itinéraire",
+} = Astro.props;
+
+// Itinéraire ouvert dans Google Maps (destination par nom pour afficher la fiche).
+const directions = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+  `${label}, ${place}`
+)}`;
+---
+
+<div class="map-frame reveal">
+  <div
+    id="hub-map"
+    class="hub-map"
+    role="img"
+    aria-label={`Carte de localisation : ${label}, ${place}`}
+    data-lat={lat}
+    data-lon={lon}
+    data-label={label}
+  >
+  </div>
+  <div class="map-caption">
+    <div class="map-caption-text">
+      <span class="map-name">{label}</span>
+      <span class="map-place">{place}</span>
+    </div>
+    <a class="map-cta" href={directions} target="_blank" rel="noopener noreferrer">{cta}</a>
+  </div>
+</div>
+
+<script>
+  import L from "leaflet";
+
+  const el = document.getElementById("hub-map");
+  if (el && !el.dataset.ready) {
+    const start = () => {
+      el.dataset.ready = "1";
+      const lat = parseFloat(el.dataset.lat || "47.44645");
+      const lon = parseFloat(el.dataset.lon || "0.93489");
+
+      const map = L.map(el, {
+        scrollWheelZoom: false,
+        zoomControl: true,
+        attributionControl: true,
+      }).setView([lat, lon], 13);
+      map.attributionControl.setPrefix(false);
+
+      L.tileLayer(
+        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+        {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+          subdomains: "abcd",
+          maxZoom: 19,
+        }
+      ).addTo(map);
+
+      const pin = L.divIcon({
+        className: "hub-pin",
+        html:
+          '<svg width="34" height="46" viewBox="0 0 34 46" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+          '<path d="M17 0C7.6 0 0 7.5 0 16.8 0 29 17 46 17 46s17-17 17-29.2C34 7.5 26.4 0 17 0z" fill="#8B0000"/>' +
+          '<circle cx="17" cy="16.6" r="6.2" fill="#F4F2EC"/></svg>',
+        iconSize: [34, 46],
+        iconAnchor: [17, 46],
+        popupAnchor: [0, -42],
+      });
+
+      L.marker([lat, lon], { icon: pin, title: el.dataset.label, keyboard: false })
+        .addTo(map)
+        .bindPopup(el.dataset.label || "");
+
+      // aspect-ratio résout la hauteur après layout : recalage une fois posé.
+      setTimeout(() => map.invalidateSize(), 60);
+    };
+
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver(
+        (entries, obs) => {
+          if (entries[0].isIntersecting) {
+            obs.disconnect();
+            start();
+          }
+        },
+        { rootMargin: "300px" }
+      );
+      io.observe(el);
+    } else {
+      start();
+    }
+  }
+</script>
+
+<style>
+  .map-frame {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    width: 100%;
+  }
+  /* Filet bordeaux décalé, même signature que .intro .visual */
+  .map-frame::after {
+    content: "";
+    position: absolute;
+    inset: 22px -22px -22px 22px;
+    border: 1px solid var(--burgundy);
+    z-index: 0;
+    pointer-events: none;
+  }
+  .hub-map {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background: #eae6da;
+  }
+  .map-caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 16px 20px;
+    background: linear-gradient(to top, rgba(20, 28, 38, 0.92), rgba(20, 28, 38, 0));
+    pointer-events: none;
+  }
+  .map-caption-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .map-name {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 18px;
+    color: #fff;
+    line-height: 1.1;
+  }
+  .map-place {
+    font-family: "Montserrat", sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .map-cta {
+    pointer-events: auto;
+    flex-shrink: 0;
+    font-family: "Montserrat", sans-serif;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #fff;
+    padding: 9px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    transition: background 0.3s, color 0.3s, border-color 0.3s;
+  }
+  .map-cta:hover {
+    background: var(--burgundy);
+    border-color: var(--burgundy);
+    color: #fff;
+  }
+
+  /* Leaflet accordé à la DA */
+  .hub-map :global(.leaflet-control-zoom a) {
+    background: rgba(20, 28, 38, 0.9);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+  .hub-map :global(.leaflet-control-zoom a:hover) {
+    background: var(--burgundy);
+  }
+  .hub-map :global(.leaflet-bar) {
+    border: none;
+    box-shadow: none;
+  }
+  .hub-map :global(.leaflet-control-attribution) {
+    background: rgba(255, 255, 255, 0.78);
+    color: rgba(33, 33, 33, 0.6);
+    font-size: 10px;
+  }
+  .hub-map :global(.leaflet-control-attribution a) {
+    color: var(--burgundy);
+  }
+  .hub-map :global(.leaflet-popup-content-wrapper),
+  .hub-map :global(.leaflet-popup-tip) {
+    background: var(--bg);
+    color: var(--ink);
+    border-radius: 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+  }
+  .hub-map :global(.leaflet-popup-content) {
+    font-family: "Montserrat", sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    margin: 12px 16px;
+  }
+</style>
