@@ -14,7 +14,7 @@ cd "$(dirname "$0")/.."
 ENV_FILE=".env"
 REPO_OWNER="La-Huberdiere"
 REPO_NAME="huberdiere-site"
-PROD_URL="https://huberdiere-site.vercel.app"
+PROD_URL="https://www.chateaudelahuberdiere.com"
 VERCEL_SCOPE="la-huberdiere"
 
 set_env_var() {
