@@ -18,9 +18,10 @@ const DFS = "https://api.dataforseo.com/v3"
 const LOCATION = 2250 // France
 const LANGUAGE = "fr"
 const DOMAIN = "chateaudelahuberdiere.com"
-// Domaine public encore sur Wix (bascule DNS vers Vercel en attente) : les liens
-// articles et le rapport passent par l'alias Vercel. À rebasculer après cutover.
-const SITE_BASE = "https://huberdiere-site.vercel.app"
+// Domaine public canonique : le site est déjà servi par Vercel sur ce domaine
+// (seul le switch des NS Wix→OVH reste à faire). Les liens articles du rapport
+// pointent donc vers le vrai domaine, pas l'alias Vercel.
+const SITE_BASE = "https://www.chateaudelahuberdiere.com"
 
 // Mots-clés suivis, groupés par intention. Le domaine ne classe encore que du
 // « marque » + le mariage : on suit donc la notoriété (dominance de marque, à
