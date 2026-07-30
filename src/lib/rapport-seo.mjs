@@ -196,7 +196,27 @@ const monthShort = (ym) => new Intl.DateTimeFormat("fr-FR", { month: "short", ye
 const monthLong = (ym) => new Intl.DateTimeFormat("fr-FR", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${ym}-15T00:00:00Z`))
 
 // ── Articles (frontmatter, bundlé) ────────────────────────────────────────
-function readArticles() {
+// js-yaml parse `publishedAt: 2026-07-02` en objet Date : on renormalise en
+// AAAA-MM-JJ, sinon String(date) donne « Thu Jul 02 » (colonne date cassée + tri
+// et filtre de publication faussés).
+function ymd(v) {
+  if (!v) return ""
+  if (v instanceof Date) return v.toISOString().slice(0, 10)
+  return String(v).slice(0, 10)
+}
+
+// Dernier jour d'un mois AAAA-MM (borne de publication du rapport).
+function monthEndYMD(ym) {
+  const [y, m] = String(ym).split("-").map(Number)
+  const last = new Date(Date.UTC(y, m, 0)).getUTCDate()
+  return `${ym}-${String(last).padStart(2, "0")}`
+}
+
+// `cutoff` = date AAAA-MM-JJ jusqu'à laquelle un article est considéré publié.
+// On exclut tout article à date future : sa page n'existe pas encore sur le site
+// (isLive() de content.ts la masque, le rebuild ne l'a pas générée), donc son lien
+// renverrait un 404 dans le rapport et il ne doit pas être compté « en ligne ».
+function readArticles(cutoff) {
   const out = []
   for (const [path, raw] of Object.entries(ARTICLE_FILES)) {
     const m = String(raw).match(/^---\n([\s\S]*?)\n---/)
@@ -204,11 +224,13 @@ function readArticles() {
     let fm = {}
     try { fm = yaml.load(m[1]) ?? {} } catch { continue }
     const slug = path.split("/").pop().replace(/\.mdoc$/, "")
+    const publishedAt = ymd(fm.publishedAt)
+    if (cutoff && publishedAt && publishedAt > cutoff) continue
     out.push({
       slug,
       url: `${SITE_BASE}/blog/${slug}`,
       title: fm.title ?? path,
-      publishedAt: fm.publishedAt ? String(fm.publishedAt).slice(0, 10) : "",
+      publishedAt,
       category: fm.category ?? "",
       keywords: Array.isArray(fm.keywords) ? fm.keywords : [],
     })
@@ -800,7 +822,14 @@ export async function generateReport(prevHistory = [], month = null) {
   const [serp, backlinks, refDomains, blHistory, gbp, llm, domainHistory, leads, traffic] = await Promise.all([
     pullSerp(), pullBacklinks(), pullReferringDomains(), pullBacklinksHistory(), pullGbp(), pullLlm(), pullDomainHistory(), pullLeads(ym), pullUmami(ym),
   ])
-  const articles = readArticles()
+  // Borne de publication : aujourd'hui pour le mois courant, fin de mois pour un
+  // rapport rétroactif. Évite de lister un article encore à venir (lien 404).
+  const nowYMD = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}-${String(now.getUTCDate()).padStart(2, "0")}`
+  const monthEnd = monthEndYMD(ym)
+  const cutoff = nowYMD < monthEnd ? nowYMD : monthEnd
+  const articles = readArticles(cutoff)
+  // Articles réellement nouveaux sur le mois du rapport (le tableau reste cumulatif).
+  const articlesNew = articles.filter((a) => (a.publishedAt || "").slice(0, 7) === ym).length
 
   const byMonth = new Map((Array.isArray(prevHistory) ? prevHistory : []).map((h) => [h.month, h]))
   for (const d of domainHistory) {
@@ -838,6 +867,7 @@ export async function generateReport(prevHistory = [], month = null) {
   const summary = {
     month: ym,
     articles: articles.length,
+    articlesNew,
     ranked: serp.filter((s) => s.position != null).length,
     keywords: serp.length,
     llmCited: citedTotal,

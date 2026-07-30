@@ -32,9 +32,10 @@ async function sendEmail(summary, monthLabel) {
   const cc = (process.env.REPORT_EMAIL_CC || "alexis@morain.fr")
     .split(",").map((e) => ({ email: e.trim() })).filter((e) => e.email)
   const s = summary
-  const art = s.articles === 0 ? "pas de nouvel article ce mois-ci"
-    : s.articles === 1 ? "un nouvel article publié sur le blog"
-    : `${s.articles} nouveaux articles publiés sur le blog`
+  const nbArt = s.articlesNew ?? s.articles
+  const art = nbArt === 0 ? "pas de nouvel article ce mois-ci"
+    : nbArt === 1 ? "un nouvel article publié sur le blog"
+    : `${nbArt} nouveaux articles publiés sur le blog`
   const kw = s.ranked === 0
     ? `aucun de vos ${s.keywords} mots-clés suivis n'est encore positionné sur Google`
     : `${s.ranked} de vos ${s.keywords} mots-clés suivis ${s.ranked > 1 ? "sont positionnés" : "est positionné"} sur Google`
@@ -104,10 +105,16 @@ export async function GET({ request, url }) {
 
     const { html, history, summary, monthLabel, month: ym } = await generateReport(prev, override)
 
+    // Régénération silencieuse : reconstruit le rapport en ligne (blob + archive) sans
+    // réexpédier de mail. Sert à corriger un rapport déjà envoyé. Le drapeau `emailed`
+    // est préservé par generateReport (report de l'historique précédent), donc le verrou
+    // d'idempotence tient et aucun doublon ne partira au run automatique suivant.
+    const noemail = url.searchParams.get("noemail") === "1"
+
     // On envoie d'abord pour pouvoir marquer le mois comme « emailed » dans l'historique
     // persisté (verrou du doublon). Un échec d'envoi laisse le drapeau à false → un run
     // ultérieur retentera.
-    const emailed = await sendEmail(summary, monthLabel)
+    const emailed = noemail ? false : await sendEmail(summary, monthLabel)
     if (emailed) {
       const e = history.find((h) => h.month === ym)
       if (e) e.emailed = true
