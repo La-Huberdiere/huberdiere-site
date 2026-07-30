@@ -30,6 +30,7 @@ const COVERS = [
   { slug: "prix-mariage-chateau-loire", dir: PUBLIC, photo: "images/bibliotheque/mariage/mariage-01.jpg" },
   { slug: "seminaire-au-vert-pres-de-paris", dir: PUBLIC, photo: "images/bibliotheque/chateau-exterieur/chateau-exterieur-01.jpg" },
   { slug: "dormir-dans-un-chateau-loire", dir: PUBLIC, photo: "images/bibliotheque/chambres/chambre-paradis-sauvage-01.jpg" },
+  { slug: "se-marier-en-hiver-chateau", dir: PUBLIC, photo: "images/bibliotheque/salons-interieurs/salons-interieurs-03.jpg" },
 ];
 
 // Dégradé très doux, sans aucun texte (rien à rogner quel que soit le recadrage).
