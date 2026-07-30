@@ -292,6 +292,16 @@ const schemas = [
   .article-main .prose :global(a) { color: #8b0000; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: rgba(139, 0, 0, 0.45); transition: text-decoration-color 0.2s ease, color 0.2s ease; }
   .article-main .prose :global(a:hover) { color: #6d0000; text-decoration-color: #8b0000; }
 
+  /* Encart CTA dans le corps (blockquote markdoc). Même traitement que .book-cta
+     (crème + bordure 1px), pas de bordure latérale colorée (tell UI générée). Le
+     lien interne se rend en bouton bordeaux, override de la règle de lien ci-dessus. */
+  .article-main .prose :global(blockquote) { margin: 40px 0; padding: 24px 28px; background: #fbfaf6; border: 1px solid #e2dccc; max-width: 720px; font-family: "Montserrat", sans-serif; }
+  .article-main .prose :global(blockquote p) { margin: 0 0 14px; color: #2e3a48; line-height: 1.6; }
+  .article-main .prose :global(blockquote p:last-child) { margin-bottom: 0; }
+  .article-main .prose :global(blockquote strong) { display: block; font-family: "Playfair Display", Georgia, serif; font-weight: 500; font-size: 1.2rem; color: #8b0000; margin-bottom: 4px; }
+  .article-main .prose :global(blockquote a) { display: inline-block; margin-top: 4px; background: #8b0000; color: #f4f2ec; padding: 11px 22px; text-decoration: none; font-size: 0.86rem; letter-spacing: 0.03em; transition: background 0.2s ease; }
+  .article-main .prose :global(blockquote a:hover) { background: #6d0000; color: #fff; }
+
   .article-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 30px 0 0; }
   .article-tags .tag {
     font-family: "Montserrat", sans-serif; font-size: 0.78rem; color: #646464; background: #f1ede2;
