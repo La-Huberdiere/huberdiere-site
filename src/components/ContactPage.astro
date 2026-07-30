@@ -83,6 +83,7 @@ const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
       status.textContent = "Envoi en cours…";
       const data = Object.fromEntries(new FormData(form).entries());
       data.lang = (document.documentElement.lang || "fr").slice(0, 2);
+      data.browser_lang = navigator.language || "";
       const qp = new URLSearchParams(location.search);
       const cookie = (n) => (document.cookie.match(new RegExp("(?:^|; )" + n + "=([^;]*)")) || [])[1] || "";
       // Attribution : UTM de l'URL courante (last-touch taggé) sinon first-touch du cookie ;

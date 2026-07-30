@@ -83,6 +83,7 @@ export async function POST({ request }) {
   const client = parseUA(request.headers.get("user-agent") || "");
   const meta = {
     lang,
+    browserLang: (data.browser_lang || "").slice(0, 35),
     browser: client.browser,
     os: client.os,
     device: client.device,
@@ -102,7 +103,13 @@ export async function POST({ request }) {
 
   const headers = { "api-key": key, "content-type": "application/json", accept: "application/json" };
 
-  // 1) Contact dans le CRM (mêmes tags + UTM que le dashboard attend).
+  // Canal d'origine lisible (SEO, direct, réseaux sociaux…), déduit une fois pour
+  // le contact CRM et le mail. Comble les leads sans UTM (le SEO n'en pose pas).
+  const origin = classifyChannel(data);
+
+  // 1) Contact dans le CRM. On y range un maximum de contexte : attribution
+  // (canal + UTM), parcours (pages, referrer), technique (navigateur, appareil,
+  // localisation, langues). Tous ces attributs existent côté Brevo.
   const contact = fetch("https://api.brevo.com/v3/contacts", {
     method: "POST",
     headers,
@@ -115,10 +122,23 @@ export async function POST({ request }) {
         SMS: data.telephone || "",
         MESSAGE: data.message || "",
         FORM: [tag],
+        CANAL: origin,
         UTM_SOURCE: data.utm_source || "",
+        UTM_MEDIUM: data.utm_medium || "",
+        UTM_TERM: data.utm_term || "",
         UTM_CAMPAIGN: data.utm_campaign || "",
+        UTM_CONTENT: data.utm_content || "",
         GCLID: data.gclid || "",
         LEAD_ID: data.lead_id || "",
+        PAGE_FORMULAIRE: data.page || "",
+        PAGE_ENTREE: data.landing || "",
+        REFERRER: data.referrer || "",
+        LOCALISATION: meta.location || "",
+        NAVIGATEUR: meta.browser || "",
+        APPAREIL: meta.device || "",
+        SYSTEME: meta.os || "",
+        LANGUE_SITE: meta.lang || "",
+        LANGUE_NAVIGATEUR: meta.browserLang || "",
       },
     }),
   });
@@ -132,7 +152,7 @@ export async function POST({ request }) {
       to: TEAM,
       replyTo: { email: data.email, name: fullName || data.email },
       subject: `[${cibleLabel}] Nouvelle demande — ${fullName || data.email}`,
-      htmlContent: notifyHtml(data, cibleLabel, meta),
+      htmlContent: notifyHtml(data, cibleLabel, meta, origin),
     }),
   });
 
@@ -257,9 +277,8 @@ function classifyChannel(data) {
 }
 
 // Mail de notification interne, brandé, avec un maximum de contexte sur le lead.
-function notifyHtml(data, cibleLabel, meta) {
+function notifyHtml(data, cibleLabel, meta, origin) {
   const full = `${data.prenom || ""} ${data.nom || ""}`.trim() || data.email;
-  const origin = classifyChannel(data);
   const rows = [
     ["Activité", cibleLabel],
     ["Canal (détecté)", origin],
@@ -271,7 +290,8 @@ function notifyHtml(data, cibleLabel, meta) {
     ["Page du formulaire", data.page],
     ["Page d'entrée (1re visite)", data.landing],
     ["Provenance (referrer)", data.referrer],
-    ["Langue", meta.lang],
+    ["Langue du site", meta.lang],
+    ["Langue du navigateur", meta.browserLang],
     ["Localisation", meta.location],
     ["Appareil", meta.device],
     ["Navigateur", meta.browser],
