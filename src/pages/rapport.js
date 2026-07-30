@@ -161,6 +161,17 @@ function seoLine(seo) {
   </div>`
 }
 
+// Mois de publication d'un satellite, DÉRIVÉ : mois de la date réelle du fichier
+// si l'article existe (déplacer/reprogrammer un .mdoc le range tout seul), sinon
+// le mois prévisionnel du plan (article pas encore rédigé). Aucune date n'est
+// codée en dur dans le JSON, d'où l'absence de dérive quand un article bouge.
+const MOIS_FR = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"]
+const moisEffectif = (a) => (PUBLISHED_AT[a.slug] ? PUBLISHED_AT[a.slug].slice(0, 7) : a.moisPrevu)
+const moisLabel = (ym) => { const [y, m] = ym.split("-"); return `${MOIS_FR[Number(m) - 1]} ${y}` }
+// Clé de tri d'un article dans son mois : date réelle si connue, sinon fin de mois
+// prévisionnel (les non-rédigés passent après les datés du même mois).
+const triClef = (a) => PUBLISHED_AT[a.slug] || `${a.moisPrevu}-99`
+
 // Titre cliquable seulement si l'article est en ligne (une page programmée renvoie
 // 404 tant que sa date n'est pas atteinte : pas de lien mort dans le document).
 function titreHtml(titre, slug, st) {
@@ -172,9 +183,16 @@ function calendrierPage() {
   const nav = `<div style="background:var(--wine);color:#fff;font-family:'Montserrat',system-ui,sans-serif;font-size:13px;padding:10px 18px;display:flex;align-items:center">
     <a href="/rapport" style="color:#fff;text-decoration:none;font-weight:600">← Tous les rapports</a>
   </div>`
-  const allSlugs = [...PLAN_DATA.piliers.map((p) => p.slug), ...PLAN_DATA.mois.flatMap((b) => b.articles.map((a) => a.slug))]
+  const allSlugs = [...PLAN_DATA.piliers.map((p) => p.slug), ...PLAN_DATA.satellites.map((a) => a.slug)]
   const liveTotal = allSlugs.filter((s) => articleStatut(s).key === "live").length
   const grandTotal = allSlugs.length
+
+  // Regroupe les satellites par mois DÉRIVÉ, puis trie les mois et, dans chaque
+  // mois, les articles par date. Le plan se réorganise donc tout seul quand un
+  // article est publié, reprogrammé ou déplacé, sans toucher au JSON.
+  const parMois = {}
+  for (const a of PLAN_DATA.satellites) (parMois[moisEffectif(a)] ||= []).push(a)
+  const moisTries = Object.keys(parMois).sort()
 
   const piliers = PLAN_DATA.piliers
     .map((p) => {
@@ -186,16 +204,18 @@ function calendrierPage() {
     })
     .join("")
 
-  const mois = PLAN_DATA.mois
+  const mois = moisTries
     .map(
-      (b) => `
+      (ym) => `
       <section style="margin:0 0 42px">
         <div style="border-left:3px solid var(--wine);padding-left:16px;margin-bottom:14px">
-          <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:23px;font-weight:600;margin:0;color:var(--ink)">${b.mois}</h2>
-          <div style="color:var(--wine);font-size:13px;margin-top:3px">${b.angle}</div>
+          <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:23px;font-weight:600;margin:0;color:var(--ink)">${moisLabel(ym).replace(/^./, (c) => c.toUpperCase())}</h2>
+          <div style="color:var(--wine);font-size:13px;margin-top:3px">${PLAN_DATA.anglesParMois[ym] || ""}</div>
         </div>
         <ol class="plan" style="list-style:none;margin:0;padding:0">
-          ${b.articles
+          ${parMois[ym]
+            .slice()
+            .sort((x, y) => triClef(x).localeCompare(triClef(y)))
             .map((a) => {
               const st = articleStatut(a.slug)
               return `<li style="display:flex;gap:15px;padding:15px 2px;border-bottom:1px solid var(--line)">

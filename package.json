@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "check:calendrier": "node scripts/check-calendrier.mjs",
+    "prebuild": "node scripts/check-calendrier.mjs || true"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.7",

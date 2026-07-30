@@ -1,6 +1,15 @@
 {
-  "_note": "Plan éditorial SEO montrable au client, servi à /rapport?doc=calendrier. Source canonique du titre, du pilier, de la justification trafic et des données de recherche (DataForSEO). Le statut (en ligne / programmé / à venir) et le lien vers l'article sont calculés à l'affichage depuis les vrais fichiers d'articles, ne pas les stocker ici. Slugs alignés sur src/content/articles/*.mdoc. Données SEO issues de seo/briefs-2026-Q3.md (DataForSEO France, fr, 2026-07-10) ; les articles de nov-2026 à jan-2027 attendent le brief trimestriel Q4, d'où l'absence de bloc seo.",
+  "_note": "Plan éditorial SEO montrable au client, servi à /rapport?doc=calendrier. Source canonique du titre, du pilier, de la justification trafic et des données de recherche (DataForSEO). Le MOIS d'affichage de chaque satellite est DÉRIVÉ à l'affichage : date réelle du fichier .mdoc si l'article existe, sinon 'moisPrevu' ici. Idem le statut (en ligne / programmé / à venir) et le lien. Donc reprogrammer ou déplacer un article ne demande AUCUNE édition de ce fichier : la date vit dans le .mdoc, pas ici. 'moisPrevu' ne sert qu'aux articles pas encore rédigés (rangement du plan à venir). Slugs alignés sur src/content/articles/*.mdoc. Cohérence vérifiable via 'npm run check:calendrier'. Données SEO issues de seo/briefs-2026-Q3.md (DataForSEO France, fr, 2026-07-10) ; les articles de nov-2026 à jan-2027 attendent le brief trimestriel Q4, d'où l'absence de bloc seo.",
   "seoSource": "DataForSEO, France, juillet 2026",
+  "anglesParMois": {
+    "2026-07": "Lancement, première publication satellite",
+    "2026-08": "Conversion, requêtes à forte intention",
+    "2026-09": "Rentrée B2B et week-ends",
+    "2026-10": "Mariage (réservations d'hiver) et art de la table",
+    "2026-11": "Mariage et tourisme evergreen",
+    "2026-12": "Événements privés et œnotourisme",
+    "2027-01": "Fin du premier cycle"
+  },
   "piliers": [
     { "slug": "organiser-mariage-au-chateau", "titre": "Organiser un mariage au château", "cluster": "Mariage" },
     { "slug": "organiser-seminaire-au-chateau", "titre": "Organiser un séminaire au château", "cluster": "Séminaire" },
@@ -9,66 +18,30 @@
     { "slug": "organiser-retraite-yoga-chateau", "titre": "Organiser une retraite de yoga au château", "cluster": "Retraite" },
     { "slug": "visiter-chateaux-de-la-loire", "titre": "Visiter les châteaux de la Loire", "cluster": "Tourisme" }
   ],
-  "mois": [
-    {
-      "mois": "Août 2026",
-      "angle": "Conversion, requêtes à forte intention",
-      "articles": [
-        { "slug": "prix-mariage-chateau-loire", "titre": "Combien coûte un mariage dans un château de la Loire ?", "cluster": "Mariage", "justification": "Répond à « combien coûte un mariage dans un château », une recherche à forte intention de réservation, faite très en amont par les couples.", "seo": { "motCle": "prix mariage château", "volume": 70, "concurrence": "Faible", "potentiel": "Moyen" } },
-        { "slug": "seminaire-au-vert-pres-de-paris", "titre": "Séminaire au vert près de Paris : 8 lieux à moins de 2 h 20", "cluster": "Séminaire", "justification": "Cible les entreprises d'Île-de-France qui cherchent un lieu de séminaire au vert à moins de 2 h 20 de Paris.", "seo": { "motCle": "séminaire au vert", "volume": 590, "concurrence": "Faible", "potentiel": "Fort" } },
-        { "slug": "dormir-dans-un-chateau-loire", "titre": "Dormir dans un château de la Loire : 7 expériences", "cluster": "Séjour", "justification": "Capte le gros volume de recherche autour de « dormir dans un château de la Loire », en haut du parcours de réservation.", "seo": { "motCle": "dormir dans un château", "volume": 1600, "concurrence": "Forte", "potentiel": "Fort" } },
-        { "slug": "se-marier-en-hiver-chateau", "titre": "Mariage en hiver dans un château de la Loire", "cluster": "Mariage", "justification": "Capte « mariage en hiver » (1 300 recherches par mois), au pic saisonnier de septembre à janvier, et met en avant l'offre mariage d'hiver du château.", "seo": { "motCle": "mariage en hiver", "volume": 1300, "concurrence": "Faible", "potentiel": "Fort" } }
-      ]
-    },
-    {
-      "mois": "Septembre 2026",
-      "angle": "Rentrée B2B et week-ends",
-      "articles": [
-        { "slug": "team-building-touraine-activites", "titre": "Team building en Touraine : 12 activités", "cluster": "Séminaire", "justification": "Se positionne sur « team building Touraine », une recherche B2B qui repart à la rentrée.", "seo": { "motCle": "team building nature", "volume": 140, "concurrence": "Faible", "potentiel": "Faible" } },
-        { "slug": "seminaire-direction-chateau-privatise", "titre": "Séminaire de direction dans un château privatisé", "cluster": "Séminaire", "justification": "Angle CODIR et COMEX : séminaire de direction en château privatisé, forte valeur par réservation.", "seo": { "motCle": "séminaire résidentiel", "volume": 320, "concurrence": "Faible", "potentiel": "Moyen" } },
-        { "slug": "week-end-romantique-pres-amboise", "titre": "Week-end romantique près d'Amboise", "cluster": "Séjour", "justification": "Itinéraire romantique de 2 jours, capte la recherche d'inspiration puis la réservation.", "seo": { "motCle": "week-end romantique", "volume": 1900, "concurrence": "Moyenne", "potentiel": "Fort" } },
-        { "slug": "week-end-entre-amis-chateau", "titre": "Week-end entre amis au château", "cluster": "Famille", "justification": "Cible « week-end entre amis » et le château insolite en privatisation.", "seo": { "motCle": "week-end entre amis", "volume": 390, "concurrence": "Forte", "potentiel": "Moyen" } }
-      ]
-    },
-    {
-      "mois": "Octobre 2026",
-      "angle": "Mariage (réservations d'hiver) et art de la table",
-      "articles": [
-        { "slug": "chateau-pour-mariage-val-de-loire", "titre": "Château pour un mariage en Val de Loire", "cluster": "Mariage", "justification": "Capte « château pour mariage », gros volume et concurrence abordable, au moment des réservations d'hiver.", "seo": { "motCle": "château pour mariage", "volume": 3600, "concurrence": "Faible", "potentiel": "Fort" } },
-        { "slug": "mariage-intimiste-30-60-invites", "titre": "Mariage intimiste, de 30 à 60 invités", "cluster": "Mariage", "justification": "Tendance du mariage intimiste de 30 à 60 invités, encore peu traitée par la concurrence.", "seo": { "motCle": "mariage intimiste", "volume": 390, "concurrence": "Faible", "potentiel": "Fort" } },
-        { "slug": "table-hotes-touraine-chateau", "titre": "La table d'hôtes en Touraine", "cluster": "Restauration", "justification": "Installe l'autorité du château sur la table et l'art de recevoir en Touraine.", "seo": { "motCle": "table d'hôtes", "volume": 1600, "concurrence": "Faible", "potentiel": "Fort" } },
-        { "slug": "hotel-charme-vs-chambres-hotes", "titre": "Hôtel de charme ou esprit maison d'hôtes ?", "cluster": "Séjour", "justification": "Contenu informationnel qui capte les recherches comparatives et ramène la réservation en direct.", "seo": { "motCle": "hôtel de charme à Amboise", "volume": 110, "concurrence": "Moyenne", "potentiel": "Moyen" } }
-      ]
-    },
-    {
-      "mois": "Novembre 2026",
-      "angle": "Mariage et tourisme evergreen",
-      "articles": [
-        { "slug": "ceremonie-laique-parc-chateau", "titre": "Cérémonie laïque dans le parc du château", "cluster": "Mariage", "justification": "Longue traîne mariage : cérémonie laïque dans un parc, requête précise et qualifiée." },
-        { "slug": "checklist-mariage-retroplanning", "titre": "Checklist mariage : le rétroplanning", "cluster": "Mariage", "justification": "Checklist et rétroplanning, contenu evergreen très partagé, capté 12 mois avant le mariage." },
-        { "slug": "que-faire-autour-amboise", "titre": "Que faire autour d'Amboise : 15 idées", "cluster": "Séjour", "justification": "Captation géographique : « que faire autour d'Amboise », trafic touristique en haut de parcours." },
-        { "slug": "cuisine-terroir-touraine", "titre": "Cuisine et terroir de Touraine", "cluster": "Restauration", "justification": "Autorité gastronomique locale, autour des vignobles et des produits de Touraine." }
-      ]
-    },
-    {
-      "mois": "Décembre 2026",
-      "angle": "Événements privés et œnotourisme",
-      "articles": [
-        { "slug": "privatiser-chateau-week-end-amis", "titre": "Privatiser un château le temps d'un week-end", "cluster": "Famille", "justification": "Niche des événements privés entre amis : EVJF, EVG, anniversaire marquant." },
-        { "slug": "bapteme-communion-chateau", "titre": "Baptême et communion au château", "cluster": "Famille", "justification": "Niche calendaire qui revient chaque année : baptême et communion au château." },
-        { "slug": "vignobles-vouvray-montlouis", "titre": "Les vignobles de Vouvray et Montlouis", "cluster": "Séjour", "justification": "Œnotourisme haut de gamme autour de Vouvray et Montlouis." },
-        { "slug": "visiter-clos-luce-chenonceau", "titre": "Visiter le Clos Lucé et Chenonceau", "cluster": "Séjour", "justification": "Capte le trafic massif sur Clos Lucé et Chenonceau et le ramène vers le séjour au château." }
-      ]
-    },
-    {
-      "mois": "Janvier 2027",
-      "angle": "Fin du premier cycle",
-      "articles": [
-        { "slug": "mariage-touraine-10-lieux", "titre": "Se marier en Touraine : 10 lieux d'exception", "cluster": "Mariage", "justification": "Requête comparative « mariage en Touraine, X lieux », positionne le château parmi les références." },
-        { "slug": "offsite-annuel-programme-3-jours", "titre": "Offsite annuel : un programme sur 3 jours", "cluster": "Séminaire", "justification": "Guide opérationnel de l'offsite annuel sur 3 jours, cible les organisateurs B2B." },
-        { "slug": "seminaire-rse-bien-etre", "titre": "Séminaire RSE et bien-être", "cluster": "Séminaire", "justification": "Surfe sur la demande RSE et bien-être au travail, en hausse côté entreprises." },
-        { "slug": "brunch-dominical-chateau", "titre": "Brunch dominical au château", "cluster": "Restauration", "justification": "Niche événementielle du brunch dominical, capte une clientèle locale." }
-      ]
-    }
+  "satellites": [
+    { "slug": "prix-mariage-chateau-loire", "moisPrevu": "2026-07", "titre": "Combien coûte un mariage dans un château de la Loire ?", "cluster": "Mariage", "justification": "Répond à « combien coûte un mariage dans un château », une recherche à forte intention de réservation, faite très en amont par les couples.", "seo": { "motCle": "prix mariage château", "volume": 70, "concurrence": "Faible", "potentiel": "Moyen" } },
+    { "slug": "seminaire-au-vert-pres-de-paris", "moisPrevu": "2026-08", "titre": "Séminaire au vert près de Paris : 8 lieux à moins de 2 h 20", "cluster": "Séminaire", "justification": "Cible les entreprises d'Île-de-France qui cherchent un lieu de séminaire au vert à moins de 2 h 20 de Paris.", "seo": { "motCle": "séminaire au vert", "volume": 590, "concurrence": "Faible", "potentiel": "Fort" } },
+    { "slug": "dormir-dans-un-chateau-loire", "moisPrevu": "2026-08", "titre": "Dormir dans un château de la Loire : 7 expériences", "cluster": "Séjour", "justification": "Capte le gros volume de recherche autour de « dormir dans un château de la Loire », en haut du parcours de réservation.", "seo": { "motCle": "dormir dans un château", "volume": 1600, "concurrence": "Forte", "potentiel": "Fort" } },
+    { "slug": "se-marier-en-hiver-chateau", "moisPrevu": "2026-08", "titre": "Mariage en hiver dans un château de la Loire", "cluster": "Mariage", "justification": "Capte « mariage en hiver » (1 300 recherches par mois), au pic saisonnier de septembre à janvier, et met en avant l'offre mariage d'hiver du château.", "seo": { "motCle": "mariage en hiver", "volume": 1300, "concurrence": "Faible", "potentiel": "Fort" } },
+    { "slug": "team-building-touraine-activites", "moisPrevu": "2026-09", "titre": "Team building en Touraine : 12 activités", "cluster": "Séminaire", "justification": "Se positionne sur « team building Touraine », une recherche B2B qui repart à la rentrée.", "seo": { "motCle": "team building nature", "volume": 140, "concurrence": "Faible", "potentiel": "Faible" } },
+    { "slug": "seminaire-direction-chateau-privatise", "moisPrevu": "2026-09", "titre": "Séminaire de direction dans un château privatisé", "cluster": "Séminaire", "justification": "Angle CODIR et COMEX : séminaire de direction en château privatisé, forte valeur par réservation.", "seo": { "motCle": "séminaire résidentiel", "volume": 320, "concurrence": "Faible", "potentiel": "Moyen" } },
+    { "slug": "week-end-romantique-pres-amboise", "moisPrevu": "2026-09", "titre": "Week-end romantique près d'Amboise", "cluster": "Séjour", "justification": "Itinéraire romantique de 2 jours, capte la recherche d'inspiration puis la réservation.", "seo": { "motCle": "week-end romantique", "volume": 1900, "concurrence": "Moyenne", "potentiel": "Fort" } },
+    { "slug": "week-end-entre-amis-chateau", "moisPrevu": "2026-09", "titre": "Week-end entre amis au château", "cluster": "Famille", "justification": "Cible « week-end entre amis » et le château insolite en privatisation.", "seo": { "motCle": "week-end entre amis", "volume": 390, "concurrence": "Forte", "potentiel": "Moyen" } },
+    { "slug": "chateau-pour-mariage-val-de-loire", "moisPrevu": "2026-10", "titre": "Château pour un mariage en Val de Loire", "cluster": "Mariage", "justification": "Capte « château pour mariage », gros volume et concurrence abordable, au moment des réservations d'hiver.", "seo": { "motCle": "château pour mariage", "volume": 3600, "concurrence": "Faible", "potentiel": "Fort" } },
+    { "slug": "mariage-intimiste-30-60-invites", "moisPrevu": "2026-10", "titre": "Mariage intimiste, de 30 à 60 invités", "cluster": "Mariage", "justification": "Tendance du mariage intimiste de 30 à 60 invités, encore peu traitée par la concurrence.", "seo": { "motCle": "mariage intimiste", "volume": 390, "concurrence": "Faible", "potentiel": "Fort" } },
+    { "slug": "table-hotes-touraine-chateau", "moisPrevu": "2026-10", "titre": "La table d'hôtes en Touraine", "cluster": "Restauration", "justification": "Installe l'autorité du château sur la table et l'art de recevoir en Touraine.", "seo": { "motCle": "table d'hôtes", "volume": 1600, "concurrence": "Faible", "potentiel": "Fort" } },
+    { "slug": "hotel-charme-vs-chambres-hotes", "moisPrevu": "2026-10", "titre": "Hôtel de charme ou esprit maison d'hôtes ?", "cluster": "Séjour", "justification": "Contenu informationnel qui capte les recherches comparatives et ramène la réservation en direct.", "seo": { "motCle": "hôtel de charme à Amboise", "volume": 110, "concurrence": "Moyenne", "potentiel": "Moyen" } },
+    { "slug": "ceremonie-laique-parc-chateau", "moisPrevu": "2026-11", "titre": "Cérémonie laïque dans le parc du château", "cluster": "Mariage", "justification": "Longue traîne mariage : cérémonie laïque dans un parc, requête précise et qualifiée." },
+    { "slug": "checklist-mariage-retroplanning", "moisPrevu": "2026-11", "titre": "Checklist mariage : le rétroplanning", "cluster": "Mariage", "justification": "Checklist et rétroplanning, contenu evergreen très partagé, capté 12 mois avant le mariage." },
+    { "slug": "que-faire-autour-amboise", "moisPrevu": "2026-11", "titre": "Que faire autour d'Amboise : 15 idées", "cluster": "Séjour", "justification": "Captation géographique : « que faire autour d'Amboise », trafic touristique en haut de parcours." },
+    { "slug": "cuisine-terroir-touraine", "moisPrevu": "2026-11", "titre": "Cuisine et terroir de Touraine", "cluster": "Restauration", "justification": "Autorité gastronomique locale, autour des vignobles et des produits de Touraine." },
+    { "slug": "privatiser-chateau-week-end-amis", "moisPrevu": "2026-12", "titre": "Privatiser un château le temps d'un week-end", "cluster": "Famille", "justification": "Niche des événements privés entre amis : EVJF, EVG, anniversaire marquant." },
+    { "slug": "bapteme-communion-chateau", "moisPrevu": "2026-12", "titre": "Baptême et communion au château", "cluster": "Famille", "justification": "Niche calendaire qui revient chaque année : baptême et communion au château." },
+    { "slug": "vignobles-vouvray-montlouis", "moisPrevu": "2026-12", "titre": "Les vignobles de Vouvray et Montlouis", "cluster": "Séjour", "justification": "Œnotourisme haut de gamme autour de Vouvray et Montlouis." },
+    { "slug": "visiter-clos-luce-chenonceau", "moisPrevu": "2026-12", "titre": "Visiter le Clos Lucé et Chenonceau", "cluster": "Séjour", "justification": "Capte le trafic massif sur Clos Lucé et Chenonceau et le ramène vers le séjour au château." },
+    { "slug": "mariage-touraine-10-lieux", "moisPrevu": "2027-01", "titre": "Se marier en Touraine : 10 lieux d'exception", "cluster": "Mariage", "justification": "Requête comparative « mariage en Touraine, X lieux », positionne le château parmi les références." },
+    { "slug": "offsite-annuel-programme-3-jours", "moisPrevu": "2027-01", "titre": "Offsite annuel : un programme sur 3 jours", "cluster": "Séminaire", "justification": "Guide opérationnel de l'offsite annuel sur 3 jours, cible les organisateurs B2B." },
+    { "slug": "seminaire-rse-bien-etre", "moisPrevu": "2027-01", "titre": "Séminaire RSE et bien-être", "cluster": "Séminaire", "justification": "Surfe sur la demande RSE et bien-être au travail, en hausse côté entreprises." },
+    { "slug": "brunch-dominical-chateau", "moisPrevu": "2027-01", "titre": "Brunch dominical au château", "cluster": "Restauration", "justification": "Niche événementielle du brunch dominical, capte une clientèle locale." }
   ]
 }
