@@ -3,7 +3,7 @@ import { Image } from "astro:assets";
 import pHero from "../assets/SD_5.jpg";
 import v1 from "../assets/SD_6.jpg";
 import v2 from "../assets/SD_9.jpg";
-import { reader } from "../lib/content";
+import { reader, isLive } from "../lib/content";
 import { octorateUrl } from "../lib/octorate";
 import { landingMedia } from "../lib/landingMedia";
 import { localizePath } from "../lib/routes";
@@ -63,7 +63,9 @@ if (lang === "fr") {
   const entries = await Promise.all(
     slugs.map(async (s) => {
       const e = await reader.collections.articles.read(s);
-      return e ? { slug: s, title: e.title } : null;
+      // Filtre de publication OBLIGATOIRE : un article à date future n'a pas de page
+      // générée, le lier depuis une page money produit un 404. Cf. scripts/check-liens-articles.mjs.
+      return e && isLive(e) ? { slug: s, title: e.title } : null;
     })
   );
   related = entries.filter((e): e is { slug: string; title: string } => e !== null);

@@ -8,7 +8,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "check:calendrier": "node scripts/check-calendrier.mjs",
-    "prebuild": "node scripts/check-calendrier.mjs || true"
+    "prebuild": "node scripts/check-calendrier.mjs || true; node scripts/check-liens-articles.mjs",
+    "check:liens": "node scripts/check-liens-articles.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.7",
