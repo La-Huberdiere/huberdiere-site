@@ -79,12 +79,12 @@
     },
     {
       "source": "/en/blog/bienvenue-au-chateau",
-      "destination": "/en/blog/organiser-mariage-au-chateau",
+      "destination": "/en/blog/chateau-wedding-planning",
       "permanent": true
     },
     {
       "source": "/it/blog/bienvenue-au-chateau",
-      "destination": "/it/blog/organiser-mariage-au-chateau",
+      "destination": "/it/blog/organizzare-matrimonio-castello",
       "permanent": true
     },
     {
@@ -280,6 +280,266 @@
     {
       "source": "/it/blog/visiter-chateaux-de-la-loire",
       "destination": "/it/blog/visitare-castelli-loira",
+      "permanent": true
+    },
+    {
+      "source": "/en/contact-9",
+      "destination": "/en/contact",
+      "permanent": true
+    },
+    {
+      "source": "/it/contact-9",
+      "destination": "/it/contatti",
+      "permanent": true
+    },
+    {
+      "source": "/en/mariage-chateau-touraine",
+      "destination": "/en/chateau-wedding-loire",
+      "permanent": true
+    },
+    {
+      "source": "/it/mariage-chateau-touraine",
+      "destination": "/it/matrimonio-castello-loira",
+      "permanent": true
+    },
+    {
+      "source": "/en/location-chateau-mariage-touraine",
+      "destination": "/en/chateau-wedding-loire",
+      "permanent": true
+    },
+    {
+      "source": "/it/location-chateau-mariage-touraine",
+      "destination": "/it/matrimonio-castello-loira",
+      "permanent": true
+    },
+    {
+      "source": "/mariage-receptions",
+      "destination": "/mariage",
+      "permanent": true
+    },
+    {
+      "source": "/en/mariage-receptions",
+      "destination": "/en/chateau-wedding-loire",
+      "permanent": true
+    },
+    {
+      "source": "/it/mariage-receptions",
+      "destination": "/it/matrimonio-castello-loira",
+      "permanent": true
+    },
+    {
+      "source": "/copie-de-votre-reception",
+      "destination": "/mariage",
+      "permanent": true
+    },
+    {
+      "source": "/en/copie-de-votre-reception",
+      "destination": "/en/chateau-wedding-loire",
+      "permanent": true
+    },
+    {
+      "source": "/it/copie-de-votre-reception",
+      "destination": "/it/matrimonio-castello-loira",
+      "permanent": true
+    },
+    {
+      "source": "/en/location-chateau-seminaire-touraine",
+      "destination": "/en/chateau-seminar-loire",
+      "permanent": true
+    },
+    {
+      "source": "/it/location-chateau-seminaire-touraine",
+      "destination": "/it/seminario-aziendale-castello",
+      "permanent": true
+    },
+    {
+      "source": "/en/seminaire-entreprise-touraine-chateau-huberdiere",
+      "destination": "/en/chateau-seminar-loire",
+      "permanent": true
+    },
+    {
+      "source": "/it/seminaire-entreprise-touraine-chateau-huberdiere",
+      "destination": "/it/seminario-aziendale-castello",
+      "permanent": true
+    },
+    {
+      "source": "/evenements-professionnels",
+      "destination": "/seminaire",
+      "permanent": true
+    },
+    {
+      "source": "/en/evenements-professionnels",
+      "destination": "/en/chateau-seminar-loire",
+      "permanent": true
+    },
+    {
+      "source": "/it/evenements-professionnels",
+      "destination": "/it/seminario-aziendale-castello",
+      "permanent": true
+    },
+    {
+      "source": "/en/location-chateau-reunion-famille-touraine",
+      "destination": "/en/chateau-hire-large-group",
+      "permanent": true
+    },
+    {
+      "source": "/it/location-chateau-reunion-famille-touraine",
+      "destination": "/it/affittare-castello-gruppo",
+      "permanent": true
+    },
+    {
+      "source": "/en/lieu-retraite-stage-chateau-touraine",
+      "destination": "/en/yoga-retreat-venue",
+      "permanent": true
+    },
+    {
+      "source": "/it/lieu-retraite-stage-chateau-touraine",
+      "destination": "/it/ritiro-yoga-castello",
+      "permanent": true
+    },
+    {
+      "source": "/en/chateau-location-touraine",
+      "destination": "/en/boutique-hotel-amboise",
+      "permanent": true
+    },
+    {
+      "source": "/it/chateau-location-touraine",
+      "destination": "/it/hotel-di-charme-amboise",
+      "permanent": true
+    },
+    {
+      "source": "/en/hebergement-chateau-touraine",
+      "destination": "/en/boutique-hotel-amboise",
+      "permanent": true
+    },
+    {
+      "source": "/it/hebergement-chateau-touraine",
+      "destination": "/it/hotel-di-charme-amboise",
+      "permanent": true
+    },
+    {
+      "source": "/les-chambres-du-chateau",
+      "destination": "/sejour",
+      "permanent": true
+    },
+    {
+      "source": "/en/les-chambres-du-chateau",
+      "destination": "/en/boutique-hotel-amboise",
+      "permanent": true
+    },
+    {
+      "source": "/it/les-chambres-du-chateau",
+      "destination": "/it/hotel-di-charme-amboise",
+      "permanent": true
+    },
+    {
+      "source": "/en/restauration-chateau-huberdiere-touraine",
+      "destination": "/en/chateau-dining-touraine",
+      "permanent": true
+    },
+    {
+      "source": "/it/restauration-chateau-huberdiere-touraine",
+      "destination": "/it/cena-al-castello",
+      "permanent": true
+    },
+    {
+      "source": "/en/activites-chateau-huberdiere-touraine",
+      "destination": "/en/things-to-do",
+      "permanent": true
+    },
+    {
+      "source": "/it/activites-chateau-huberdiere-touraine",
+      "destination": "/it/attivita",
+      "permanent": true
+    },
+    {
+      "source": "/activites-chateau-touraine",
+      "destination": "/activites",
+      "permanent": true
+    },
+    {
+      "source": "/en/activites-chateau-touraine",
+      "destination": "/en/things-to-do",
+      "permanent": true
+    },
+    {
+      "source": "/it/activites-chateau-touraine",
+      "destination": "/it/attivita",
+      "permanent": true
+    },
+    {
+      "source": "/tourisme-loisirs",
+      "destination": "/activites",
+      "permanent": true
+    },
+    {
+      "source": "/en/tourisme-loisirs",
+      "destination": "/en/things-to-do",
+      "permanent": true
+    },
+    {
+      "source": "/it/tourisme-loisirs",
+      "destination": "/it/attivita",
+      "permanent": true
+    },
+    {
+      "source": "/qui-sommes-nous",
+      "destination": "/notre-histoire",
+      "permanent": true
+    },
+    {
+      "source": "/en/qui-sommes-nous",
+      "destination": "/en/our-story",
+      "permanent": true
+    },
+    {
+      "source": "/it/qui-sommes-nous",
+      "destination": "/it/la-nostra-storia",
+      "permanent": true
+    },
+    {
+      "source": "/post/:slug*",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/en/members",
+      "destination": "/en",
+      "permanent": true
+    },
+    {
+      "source": "/en/post/:slug*",
+      "destination": "/en/blog",
+      "permanent": true
+    },
+    {
+      "source": "/en/article/:slug*",
+      "destination": "/en/blog",
+      "permanent": true
+    },
+    {
+      "source": "/en/event-details/:slug*",
+      "destination": "/en",
+      "permanent": true
+    },
+    {
+      "source": "/it/members",
+      "destination": "/it",
+      "permanent": true
+    },
+    {
+      "source": "/it/post/:slug*",
+      "destination": "/it/blog",
+      "permanent": true
+    },
+    {
+      "source": "/it/article/:slug*",
+      "destination": "/it/blog",
+      "permanent": true
+    },
+    {
+      "source": "/it/event-details/:slug*",
+      "destination": "/it",
       "permanent": true
     }
   ],
