@@ -41,6 +41,7 @@ export const ARTICLE_SLUGS: Record<string, { en: string; it: string }> = {
   "prix-mariage-chateau-loire": { en: "chateau-wedding-cost", it: "prezzo-matrimonio-castello" },
   "se-marier-en-hiver-chateau": { en: "winter-wedding-chateau-loire", it: "matrimonio-inverno-castello" },
   "seminaire-au-vert-pres-de-paris": { en: "corporate-retreat-near-paris", it: "seminario-nel-verde-parigi" },
+  "seminaire-direction-chateau-privatise": { en: "executive-retreat-chateau-loire", it: "seminario-direzione-castello" },
   "team-building-touraine-activites": { en: "outdoor-team-building-loire", it: "attivita-team-building-castello" },
   "visiter-chateaux-de-la-loire": { en: "visiting-loire-chateaux", it: "visitare-castelli-loira" },
 };
