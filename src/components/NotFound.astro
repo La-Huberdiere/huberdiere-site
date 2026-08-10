@@ -10,7 +10,7 @@ const nf = ((siteTexts as any)[lang] ?? (siteTexts as any).fr).notFound;
   <p class="nf-eyebrow">{nf.eyebrow}</p>
   <h1>{nf.title}</h1>
   <p class="nf-text">{nf.text}</p>
-  <a class="nf-cta" href={`${prefix}/`}>{nf.home}</a>
+  <a class="nf-cta" href={prefix || "/"}>{nf.home}</a>
   <nav class="nf-links" aria-label="Pages">
     {nf.links.map((l) => <a href={`${prefix}${l.href}`}>{l.label}</a>)}
   </nav>

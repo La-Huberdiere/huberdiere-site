@@ -14,7 +14,7 @@ const T = ((siteTexts as any)[lang] ?? (siteTexts as any).fr).thanks;
     <span class="section-eyebrow">{T.eyebrow}</span>
     <h1>{T.titleLine1}<br /><span class="it">{T.titleLine2Italic}</span></h1>
     <p class="thanks-lead">{T.lead}</p>
-    <a class="btn-burgundy" href={`${prefix}/`}>{T.home}</a>
+    <a class="btn-burgundy" href={prefix || "/"}>{T.home}</a>
     <div class="thanks-response">{T.response}</div>
 
     <div class="thanks-explore">
