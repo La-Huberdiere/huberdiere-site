@@ -12,7 +12,7 @@ export const SITE = {
   phone: "+33247575292",
   email: "contact@chateaudelahuberdiere.com",
   address: {
-    streetAddress: "Vallée de Vaugadeland",
+    streetAddress: "10 La Huberdière",
     addressLocality: "Nazelles-Négron",
     postalCode: "37530",
     addressRegion: "Indre-et-Loire",

@@ -196,7 +196,7 @@ function confirmHtml(lang, prenom) {
         <p style="color:#2e3a48;font-size:15px;margin:0">${t.signoff}</p>
         <hr style="border:none;border-top:1px solid #ece6d8;margin:26px 0">
         <p style="color:#646464;font-size:13px;line-height:1.6;margin:0">
-          Vallée de Vaugadeland, 37530 Nazelles-Négron · +33 2 47 57 52 92<br>
+          10 La Huberdière, 37530 Nazelles-Négron · +33 2 47 57 52 92<br>
           <a href="mailto:contact@chateaudelahuberdiere.com" style="color:#8B0000">contact@chateaudelahuberdiere.com</a> ·
           <a href="https://www.chateaudelahuberdiere.com" style="color:#8B0000">chateaudelahuberdiere.com</a>
         </p>
