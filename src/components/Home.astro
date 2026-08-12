@@ -1,10 +1,13 @@
 ---
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import BookingBar from "./BookingBar.astro";
 import Reviews from "./Reviews.astro";
 import LocationMap from "./LocationMap.astro";
+import VideoFilm from "./VideoFilm.astro";
+import { FILM } from "../lib/seo";
 import settings from "../data/settings.json";
 import hero from "../assets/SD_2.jpg";
+import heroMobile from "../assets/SD_2-mobile.jpg";
 import intro from "../assets/SD_1.jpg";
 import actSejour from "../assets/SD_23.jpg";
 import actMariage from "../assets/SD_6.jpg";
@@ -39,11 +42,56 @@ const actAlts = [
   "Salon lumineux et chaises en rotin",
 ];
 const actIds = ["sejour", "mariage", "seminaire", "famille", "retraite"];
+
+// Hero en direction artistique : la photo est un paysage 4/3, un téléphone est un
+// portrait. En `object-fit:cover`, le navigateur n'affichait qu'un cinquième de la
+// largeur, agrandi 2,7 fois, d'où le rendu pixellisé. On sert donc un recadrage
+// vertical dédié sous 768 px. Le `sizes` déclare 150vw et non 100vw : mise à la
+// hauteur du hero, l'image déborde du viewport, et c'est cette largeur réelle qui
+// doit guider le choix dans le srcset. 150 et non 190 (le débord mesuré) : le cran
+// au-dessus coûte 120 Ko sur l'image LCP pour un gain que l'œil ne voit pas.
+// Qualité un cran sous le desktop : c'est l'image LCP du mobile, et le grain d'un
+// ciel en WebP q60 ne se voit pas là où 200 Ko de plus se sentent.
+const heroMobileImg = await getImage({
+  src: heroMobile,
+  widths: [640, 900, 1150, 1400],
+  format: "webp",
+  quality: 58,
+});
+const heroDesktopImg = await getImage({
+  src: hero,
+  widths: [768, 1280, 1920],
+  format: "webp",
+  quality: 68,
+});
+// Source de repli du <img> : sans largeur explicite, getImage renverrait l'original
+// 6365 px (2,8 Mo) comme `src`.
+const heroFallback = await getImage({ src: hero, width: 1280, format: "webp", quality: 68 });
 ---
 
 <!-- HERO -->
 <section class="hero" id="hero">
-  <Image quality={68} src={hero} alt="Château de la Huberdière vu depuis l'étang" widths={[768, 1280, 1920]} sizes="100vw" loading="eager" fetchpriority="high" />
+  <picture>
+    <source
+      media="(max-width: 768px)"
+      type="image/webp"
+      srcset={heroMobileImg.srcSet.attribute}
+      sizes="150vw"
+      width={heroMobile.width}
+      height={heroMobile.height}
+    />
+    <img
+      src={heroFallback.src}
+      srcset={heroDesktopImg.srcSet.attribute}
+      sizes="100vw"
+      alt="Château de la Huberdière vu depuis l'étang"
+      width={hero.width}
+      height={hero.height}
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
+  </picture>
   <div class="hero-content">
     <div class="container">
       <div class="hero-inner">
@@ -59,6 +107,9 @@ const actIds = ["sejour", "mariage", "seminaire", "famille", "retraite"];
     </div>
   </div>
 </section>
+
+<!-- FILM -->
+<VideoFilm c={c.film} videoId={FILM.youtubeId} />
 
 <!-- INTRO -->
 <section class="intro">

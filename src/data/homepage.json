@@ -8,6 +8,18 @@
       "ctaPrimary": "Recevoir une proposition",
       "ctaSecondary": "Découvrir le château"
     },
+    "film": {
+      "eyebrow": "Le film",
+      "titlePlain": "Le domaine, ",
+      "titleItalic": "vu du ciel.",
+      "text": "Quatorze hectares de parc, la façade de tuffeau, les chambres et la table, filmés au drone un matin d'été. Cinquante-trois secondes pour saisir ce qu'une photographie ne montre jamais tout à fait : les volumes, la lumière du matin et le silence autour de la maison.",
+      "playLabel": "Voir le film",
+      "duration": "53 s",
+      "posterAlt": "Le château et sa terrasse vus du ciel, au-dessus du parc",
+      "caption": "Château de la Huberdière, Nazelles-Négron, à dix minutes d'Amboise.",
+      "videoTitle": "Château de la Huberdière, hôtel de charme en Touraine, vu du ciel",
+      "videoDescription": "Survol du Château de la Huberdière, hôtel de charme 3 étoiles du XVIᵉ siècle à Nazelles-Négron, près d'Amboise. Le parc de quatorze hectares, la façade de tuffeau, les salons, les chambres et la table, au cœur des châteaux de la Loire."
+    },
     "intro": {
       "eyebrow": "L'esprit du lieu",
       "titleLine1": "Une demeure de famille,",
@@ -144,6 +156,18 @@
       "ctaPrimary": "Request a proposal",
       "ctaSecondary": "Discover the château"
     },
+    "film": {
+      "eyebrow": "The film",
+      "titlePlain": "The estate, ",
+      "titleItalic": "seen from above.",
+      "text": "Fourteen hectares of parkland, the tuffeau stone façade, the bedrooms and the table, filmed by drone on a summer morning. Fifty-three seconds to grasp what a photograph never quite shows: the scale, the morning light and the quiet around the house.",
+      "playLabel": "Watch the film",
+      "duration": "53 s",
+      "posterAlt": "The château and its terrace seen from above, over the park",
+      "caption": "Château de la Huberdière, Nazelles-Négron, ten minutes from Amboise.",
+      "videoTitle": "Château de la Huberdière, a country house hotel in the Loire Valley, from the air",
+      "videoDescription": "An aerial tour of Château de la Huberdière, a 3-star country house hotel in a 16th-century estate at Nazelles-Négron, near Amboise. Fourteen hectares of parkland, the tuffeau stone façade, the drawing rooms, the bedrooms and the table, in the heart of the Loire châteaux."
+    },
     "intro": {
       "eyebrow": "The spirit of the place",
       "titleLine1": "A family home,",
@@ -279,6 +303,18 @@
       "lead": "Una dimora del XVI secolo, nel cuore dei Castelli della Loira. Per i vostri matrimoni, soggiorni, seminari e i momenti più belli, a 2 ore e 20 da Parigi.",
       "ctaPrimary": "Richiedi una proposta",
       "ctaSecondary": "Scopri il castello"
+    },
+    "film": {
+      "eyebrow": "Il film",
+      "titlePlain": "La tenuta, ",
+      "titleItalic": "vista dal cielo.",
+      "text": "Quattordici ettari di parco, la facciata in pietra di tufo, le camere e la tavola, ripresi con il drone in una mattina d'estate. Cinquantatré secondi per cogliere ciò che una fotografia non racconta mai fino in fondo: i volumi, la luce del mattino e il silenzio intorno alla casa.",
+      "playLabel": "Guarda il film",
+      "duration": "53 s",
+      "posterAlt": "Il castello e la sua terrazza visti dal cielo, sopra il parco",
+      "caption": "Château de la Huberdière, Nazelles-Négron, a dieci minuti da Amboise.",
+      "videoTitle": "Château de la Huberdière, hotel di charme in Turenna, visto dal cielo",
+      "videoDescription": "Sorvolo dello Château de la Huberdière, hotel di charme 3 stelle in una dimora del XVI secolo a Nazelles-Négron, vicino ad Amboise. Il parco di quattordici ettari, la facciata in pietra di tufo, i saloni, le camere e la tavola, nel cuore dei castelli della Loira."
     },
     "intro": {
       "eyebrow": "Lo spirito del luogo",

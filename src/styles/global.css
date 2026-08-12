@@ -102,6 +102,7 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
 .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.5) 0%,rgba(0,0,0,.15) 40%,rgba(0,0,0,.15) 60%,rgba(0,0,0,.6) 100%);z-index:1}
 /* Image retournée en miroir : la masse d'arbres sombre passe à gauche, sous le titre
    calé à gauche, pour un meilleur contraste du texte blanc. */
+.hero picture{display:contents}
 .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 50%;transform:scaleX(-1) scale(1.06);transition:transform 12s ease-out}
 .hero.loaded img{transform:scaleX(-1) scale(1)}
 .hero-content{position:absolute;left:0;right:0;top:50%;transform:translateY(-40%);z-index:2;text-align:left;color:#fff;padding:0 24px}
@@ -252,9 +253,18 @@ section{padding:140px 48px;position:relative}
    rogner la barre de réservation Octorate (sinon overflow:hidden la coupe). */
 @media(max-width:768px){
   .hero{height:auto;min-height:100svh}
-  .hero-content{position:relative;top:auto;transform:none;padding:128px 22px 56px}
+  .hero-content{position:relative;top:auto;transform:none;padding:104px 22px 44px}
   .hero h1{margin-bottom:24px}
   .hero p.lead{margin-bottom:32px}
+  /* Hero moins haut : une image de moins en hauteur, c'est autant de recadrage en
+     moins sur les côtés, donc une photo plus nette, et un écran de moins à scroller. */
+  .hero-cta{gap:18px;margin-bottom:30px}
+  /* Le recadrage vertical laisse le ciel derrière le titre : voile renforcé pour
+     garder le texte blanc au-dessus de 4,5:1, sans noyer la photo. */
+  .hero::after{background:linear-gradient(180deg,rgba(0,0,0,.66) 0%,rgba(0,0,0,.54) 40%,rgba(0,0,0,.34) 66%,rgba(0,0,0,.55) 100%)}
+  /* Le zoom d'ouverture rognait encore le cadrage mobile, déjà serré. */
+  .hero img{transform:scaleX(-1)}
+  .hero.loaded img{transform:scaleX(-1)}
 }
 
 /* ---------- ANIMATIONS ---------- */

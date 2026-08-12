@@ -196,6 +196,43 @@ export function serviceSchema(opts: { name: string; description: string; path: s
   };
 }
 
+/** Film de présentation tourné au drone. Hébergé sur YouTube (bande son complète,
+ *  bande passante gratuite, deuxième surface de recherche) ; la home n'embarque
+ *  l'iframe qu'au clic. Le teaser muet auto-hébergé, lui, n'est qu'un extrait :
+ *  il ne sert pas de `contentUrl`, ce serait déclarer une autre vidéo à Google. */
+export const FILM = {
+  youtubeId: "AOmICm57Aq4",
+  // À corriger si la vidéo est réuploadée : date de mise en ligne YouTube.
+  uploadDate: "2026-08-11",
+  duration: "PT53S",
+};
+
+/** VideoObject : rend la home éligible au résultat enrichi vidéo, attribué au
+ *  domaine du château et non à YouTube, à condition que la vidéo soit bien
+ *  visible et lisible sur la page (c'est le cas, façade cliquable). */
+export function videoSchema(opts: { name: string; description: string; lang?: Lang }) {
+  // Une entrée par version linguistique de la home, d'où l'@id localisé.
+  const path = localizePath("/", opts.lang ?? "fr");
+  return {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "@id": `${abs(path)}#film`,
+    name: opts.name,
+    description: opts.description,
+    thumbnailUrl: [
+      abs("/video/huberdiere-film-poster.jpg"),
+      `https://i.ytimg.com/vi/${FILM.youtubeId}/maxresdefault.jpg`,
+    ],
+    uploadDate: FILM.uploadDate,
+    duration: FILM.duration,
+    embedUrl: `https://www.youtube.com/embed/${FILM.youtubeId}`,
+    inLanguage: langTag(opts.lang),
+    isFamilyFriendly: true,
+    publisher: { "@id": `${SITE.url}/#organization` },
+    contentLocation: { "@id": `${SITE.url}/#lodging` },
+  };
+}
+
 /** FAQ : moteur de citabilité (AI Overviews, ChatGPT, Perplexity) + rich results. */
 export function faqSchema(items: { question: string; answer: string }[]) {
   return {

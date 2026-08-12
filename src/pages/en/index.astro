@@ -3,7 +3,7 @@ import Base from "../../layouts/Base.astro";
 import Home from "../../components/Home.astro";
 import data from "../../data/homepage.json";
 import reviews from "../../data/reviews.json";
-import { lodgingBusinessSchema, LODGING_IMAGES } from "../../lib/seo";
+import { lodgingBusinessSchema, LODGING_IMAGES, videoSchema } from "../../lib/seo";
 
 // Même établissement (@id #lodging partagé), décrit dans la langue de la page.
 const lodging = lodgingBusinessSchema({
@@ -15,7 +15,13 @@ const lodging = lodgingBusinessSchema({
   reviews: reviews.items,
   rating: { value: reviews.ratingValue, best: reviews.bestRating, count: reviews.reviewCount },
 });
+
+const film = videoSchema({
+  name: data.en.film.videoTitle,
+  description: data.en.film.videoDescription,
+  lang: "en",
+});
 ---
-<Base lang="en" path="/" schemas={[lodging]}>
+<Base lang="en" path="/" schemas={[lodging, film]}>
   <Home c={data.en} lang="en" />
 </Base>
