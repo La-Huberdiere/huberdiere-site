@@ -196,7 +196,7 @@ export function serviceSchema(opts: { name: string; description: string; path: s
   };
 }
 
-/** Film de présentation tourné au drone. Hébergé sur YouTube (bande son complète,
+/** Film de présentation du domaine. Hébergé sur YouTube (bande son complète,
  *  bande passante gratuite, deuxième surface de recherche) ; la home n'embarque
  *  l'iframe qu'au clic. Le teaser muet auto-hébergé, lui, n'est qu'un extrait :
  *  il ne sert pas de `contentUrl`, ce serait déclarer une autre vidéo à Google. */

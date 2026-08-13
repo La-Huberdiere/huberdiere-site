@@ -42,6 +42,10 @@ const galleryCtaLabel = {
 // Optimisation images chambres : version WebP servie en priorité (fallback JPEG),
 // et texte alt descriptif (nom de chambre + château) pour le SEO/GEO local.
 const webpOf = (p: string) => p.replace(/\.(jpe?g|png)$/i, ".webp");
+// Recadrages verticaux du héros pour le mobile (voir scripts/gen-landing-hero-mobile.mjs).
+// Le paysage 3/2 mis à la hauteur du bloc ne laissait voir que 40 % de sa largeur.
+const heroMobileSrcSet = (p: string) =>
+  [720, 1080, 1440].map((w) => `${p.replace(/\.(jpe?g|png)$/i, "")}-m${w}.webp ${w}w`).join(", ");
 const roomAlt = (name: string, idx: number) =>
   idx === 0
     ? `Chambre ${name}, Château de la Huberdière`
@@ -91,11 +95,14 @@ const midCtaLead = {
 <section class="page-hero">
   {media?.hero ? (
     <picture class="page-hero__pic">
+      {/* Sous 768 px, recadrage 3/4 : cadrage tenable et deux fois moins lourd que
+          le paysage 1920 px, dont le mobile ne montrait qu'un tiers. */}
+      <source media="(max-width: 768px)" type="image/webp" srcset={heroMobileSrcSet(media.hero)} sizes="124vw" width="1080" height="1440" />
       <source srcset={webpOf(media.hero)} type="image/webp" />
       <img src={media.hero} alt={m.hero.titleLine1} loading="eager" fetchpriority="high" decoding="async" />
     </picture>
   ) : (
-    <Image quality={68} src={hero} alt={m.hero.titleLine1} widths={[768, 1280, 1920]} sizes="100vw" loading="eager" fetchpriority="high" />
+    <Image quality={68} src={hero} alt={m.hero.titleLine1} widths={[768, 1280, 1920]} sizes="(max-width: 768px) 250vw, 100vw" loading="eager" fetchpriority="high" />
   )}
   <div class="inner">
     <div class="eyebrow">{m.hero.eyebrow}</div>

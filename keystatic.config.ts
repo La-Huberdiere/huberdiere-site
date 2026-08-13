@@ -110,7 +110,6 @@ const homepageSchema = {
       titleItalic: fields.text({ label: "Titre (fin, italique)" }),
       text: fields.text({ label: "Texte de présentation", multiline: true }),
       playLabel: fields.text({ label: "Bouton de lecture" }),
-      duration: fields.text({ label: "Durée affichée sur le bouton" }),
       posterAlt: fields.text({ label: "Description de l'image (accessibilité)" }),
       caption: fields.text({ label: "Légende en bas d'image" }),
       videoTitle: fields.text({

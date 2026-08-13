@@ -286,6 +286,18 @@ section{padding:140px 48px;position:relative}
   .page-hero{min-height:620px}
   .page-hero .inner{padding:118px 22px 48px}
 }
+/* Sur téléphone, le contenu (sur-titre + H1 sur 3 lignes + lead + bouton) dépasse
+   la hauteur fixe : centré, il débordait sous le header et le sur-titre passait
+   dessous. Le bloc repasse donc en flux normal et le hero grandit avec lui. */
+@media(max-width:768px){
+  /* padding:0 : le hero est aussi un <section>, il héritait des 80 px verticaux
+     de la règle générique et gagnait 160 px de vide, donc autant de recadrage. */
+  .page-hero{height:auto;min-height:620px;padding:0}
+  .page-hero .inner{position:relative;inset:auto;justify-content:flex-start;padding:116px 22px 52px}
+  /* 40 px donnaient quatre lignes de titre et un hero d'une fois et demie l'écran. */
+  .page-hero h1{font-size:34px;line-height:1.14;margin-bottom:18px}
+  .page-hero p{font-size:14.5px}
+}
 .prose{max-width:760px;margin:0 auto}
 .prose p{font-size:16px;color:var(--ink-2);font-weight:300;line-height:1.95;margin:0 0 22px}
 /* Liste éditoriale numérotée (remplace la grille de 3 cartes centrées remplies).
