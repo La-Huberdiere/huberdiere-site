@@ -6,9 +6,30 @@ const chapters = galleryChapters(lang);
 // Photo maîtresse du hero = l'ouverture du chapitre « château & parc » (façade large).
 const parc = chapters.find((c) => c.id === "chateau-parc");
 const hero = parc?.photos[0] ?? chapters[0].photos[0];
+// Photo à partir de laquelle scripts/gen-hero-mobile.mjs a produit les webp. Si le
+// CMS change le premier chapitre, le srcset est abandonné plutôt que de servir une
+// autre photo que celle du <img>. Relancer le script et corriger cette constante.
+const HERO_SOURCE = "/images/bibliotheque/chambres/chambre-01.jpg";
+const heroSrcSet =
+  hero.full === HERO_SOURCE
+    ? [720, 1080, 1440, 1920].map((w) => `/images/hero/galerie-hero-${w}.webp ${w}w`).join(", ")
+    : null;
 ---
 <section class="page-hero gallery-hero" id="hero">
-  <img src={hero.full} alt={hero.alt} fetchpriority="high" width={hero.w} height={hero.h} />
+  {/* La photo d'origine était servie telle quelle, 479 Ko sans srcset : recadrée
+      en 3/4 et déclinée en webp par scripts/gen-hero-mobile.mjs. */}
+  <picture>
+    {heroSrcSet && (
+      <source
+        type="image/webp"
+        srcset={heroSrcSet}
+        sizes="(max-width: 768px) 124vw, 100vw"
+        width="1440"
+        height="1920"
+      />
+    )}
+    <img src={hero.full} alt={hero.alt} fetchpriority="high" width={hero.w} height={hero.h} />
+  </picture>
   <div class="inner">
     <span class="eyebrow">{ui.eyebrow}</span>
     <h1>{ui.title}</h1>

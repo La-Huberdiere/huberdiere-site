@@ -95,7 +95,9 @@ const teaser = "/video/huberdiere-film-teaser.mp4";
 
     // Clic : le teaser muet cède la place au film complet avec le son, servi par
     // YouTube en mode nocookie (aucun cookie tant que personne n'a cliqué).
-    button?.addEventListener("click", () => {
+    // Écouteur posé sur toute l'image, le bouton n'étant que le repère visuel :
+    // un visiteur qui clique la vidéo attend qu'elle démarre, pas qu'il vise.
+    frame.addEventListener("click", () => {
       if (!videoId || frame.classList.contains("is-film")) return;
       frame.classList.add("is-film");
       video?.pause();
@@ -106,7 +108,7 @@ const teaser = "/video/huberdiere-film-teaser.mp4";
         "https://www.youtube-nocookie.com/embed/" +
         videoId +
         "?autoplay=1&rel=0&modestbranding=1&playsinline=1&color=white";
-      iframe.title = button.querySelector(".film-play-label")?.textContent || "Film";
+      iframe.title = button?.querySelector(".film-play-label")?.textContent || "Film";
       iframe.allow = "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen";
       iframe.setAttribute("allowfullscreen", "");
       iframe.loading = "lazy";
@@ -174,6 +176,16 @@ const teaser = "/video/huberdiere-film-teaser.mp4";
     max-height: 78vh;
     background: #10161d;
     overflow: hidden;
+    /* Toute l'image lance le film, pas seulement le bouton. */
+    cursor: pointer;
+  }
+  .film-frame.is-film {
+    cursor: default;
+  }
+  /* Survol de l'image : le bouton réagit comme s'il était visé. */
+  .film-frame:not(.is-film):hover .film-play {
+    background: var(--burgundy);
+    border-color: var(--burgundy);
   }
   .film-frame :global(.film-poster),
   .film-loop,

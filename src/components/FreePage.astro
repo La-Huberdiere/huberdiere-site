@@ -3,22 +3,27 @@ import { Image } from "astro:assets";
 // Pages éditoriales (Notre histoire, Activités…). Mise en page magazine :
 // hero plein cadre asymétrique, lettrine, filets bordeaux, photo pleine largeur,
 // bloc d'appel. Partagé par les routes FR / EN / IT.
+import HeroPicture from "./HeroPicture.astro";
 import sChateauEtang from "../assets/SD_2.jpg";
 import sInterieur from "../assets/SD_11.jpg";
 import sPiscine from "../assets/SD_4.jpg";
 import sEscalier from "../assets/SD_1.jpg";
 import sFacade from "../assets/SD_3.jpg";
+// Recadrages verticaux des héros (scripts/gen-hero-mobile.mjs).
+import sChateauEtangP from "../assets/SD_2-portrait.jpg";
+import sPiscineP from "../assets/SD_4-portrait.jpg";
+import sFacadeP from "../assets/SD_3-portrait.jpg";
 import { octorateUrl } from "../lib/octorate";
 import { localizePath } from "../lib/routes";
 
 const { entry, html, lang = "fr", path = "/", slug = "" } = Astro.props;
 
 // Photos par page (hero + une image d'aération en pleine largeur).
-const imgMap: Record<string, { hero: any; feature: any }> = {
-  "notre-histoire": { hero: sChateauEtang, feature: sInterieur },
-  activites: { hero: sPiscine, feature: sEscalier },
+const imgMap: Record<string, { hero: any; heroMobile: any; feature: any }> = {
+  "notre-histoire": { hero: sChateauEtang, heroMobile: sChateauEtangP, feature: sInterieur },
+  activites: { hero: sPiscine, heroMobile: sPiscineP, feature: sEscalier },
 };
-const imgs = imgMap[slug] ?? { hero: sFacade, feature: sChateauEtang };
+const imgs = imgMap[slug] ?? { hero: sFacade, heroMobile: sFacadeP, feature: sChateauEtang };
 
 const locator =
   lang === "it" ? "Château de la Huberdière · Touraine"
@@ -40,7 +45,8 @@ const captionFeature =
 ---
 
 <section class="free-hero">
-  <Image quality={68} src={imgs.hero} alt={entry.title} widths={[768, 1280, 1920]} sizes="100vw" loading="eager" fetchpriority="high" />
+  {/* .free-hero fait 66vh : le portrait n'y déborde que de 7 %, d'où 107vw. */}
+  <HeroPicture desktop={imgs.hero} mobile={imgs.heroMobile} alt={entry.title} sizesMobile="107vw" />
   <div class="fh-inner">
     <span class="fh-eyebrow">{locator}</span>
     <h1>{entry.title}</h1>

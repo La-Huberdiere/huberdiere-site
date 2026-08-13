@@ -1,0 +1,49 @@
+---
+// Héros responsive avec direction artistique : recadrage vertical sous 768 px,
+// paysage au-delà. Sans lui, le mobile téléchargeait une image large dont
+// `object-fit: cover` ne montrait qu'une fraction, très agrandie.
+//
+// `sizesMobile` ne vaut pas 100vw : mise à la hauteur du hero, l'image portrait
+// est plus large que le viewport, et c'est cette largeur rendue qui doit guider
+// le choix dans le srcset. Valeur = hauteur du hero x ratio / largeur écran.
+import { getImage } from "astro:assets";
+
+const {
+  desktop,
+  mobile,
+  alt,
+  sizesMobile = "124vw",
+  widthsMobile = [560, 820, 1100, 1400],
+  widthsDesktop = [768, 1280, 1920],
+  qualityMobile = 62,
+  eager = true,
+} = Astro.props;
+
+const m = await getImage({ src: mobile, widths: widthsMobile, format: "webp", quality: qualityMobile });
+const d = await getImage({ src: desktop, widths: widthsDesktop, format: "webp", quality: 68 });
+// Sans largeur explicite, getImage renverrait l'original (plusieurs mégaoctets)
+// comme `src` de repli.
+const fallback = await getImage({ src: desktop, width: 1280, format: "webp", quality: 68 });
+---
+
+<picture>
+  <source
+    media="(max-width: 768px)"
+    type="image/webp"
+    srcset={m.srcSet.attribute}
+    sizes={sizesMobile}
+    width={mobile.width}
+    height={mobile.height}
+  />
+  <img
+    src={fallback.src}
+    srcset={d.srcSet.attribute}
+    sizes="100vw"
+    alt={alt}
+    width={desktop.width}
+    height={desktop.height}
+    loading={eager ? "eager" : "lazy"}
+    fetchpriority={eager ? "high" : undefined}
+    decoding="async"
+  />
+</picture>
