@@ -1,7 +1,7 @@
 {
   "fr": {
     "hero": {
-      "eyebrow": "Touraine · Châteaux de la Loire",
+      "eyebrow": "Touraine · Châteaux de la Loire .",
       "titleLine1": "Le Château",
       "titleLine2Italic": "de la Huberdière",
       "lead": "Une demeure du XVIᵉ siècle, au cœur des Châteaux de la Loire. Pour vos mariages, vos séjours, vos séminaires et vos plus beaux moments, à 2 h 20 de Paris.",
@@ -11,8 +11,8 @@
     "film": {
       "eyebrow": "Le film",
       "titlePlain": "Poussez ",
-      "titleItalic": "la porte.",
-      "text": "Les salons, les chambres, la table dressée, le parc. Cinquante-trois secondes pour visiter le domaine comme si vous y étiez déjà.",
+      "titleItalic": "la porte du Château",
+      "text": "Les salons, les chambres, la table dressée, le parc. Visiter le domaine comme si vous y étiez déjà.",
       "playLabel": "Voir le film",
       "posterAlt": "Le château, sa terrasse et le parc",
       "caption": "Château de la Huberdière, Nazelles-Négron, à dix minutes d'Amboise.",
