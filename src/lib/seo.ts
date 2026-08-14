@@ -54,6 +54,27 @@ export const LODGING_IMAGES = [
   "/images/bibliotheque/restauration/restauration-01.jpg",
 ];
 
+/** Décalage de Paris ce jour-là : +01:00 l'hiver, +02:00 l'été. Calculé plutôt
+ *  qu'écrit en dur, sinon les articles d'hiver mentiraient d'une heure. */
+function parisOffset(day: string): string {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Europe/Paris",
+    timeZoneName: "longOffset",
+  }).formatToParts(new Date(`${day}T12:00:00Z`));
+  const tz = parts.find((p) => p.type === "timeZoneName")?.value ?? "GMT+01:00";
+  return tz.replace("GMT", "") || "+01:00";
+}
+
+/** Les dates du CMS sont nues (AAAA-MM-JJ) ; Google veut de l'ISO 8601 avec
+ *  fuseau sur les champs de date des schemas, et la Search Console le remonte.
+ *  L'heure retenue est 07:00 Paris, celle du rebuild quotidien qui rend
+ *  effectivement l'article visible. */
+export function schemaDate(day?: string): string | undefined {
+  if (!day) return undefined;
+  if (day.length > 10) return day;
+  return `${day}T07:00:00${parisOffset(day)}`;
+}
+
 /** Langue de contenu → étiquette BCP 47 (pour inLanguage). */
 export type Lang = "fr" | "en" | "it";
 const LANG_TAG: Record<Lang, string> = { fr: "fr-FR", en: "en-GB", it: "it-IT" };
@@ -101,7 +122,7 @@ function reviewSchema(r: ReviewInput, bestRating: string) {
     author: { "@type": "Person", name: r.author },
     ...(r.rating ? { reviewRating: { "@type": "Rating", ratingValue: String(r.rating), bestRating } } : {}),
     reviewBody: r.text,
-    ...(r.date ? { datePublished: r.date } : {}),
+    ...(r.date ? { datePublished: schemaDate(r.date) } : {}),
   };
 }
 
@@ -310,8 +331,8 @@ export function articleSchema(opts: {
     url: abs(opts.path),
     mainEntityOfPage: abs(opts.path),
     image: abs(opts.image ?? SITE.ogImage),
-    ...(opts.datePublished ? { datePublished: opts.datePublished } : {}),
-    dateModified: opts.dateModified ?? opts.datePublished,
+    ...(opts.datePublished ? { datePublished: schemaDate(opts.datePublished) } : {}),
+    dateModified: schemaDate(opts.dateModified ?? opts.datePublished),
     ...(opts.section ? { articleSection: opts.section } : {}),
     ...(opts.keywords && opts.keywords.length ? { keywords: opts.keywords.join(", ") } : {}),
     ...(opts.wordCount ? { wordCount: opts.wordCount } : {}),
