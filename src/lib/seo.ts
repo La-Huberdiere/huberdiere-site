@@ -203,7 +203,8 @@ export function serviceSchema(opts: { name: string; description: string; path: s
 export const FILM = {
   youtubeId: "AOmICm57Aq4",
   // À corriger si la vidéo est réuploadée : date de mise en ligne YouTube.
-  uploadDate: "2026-08-11",
+  // ISO 8601 complet avec fuseau, Google rejette la date nue (Search Console).
+  uploadDate: "2026-08-11T14:53:01+02:00",
   duration: "PT53S",
 };
 
