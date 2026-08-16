@@ -44,6 +44,7 @@ export const ARTICLE_SLUGS: Record<string, { en: string; it: string }> = {
   "seminaire-direction-chateau-privatise": { en: "executive-retreat-chateau-loire", it: "seminario-direzione-castello" },
   "team-building-touraine-activites": { en: "outdoor-team-building-loire", it: "attivita-team-building-castello" },
   "visiter-chateaux-de-la-loire": { en: "visiting-loire-chateaux", it: "visitare-castelli-loira" },
+  "week-end-romantique-pres-amboise": { en: "romantic-weekend-loire-chateau", it: "weekend-romantico-castello-loira" },
 };
 
 /** Slug localisé d'une page à segment unique (id → slug de la langue). */

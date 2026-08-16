@@ -33,6 +33,7 @@ const COVERS = [
   { slug: "se-marier-en-hiver-chateau", dir: PUBLIC, photo: "images/bibliotheque/salons-interieurs/salons-interieurs-03.jpg" },
   { slug: "team-building-touraine-activites", dir: PUBLIC, photo: "images/bibliotheque/seminaire/seminaire-04.jpg" },
   { slug: "seminaire-direction-chateau-privatise", dir: PUBLIC, photo: "images/bibliotheque/seminaire/seminaire-01.jpg" },
+  { slug: "week-end-romantique-pres-amboise", dir: PUBLIC, photo: "images/bibliotheque/chambres/chambre-bouquet-01.jpg" },
 ];
 
 // Dégradé très doux, sans aucun texte (rien à rogner quel que soit le recadrage).
