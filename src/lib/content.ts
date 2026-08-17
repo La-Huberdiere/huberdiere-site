@@ -1,15 +1,75 @@
 import { createReader } from "@keystatic/core/reader";
 import Markdoc from "@markdoc/markdoc";
 import keystaticConfig from "../../keystatic.config";
+import INLINE_IMAGES from "../../public/images/inline/manifest.json";
 
 // Lecteur Keystatic : lit le contenu (pages libres, articles) depuis les
 // fichiers du dépôt, au build comme en dev. Sert les routes dynamiques
 // src/pages/[...slug].astro et src/pages/blog/[...slug].astro.
 export const reader = createReader(process.cwd(), keystaticConfig);
 
+/**
+ * Rendu des images posées au fil du texte.
+ *
+ * Trois raisons de ne pas laisser markdoc rendre un <img> nu :
+ *   - les moteurs de recherche IA privilégient les pages où le texte est appuyé
+ *     par de vraies images légendées, la légende compte autant que l'alt ;
+ *   - sans width ni height, la page saute au chargement de chaque photo ;
+ *   - la bibliothèque est en 2560 px, il faut servir les dérivés webp générés
+ *     par scripts/gen-article-inline.mjs.
+ *
+ * Syntaxe côté rédaction : ![alt descriptif](/images/inline/theme/photo.webp "Légende")
+ * Une image sans légende reste une image, sans <figure>.
+ */
+const inlineMeta = INLINE_IMAGES as Record<string, { w: number; h: number }>;
+
+function imageTag(src: string, alt: string, title?: string) {
+  const meta = inlineMeta[src];
+  const attrs: Record<string, string> = { src, alt, loading: "lazy", decoding: "async" };
+  if (meta) {
+    attrs.width = String(meta.w);
+    attrs.height = String(meta.h);
+    attrs.srcset = `${src} ${meta.w}w, ${src.replace(/\.webp$/, "@2x.webp")} ${meta.w * 2}w`;
+    attrs.sizes = "(max-width: 860px) 100vw, 720px";
+  }
+  const img = new Markdoc.Tag("img", attrs);
+  if (!title) return img;
+  return new Markdoc.Tag("figure", { class: "article-figure" }, [
+    img,
+    new Markdoc.Tag("figcaption", {}, [title]),
+  ]);
+}
+
+const markdocConfig = {
+  nodes: {
+    image: {
+      attributes: {
+        src: { type: String, required: true },
+        alt: { type: String },
+        title: { type: String },
+      },
+      transform(node: any, config: any) {
+        const { src, alt = "", title } = node.transformAttributes(config);
+        return imageTag(src, alt, title);
+      },
+    },
+    // Markdoc enferme toute image dans un paragraphe. Un <figure> dans un <p>
+    // est invalide et le navigateur referme le <p> avant, ce qui casse la mise
+    // en page. Quand le paragraphe ne contient que la figure, on retire le <p>.
+    paragraph: {
+      transform(node: any, config: any) {
+        const children = node.transformChildren(config);
+        const meaningful = children.filter((c: any) => typeof c !== "string" || c.trim() !== "");
+        if (meaningful.length === 1 && meaningful[0]?.name === "figure") return meaningful[0];
+        return new Markdoc.Tag("p", node.transformAttributes(config), children);
+      },
+    },
+  },
+};
+
 // Transforme le corps markdoc (éditeur riche Keystatic) en HTML.
 export function renderMarkdocNode(node: unknown): string {
-  const renderable = Markdoc.transform(node as any);
+  const renderable = Markdoc.transform(node as any, markdocConfig as any);
   return Markdoc.renderers.html(renderable);
 }
 

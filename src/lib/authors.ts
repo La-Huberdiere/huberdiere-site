@@ -1,7 +1,11 @@
 // Auteurs du blog : signal E-E-A-T (auteur réel, identifié, avec expertise du lieu).
 // Rôle et bio sont localisés FR/EN/IT pour ne pas laisser du français sur /en et /it.
-// La photo est optionnelle : tant qu'aucun fichier n'existe, un monogramme s'affiche.
-// Déposer les photos dans public/images/authors/ puis renseigner `photo`.
+//
+// Les moteurs de recherche génératifs raisonnent en entités, pas en chaînes de
+// caractères. Un prénom seul dans un champ `author` ne construit rien. D'où les
+// trois éléments réunis ici : le nom complet (`fullName`, celui qui part dans le
+// schema Person), une photo réelle, et une page de rattachement (« Notre
+// histoire ») qui sert d'URL canonique de la personne.
 
 export type Lang = "fr" | "en" | "it";
 
@@ -9,15 +13,19 @@ interface AuthorL10n { role: string; bio: string }
 export interface Author {
   id: string;
   name: string;
+  fullName: string;
   role: string;
   bio: string;
   photo?: string;
+  /** Id de la page libre qui présente la personne, pour Person.url. */
+  page: string;
 }
 
-const DATA: Record<string, { name: string; photo?: string; l10n: Record<Lang, AuthorL10n> }> = {
+const DATA: Record<string, { name: string; fullName: string; photo?: string; l10n: Record<Lang, AuthorL10n> }> = {
   lodovica: {
     name: "Lodovica",
-    // photo: "/images/authors/lodovica.jpg",
+    fullName: "Lodovica Dal Pozzo d'Annone",
+    photo: "/images/authors/lodovica.jpg",
     l10n: {
       fr: {
         role: "Propriétaire et maîtresse de maison du Château de la Huberdière",
@@ -35,7 +43,8 @@ const DATA: Record<string, { name: string; photo?: string; l10n: Record<Lang, Au
   },
   patrick: {
     name: "Patrick",
-    // photo: "/images/authors/patrick.jpg",
+    fullName: "Patrick Jourdan",
+    photo: "/images/authors/patrick.jpg",
     l10n: {
       fr: {
         role: "Propriétaire et maître de maison du Château de la Huberdière",
@@ -55,7 +64,15 @@ const DATA: Record<string, { name: string; photo?: string; l10n: Record<Lang, Au
 
 export const defaultAuthorId = "lodovica";
 
+/** Page libre qui présente les deux hôtes, et sert d'URL d'entité. */
+export const AUTHOR_PAGE = "notre-histoire";
+
 export function getAuthor(id?: string | null, lang: Lang = "fr"): Author {
   const d = DATA[id ?? ""] ?? DATA[defaultAuthorId];
-  return { id: id ?? defaultAuthorId, name: d.name, photo: d.photo, ...d.l10n[lang] };
+  return { id: id ?? defaultAuthorId, name: d.name, fullName: d.fullName, photo: d.photo, page: AUTHOR_PAGE, ...d.l10n[lang] };
+}
+
+/** Les deux hôtes, pour le balisage Person de la page « Notre histoire ». */
+export function allAuthors(lang: Lang = "fr"): Author[] {
+  return Object.keys(DATA).map((id) => getAuthor(id, lang));
 }

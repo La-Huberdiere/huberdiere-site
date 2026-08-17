@@ -268,6 +268,30 @@ export function faqSchema(items: { question: string; answer: string }[]) {
   };
 }
 
+/**
+ * Balisage Person des deux hôtes, posé sur la page qui les présente.
+ *
+ * Le même @id est repris par l'`author` de chaque article : les moteurs relient
+ * alors les 13 articles, les deux personnes et l'établissement en un seul
+ * graphe, au lieu de deux prénoms qui ne renvoient à rien. C'est le signal
+ * E-E-A-T qui manquait, et celui que les moteurs génératifs regardent en premier
+ * pour décider si une page fait autorité sur son sujet.
+ */
+export function hostsSchemas(page: string, hosts: { key: string; fullName: string; role: string; bio: string; photo?: string }[]) {
+  return hosts.map((h) => ({
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": `${abs(page)}#${h.key}`,
+    url: abs(page),
+    name: h.fullName,
+    jobTitle: h.role,
+    description: h.bio,
+    ...(h.photo ? { image: abs(h.photo) } : {}),
+    worksFor: { "@id": `${SITE.url}/#organization` },
+    homeLocation: { "@id": `${SITE.url}/#lodging` },
+  }));
+}
+
 /** Fabrique les schemas d'une page activité (fil d'Ariane + service + FAQ).
  *  Centralisé pour rester cohérent sur les routes FR/EN/IT. */
 export function activitySchemas(opts: { m: any; slug: string; lang: "fr" | "en" | "it" }) {
@@ -308,15 +332,21 @@ export function articleSchema(opts: {
   image?: string;
   datePublished?: string;
   dateModified?: string;
-  author?: { name: string; role?: string; image?: string };
+  author?: { name: string; role?: string; image?: string; page?: string; key?: string };
   section?: string;
   keywords?: string[];
   wordCount?: number;
   lang?: Lang;
 }) {
+  // Person avec @id stable et url de rattachement : c'est ce qui transforme un
+  // prénom en entité réutilisable d'un article à l'autre, et d'une langue à
+  // l'autre. Sans ça, chaque article crée un auteur anonyme de plus.
   const author = opts.author
     ? {
         "@type": "Person",
+        ...(opts.author.page && opts.author.key
+          ? { "@id": `${abs(opts.author.page)}#${opts.author.key}`, url: abs(opts.author.page) }
+          : {}),
         name: opts.author.name,
         ...(opts.author.role ? { jobTitle: opts.author.role } : {}),
         ...(opts.author.image ? { image: abs(opts.author.image) } : {}),

@@ -3,6 +3,9 @@ import Base from "../../layouts/Base.astro";
 import FreePage from "../../components/FreePage.astro";
 import LegalPage from "../../components/LegalPage.astro";
 import { pageStaticPaths } from "../../lib/content";
+import { hostsSchemas } from "../../lib/seo";
+import { allAuthors, AUTHOR_PAGE } from "../../lib/authors";
+import { localizePath } from "../../lib/routes";
 
 // Pages libres traduites (collection pages-en). Slugs identiques au FR.
 export async function getStaticPaths() {
@@ -11,12 +14,18 @@ export async function getStaticPaths() {
 
 const { entry, html, canonicalId } = Astro.props;
 const isSimple = entry.layout === "simple";
+// La page des hôtes porte le balisage Person des deux propriétaires : c'est
+// elle qui sert d'ancrage d'entité à l'`author` de tous les articles.
+const schemas = canonicalId === AUTHOR_PAGE
+  ? hostsSchemas(localizePath(`/${AUTHOR_PAGE}`, "en"), allAuthors("en").map((a) => ({ key: a.id, fullName: a.fullName, role: a.role, bio: a.bio, photo: a.photo })))
+  : [];
 ---
 <Base
   title={`${entry.title} · Château de la Huberdière`}
   description={entry.description}
   lang="en"
   path={`/${canonicalId}`}
+  schemas={schemas}
 >
   {isSimple
     ? <LegalPage entry={entry} html={html} />
