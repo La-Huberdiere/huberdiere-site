@@ -40,6 +40,35 @@ const KEYWORDS = [
   { intent: "Retraite / bien-être", keyword: "retraite yoga touraine" },
   { intent: "Famille / groupe", keyword: "location château touraine" },
   { intent: "Restauration", keyword: "restaurant gastronomique amboise" },
+  // Requêtes informationnelles, celles que visent les articles du blog. Elles sont
+  // suivies à part : un aperçu IA se déclenche sur 99 % des recherches de ce type,
+  // contre 3 à 6 % des recherches locales et commerciales ci-dessus. Sans elles, la
+  // mesure des aperçus IA ne verrait jamais rien et laisserait croire au calme plat.
+  // `blog: true` les sort du graphe de positions, qui deviendrait illisible à 19 lignes.
+  { intent: "Blog", keyword: "dormir dans un château de la loire", blog: true },
+  { intent: "Blog", keyword: "visiter les châteaux de la loire", blog: true },
+  { intent: "Blog", keyword: "prix mariage château loire", blog: true },
+  { intent: "Blog", keyword: "louer un château entre amis", blog: true },
+  { intent: "Blog", keyword: "week-end romantique val de loire", blog: true },
+  // Aucun article ne la vise encore : elle pose la référence avant le virage
+  // « contenu de destination » du calendrier éditorial.
+  { intent: "Blog", keyword: "que faire autour d'amboise", blog: true },
+]
+
+// Requêtes de marque. Leur POSITION ne dit rien (le site est premier depuis toujours),
+// c'est leur VOLUME qui compte : quelqu'un lit un aperçu IA ou une réponse ChatGPT,
+// retient le nom, revient trois jours plus tard en le tapant. Cette courbe est le seul
+// indicateur honnête du travail de visibilité maintenant que le clic depuis les
+// résultats n'est plus attribuable.
+// « la huberdière » seule est VOLONTAIREMENT exclue : 590 à 880 recherches par mois
+// pour un indice de concurrence de 2, c'est un toponyme, il existe des lieux-dits de
+// ce nom ailleurs en France. L'inclure triplerait le chiffre sans qu'il parle du
+// château. Un indicateur client se construit sur ce qu'on peut défendre.
+const BRAND_KEYWORDS = [
+  "château de la huberdière",
+  "chateau de la huberdiere",
+  "huberdière amboise",
+  "chateau huberdiere nazelles",
 ]
 
 const LLM_ENGINES = [
@@ -142,6 +171,43 @@ async function pullSerp() {
       }
     })
   )
+}
+
+/**
+ * Volume de recherche sur le nom du château, 12 derniers mois.
+ *
+ * Un seul appel pour les 4 variantes de marque (facturation à la requête, pas au
+ * mot-clé). On additionne : « chateau de la huberdiere » sans accent et la forme
+ * accentuée sont deux entrées distinctes chez Google Ads, mais un seul et même
+ * geste chez l'internaute.
+ */
+async function pullBrandVolume() {
+  try {
+    const result = await dfs("/keywords_data/google_ads/search_volume/live", {
+      keywords: BRAND_KEYWORDS, location_code: LOCATION, language_code: LANGUAGE,
+    })
+    const parMois = new Map()
+    let moyenne = 0
+    for (const r of result ?? []) {
+      moyenne += r.search_volume ?? 0
+      // L'API renvoie un tableau {year, month, search_volume} ; certains proxys le
+      // remettent à plat en objet {"AAAA-MM": volume}. On accepte les deux formes.
+      const ms = r.monthly_searches
+      if (Array.isArray(ms)) {
+        for (const m of ms) {
+          const ym = `${m.year}-${String(m.month).padStart(2, "0")}`
+          parMois.set(ym, (parMois.get(ym) ?? 0) + (m.search_volume ?? 0))
+        }
+      } else if (ms && typeof ms === "object") {
+        for (const [ym, v] of Object.entries(ms)) parMois.set(ym, (parMois.get(ym) ?? 0) + (v ?? 0))
+      }
+    }
+    const serie = [...parMois.entries()].sort((a, b) => a[0].localeCompare(b[0])).slice(-12)
+    return { moyenne, serie: serie.map(([ym, v]) => ({ ym, label: monthShort(ym), volume: v })) }
+  } catch (e) {
+    console.error("[rapport] pullBrandVolume KO:", e.message)
+    return null
+  }
 }
 
 async function pullBacklinks() {
@@ -594,7 +660,7 @@ function movement(cur, prev, hasPrev) {
 }
 
 function renderHtml(data) {
-  const { month, serp, backlinks, refDomains, blHistory, gbp, llm, articles, history, exec, leads, traffic } = data
+  const { month, serp, backlinks, refDomains, blHistory, gbp, llm, articles, history, exec, leads, traffic, brand } = data
   const monthLabel = monthLong(month)
   const rankedCount = serp.filter((s) => s.position !== null).length
   const bestPos = bestKeyword(serp)
@@ -712,6 +778,16 @@ function renderHtml(data) {
 
   ${renderTraffic(traffic, monthLabel)}
 
+  ${brand && brand.serie.length ? `<h2>Notoriété : on cherche le château par son nom</h2>
+  <p class="lead">Nombre de recherches Google portant sur « Château de la Huberdière » et ses variantes, mois par mois. C'est devenu l'indicateur le plus fiable du travail de visibilité, et voici pourquoi.</p>
+  <div class="card"><canvas id="brandChart"></canvas></div>
+  <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
+    <div class="kpi"><div class="l">Recherches ce mois</div><div class="v">${fr(brand.serie[brand.serie.length - 1].volume)}</div><div class="n">sur le nom du château</div></div>
+    <div class="kpi"><div class="l">Il y a un an</div><div class="v">${brand.serie.length >= 12 ? fr(brand.serie[0].volume) : "–"}</div><div class="n">${brand.serie.length >= 12 ? esc(brand.serie[0].label) : "historique incomplet"}</div></div>
+    <div class="kpi"><div class="l">Moyenne mensuelle</div><div class="v">${fr(brand.moyenne)}</div><div class="n">sur les 12 derniers mois</div></div>
+  </div>
+  <p class="note">Depuis que Google répond directement dans son aperçu IA, une partie des internautes ne clique plus le lien : ils lisent la réponse, retiennent le nom du château, et reviennent quelques jours plus tard en le tapant dans Google ou en allant droit sur le site. Ce trajet-là n'apparaît nulle part dans les statistiques de trafic. En revanche il se voit ici : plus le nom est cherché, plus le château a été vu et retenu, quel que soit l'endroit où il a été vu. Une courbe qui monte pendant que le trafic depuis les résultats de recherche stagne n'est pas une contradiction, c'est la signature de ce nouveau fonctionnement.</p>` : ""}
+
   <h2>Progression des positions Google</h2>
   <p class="lead">Position de vos mots-clés cibles, avec le mouvement depuis le rapport précédent. Position 1 = tout en haut de Google, donc plus le chiffre est petit, mieux c'est.</p>
   <div class="card"><canvas id="posChart"></canvas></div>
@@ -728,7 +804,7 @@ function renderHtml(data) {
       return `<tr><td>${esc(s.keyword)}</td><td>${esc(s.intent)}</td><td class="num pos">${posCell}</td><td class="num ${mv.cls}">${mv.txt}</td><td class="num">${aioCell}</td><td style="color:var(--gris)">${esc(s.leader || "")}</td></tr>`
     }).join("")}</tbody>
   </table>
-  <p class="note">La colonne « Évolution » apparaît dès le 2ᵉ rapport : ce mois pose la référence pour les mots-clés qui viennent d'être ajoutés. La colonne « Aperçu IA » indique si Google affiche un résumé rédigé par son intelligence artificielle au-dessus des résultats, et si le château y est cité comme source.</p>
+  <p class="note">La colonne « Évolution » apparaît dès le 2ᵉ rapport : ce mois pose la référence pour les mots-clés qui viennent d'être ajoutés. La colonne « Aperçu IA » indique si Google affiche un résumé rédigé par son intelligence artificielle au-dessus des résultats, et si le château y est cité comme source. Les mots-clés notés « Blog » sont les recherches que visent vos articles : ce sont elles qui déclenchent presque toujours un aperçu IA, alors que vos recherches commerciales et locales en déclenchent rarement. Le graphe ci-dessus ne trace que ces dernières, pour rester lisible.</p>
 
   ${opportunities.length ? `<h2>À un pas de la page 1</h2>
   <p class="lead">Ces mots-clés sont en page 2 ou 3 (positions 11 à 30). Ce sont les gains les plus rapides à aller chercher le mois prochain.</p>
@@ -807,9 +883,24 @@ function renderHtml(data) {
 
 <script>
 const HISTORY = ${JSON.stringify(history)};
-const KW = ${JSON.stringify(KEYWORDS.map((k) => k.keyword))};
+const KW = ${JSON.stringify(KEYWORDS.filter((k) => !k.blog).map((k) => k.keyword))};
 const BL = ${JSON.stringify(blSorted.slice(-8))};
 const palette = ["#8B0000","#B08D57","#5C4B3C","#2E7D32","#3b6ea5","#8B7355","#a0508b","#417d7a","#c06014","#6a7b53","#9c4f2f","#4a6b8a","#7d5a3c"];
+// Graphe 0 : recherches sur le nom du château. Barres plutôt que courbe : c'est un
+// volume mensuel, pas une mesure continue.
+(function(){
+  const B = ${JSON.stringify(brand?.serie ?? [])};
+  if (!B.length) return;
+  new Chart(document.getElementById("brandChart"), {
+    type: "bar",
+    data: { labels: B.map(p => p.label), datasets: [{ label: "Recherches sur le nom du château", data: B.map(p => p.volume), backgroundColor: "#8B0000", borderRadius: 0 }] },
+    options: {
+      responsive: true,
+      scales: { y: { beginAtZero: true, title: { display: true, text: "Recherches par mois" }, ticks: { precision: 0 } } },
+      plugins: { legend: { display: false } }
+    }
+  });
+})();
 // Graphe 1 : position par mot-clé (mois avec données de position).
 (function(){
   const POS = HISTORY.filter(h => h.positions);
@@ -913,8 +1004,8 @@ export async function generateReport(prevHistory = [], month = null) {
   const ym = month || `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`
   const monthLabelShort = monthShort(ym)
 
-  const [serp, backlinks, refDomains, blHistory, gbp, llm, domainHistory, leads, traffic] = await Promise.all([
-    pullSerp(), pullBacklinks(), pullReferringDomains(), pullBacklinksHistory(), pullGbp(), pullLlm(), pullDomainHistory(), pullLeads(ym), pullUmami(ym),
+  const [serp, backlinks, refDomains, blHistory, gbp, llm, domainHistory, leads, traffic, brand] = await Promise.all([
+    pullSerp(), pullBacklinks(), pullReferringDomains(), pullBacklinksHistory(), pullGbp(), pullLlm(), pullDomainHistory(), pullLeads(ym), pullUmami(ym), pullBrandVolume(),
   ])
   // Borne de publication : aujourd'hui pour le mois courant, fin de mois pour un
   // rapport rétroactif. Évite de lister un article encore à venir (lien 404).
@@ -945,6 +1036,7 @@ export async function generateReport(prevHistory = [], month = null) {
   cur.llmCited = citedTotal
   cur.llmAnswered = answeredTotal
   cur.aio = { present: serp.filter((s) => s.aio).length, cited: serp.filter((s) => s.aioCited).length, keywords: serp.length }
+  if (brand) cur.brandVolume = brand.serie[brand.serie.length - 1]?.volume ?? null
   if (leads) cur.leads = { total: leads.total, newsletter: leads.newsletter, chatgpt: leads.chatgpt }
   if (traffic) cur.traffic = { pageviews: traffic.pageviews, visitors: traffic.visitors, visits: traffic.visits }
   cur.hasReport = true
@@ -957,7 +1049,7 @@ export async function generateReport(prevHistory = [], month = null) {
   const deltaBl = blPrev ? blNow.backlinks - blPrev.backlinks : null
 
   const exec = buildExec({ month: ym, serp, articles, blNow, deltaBl, citedTotal, answeredTotal, gbp })
-  const html = renderHtml({ month: ym, serp, backlinks, refDomains, blHistory, gbp, llm, articles, history, exec, leads, traffic })
+  const html = renderHtml({ month: ym, serp, backlinks, refDomains, blHistory, gbp, llm, articles, history, exec, leads, traffic, brand })
 
   const summary = {
     month: ym,
@@ -969,6 +1061,8 @@ export async function generateReport(prevHistory = [], month = null) {
     llmAnswered: answeredTotal,
     aioPresent: serp.filter((s) => s.aio).length,
     aioCited: serp.filter((s) => s.aioCited).length,
+    marque: brand?.serie[brand.serie.length - 1]?.volume ?? null,
+    marqueAnPasse: brand && brand.serie.length >= 12 ? brand.serie[0].volume : null,
     backlinks: blNow.backlinks,
     gbpNote: gbp?.note ?? null,
     demandes: leads?.total ?? null,
