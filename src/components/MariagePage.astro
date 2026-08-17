@@ -7,6 +7,7 @@ import { reader, isLive } from "../lib/content";
 import { octorateUrl } from "../lib/octorate";
 import { landingMedia } from "../lib/landingMedia";
 import { localizePath } from "../lib/routes";
+import { attributionField } from "../lib/attribution";
 
 // Textes en props selon la langue ; image de hero variable par activité.
 const { m, cible = "mariage", heroImg } = Astro.props;
@@ -16,6 +17,7 @@ const hero = heroImg ?? pHero;
 const media = landingMedia[cible];
 
 const lang = (Astro.currentLocale as "fr" | "en" | "it") ?? "fr";
+const attribution = attributionField(lang);
 
 // Libellés des champs pratiques d'une chambre (lit, étage, orientation, clim, salle
 // de bain, vue) + textes de la section chambres, localisés. Les valeurs, elles,
@@ -387,6 +389,12 @@ const midCtaLead = {
       <input type="tel" name="telephone" placeholder="Téléphone" />
     </div>
     <textarea name="message" rows="4" placeholder="Votre projet : date envisagée, nombre d'invités, vos envies…"></textarea>
+
+    <label class="attr-label" for="attribution">{attribution.prompt}</label>
+    <select name="attribution" id="attribution" class="attr-select">
+      <option value=""></option>
+      {attribution.options.map((o) => <option value={o.value}>{o.label}</option>)}
+    </select>
 
     <button type="submit" class="btn-burgundy" id="submitBtn">{m.final.submitLabel}</button>
     <p class="form-status" id="formStatus" role="status"></p>

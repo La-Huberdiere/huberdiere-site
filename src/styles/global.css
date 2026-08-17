@@ -327,6 +327,19 @@ section{padding:140px 48px;position:relative}
 .lead-form input:focus,.lead-form textarea:focus{outline:none;border-color:var(--burgundy)}
 .lead-form input::placeholder,.lead-form textarea::placeholder{color:#9a9a9a}
 .lead-form .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+/* « Comment nous avez-vous connus ? » : facultatif, donc posé sous le message et
+   annoncé par un vrai label plutôt qu'un placeholder, qui disparaît à la saisie.
+   Chevron dessiné en CSS, l'apparence native varie trop d'un système à l'autre. */
+.lead-form .attr-label{display:block;font-family:'Montserrat',sans-serif;font-size:13px;color:var(--muted,#646464);margin:0 0 8px}
+.lead-form .attr-select{
+  width:100%;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:300;color:var(--ink);
+  background:#fff;border:1px solid var(--line);padding:15px 16px;margin-bottom:22px;transition:border-color .3s;
+  appearance:none;-webkit-appearance:none;border-radius:0;cursor:pointer;
+  background-image:linear-gradient(45deg,transparent 50%,#8b0000 50%),linear-gradient(135deg,#8b0000 50%,transparent 50%);
+  background-position:calc(100% - 20px) calc(50% + 2px),calc(100% - 14px) calc(50% + 2px);
+  background-size:6px 6px,6px 6px;background-repeat:no-repeat;
+}
+.lead-form .attr-select:focus{outline:none;border-color:var(--burgundy)}
 .lead-form button{width:100%;border:none;cursor:pointer}
 .lead-form button:disabled{opacity:.55;cursor:default}
 .form-status{min-height:20px;margin:16px 0 0;font-size:13px;color:var(--burgundy);text-align:center}

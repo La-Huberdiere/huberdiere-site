@@ -2,12 +2,14 @@
 import HeroPicture from "./HeroPicture.astro";
 import pHero from "../assets/BD_5.jpg";
 import pHeroMobile from "../assets/BD_5-portrait.jpg";
+import { attributionField } from "../lib/attribution";
 
 // Textes (c) et coordonnées (settings.footer) en props selon la langue.
 const { c, settings, cible = "contact" } = Astro.props;
 const f = settings.footer;
 const lang = (Astro.currentLocale as "fr" | "en" | "it") ?? "fr";
 const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
+const attribution = attributionField(lang);
 ---
 <section class="page-hero">
   <HeroPicture desktop={pHero} mobile={pHeroMobile} alt={c.hero.titleLine1} />
@@ -45,6 +47,12 @@ const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
           <input type="tel" name="telephone" placeholder="Téléphone" />
         </div>
         <textarea name="message" rows="4" placeholder="Votre projet : dates, nombre de personnes, vos envies…"></textarea>
+
+        <label class="attr-label" for="attribution">{attribution.prompt}</label>
+        <select name="attribution" id="attribution" class="attr-select">
+          <option value=""></option>
+          {attribution.options.map((o) => <option value={o.value}>{o.label}</option>)}
+        </select>
 
         <button type="submit" class="btn-burgundy" id="submitBtn">{c.submitLabel}</button>
         <p class="form-status" id="formStatus" role="status"></p>

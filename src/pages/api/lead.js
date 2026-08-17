@@ -1,6 +1,8 @@
 // Réception des formulaires du site → Brevo (CRM + emails).
 // Tourne en fonction serverless sur Vercel. La clé API reste côté serveur.
 // 3 emails : confirmation au prospect + notification à l'équipe (contact@ et Alexis).
+import { attributionLabel } from "../../lib/attribution";
+
 export const prerender = false;
 
 const TAGS = {
@@ -123,6 +125,8 @@ export async function POST({ request }) {
         MESSAGE: data.message || "",
         FORM: [tag],
         CANAL: origin,
+        // Déclaratif du prospect, seul rattrapage des leads en accès direct.
+        ATTRIBUTION: attributionLabel(data.attribution),
         UTM_SOURCE: data.utm_source || "",
         UTM_MEDIUM: data.utm_medium || "",
         UTM_TERM: data.utm_term || "",
@@ -282,6 +286,7 @@ function notifyHtml(data, cibleLabel, meta, origin) {
   const rows = [
     ["Activité", cibleLabel],
     ["Canal (détecté)", origin],
+    ["Connu par (déclaré)", attributionLabel(data.attribution)],
     ["Source (utm_source)", data.utm_source],
     ["Support (utm_medium)", data.utm_medium],
     ["Campagne (utm_campaign)", data.utm_campaign],

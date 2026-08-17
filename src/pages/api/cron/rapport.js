@@ -40,6 +40,8 @@ async function sendEmail(summary, monthLabel) {
     ? `aucun de vos ${s.keywords} mots-clés suivis n'est encore positionné sur Google`
     : `${s.ranked} de vos ${s.keywords} mots-clés suivis ${s.ranked > 1 ? "sont positionnés" : "est positionné"} sur Google`
   const gbp = s.gbpNote != null ? `, et votre note Google se maintient à ${String(s.gbpNote).replace(".", ",")}/5` : ""
+  const aio = !s.aioPresent ? ""
+    : ` Google affiche désormais son résumé IA sur ${s.aioPresent} de vos mots-clés suivis${s.aioCited > 0 ? `, et le château y figure comme source sur ${s.aioCited} d'entre eux` : ", le château n'y figure pas encore comme source"}.`
   const dem = s.demandes == null || s.demandes === 0 ? ""
     : ` Côté demandes, vous avez reçu ${s.demandes} contact${s.demandes > 1 ? "s" : ""} via le site${s.demandesChatgpt > 0 ? `, dont ${s.demandesChatgpt} en provenance de ChatGPT` : ""}.`
   const html = `
@@ -50,7 +52,7 @@ async function sendEmail(summary, monthLabel) {
         <a href="${REPORT_URL}?m=${s.month}" style="color:#8B0000;font-weight:600;font-size:16px">Ouvrir le rapport →</a><br>
         <span style="color:#646464;font-size:13px">mot de passe <strong>SEOHUBERDIERE</strong>, à saisir une seule fois sur votre navigateur</span>
       </p>
-      <p>En deux mots ce mois-ci : ${art}, et ${kw}. Côté intelligences artificielles, le château a été cité ${s.llmCited} fois sur ${s.llmAnswered} questions testées${gbp}.${dem}</p>
+      <p>En deux mots ce mois-ci : ${art}, et ${kw}. Côté intelligences artificielles, le château a été cité ${s.llmCited} fois sur ${s.llmAnswered} questions testées${gbp}.${aio}${dem}</p>
       <p>Le rapport reprend l'évolution mois par mois et ce sur quoi je travaille pour la suite. Une question, un doute ? Répondez simplement à ce message.</p>
       <p style="margin-top:24px">Bonne lecture,<br>Alexis</p>
     </div>`

@@ -87,20 +87,58 @@ const domMatch = (d, t) => {
   return a === b || a.endsWith("." + b)
 }
 
+/**
+ * Sources citées par un aperçu IA. DataForSEO les expose à deux endroits selon le
+ * format de l'encart : le tableau `references` de l'item, et celui de chaque
+ * élément interne. On agrège les deux et on dédoublonne par URL.
+ */
+function aioReferences(aio) {
+  const out = []
+  const push = (arr) => {
+    for (const r of arr ?? []) {
+      if (!r?.domain && !r?.url) continue
+      out.push({ domain: r.domain ?? "", url: r.url ?? "", title: r.title ?? r.source ?? "" })
+    }
+  }
+  push(aio.references)
+  for (const el of aio.items ?? []) push(el.references)
+  const seen = new Set()
+  return out.filter((r) => {
+    const key = (r.url || r.domain).toLowerCase()
+    if (seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
+}
+
 async function pullSerp() {
   return Promise.all(
     KEYWORDS.map(async (k) => {
       try {
+        // load_async_ai_overview : ramène l'aperçu IA même quand Google le charge
+        // en différé. Surcoût DataForSEO de 0,0006 $ par mot-clé, négligeable.
         const result = await dfs("/serp/google/organic/live/advanced", {
           keyword: k.keyword, location_code: LOCATION, language_code: LANGUAGE, device: "desktop", depth: 100,
+          load_async_ai_overview: true,
         })
-        const items = (result[0]?.items ?? []).filter((i) => i.type === "organic")
+        const all = result[0]?.items ?? []
+        const items = all.filter((i) => i.type === "organic")
         const own = items.find((i) => domMatch(i.domain, DOMAIN))
         const leader = items.find((i) => i.rank_absolute === 1) ?? items[0]
-        return { ...k, position: own?.rank_absolute ?? null, url: own?.url ?? null, leader: leader?.domain ?? null }
+        const aio = all.find((i) => i.type === "ai_overview")
+        const aioRefs = aio ? aioReferences(aio) : []
+        return {
+          ...k,
+          position: own?.rank_absolute ?? null,
+          url: own?.url ?? null,
+          leader: leader?.domain ?? null,
+          aio: !!aio,
+          aioCited: aioRefs.some((r) => domMatch(r.domain, DOMAIN)),
+          aioRefs: aioRefs.slice(0, 6),
+        }
       } catch (e) {
         console.error("SERP KO", k.keyword, e.message)
-        return { ...k, position: null, url: null, leader: null }
+        return { ...k, position: null, url: null, leader: null, aio: false, aioCited: false, aioRefs: [] }
       }
     })
   )
@@ -295,7 +333,12 @@ export function buildLeadsData(contacts, ym) {
     if (!form) continue
     if (isTestEmail(x.email)) continue
     if (form === "Newsletter_Form") { newsletter++; continue }
-    demandes.push({ cible: CIBLE_LABEL_RAPPORT[form] || form, canal: leadChannel(A(x, "UTM_SOURCE")) })
+    demandes.push({
+      cible: CIBLE_LABEL_RAPPORT[form] || form,
+      canal: leadChannel(A(x, "UTM_SOURCE")),
+      // Déclaratif du prospect (champ « Comment nous avez-vous connus ? »).
+      declare: String(A(x, "ATTRIBUTION") || "").trim(),
+    })
   }
 
   const tally = (arr, key) => {
@@ -305,7 +348,13 @@ export function buildLeadsData(contacts, ym) {
   }
   const chatgpt = demandes.filter((d) => d.canal === "ChatGPT").length
   const identifies = demandes.filter((d) => d.canal !== "Accès direct / source non identifiée").length
-  return { total: demandes.length, newsletter, parCible: tally(demandes, "cible"), parCanal: tally(demandes, "canal"), chatgpt, identifies }
+  const declares = demandes.filter((d) => d.declare)
+  return {
+    total: demandes.length, newsletter,
+    parCible: tally(demandes, "cible"), parCanal: tally(demandes, "canal"),
+    parDeclare: tally(declares, "declare"), declares: declares.length,
+    chatgpt, identifies,
+  }
 }
 
 async function pullLeads(ym) {
@@ -344,6 +393,11 @@ export function renderLeads(ld, monthLabel) {
     const strong = c === "ChatGPT"
     return `<tr><td>${strong ? `<strong style="color:var(--bordeaux)">${esc(c)}</strong>` : esc(c)}</td><td class="num">${n}</td></tr>`
   }).join("")
+  // Déclaratif : « IA » mis en avant, c'est le canal que rien d'autre ne mesure.
+  const declareRows = (ld.parDeclare ?? []).map(([c, n]) => {
+    const strong = /IA$|ChatGPT/.test(c)
+    return `<tr><td>${strong ? `<strong style="color:var(--bordeaux)">${esc(c)}</strong>` : esc(c)}</td><td class="num">${n}</td></tr>`
+  }).join("")
   const chatgptNote = ld.chatgpt > 0
     ? `<div class="summary" style="border-left-color:var(--bordeaux)"><strong>Signal IA :</strong> ${ld.chatgpt} demande${ld.chatgpt > 1 ? "s" : ""} ${ld.chatgpt > 1 ? "sont arrivées" : "est arrivée"} via ChatGPT ce mois-ci. Les visiteurs qui interrogent une IA avant de choisir un lieu commencent à trouver le château : un premier retour du travail de visibilité sur les moteurs de réponse.</div>`
     : ""
@@ -355,11 +409,14 @@ export function renderLeads(ld, monthLabel) {
     <div class="kpi"><div class="l">Newsletter</div><div class="v">${ld.newsletter}</div><div class="n">nouvelles inscriptions</div></div>
   </div>
   ${chatgptNote}
-  <div class="leadsgrid" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:14px">
+  <div class="leadsgrid" style="display:grid;grid-template-columns:${declareRows ? "1fr 1fr 1fr" : "1fr 1fr"};gap:18px;margin-top:14px">
     <div><table><thead><tr><th>Par activité</th><th class="num">Demandes</th></tr></thead><tbody>${cibleRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
     <div><table><thead><tr><th>Par canal d'origine</th><th class="num">Demandes</th></tr></thead><tbody>${canalRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
+    ${declareRows ? `<div><table><thead><tr><th>Ce qu'ils déclarent</th><th class="num">Demandes</th></tr></thead><tbody>${declareRows}</tbody></table></div>` : ""}
   </div>
-  <p class="note">Le canal est déduit de la première visite (recherche Google, IA, réseaux, lien direct). Une part des demandes reste en « source non identifiée » : l'ajout d'un champ « Comment nous avez-vous connus ? » dans les formulaires fiabilisera ce point.</p>`
+  <p class="note">Le canal est déduit de la première visite (recherche Google, IA, réseaux, lien direct). ${declareRows
+    ? `La troisième colonne vient du champ « Comment nous avez-vous connus &#63; » du formulaire, renseigné par ${ld.declares} personne${ld.declares > 1 ? "s" : ""} ce mois-ci. C'est la seule mesure qui rattrape le bouche à oreille et les réponses d'IA, invisibles pour les outils de suivi.`
+    : `Une part des demandes reste en « source non identifiée » : le champ « Comment nous avez-vous connus &#63; » vient d'être ajouté aux formulaires, ses premiers résultats apparaîtront le mois prochain.`}</p>`
 }
 
 // ── Fréquentation du site (Umami, analytics cookieless) ────────────────────
@@ -558,6 +615,20 @@ function renderHtml(data) {
   // Opportunités : mots-clés en page 2-3 (11 à 30), les plus proches de la page 1.
   const opportunities = serp.filter((s) => s.position != null && s.position >= 11 && s.position <= 30).sort((a, b) => a.position - b.position)
 
+  // Aperçus IA de Google (AI Overviews). Déployés en France le 22 juillet 2026 :
+  // on mesure sur quels mots-clés l'encart s'affiche, et s'il cite le château.
+  const aioKw = serp.filter((s) => s.aio)
+  const aioCitedKw = serp.filter((s) => s.aioCited)
+  const aioTopDomains = (() => {
+    const count = new Map()
+    for (const s of aioKw) {
+      for (const d of new Set(s.aioRefs.map((r) => r.domain).filter(Boolean))) {
+        count.set(d, (count.get(d) ?? 0) + 1)
+      }
+    }
+    return [...count.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 8)
+  })()
+
   // Visibilité IA : pivot par question (thème × moteurs).
   const perQuestion = LLM_PROMPTS.map((p, idx) => {
     const citedBy = llm.filter((e) => e.rows[idx]?.cited).map((e) => e.engine)
@@ -645,16 +716,19 @@ function renderHtml(data) {
   <p class="lead">Position de vos mots-clés cibles, avec le mouvement depuis le rapport précédent. Position 1 = tout en haut de Google, donc plus le chiffre est petit, mieux c'est.</p>
   <div class="card"><canvas id="posChart"></canvas></div>
   <table>
-    <thead><tr><th>Mot-clé</th><th>Intention</th><th class="num">Position</th><th class="num">Évolution</th><th>En tête aujourd'hui</th></tr></thead>
+    <thead><tr><th>Mot-clé</th><th>Intention</th><th class="num">Position</th><th class="num">Évolution</th><th class="num">Aperçu IA</th><th>En tête aujourd'hui</th></tr></thead>
     <tbody>${serp.map((s) => {
       const mv = movement(s.position, prevPos[s.keyword], hasPrev)
       const posCell = s.position != null
         ? (s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${s.position}</a>` : String(s.position))
         : '<span style="color:var(--gris)">non classé</span>'
-      return `<tr><td>${esc(s.keyword)}</td><td>${esc(s.intent)}</td><td class="num pos">${posCell}</td><td class="num ${mv.cls}">${mv.txt}</td><td style="color:var(--gris)">${esc(s.leader || "")}</td></tr>`
+      const aioCell = !s.aio
+        ? '<span style="color:var(--gris)">aucun</span>'
+        : s.aioCited ? '<span class="badge">château cité</span>' : '<span class="down">présent</span>'
+      return `<tr><td>${esc(s.keyword)}</td><td>${esc(s.intent)}</td><td class="num pos">${posCell}</td><td class="num ${mv.cls}">${mv.txt}</td><td class="num">${aioCell}</td><td style="color:var(--gris)">${esc(s.leader || "")}</td></tr>`
     }).join("")}</tbody>
   </table>
-  <p class="note">La colonne « Évolution » apparaît dès le 2ᵉ rapport : ce mois pose la référence pour les mots-clés qui viennent d'être ajoutés.</p>
+  <p class="note">La colonne « Évolution » apparaît dès le 2ᵉ rapport : ce mois pose la référence pour les mots-clés qui viennent d'être ajoutés. La colonne « Aperçu IA » indique si Google affiche un résumé rédigé par son intelligence artificielle au-dessus des résultats, et si le château y est cité comme source.</p>
 
   ${opportunities.length ? `<h2>À un pas de la page 1</h2>
   <p class="lead">Ces mots-clés sont en page 2 ou 3 (positions 11 à 30). Ce sont les gains les plus rapides à aller chercher le mois prochain.</p>
@@ -675,6 +749,23 @@ function renderHtml(data) {
     <tbody>${articles.map((a) => `<tr><td><a href="${esc(a.url)}" target="_blank" rel="noopener"><strong>${esc(a.title)}</strong></a></td><td style="white-space:nowrap">${esc(a.publishedAt)}</td><td>${esc(a.category)}</td><td>${a.keywords.map((k) => `<span class="tag">${esc(k)}</span>`).join("")}</td></tr>`).join("")}</tbody>
   </table>
   <p class="note">Les prochains contenus sont planifiés dans votre <a href="/rapport?doc=calendrier">calendrier éditorial SEO &rarr;</a> : quatre articles par mois, chacun visant une recherche précise de vos futurs clients.</p>
+
+  <h2>Aperçus IA de Google</h2>
+  <p class="lead">Depuis le 22 juillet 2026, Google affiche en France un résumé rédigé par son IA au-dessus des résultats classiques. Il répond directement à la question de l'internaute et cite quelques sites en source. Être cité dans cet encart, c'est occuper la place la plus visible de la page.</p>
+  <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
+    <div class="kpi"><div class="l">Mots-clés avec aperçu IA</div><div class="v">${aioKw.length}<span style="font-size:15px;color:var(--gris)"> / ${serp.length}</span></div><div class="n">sur vos mots-clés suivis</div></div>
+    <div class="kpi"><div class="l">Château cité en source</div><div class="v">${aioCitedKw.length}</div><div class="n">${aioKw.length ? `sur ${aioKw.length} aperçu${aioKw.length > 1 ? "x" : ""} affiché${aioKw.length > 1 ? "s" : ""}` : "aucun aperçu ce mois-ci"}</div></div>
+    <div class="kpi"><div class="l">Sites cités à votre place</div><div class="v">${aioTopDomains.length}</div><div class="n">domaines distincts relevés</div></div>
+  </div>
+  ${aioKw.length ? `<table style="margin-top:16px">
+    <thead><tr><th>Mot-clé déclenchant un aperçu</th><th class="num">Votre position</th><th class="num">Château cité</th><th>Sites cités dans l'aperçu</th></tr></thead>
+    <tbody>${aioKw.map((s) => `<tr><td>${esc(s.keyword)}</td><td class="num pos">${s.position != null ? s.position : '<span style="color:var(--gris)">non classé</span>'}</td><td class="num">${s.aioCited ? '<span class="yes">oui</span>' : '<span class="no">non</span>'}</td><td style="color:var(--gris)">${s.aioRefs.length ? s.aioRefs.map((r) => esc(r.domain)).filter(Boolean).slice(0, 4).join(", ") : "sources non communiquées"}</td></tr>`).join("")}</tbody>
+  </table>` : `<div class="card">Aucun aperçu IA relevé ce mois-ci sur vos mots-clés suivis. C'est cohérent : Google en affiche peu sur les recherches locales et commerciales, qui sont justement les vôtres. Le déploiement français se poursuit jusqu'au 23 septembre 2026, on surveille mois par mois.</div>`}
+  ${aioTopDomains.length ? `<table style="margin-top:18px">
+    <thead><tr><th>Sites qui occupent le plus souvent les aperçus IA</th><th class="num">Aperçus où ils sont cités</th></tr></thead>
+    <tbody>${aioTopDomains.map(([d, n]) => `<tr><td>${domMatch(d, DOMAIN) ? `<strong>${esc(d)}</strong> <span class="badge">vous</span>` : esc(d)}</td><td class="num">${n}</td></tr>`).join("")}</tbody>
+  </table>` : ""}
+  <p class="note">Sur les recherches où un aperçu s'affiche, le nombre de clics vers les sites baisse nettement, y compris pour la première position. La parade n'est pas de monter d'un rang, c'est d'être la source que l'IA cite. C'est ce qui guide la façon dont vos articles sont désormais écrits : une question par titre, une réponse nette dessous, des chiffres et des détails que personne d'autre ne peut donner sur le château.</p>
 
   <h2>Visibilité dans les réponses IA</h2>
   <p class="lead">De plus en plus de clients posent leur question à ChatGPT, Gemini, Perplexity ou Claude. On teste 6 questions réelles, une par activité, sur les 4 moteurs, et on regarde si le château est cité.</p>
@@ -710,7 +801,7 @@ function renderHtml(data) {
   <footer>
     ${archivesHtml}
     Rapport généré automatiquement pour le Château de la Huberdière, ${esc(monthLabel)}.<br>
-    Sources : Google (positions et trafic estimé), profil Google Business, moteurs IA (ChatGPT, Gemini, Perplexity, Claude), DataForSEO et le blog du château.
+    Sources : Google (positions, aperçus IA et trafic estimé), profil Google Business, moteurs IA (ChatGPT, Gemini, Perplexity, Claude), DataForSEO et le blog du château.
   </footer>
 </div>
 
@@ -804,6 +895,8 @@ function buildExec({ month, serp, articles, blNow, deltaBl, citedTotal, answered
   if (deltaBl != null && deltaBl !== 0) bits.push(`<strong>${deltaBl > 0 ? "+" : ""}${fr(deltaBl)}</strong> backlink${Math.abs(deltaBl) > 1 ? "s" : ""} sur le dernier mois`)
   else bits.push(`<strong>${fr(blNow.backlinks)}</strong> backlinks`)
   bits.push(`cité <strong>${citedTotal}/${answeredTotal}</strong> fois par les IA`)
+  const aioN = serp.filter((s) => s.aio).length
+  if (aioN) bits.push(`aperçu IA de Google sur <strong>${aioN}</strong> mot${aioN > 1 ? "s" : ""}-clé${aioN > 1 ? "s" : ""} suivi${aioN > 1 ? "s" : ""}, château cité dans <strong>${serp.filter((s) => s.aioCited).length}</strong>`)
   if (gbp?.note != null) bits.push(`note Google <strong>${String(gbp.note).replace(".", ",")}</strong>`)
   return `Ce mois-ci : ${bits.join(", ")}.`
 }
@@ -851,6 +944,7 @@ export async function generateReport(prevHistory = [], month = null) {
   const answeredTotal = llm.reduce((s, e) => s + e.rows.filter((r) => !r.error).length, 0)
   cur.llmCited = citedTotal
   cur.llmAnswered = answeredTotal
+  cur.aio = { present: serp.filter((s) => s.aio).length, cited: serp.filter((s) => s.aioCited).length, keywords: serp.length }
   if (leads) cur.leads = { total: leads.total, newsletter: leads.newsletter, chatgpt: leads.chatgpt }
   if (traffic) cur.traffic = { pageviews: traffic.pageviews, visitors: traffic.visitors, visits: traffic.visits }
   cur.hasReport = true
@@ -873,6 +967,8 @@ export async function generateReport(prevHistory = [], month = null) {
     keywords: serp.length,
     llmCited: citedTotal,
     llmAnswered: answeredTotal,
+    aioPresent: serp.filter((s) => s.aio).length,
+    aioCited: serp.filter((s) => s.aioCited).length,
     backlinks: blNow.backlinks,
     gbpNote: gbp?.note ?? null,
     demandes: leads?.total ?? null,
