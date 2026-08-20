@@ -11,7 +11,8 @@
     "prebuild": "node scripts/check-calendrier.mjs || true; node scripts/check-liens-articles.mjs",
     "check:liens": "node scripts/check-liens-articles.mjs",
     "captures": "node --experimental-strip-types scripts/captures.mjs",
-    "captures:diff": "node --experimental-strip-types scripts/captures.mjs --diff"
+    "captures:diff": "node --experimental-strip-types scripts/captures.mjs --diff",
+    "check:contraste": "node scripts/check-contraste.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.7",
