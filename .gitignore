@@ -15,3 +15,6 @@ dist/
 !.env.example
 .vercel
 .indexnow-key
+
+# captures de contrôle visuel (script scripts/captures.mjs)
+captures/

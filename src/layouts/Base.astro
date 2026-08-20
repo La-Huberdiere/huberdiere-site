@@ -150,6 +150,38 @@ const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
         },
         true
       );
+
+      // Profondeur de scroll : sans cette mesure, aucun argument sur la longueur des pages
+      // n'est démontrable, ni avant ni après un chantier de densité.
+      (function () {
+        var marks = [25, 50, 75, 100];
+        var sent = {};
+        var ticking = false;
+        function measure() {
+          ticking = false;
+          var doc = document.documentElement;
+          var scrollable = doc.scrollHeight - window.innerHeight;
+          if (scrollable <= 0) return;
+          var pct = ((window.scrollY || doc.scrollTop) / scrollable) * 100;
+          for (var i = 0; i < marks.length; i++) {
+            var m = marks[i];
+            if (pct >= m && !sent[m]) {
+              sent[m] = true;
+              window.huberTrack("scroll_depth", { percent: m, path: location.pathname });
+            }
+          }
+        }
+        window.addEventListener(
+          "scroll",
+          function () {
+            if (ticking) return;
+            ticking = true;
+            window.requestAnimationFrame(measure);
+          },
+          { passive: true }
+        );
+        window.addEventListener("load", measure);
+      })();
     </script>
 
     {/* Google Tag Manager (chargé seulement si PUBLIC_GTM_ID est défini) */}
