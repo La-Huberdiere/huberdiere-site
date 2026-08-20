@@ -78,7 +78,16 @@ const LLM_ENGINES = [
   { llmType: "claude", label: "Claude", model: "claude-haiku-4-5" },
 ]
 const BRAND_ALIASES = ["huberdière", "huberdiere", "chateaudelahuberdiere"]
-const LLM_COMPETITORS = ["Château de Pray", "Château des Arpentis", "Manoir Les Minimes", "Château de Perreux", "Château de Noizay"]
+// Établissements à repérer dans les réponses des IA. La liste ne se limite pas aux
+// voisins immédiats : un relevé de test a montré que La Bourdaisière et Jallanges
+// sortent bien plus souvent qu'eux sur les questions séminaire et chambres d'hôtes.
+// Une liste trop courte fait croire à un terrain vide.
+const LLM_COMPETITORS = [
+  "Château de Pray", "Château des Arpentis", "Manoir Les Minimes", "Château de Perreux",
+  "Château de Noizay", "Château de la Bourdaisière", "Domaine de la Tortinière",
+  "Château de Jallanges", "Château de Rochecotte", "Château de Nazelles",
+  "Château des Ormeaux", "Château de Scalibert", "Le Clos d'Amboise",
+]
 // Une question par offre, pour couvrir toute l'activité (pas seulement le mariage).
 const LLM_PROMPTS = [
   { theme: "Mariage", prompt: "Quel château pour se marier en Touraine ou en Val de Loire ? Cite des lieux précis." },
@@ -88,6 +97,34 @@ const LLM_PROMPTS = [
   { theme: "Retraite / bien-être", prompt: "Quel lieu pour organiser une retraite yoga ou bien-être dans un château en Touraine ?" },
   { theme: "Séjour & restauration", prompt: "Quel château propose un séjour avec piscine chauffée et restauration gastronomique en Touraine ?" },
 ]
+// Voisins directs : châteaux-hôtels du même bassin, même clientèle, même panier.
+// La progression du château ne veut rien dire dans l'absolu, elle se lit face à eux.
+const COMPETITORS = [
+  { domain: "chateaudepray.fr", label: "Château de Pray" },
+  { domain: "chateaudeperreux.fr", label: "Château de Perreux" },
+  { domain: "chateaudenoizay.com", label: "Château de Noizay" },
+]
+
+// Écartés du tableau des recherches captées par les voisins : leur propre nom, et
+// celui de leur commune quand l'établissement le porte. Personne ne se positionne
+// sur le nom d'un concurrent, ces lignes ne sont pas des opportunités. Sans ce
+// filtre les trois quarts du tableau se résument aux noms des voisins.
+const GAP_STOPWORDS = ["pray", "perreux", "noizay", "huberdi"]
+
+// Un voisin sort sur quantité de recherches sans rapport avec le château : d'autres
+// domaines du même nom, des communes lointaines, des établissements tiers. Une
+// recherche doit toucher au territoire ou à une prestation du château pour valoir
+// d'être montrée au client. Le mot « château » seul est volontairement absent :
+// il laisserait passer « château de pezay » et tous les homonymes.
+const MARCHE = [
+  "amboise", "loire", "touraine", "tours", "indre-et-loire", "vouvray", "nazelles",
+  "chenonceau", "chambord", "villandry", "chaumont", "montlouis", "blois",
+  "mariage", "seminaire", "reception", "privatis", "chambre d'hote", "chambres d'hote",
+  "hotel", "gite", "sejour", "week-end", "weekend", "yoga", "retraite", "piscine",
+  "spa", "table d'hote", "bien-etre", "anniversaire",
+]
+const sansAccent = (x) => String(x).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+
 const GBP = { cid: "5728274181919890705", title: "Château de la Huberdière", coord: "47.447,0.935,15" }
 
 const ARTICLE_FILES = import.meta.glob("../content/articles/*.mdoc", { query: "?raw", import: "default", eager: true })
@@ -274,6 +311,82 @@ async function pullLlm() {
       return { engine: engine.label, rows }
     })
   )
+}
+
+/**
+ * Photo des voisins le même jour que le reste du rapport : force du profil de liens,
+ * présence dans Google, et recherches qu'ils captent alors que le château est absent.
+ * Coût : 2 appels groupés, puis 2 par voisin. Chaque bloc échoue seul, un voisin
+ * injoignable ne fait pas tomber le rapport.
+ */
+async function pullCompetitors() {
+  const domains = [DOMAIN, ...COMPETITORS.map((c) => c.domain)]
+  const safe = async (pr, fallback) => {
+    try { return await pr } catch (e) { console.error("Concurrents KO", e.message); return fallback }
+  }
+
+  const [ranks, refs] = await Promise.all([
+    safe(dfs("/backlinks/bulk_ranks/live", { targets: domains }), []),
+    safe(dfs("/backlinks/bulk_referring_domains/live", { targets: domains }), []),
+  ])
+  const rankOf = new Map((ranks[0]?.items ?? []).map((i) => [i.target, i.rank ?? 0]))
+  const rdOf = new Map((refs[0]?.items ?? []).map((i) => [i.target, i.referring_domains ?? 0]))
+
+  const rows = await Promise.all(domains.map(async (d) => {
+    const r = await safe(dfs("/dataforseo_labs/google/domain_rank_overview/live", {
+      target: d, location_name: "France", language_code: "fr", ignore_synonyms: true,
+    }), [])
+    const o = r[0]?.items?.[0]?.metrics?.organic ?? {}
+    const top3 = (o.pos_1 || 0) + (o.pos_2_3 || 0)
+    const top10 = top3 + (o.pos_4_10 || 0)
+    return {
+      domain: d,
+      label: d === DOMAIN ? "Château de la Huberdière" : (COMPETITORS.find((c) => c.domain === d)?.label ?? d),
+      isBrand: d === DOMAIN,
+      rank: rankOf.get(d) ?? 0,
+      referringDomains: rdOf.get(d) ?? 0,
+      top3, top10, top20: top10 + (o.pos_11_20 || 0),
+      etv: Math.round(o.etv || 0),
+    }
+  }))
+
+  // `intersections: false` renvoie les recherches où target1 sort et target2 non :
+  // c'est le vrai écart, sans avoir à soustraire deux listes tronquées.
+  const parVoisin = await Promise.all(COMPETITORS.map(async (c) => {
+    const r = await safe(dfs("/dataforseo_labs/google/domain_intersection/live", {
+      target1: c.domain, target2: DOMAIN, intersections: false,
+      location_name: "France", language_code: "fr", limit: 30,
+      filters: [["first_domain_serp_element.rank_group", "<=", 20], "and", ["keyword_data.keyword_info.search_volume", ">", 0]],
+      order_by: ["keyword_data.keyword_info.search_volume,desc"],
+    }), [])
+    return (r[0]?.items ?? []).map((i) => ({
+      keyword: i.keyword_data?.keyword ?? "",
+      volume: i.keyword_data?.keyword_info?.search_volume ?? 0,
+      competitor: c.label,
+      position: i.first_domain_serp_element?.rank_group ?? null,
+    }))
+  }))
+
+  const tout = parVoisin.flat().filter((k) => k.keyword && k.position != null)
+  const utiles = tout.filter((k) => {
+    const kw = sansAccent(k.keyword)
+    if (GAP_STOPWORDS.some((w) => kw.includes(sansAccent(w)))) return false
+    return MARCHE.some((m) => kw.includes(sansAccent(m)))
+  })
+
+  // Google regroupe les variantes d'une même recherche : « restaurant amboise » et
+  // « restaurants in amboise » sortent avec le même volume, le même site et la même
+  // position. Trois lignes pour une seule idée font désordre dans un rapport client,
+  // on ne garde que la formulation la plus courte de chaque groupe.
+  const parMot = new Map()
+  for (const k of utiles) {
+    const cle = `${k.volume}|${k.competitor}|${k.position}`
+    const prec = parMot.get(cle)
+    if (!prec || k.keyword.length < prec.keyword.length) parMot.set(cle, k)
+  }
+  const gap = [...parMot.values()].sort((a, b) => b.volume - a.volume).slice(0, 12)
+
+  return { rows, gap, ecartes: tout.length - gap.length }
 }
 
 async function pullDomainHistory() {
@@ -659,8 +772,52 @@ function movement(cur, prev, hasPrev) {
   return { txt: "=", cls: "flat" }
 }
 
+/**
+ * Le château face à ses voisins. Sans ce repère une progression ne se lit pas :
+ * gagner deux places pendant que le voisin en gagne dix n'est pas un gain.
+ */
+export function renderCompetitors(cp) {
+  if (!cp || !cp.rows?.length) return ""
+  const ordre = [...cp.rows].sort((a, b) => b.top10 - a.top10 || b.top3 - a.top3 || b.etv - a.etv)
+  const ligne = (r) => {
+    const nom = r.isBrand ? `<strong>${esc(r.label)}</strong> <span class="badge">vous</span>` : esc(r.label)
+    return `<tr><td>${nom}</td><td class="num">${fr(r.referringDomains)}</td><td class="num pos">${fr(r.top3)}</td><td class="num">${fr(r.top10)}</td><td class="num">${fr(r.top20)}</td><td class="num">${fr(r.etv)}</td></tr>`
+  }
+  return `<h2>Face aux châteaux voisins</h2>
+  <p class="lead">Les trois châteaux-hôtels qui visent la même clientèle que vous autour d'Amboise, mesurés le même jour avec les mêmes outils.</p>
+  <table>
+    <thead><tr><th>Établissement</th><th class="num">Sites qui font un lien</th><th class="num">Mots-clés top 3</th><th class="num">Top 10</th><th class="num">Top 20</th><th class="num">Visiteurs Google / mois</th></tr></thead>
+    <tbody>${ordre.map(ligne).join("")}</tbody>
+  </table>
+  <p class="note">« Mots-clés top 3 » compte toutes les recherches Google sur lesquelles l'établissement sort dans les trois premiers résultats, pas seulement celles que nous suivons pour vous. « Sites qui font un lien » est le nombre de domaines qui pointent vers lui : ce capital de confiance se construit sur des années et explique une bonne part de l'écart. La dernière colonne est l'estimation Google du trafic mensuel que ces positions rapportent.</p>`
+}
+
+/**
+ * Deux chemins de gain, du plus rapide au plus lent : remonter là où le château
+ * est déjà proche, puis aller chercher ce que les voisins captent seuls.
+ */
+export function renderGains(opportunities, cp) {
+  const proches = opportunities.length ? `<h3 class="sub-h">Vous y êtes presque</h3>
+  <p class="lead">Ces recherches vous placent en page 2 ou 3. Quelques positions à reprendre, c'est le gain le plus rapide.</p>
+  <table>
+    <thead><tr><th>Recherche</th><th>Intention</th><th class="num">Position</th></tr></thead>
+    <tbody>${opportunities.map((s) => `<tr><td>${esc(s.keyword)}</td><td>${esc(s.intent)}</td><td class="num pos">${s.position}</td></tr>`).join("")}</tbody>
+  </table>` : ""
+
+  const captees = cp?.gap?.length ? `<h3 class="sub-h">Ce que les voisins captent et pas vous</h3>
+  <p class="lead">Recherches sur lesquelles un château voisin sort dans les vingt premiers résultats, alors que le vôtre n'apparaît pas du tout.</p>
+  <table>
+    <thead><tr><th>Recherche</th><th class="num">Recherches / mois</th><th>Qui la capte</th><th class="num">Sa position</th></tr></thead>
+    <tbody>${cp.gap.map((g) => `<tr><td>${esc(g.keyword)}</td><td class="num">${fr(g.volume)}</td><td style="color:var(--gris)">${esc(g.competitor)}</td><td class="num pos">${g.position}</td></tr>`).join("")}</tbody>
+  </table>
+  <p class="note">Toutes ne sont pas à viser : une recherche « restaurant » suppose une table ouverte au public, ce que la table d'hôtes n'est pas. Celles qui parlent de séjour, de château ou de la région alimentent directement le calendrier éditorial. ${cp.ecartes ? `${fr(cp.ecartes)} recherches ont été écartées de ce tableau : le nom des voisins eux-mêmes, sur lequel personne ne peut se positionner, et des requêtes sans rapport avec votre région ni vos prestations.` : ""}</p>` : ""
+
+  if (!proches && !captees) return ""
+  return `<h2>Où aller chercher les prochains gains</h2>${proches}${captees}`
+}
+
 function renderHtml(data) {
-  const { month, serp, backlinks, refDomains, blHistory, gbp, llm, articles, history, exec, leads, traffic, brand } = data
+  const { month, serp, backlinks, refDomains, blHistory, gbp, llm, articles, history, exec, leads, traffic, brand, competitors } = data
   const monthLabel = monthLong(month)
   const rankedCount = serp.filter((s) => s.position !== null).length
   const bestPos = bestKeyword(serp)
@@ -676,6 +833,10 @@ function renderHtml(data) {
   const blPrev = blSorted[blSorted.length - 2]
   const deltaBl = blPrev ? blNow.backlinks - blPrev.backlinks : null
   const deltaRd = blPrev ? blNow.referringDomains - blPrev.referringDomains : null
+  // Rang du château parmi les quatre établissements sur les domaines référents.
+  const rangLiens = competitors?.rows?.length
+    ? [...competitors.rows].sort((a, b) => b.referringDomains - a.referringDomains).findIndex((r) => r.isBrand) + 1
+    : 0
   const deltaBadge = (d) => d == null ? "" : d > 0 ? `<span class="up">▲ +${fr(d)}</span>` : d < 0 ? `<span class="down">▼ ${fr(d)}</span>` : `<span class="flat">=</span>`
 
   // Opportunités : mots-clés en page 2-3 (11 à 30), les plus proches de la page 1.
@@ -752,6 +913,7 @@ function renderHtml(data) {
   footer .arch{margin-bottom:14px}
   footer .arch a{margin-right:12px;white-space:nowrap}
   .pos{font-weight:600}
+  .sub-h{font-family:"Playfair Display",serif;color:var(--encre);font-size:17px;margin:26px 0 2px;font-weight:600}
   @media(max-width:720px){.kpis{grid-template-columns:repeat(2,1fr)}h1{font-size:24px}.leadsgrid{grid-template-columns:1fr!important}}
   @media print{body{background:#fff}header{background:#fff;color:var(--encre);border-bottom:2px solid var(--bordeaux);padding:20px 0}header .sub{opacity:1;color:var(--gris)}h1{color:var(--bordeaux)}.card,.kpi,.summary,table{break-inside:avoid}script{display:none}}
 </style></head>
@@ -759,7 +921,7 @@ function renderHtml(data) {
 <header><div class="wrap">
   <div class="sub">Château de la Huberdière · Reporting SEO & visibilité</div>
   <h1>Où en est votre référencement, ${esc(monthLabel)}</h1>
-  <div class="sub">Positions Google, articles publiés, netlinking, présence dans les réponses IA.</div>
+  <div class="sub">Positions Google, comparaison avec les châteaux voisins, articles publiés, netlinking, présence dans les réponses IA.</div>
 </div></header>
 <div class="wrap">
 
@@ -806,17 +968,14 @@ function renderHtml(data) {
   </table>
   <p class="note">La colonne « Évolution » apparaît dès le 2ᵉ rapport : ce mois pose la référence pour les mots-clés qui viennent d'être ajoutés. La colonne « Aperçu IA » indique si Google affiche un résumé rédigé par son intelligence artificielle au-dessus des résultats, et si le château y est cité comme source. Les mots-clés notés « Blog » sont les recherches que visent vos articles : ce sont elles qui déclenchent presque toujours un aperçu IA, alors que vos recherches commerciales et locales en déclenchent rarement. Le graphe ci-dessus ne trace que ces dernières, pour rester lisible.</p>
 
-  ${opportunities.length ? `<h2>À un pas de la page 1</h2>
-  <p class="lead">Ces mots-clés sont en page 2 ou 3 (positions 11 à 30). Ce sont les gains les plus rapides à aller chercher le mois prochain.</p>
-  <table>
-    <thead><tr><th>Mot-clé</th><th>Intention</th><th class="num">Position</th></tr></thead>
-    <tbody>${opportunities.map((s) => `<tr><td>${esc(s.keyword)}</td><td>${esc(s.intent)}</td><td class="num pos">${s.position}</td></tr>`).join("")}</tbody>
-  </table>` : ""}
-
   <h2>Visibilité globale sur Google</h2>
   <p class="lead">Combien de mots-clés du site sont bien placés dans Google, et le trafic que ça rapporte, mois après mois.</p>
   <div class="card"><canvas id="domChart"></canvas></div>
   <p class="note">Les barres empilent vos mots-clés par qualité de position : <span style="color:#8B0000;font-weight:600">top 3</span> (première ligne de Google), <span style="color:#c0714e;font-weight:600">4 à 10</span> (reste de la page 1), <span style="color:#e2b48c;font-weight:600">11 à 20</span> (page 2). Plus la barre est haute et foncée, meilleure est la présence. La ligne dorée est le nombre de visiteurs mensuels estimés depuis Google.</p>
+
+  ${renderCompetitors(competitors)}
+
+  ${renderGains(opportunities, competitors)}
 
   <h2>Articles rédigés</h2>
   <p class="lead">Le contenu publié pour le château, avec les mots-clés visés. Cliquez le titre pour lire l'article en ligne.</p>
@@ -865,7 +1024,7 @@ function renderHtml(data) {
   <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
     <div class="kpi"><div class="l">Backlinks</div><div class="v">${fr(blNow.backlinks)}</div><div class="n">${deltaBadge(deltaBl)} vs mois dernier</div></div>
     <div class="kpi"><div class="l">Domaines référents</div><div class="v">${fr(blNow.referringDomains)}</div><div class="n">${deltaBadge(deltaRd)} vs mois dernier</div></div>
-    <div class="kpi"><div class="l">Qualité (spam)</div><div class="v">${backlinks.spamScore} %</div><div class="n">${backlinks.spamScore <= 10 ? "faible, sain" : backlinks.spamScore <= 30 ? "modéré" : "à surveiller"}</div></div>
+    <div class="kpi"><div class="l">Face aux voisins</div><div class="v">${rangLiens ? (rangLiens === 1 ? "1er" : rangLiens + "ᵉ") : "–"}<span style="font-size:15px;color:var(--gris)"> / ${competitors?.rows?.length ?? "–"}</span></div><div class="n">sur le nombre de sites référents</div></div>
   </div>
   <div class="card"><canvas id="blChart"></canvas></div>
   ${refDomains.length ? `<table style="margin-top:16px">
@@ -877,7 +1036,7 @@ function renderHtml(data) {
   <footer>
     ${archivesHtml}
     Rapport généré automatiquement pour le Château de la Huberdière, ${esc(monthLabel)}.<br>
-    Sources : Google (positions, aperçus IA et trafic estimé), profil Google Business, moteurs IA (ChatGPT, Gemini, Perplexity, Claude), DataForSEO et le blog du château.
+    Sources : Google (positions, aperçus IA et trafic estimé), profil Google Business, moteurs IA (ChatGPT, Gemini, Perplexity, Claude), DataForSEO pour le netlinking et la comparaison avec les châteaux voisins, et le blog du château.
   </footer>
 </div>
 
@@ -1004,8 +1163,8 @@ export async function generateReport(prevHistory = [], month = null) {
   const ym = month || `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`
   const monthLabelShort = monthShort(ym)
 
-  const [serp, backlinks, refDomains, blHistory, gbp, llm, domainHistory, leads, traffic, brand] = await Promise.all([
-    pullSerp(), pullBacklinks(), pullReferringDomains(), pullBacklinksHistory(), pullGbp(), pullLlm(), pullDomainHistory(), pullLeads(ym), pullUmami(ym), pullBrandVolume(),
+  const [serp, backlinks, refDomains, blHistory, gbp, llm, domainHistory, leads, traffic, brand, competitors] = await Promise.all([
+    pullSerp(), pullBacklinks(), pullReferringDomains(), pullBacklinksHistory(), pullGbp(), pullLlm(), pullDomainHistory(), pullLeads(ym), pullUmami(ym), pullBrandVolume(), pullCompetitors(),
   ])
   // Borne de publication : aujourd'hui pour le mois courant, fin de mois pour un
   // rapport rétroactif. Évite de lister un article encore à venir (lien 404).
@@ -1049,7 +1208,7 @@ export async function generateReport(prevHistory = [], month = null) {
   const deltaBl = blPrev ? blNow.backlinks - blPrev.backlinks : null
 
   const exec = buildExec({ month: ym, serp, articles, blNow, deltaBl, citedTotal, answeredTotal, gbp })
-  const html = renderHtml({ month: ym, serp, backlinks, refDomains, blHistory, gbp, llm, articles, history, exec, leads, traffic, brand })
+  const html = renderHtml({ month: ym, serp, backlinks, refDomains, blHistory, gbp, llm, articles, history, exec, leads, traffic, brand, competitors })
 
   const summary = {
     month: ym,
