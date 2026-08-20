@@ -202,8 +202,18 @@ section{padding:112px 48px;position:relative}
    dans le corps des landings, le filet ouvre les sections. Le texte du sur-titre
    n'est pas repris ailleurs : le H2 ouvre seul, c'est l'arbitrage retenu.
    Décoratif, donc aria-hidden dans le markup : rien à annoncer. */
-.section-rule{display:block;width:48px;height:2px;background:var(--burgundy);margin:0 0 40px;flex:none}
-.section-head .section-rule{margin-left:auto;margin-right:auto}
+/* Le filet n'ouvre plus la section détaché du titre : posé à 40 px au-dessus, il
+   se lisait comme un objet orphelin et laissait la tête de section vide. Il passe
+   sous le titre, collé à lui, et devient une signature. Le span décoratif reste
+   dans le markup, masqué : le lot 3 attend une validation cliente et doit pouvoir
+   se défaire sans toucher aux composants. C'est le titre qui porte le trait. */
+.section-rule{display:none}
+.section-rule + h1::after,
+.section-rule + h2::after{content:"";display:block;width:56px;height:2px;background:var(--burgundy);margin:18px 0 0}
+/* Têtes de section centrées : le filet suit l'alignement du titre. */
+.section-head .section-rule + h2::after,
+.blog-masthead .section-rule + h1::after,
+.thanks-inner .section-rule + h1::after{margin-left:auto;margin-right:auto}
 .section-title{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(38px,5vw,62px);line-height:1.1;color:var(--ink);margin-bottom:32px}
 .section-head{text-align:center;max-width:760px;margin:0 auto 64px}
 .section-head p{font-size:16px;color:var(--muted);font-weight:300;line-height:1.85;max-width:620px;margin:0 auto}
@@ -269,7 +279,7 @@ section{padding:112px 48px;position:relative}
 .location .container{display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center}
 /* Le beige doré #E8C9A0 était hors palette officielle. Sur ce fond bleu-gris,
    le filet passe en doré de charte (--gold), seule teinte chaude déclarée. */
-.location .section-rule{background:var(--gold)}
+.location .section-rule + h2::after{background:var(--gold)}
 .location h2{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(38px,4.6vw,58px);line-height:1.1;margin-bottom:32px;color:#fff}
 .location p{font-size:15px;color:rgba(255,255,255,.85);font-weight:300;line-height:1.9;margin:0 0 20px}
 /* Bande de faits inline calée à gauche (au lieu de 3 colonnes égales = stat banner). */
@@ -286,7 +296,7 @@ section{padding:112px 48px;position:relative}
 
 /* ---------- FINAL CTA ---------- */
 .final{background:var(--bg);padding:180px 48px;text-align:center}
-.final .section-rule{margin:0 auto 34px}
+.final .section-rule + h2::after{margin-left:auto;margin-right:auto}
 .final h2{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(42px,5.4vw,76px);line-height:1.08;margin-bottom:36px;color:var(--ink)}
 .final p{font-size:16px;color:var(--ink-2);font-weight:300;line-height:1.9;max-width:580px;margin:0 auto 52px}
 .final-cta{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}

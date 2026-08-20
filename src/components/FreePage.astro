@@ -92,7 +92,8 @@ const captionFeature =
   /* Le sur-titre en capitales espacées est remplacé par son seul filet, qui
      était déjà là en ::before. Le beige doré #e8c9a0 disparaît avec lui : il
      n'appartenait pas à la palette officielle. */
-  .fh-rule { display: block; width: 56px; height: 2px; background: #b9132f; margin: 0 0 22px; }
+  /* #b9132f n'est pas dans la charte : le bordeaux du domaine est #8B0000. */
+  .fh-rule { display: block; width: 56px; height: 2px; background: var(--burgundy); margin: 0 0 22px; }
   .free-hero h1 { font-family: "Playfair Display", Georgia, serif; font-weight: 400; color: #fff;
     font-size: clamp(40px, 6vw, 78px); line-height: 1.04; margin: 0; max-width: 14ch; }
   @keyframes fh-rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
@@ -138,7 +139,10 @@ const captionFeature =
 
   /* ---- Bloc d'appel ---- */
   .free-cta { text-align: center; padding: clamp(70px, 9vw, 120px) 24px; }
-  .cta-rule { display: block; width: 40px; height: 2px; background: var(--burgundy); margin: 0 auto 26px; }
+  /* Même traitement que les têtes de section : le filet se pose sous le titre
+     au lieu de flotter au-dessus, où il lisait comme un objet orphelin. */
+  .cta-rule { display: none; }
+  .cta-rule + h2::after { content: ""; display: block; width: 56px; height: 2px; background: var(--burgundy); margin: 18px auto 0; }
   .free-cta h2 { font-family: "Playfair Display", Georgia, serif; font-weight: 400;
     font-size: clamp(28px, 4vw, 44px); color: var(--ink); margin: 0 0 16px; }
   .free-cta p { max-width: 480px; margin: 0 auto 36px; color: var(--ink-2); font-weight: 300; line-height: 1.8; }
