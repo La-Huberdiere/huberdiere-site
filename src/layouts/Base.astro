@@ -15,7 +15,8 @@ import "@fontsource/montserrat/latin-400.css";
 import "@fontsource/montserrat/latin-500.css";
 import "@fontsource/montserrat/latin-600.css";
 import Header from "../components/Header.astro";
-import { ctaIntentFor } from "../lib/routes";
+import { ctaIntentFor, pageIdFromPath } from "../lib/routes";
+import StickyCta from "../components/StickyCta.astro";
 import Footer from "../components/Footer.astro";
 import CookieBanner from "../components/CookieBanner.astro";
 import settingsData from "../data/settings.json";
@@ -50,6 +51,10 @@ const s = settingsData[lang];
 // Sur les cinq landings à devis, « Réserver » envoyait le lead dans un moteur de
 // chambres à l'unité ; il devient un lien interne vers le formulaire de la page.
 const ctaKind = ctaIntentFor(Astro.url.pathname);
+
+// Barre d'action mobile : partout sauf sur /contact, qui est déjà un formulaire,
+// et sur les pages hors index (/merci) où il n'y a plus rien à convertir.
+const showStickyCta = !noindex && pageIdFromPath(Astro.url.pathname) !== "contact";
 
 // Libellés localisés de la visionneuse photo (lightbox globale : markup + script en bas de page).
 const pvL = ({
@@ -251,6 +256,7 @@ const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
     <slot />
     <Footer settings={s} lang={lang} />
     <CookieBanner lang={lang} />
+    {showStickyCta && <StickyCta ctaKind={ctaKind} lang={lang} settings={s} />}
 
     {/* Visionneuse photo globale : rend cliquable/agrandissable toute image de contenu (hors header/footer). */}
     <div class="pv-lightbox" id="pvLightbox" role="dialog" aria-modal="true" aria-label={pvL.label} hidden>

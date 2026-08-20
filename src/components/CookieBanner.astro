@@ -94,6 +94,13 @@ const policyHref = "/politique-de-confidentialite";
   .cookie-btn.solid { background: #8b0000; color: #fff; }
   .cookie-btn.ghost { background: transparent; color: #8b0000; }
   .cookie-btn:hover { opacity: 0.85; }
+  /* La barre d'action fixe (StickyCta) occupe 52 px en bas d'écran sous 960 px :
+     le bandeau remonte au-dessus d'elle plutôt que de la recouvrir. */
+  @media (max-width: 960px) {
+    :global(html.sticky-cta-on) .cookie-banner {
+      bottom: calc(68px + env(safe-area-inset-bottom, 0px));
+    }
+  }
   @media (max-width: 560px) {
     /* Sous 560 px il n'y a plus de place pour un encart de côté : la bannière
        reprend toute la largeur, mais reste en bas et hors de la barre Octorate. */

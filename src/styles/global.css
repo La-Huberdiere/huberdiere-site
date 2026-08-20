@@ -68,6 +68,19 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
   font-family:'Montserrat',sans-serif;font-size:11px;font-weight:400;text-transform:uppercase;
   letter-spacing:.2em;text-decoration:none;padding:11px 22px;transition:all .35s}
 .book--bar:hover{background:#6e0808;border-color:#6e0808;color:#fff}
+/* « Demander un devis » est deux fois plus long que « Réserver » : sans ces
+   réglages il passe à la ligne et déforme la barre sur un écran de 390 px. */
+.book--bar{white-space:nowrap}
+@media(max-width:560px){
+  .book--bar{letter-spacing:.1em;padding:10px 14px}
+}
+/* Quand la barre d'action fixe est à l'écran, elle porte déjà le même appel à
+   l'action : le doublon du header s'efface et rend sa place au logo. Borné à
+   960 px, sinon le bouton disparaîtrait aussi entre 960 et 1300 px, où le menu
+   est en burger mais où la barre fixe, elle, n'existe pas. */
+@media(max-width:960px){
+  html.sticky-cta-on .book--bar{display:none}
+}
 .menu-toggle{display:none;background:none;border:0;cursor:pointer;padding:8px;flex-direction:column;gap:5px;color:inherit;z-index:60}
 .menu-toggle span{display:block;width:24px;height:2px;background:currentColor;transition:transform .3s,opacity .3s}
 .site-header.nav-open .menu-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg)}
@@ -362,3 +375,14 @@ section{padding:140px 48px;position:relative}
 .pv-count{position:absolute;bottom:20px;left:0;right:0;text-align:center;color:#f4f2ec;font-family:'Montserrat',sans-serif;font-size:.8rem;letter-spacing:.1em}
 @media(prefers-reduced-motion:reduce){.pv-img{animation:none}}
 @media(max-width:640px){.pv-nav{width:44px;height:44px;font-size:26px}.pv-prev{left:10px}.pv-next{right:10px}.pv-img{max-width:96vw;max-height:82vh}.pv-close{top:12px;right:12px}}
+
+/* Barre d'action fixe (StickyCta) : sous 960 px elle occupe 52 px en bas d'écran.
+   Sans cette réserve, elle recouvre les mentions légales et le crédit du footer.
+   Le décalage du bandeau cookies vit dans CookieBanner.astro : le style scopé
+   d'Astro y est plus spécifique qu'une règle de feuille globale. */
+@media (max-width:960px){
+  body{padding-bottom:calc(52px + env(safe-area-inset-bottom,0px))}
+}
+@media (max-width:960px) and (max-height:420px){
+  body{padding-bottom:0}
+}
