@@ -38,6 +38,7 @@ const settingsSchema = {
   brandName: fields.text({ label: "Nom (header)" }),
   brandSub: fields.text({ label: "Sous-titre (header)" }),
   reserveLabel: fields.text({ label: "Bouton « Réserver » : texte" }),
+  quoteLabel: fields.text({ label: "Bouton « Demander un devis » : texte (landings mariage, séminaire, famille, retraite, restauration)" }),
   reserveHref: fields.text({ label: "Bouton « Réserver » : lien" }),
   booking: fields.object(
     {

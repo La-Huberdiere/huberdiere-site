@@ -15,6 +15,7 @@ import "@fontsource/montserrat/latin-400.css";
 import "@fontsource/montserrat/latin-500.css";
 import "@fontsource/montserrat/latin-600.css";
 import Header from "../components/Header.astro";
+import { ctaIntentFor } from "../lib/routes";
 import Footer from "../components/Footer.astro";
 import CookieBanner from "../components/CookieBanner.astro";
 import settingsData from "../data/settings.json";
@@ -43,6 +44,12 @@ const {
 } = Astro.props;
 
 const s = settingsData[lang];
+
+// Intention du bouton persistant du header. Dérivée du chemin réel via routes.ts,
+// jamais d'une comparaison de chaîne : les slugs sont traduits en EN et IT.
+// Sur les cinq landings à devis, « Réserver » envoyait le lead dans un moteur de
+// chambres à l'unité ; il devient un lien interne vers le formulaire de la page.
+const ctaKind = ctaIntentFor(Astro.url.pathname);
 
 // Libellés localisés de la visionneuse photo (lightbox globale : markup + script en bas de page).
 const pvL = ({
@@ -140,6 +147,9 @@ const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
           var a = e.target && e.target.closest ? e.target.closest("a") : null;
           if (!a) return;
           var href = a.getAttribute("href") || "";
+          // Événement déclaré sur le lien lui-même (ex. bouton devis du header).
+          var declared = a.getAttribute("data-track");
+          if (declared) window.huberTrack(declared, { path: location.pathname });
           if (href.indexOf("tel:") === 0) window.huberTrack("contact_click", { method: "phone" });
           else if (href.indexOf("mailto:") === 0) window.huberTrack("contact_click", { method: "email" });
           else if (/octorate\.com|result\.xhtml/.test(href)) {
@@ -237,7 +247,7 @@ const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
     {GTM_ID && (
       <noscript set:html={`<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`} />
     )}
-    <Header settings={s} lang={lang} langs={langs} />
+    <Header settings={s} lang={lang} langs={langs} ctaKind={ctaKind} />
     <slot />
     <Footer settings={s} lang={lang} />
     <CookieBanner lang={lang} />

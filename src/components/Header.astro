@@ -6,11 +6,21 @@ import { localizePath } from "../lib/routes";
 // Réglages + langue passés par Base. On localise les liens internes (slug traduit
 // + préfixe de langue via localizePath), et on affiche le sélecteur de langue.
 // En dessous de 1200px, le menu passe en burger (styles dans global.css).
-const { settings: s, lang = "fr", langs = [] } = Astro.props;
+const { settings: s, lang = "fr", langs = [], ctaKind = "book" } = Astro.props;
 
 // Le bouton « Réserver » ouvre le moteur Octorate dans un nouvel onglet
 // (l'embed iframe est refusé par Octorate, cf. src/lib/octorate.ts).
 const reserveLink = octorateUrl();
+
+// Bouton persistant contextuel. Base.astro dérive l'intention du chemin réel
+// (routes.ts). Sur les landings à devis, le bouton reste dans la page et pointe
+// vers son formulaire : pas de nouvel onglet, pas de moteur de chambres.
+const isQuote = ctaKind === "form";
+const ctaHref = isQuote ? "#final" : reserveLink;
+const ctaLabel = isQuote ? (s.quoteLabel ?? s.reserveLabel) : s.reserveLabel;
+const ctaAttrs = isQuote
+  ? { "data-track": "quote_click" }
+  : { target: "_blank", rel: "noopener" };
 
 const localize = (href: string) => localizePath(href, lang as "fr" | "en" | "it");
 const homeHref = lang === "fr" ? "/" : `/${lang}`;
@@ -19,13 +29,13 @@ const homeHref = lang === "fr" ? "/" : `/${lang}`;
   <a href={homeHref} class="brand" aria-label={s.brandName}>
     <Image src={logo} alt={s.brandName} class="brand-logo" widths={[180, 360]} sizes="180px" loading="eager" />
   </a>
-  <a href={reserveLink} class="book book--bar" target="_blank" rel="noopener">{s.reserveLabel}</a>
+  <a href={ctaHref} class="book book--bar" {...ctaAttrs}>{ctaLabel}</a>
   <button class="menu-toggle" id="menuToggle" aria-label="Menu" aria-expanded="false" aria-controls="siteNav">
     <span></span><span></span><span></span>
   </button>
   <nav class="nav" id="siteNav">
     {s.nav.map((n) => <a href={localize(n.href)}>{n.label}</a>)}
-    <a href={reserveLink} class="book" target="_blank" rel="noopener">{s.reserveLabel}</a>
+    <a href={ctaHref} class="book" {...ctaAttrs}>{ctaLabel}</a>
     <span class="lang-switch">
       {langs.map((l, i) => (
         <>

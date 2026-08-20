@@ -6,7 +6,7 @@ import v2 from "../assets/SD_9.jpg";
 import { reader, isLive } from "../lib/content";
 import { octorateUrl } from "../lib/octorate";
 import { landingMedia } from "../lib/landingMedia";
-import { localizePath } from "../lib/routes";
+import { localizePath, BOOK_PAGE_IDS } from "../lib/routes";
 import { attributionField } from "../lib/attribution";
 
 // Textes en props selon la langue ; image de hero variable par activité.
@@ -83,8 +83,9 @@ const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
 // restauration) pointent vers le formulaire intégré (#final) : jamais vers
 // Octorate, une demande de mariage ou de privatisation n'est pas une
 // réservation en ligne. Seul le séjour (hôtel) route vers le moteur Octorate.
-const bookCibles = new Set(["sejour"]);
-const ctaKind: "form" | "book" = bookCibles.has(cible) ? "book" : "form";
+// BOOK_PAGE_IDS vit dans routes.ts : le header en a besoin aussi, et deux listes
+// qui divergent enverraient le visiteur et le bouton persistant à deux endroits.
+const ctaKind: "form" | "book" = BOOK_PAGE_IDS.has(cible) ? "book" : "form";
 const ctaLabel = ctaKind === "book" ? roomLabels.cta : m.final.submitLabel;
 const ctaHref = ctaKind === "book" ? reserveLink : "#final";
 const midCtaLead = {
