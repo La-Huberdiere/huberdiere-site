@@ -32,6 +32,10 @@ interface Props {
   noindex?: boolean; // pages à exclure de l'index (merci, etc.)
   ogType?: "website" | "article";
   schemas?: object[]; // données structurées spécifiques à la page
+  // Routage du bouton persistant, quand la page en sait plus que son chemin :
+  // un article de blog connaît sa catégorie, /en/blog/chateau-wedding-cost doit
+  // mener au devis mariage et non au moteur de réservation de chambres.
+  cta?: { kind: "form" | "book"; href?: string };
 }
 const {
   title,
@@ -42,6 +46,7 @@ const {
   noindex = false,
   ogType = "website",
   schemas = [],
+  cta,
 } = Astro.props;
 
 const s = settingsData[lang];
@@ -50,7 +55,8 @@ const s = settingsData[lang];
 // jamais d'une comparaison de chaîne : les slugs sont traduits en EN et IT.
 // Sur les cinq landings à devis, « Réserver » envoyait le lead dans un moteur de
 // chambres à l'unité ; il devient un lien interne vers le formulaire de la page.
-const ctaKind = ctaIntentFor(Astro.url.pathname);
+const ctaKind = cta?.kind ?? ctaIntentFor(Astro.url.pathname);
+const ctaHrefOverride = cta?.href;
 
 // Barre d'action mobile : partout sauf sur /contact, qui est déjà un formulaire,
 // et sur les pages hors index (/merci) où il n'y a plus rien à convertir.
@@ -252,11 +258,11 @@ const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
     {GTM_ID && (
       <noscript set:html={`<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`} />
     )}
-    <Header settings={s} lang={lang} langs={langs} ctaKind={ctaKind} />
+    <Header settings={s} lang={lang} langs={langs} ctaKind={ctaKind} ctaHref={ctaHrefOverride} />
     <slot />
     <Footer settings={s} lang={lang} />
     <CookieBanner lang={lang} />
-    {showStickyCta && <StickyCta ctaKind={ctaKind} lang={lang} settings={s} />}
+    {showStickyCta && <StickyCta ctaKind={ctaKind} ctaHref={ctaHrefOverride} lang={lang} settings={s} />}
 
     {/* Visionneuse photo globale : rend cliquable/agrandissable toute image de contenu (hors header/footer). */}
     <div class="pv-lightbox" id="pvLightbox" role="dialog" aria-modal="true" aria-label={pvL.label} hidden>

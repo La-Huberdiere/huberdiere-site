@@ -2,6 +2,7 @@
 import Base from "../layouts/Base.astro";
 import { getAuthor } from "../lib/authors";
 import { categoryLabel, readingTime, formatDate, wordCount, BLOG_UI, lp, type Lang, type TocItem } from "../lib/blog";
+import RatingLines from "./RatingLines.astro";
 import { articleSchema, breadcrumbSchema, faqSchema } from "../lib/seo";
 import { octorateUrl } from "../lib/octorate";
 
@@ -74,6 +75,11 @@ const schemas = [
   image={ogImage}
   ogType="article"
   schemas={schemas}
+  cta={
+    moneyPage && DEVIS_CATS.includes(CATID)
+      ? { kind: "form", href: lp(lang, contactHref) }
+      : { kind: "book" }
+  }
 >
   <div class="reading-progress" id="readProgress" aria-hidden="true"></div>
 
@@ -150,6 +156,11 @@ const schemas = [
           <h2>{T.ctaTitle}</h2>
           <p>{T.ctaText}</p>
           <a class="btn-burgundy" href={lp(lang, contactHref)}>{T.ctaBtn}</a>
+          {/* Preuve sociale au point de décision. /en/blog/chateau-wedding-cost est
+              la deuxième porte d'entrée du site avec 235 entrées sur 30 jours, dix
+              fois /mariage, et le lecteur y arrive sur une requête de prix : il n'a
+              aucune raison de faire confiance sur parole. */}
+          <RatingLines lang={lang} tone="dark" />
         </section>
 
         {related.length > 0 && (

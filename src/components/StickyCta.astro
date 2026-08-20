@@ -15,13 +15,15 @@ import { octorateUrl } from "../lib/octorate";
 
 interface Props {
   ctaKind?: "form" | "book";
+  /** Destination explicite, quand la page connaît mieux sa cible que son chemin. */
+  ctaHref?: string;
   lang?: "fr" | "en" | "it";
   settings: any;
 }
-const { ctaKind = "book", lang = "fr", settings: s } = Astro.props;
+const { ctaKind = "book", ctaHref, lang = "fr", settings: s } = Astro.props;
 
 const isQuote = ctaKind === "form";
-const href = isQuote ? "#final" : octorateUrl();
+const href = ctaHref ?? (isQuote ? "#final" : octorateUrl());
 const label = isQuote ? (s.quoteLabel ?? s.reserveLabel) : s.reserveLabel;
 
 const callLabel = { fr: "Appeler", en: "Call", it: "Chiamare" }[lang];

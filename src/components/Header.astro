@@ -6,7 +6,7 @@ import { localizePath } from "../lib/routes";
 // Réglages + langue passés par Base. On localise les liens internes (slug traduit
 // + préfixe de langue via localizePath), et on affiche le sélecteur de langue.
 // En dessous de 1200px, le menu passe en burger (styles dans global.css).
-const { settings: s, lang = "fr", langs = [], ctaKind = "book" } = Astro.props;
+const { settings: s, lang = "fr", langs = [], ctaKind = "book", ctaHref: ctaHrefProp } = Astro.props;
 
 // Le bouton « Réserver » ouvre le moteur Octorate dans un nouvel onglet
 // (l'embed iframe est refusé par Octorate, cf. src/lib/octorate.ts).
@@ -16,7 +16,7 @@ const reserveLink = octorateUrl();
 // (routes.ts). Sur les landings à devis, le bouton reste dans la page et pointe
 // vers son formulaire : pas de nouvel onglet, pas de moteur de chambres.
 const isQuote = ctaKind === "form";
-const ctaHref = isQuote ? "#final" : reserveLink;
+const ctaHref = ctaHrefProp ?? (isQuote ? "#final" : reserveLink);
 const ctaLabel = isQuote ? (s.quoteLabel ?? s.reserveLabel) : s.reserveLabel;
 const ctaAttrs = isQuote
   ? { "data-track": "quote_click" }
