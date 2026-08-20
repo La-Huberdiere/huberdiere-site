@@ -27,12 +27,7 @@ const lines = ratings.map(
 ---
 {lines.length > 0 && (
   <p class:list={["rating-lines-inline", tone]}>
-    {lines.map((line, i) => (
-      <>
-        {i > 0 && <span class="rl-sep" aria-hidden="true">·</span>}
-        <span class="rl-item">{line}</span>
-      </>
-    ))}
+    {lines.map((line) => <span class="rl-item">{line}</span>)}
   </p>
 )}
 
@@ -56,7 +51,11 @@ const lines = ratings.map(
   .rating-lines-inline.dark {
     color: #d7d2c8;
   }
-  .rl-sep {
+  /* Le séparateur est porté par l'élément qui suit : isolé, il pourrait finir
+     seul en bout de ligne quand le bloc passe à la ligne. */
+  .rl-item + .rl-item::before {
+    content: "·";
+    margin-right: 14px;
     opacity: 0.45;
   }
 </style>

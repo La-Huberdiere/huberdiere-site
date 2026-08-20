@@ -1,15 +1,13 @@
 ---
+import LeadForm from "./LeadForm.astro";
 import HeroPicture from "./HeroPicture.astro";
 import pHero from "../assets/BD_5.jpg";
 import pHeroMobile from "../assets/BD_5-portrait.jpg";
-import { attributionField } from "../lib/attribution";
 
 // Textes (c) et coordonnées (settings.footer) en props selon la langue.
 const { c, settings, cible = "contact" } = Astro.props;
 const f = settings.footer;
 const lang = (Astro.currentLocale as "fr" | "en" | "it") ?? "fr";
-const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
-const attribution = attributionField(lang);
 ---
 <section class="page-hero">
   <HeroPicture desktop={pHero} mobile={pHeroMobile} alt={c.hero.titleLine1} />
@@ -32,104 +30,16 @@ const attribution = attributionField(lang);
 
     <div class="contact-form-wrap reveal">
       <p class="form-intro">{c.formIntro}</p>
-      <form class="lead-form" id="leadForm" novalidate>
-        <input type="hidden" name="cible" value={cible} />
-        <input type="hidden" name="utm_source" id="utmSource" />
-        <input type="hidden" name="utm_campaign" id="utmCampaign" />
-        <input type="text" name="website" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
-
-        <div class="row">
-          <input type="text" name="prenom" placeholder="Prénom" required />
-          <input type="text" name="nom" placeholder="Nom" required />
-        </div>
-        <div class="row">
-          <input type="email" name="email" placeholder="Email" required />
-          <input type="tel" name="telephone" placeholder="Téléphone" />
-        </div>
-        <textarea name="message" rows="4" placeholder="Votre projet : dates, nombre de personnes, vos envies…"></textarea>
-
-        <label class="attr-label" for="attribution">{attribution.prompt}</label>
-        <select name="attribution" id="attribution" class="attr-select">
-          <option value=""></option>
-          {attribution.options.map((o) => <option value={o.value}>{o.label}</option>)}
-        </select>
-
-        <button type="submit" class="btn-burgundy" id="submitBtn">{c.submitLabel}</button>
-        <p class="form-status" id="formStatus" role="status"></p>
-      </form>
-      <div class="response-line">{c.responseLine}</div>
+      <LeadForm
+        lang={lang}
+        cible={cible}
+        submitLabel={c.submitLabel}
+        responseLine={c.responseLine}
+        variant="contact"
+      />
     </div>
   </div>
 </section>
-
-<script is:inline define:vars={{ thanksPath }}>
-  (function () {
-    const form = document.getElementById("leadForm");
-    const status = document.getElementById("formStatus");
-    const btn = document.getElementById("submitBtn");
-    const q = new URLSearchParams(location.search);
-    document.getElementById("utmSource").value = q.get("utm_source") || "";
-    document.getElementById("utmCampaign").value = q.get("utm_campaign") || "";
-
-    async function sha256(str) {
-      if (!str || !crypto?.subtle) return "";
-      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str.trim().toLowerCase()));
-      return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
-    }
-
-    let formStarted = false;
-    form.addEventListener("focusin", () => {
-      if (formStarted) return;
-      formStarted = true;
-      const cb = (form.querySelector("[name=cible]") || {}).value || "";
-      window.huberTrack && window.huberTrack("form_start", { cible: cb });
-    }, { passive: true });
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      if (!form.reportValidity()) return;
-      btn.disabled = true;
-      status.textContent = "Envoi en cours…";
-      const data = Object.fromEntries(new FormData(form).entries());
-      data.lang = (document.documentElement.lang || "fr").slice(0, 2);
-      data.browser_lang = navigator.language || "";
-      const qp = new URLSearchParams(location.search);
-      const cookie = (n) => (document.cookie.match(new RegExp("(?:^|; )" + n + "=([^;]*)")) || [])[1] || "";
-      // Attribution : UTM de l'URL courante (last-touch taggé) sinon first-touch du cookie ;
-      // referrer = la vraie porte d'entrée figée à l'arrivée, sinon document.referrer.
-      let attr = {};
-      try { attr = JSON.parse(decodeURIComponent(cookie("ht_attr")) || "{}"); } catch (e) {}
-      data.utm_source = qp.get("utm_source") || attr.us || "";
-      data.utm_medium = qp.get("utm_medium") || attr.um || "";
-      data.utm_campaign = qp.get("utm_campaign") || attr.uc || "";
-      data.utm_term = qp.get("utm_term") || attr.ut || "";
-      data.utm_content = qp.get("utm_content") || attr.un || "";
-      data.page = location.pathname + location.search;
-      data.referrer = attr.ref || document.referrer || "";
-      data.landing = attr.lp || "";
-      data.gclid = decodeURIComponent(cookie("gclid"));
-      data.gbraid = decodeURIComponent(cookie("gbraid"));
-      data.wbraid = decodeURIComponent(cookie("wbraid"));
-      data.lead_id = crypto.randomUUID ? crypto.randomUUID() : String(Date.now());
-      try {
-        const res = await fetch("/api/lead", {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify(data),
-        });
-        if (!res.ok) throw new Error("http " + res.status);
-        const em = await sha256(data.email);
-        const ph = await sha256((data.telephone || "").replace(/[^0-9+]/g, ""));
-        const params = new URLSearchParams({ cible: data.cible || "", em, ph, lead_id: data.lead_id });
-        if (data.gclid) params.set("gclid", data.gclid);
-        location.href = `${thanksPath}?${params.toString()}`;
-      } catch (err) {
-        btn.disabled = false;
-        status.textContent = "Une erreur est survenue. Réessayez ou écrivez-nous à contact@chateaudelahuberdiere.com";
-      }
-    });
-  })();
-</script>
 
 <style>
   .contact-section { padding: 100px 24px 120px; }
