@@ -165,8 +165,8 @@ const warnMsg = {
   .ui-datepicker.ui-datepicker {
     background: #fff;
     border: 0;
-    border-radius: 14px;
-    box-shadow: 0 24px 64px rgba(0, 0, 0, .3);
+    border-radius: 0;
+    box-shadow: 0 14px 38px rgba(0, 0, 0, .26);
     padding: 16px 18px 6px;
     font-family: "Montserrat", sans-serif;
     z-index: 99999;
@@ -296,7 +296,7 @@ const warnMsg = {
     padding: 12px 18px;
     background: rgba(139, 0, 0, .92);
     color: #fff;
-    border-radius: 6px;
+    border-radius: 0;
     font-family: "Montserrat", sans-serif;
     font-size: 13px;
     font-weight: 500;
@@ -314,19 +314,22 @@ const warnMsg = {
   }
   .bb-avail-warn :global(a:hover) { opacity: .85; }
 
-  /* ---- Carte claire (verre dépoli) qui porte la barre ---- */
+  /* ---- Carte pleine qui porte la barre ----
+     Le verre dépoli est banni par la charte, et c'était l'élément le plus vu du
+     site : premier écran de la page qui reçoit 67 % des entrées. Fond plein
+     crème, angles vifs, filet bordeaux en tête et ombre courte. Un fond opaque
+     tient aussi mieux la lisibilité sur une photo claire qu'un blanc translucide. */
   .octorate-widget {
     max-width: 720px;
     margin: 44px auto 64px;
     position: relative;
     z-index: 4;
-    background: rgba(255, 255, 255, .96);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, .5);
-    border-radius: 8px;
-    box-shadow: 0 28px 70px rgba(0, 0, 0, .42);
-    padding: 20px 22px;
+    background: #F4F2EC;
+    border: 0;
+    border-top: 2px solid #8B0000;
+    border-radius: 0;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, .28);
+    padding: 22px 22px 20px;
   }
 
   /* ---- Neutraliser l'ancrage flottant + rangée en flex CENTRÉE ---- */
@@ -388,7 +391,7 @@ const warnMsg = {
     height: 54px !important;
     background: #fff !important;
     border: 1px solid rgba(33, 33, 33, .2) !important;
-    border-radius: 5px !important;
+    border-radius: 0 !important;
     box-shadow: none !important;
     box-sizing: border-box !important;
   }
@@ -465,7 +468,7 @@ const warnMsg = {
     background: #8B0000 !important;
     color: #fff !important;
     border: 0 !important;
-    border-radius: 5px !important;
+    border-radius: 0 !important;
     font-family: "Montserrat", sans-serif !important;
     font-weight: 600 !important;
     font-size: 12px !important;

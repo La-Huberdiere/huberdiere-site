@@ -106,7 +106,7 @@ const midCtaLead = {
     <Image quality={68} src={hero} alt={m.hero.titleLine1} widths={[768, 1280, 1920]} sizes="(max-width: 768px) 250vw, 100vw" loading="eager" fetchpriority="high" />
   )}
   <div class="inner">
-    <div class="eyebrow">{m.hero.eyebrow}</div>
+    <span class="hero-rule" aria-hidden="true"></span>
     <h1>{m.hero.titleLine1}<br /><span class="italic">{m.hero.titleLine2Italic}</span></h1>
     <p>{m.hero.lead}</p>
     <div class="page-hero__cta">
@@ -181,7 +181,7 @@ const midCtaLead = {
 {m.extras && m.extras.length > 0 && (
   <section class="extras">
     <div class="extras-head reveal">
-      {m.extrasHead?.eyebrow && <span class="section-eyebrow">{m.extrasHead.eyebrow}</span>}
+      <span class="section-rule" aria-hidden="true"></span>
       {m.extrasHead?.title && <h2 class="section-title">{m.extrasHead.title}</h2>}
     </div>
     <div class="extras-grid">
@@ -198,7 +198,7 @@ const midCtaLead = {
 {m.activities && m.activities.length > 0 && (
   <section class="activities">
     <div class="extras-head reveal">
-      {m.activitiesHead?.eyebrow && <span class="section-eyebrow">{m.activitiesHead.eyebrow}</span>}
+      <span class="section-rule" aria-hidden="true"></span>
       {m.activitiesHead?.title && <h2 class="section-title">{m.activitiesHead.title}</h2>}
       {m.activitiesHead?.intro && <p class="activities-intro">{m.activitiesHead.intro}</p>}
     </div>
@@ -216,7 +216,7 @@ const midCtaLead = {
 {m.rooms && m.rooms.length > 0 && (
   <section class="rooms">
     <div class="extras-head reveal">
-      {m.roomsHead?.eyebrow && <span class="section-eyebrow">{m.roomsHead.eyebrow}</span>}
+      <span class="section-rule" aria-hidden="true"></span>
       {m.roomsHead?.title && <h2 class="section-title">{m.roomsHead.title}</h2>}
     </div>
     <div class="rooms-list">
@@ -259,7 +259,7 @@ const midCtaLead = {
             )}
             <div class="room-card__body">
               <div class="room-card__head">
-                {r.tag && <span class="section-eyebrow">{r.tag}</span>}
+                {r.tag && <div class="room-tag-line"><span class="room-tag">{r.tag}</span></div>}
                 <h3>{r.name}</h3>
                 {r.size && <span class="room-size">{r.size}</span>}
               </div>
@@ -308,7 +308,7 @@ const midCtaLead = {
 {m.faq && m.faq.length > 0 && (
   <section class="faq">
     <div class="extras-head reveal">
-      {m.faqHead?.eyebrow && <span class="section-eyebrow">{m.faqHead.eyebrow}</span>}
+      <span class="section-rule" aria-hidden="true"></span>
       {m.faqHead?.title && <h2 class="section-title">{m.faqHead.title}</h2>}
     </div>
     <div class="faq-list">
@@ -353,7 +353,7 @@ const midCtaLead = {
 {related.length > 0 && (
   <section class="related-reads">
     <div class="extras-head reveal">
-      <span class="section-eyebrow">À lire</span>
+      <span class="section-rule" aria-hidden="true"></span>
       <h2 class="section-title">Pour aller plus loin</h2>
     </div>
     <div class="reads-grid">
@@ -369,7 +369,7 @@ const midCtaLead = {
 )}
 
 <section class="final" id="final" style="padding-top:120px;scroll-margin-top:80px">
-  <span class="section-eyebrow">{m.final.eyebrow}</span>
+  <span class="section-rule" aria-hidden="true"></span>
   <h2 class="reveal">{m.final.titleLine1}<br /><span class="italic">{m.final.titleLine2Italic}</span></h2>
   <p class="reveal">{m.final.text}</p>
 
@@ -536,7 +536,10 @@ const midCtaLead = {
   .room-card__head {
     display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 14px; margin-bottom: 20px;
   }
-  .room-card__head .section-eyebrow { flex-basis: 100%; margin: 0; }
+  /* Le tag occupe sa propre ligne, mais son cadre épouse le texte : en élément
+     flex à base 100 %, la bordure s'étirait sur toute la largeur de la fiche. */
+  .room-tag-line { flex-basis: 100%; }
+  .room-card__head .room-tag { margin: 0; }
   .room-card__head h3 {
     font-family: "Playfair Display", Georgia, serif;
     color: #2e3a48; font-size: 1.65rem; margin: 0;
@@ -544,7 +547,7 @@ const midCtaLead = {
   .room-size {
     flex: none; font-family: "Montserrat", sans-serif;
     font-size: 12px; letter-spacing: 0.08em; color: #8b0000;
-    border: 1px solid #8b0000; border-radius: 999px; padding: 3px 11px; white-space: nowrap;
+    border: 1px solid #8b0000; border-radius: 0; padding: 3px 11px; white-space: nowrap;
   }
   .room-fields {
     display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px; margin: 0 0 20px;

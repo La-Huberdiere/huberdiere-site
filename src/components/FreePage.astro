@@ -48,7 +48,7 @@ const captionFeature =
   {/* .free-hero fait 66vh : le portrait n'y déborde que de 7 %, d'où 107vw. */}
   <HeroPicture desktop={imgs.hero} mobile={imgs.heroMobile} alt={entry.title} sizesMobile="107vw" />
   <div class="fh-inner">
-    <span class="fh-eyebrow">{locator}</span>
+    <span class="fh-rule" aria-hidden="true"></span>
     <h1>{entry.title}</h1>
   </div>
 </section>
@@ -89,10 +89,10 @@ const captionFeature =
   .fh-inner { position: absolute; left: 0; bottom: 0; z-index: 2; color: #fff;
     padding: 0 24px clamp(38px, 5vw, 66px); max-width: 880px;
     animation: fh-rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
-  .fh-eyebrow { display: inline-block; font-family: "Montserrat", sans-serif; font-size: 12px;
-    letter-spacing: 0.22em; text-transform: uppercase; color: #e8c9a0; margin: 0 0 18px;
-    padding-left: 46px; position: relative; }
-  .fh-eyebrow::before { content: ""; position: absolute; left: 0; top: 0.5em; width: 32px; height: 2px; background: #b9132f; }
+  /* Le sur-titre en capitales espacées est remplacé par son seul filet, qui
+     était déjà là en ::before. Le beige doré #e8c9a0 disparaît avec lui : il
+     n'appartenait pas à la palette officielle. */
+  .fh-rule { display: block; width: 56px; height: 2px; background: #b9132f; margin: 0 0 22px; }
   .free-hero h1 { font-family: "Playfair Display", Georgia, serif; font-weight: 400; color: #fff;
     font-size: clamp(40px, 6vw, 78px); line-height: 1.04; margin: 0; max-width: 14ch; }
   @keyframes fh-rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }

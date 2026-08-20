@@ -13,7 +13,7 @@ const teaser = "/video/huberdiere-film-teaser.mp4";
 <section class="film" id="film" aria-labelledby="film-title">
   <div class="container film-head">
     <div class="film-rule"></div>
-    <span class="section-eyebrow">{c.eyebrow}</span>
+    <span class="section-rule" aria-hidden="true"></span>
     <h2 id="film-title">{c.titlePlain}<span class="italic">{c.titleItalic}</span></h2>
     <p>{c.text}</p>
   </div>
@@ -145,7 +145,7 @@ const teaser = "/video/huberdiere-film-teaser.mp4";
     background: var(--burgundy);
     margin-bottom: 26px;
   }
-  .film-head .section-eyebrow {
+  .film-head .section-rule {
     grid-column: 1 / 2;
     grid-row: 2;
     margin-bottom: 18px;
@@ -285,7 +285,7 @@ const teaser = "/video/huberdiere-film-teaser.mp4";
       gap: 0;
       padding: 0 22px 40px;
     }
-    .film-head .section-eyebrow,
+    .film-head .section-rule,
     .film-head h2,
     .film-head p {
       grid-column: 1 / -1;

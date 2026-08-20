@@ -12,7 +12,7 @@ const lang = (Astro.currentLocale as "fr" | "en" | "it") ?? "fr";
 <section class="page-hero">
   <HeroPicture desktop={pHero} mobile={pHeroMobile} alt={c.hero.titleLine1} />
   <div class="inner">
-    <div class="eyebrow">{c.hero.eyebrow}</div>
+    <span class="hero-rule" aria-hidden="true"></span>
     <h1>{c.hero.titleLine1}<br /><span class="italic">{c.hero.titleLine2Italic}</span></h1>
     <p>{c.hero.lead}</p>
   </div>

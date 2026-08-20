@@ -31,9 +31,8 @@ const heroSrcSet =
     <img src={hero.full} alt={hero.alt} fetchpriority="high" width={hero.w} height={hero.h} />
   </picture>
   <div class="inner">
-    <span class="eyebrow">{ui.eyebrow}</span>
     <h1>{ui.title}</h1>
-    <span class="hero-rule"></span>
+    <span class="hero-rule" aria-hidden="true"></span>
     <p>{ui.lead}</p>
   </div>
 </section>
