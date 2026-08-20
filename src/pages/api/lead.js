@@ -111,7 +111,15 @@ export async function POST({ request }) {
 
   // 1) Contact dans le CRM. On y range un maximum de contexte : attribution
   // (canal + UTM), parcours (pages, referrer), technique (navigateur, appareil,
-  // localisation, langues). Tous ces attributs existent côté Brevo.
+  // localisation, langues).
+  //
+  // Chaque clé ci-dessous DOIT exister comme attribut du compte Brevo. Une clé
+  // inconnue ne remonte aucune erreur ici : `Promise.all` plus bas n'inspecte pas
+  // le corps de la réponse, et la valeur est perdue sans que rien ne le signale.
+  // ATTRIBUTION en a fait les frais du 17/08 au 20/08 : le déclaratif « Comment
+  // nous avez-vous connus ? » était envoyé à chaque demande et n'a jamais été
+  // enregistré. Avant d'ajouter une clé, la créer côté compte et le vérifier :
+  //   GET https://api.brevo.com/v3/contacts/attributes
   const contact = fetch("https://api.brevo.com/v3/contacts", {
     method: "POST",
     headers,
@@ -136,11 +144,12 @@ export async function POST({ request }) {
         LEAD_ID: data.lead_id || "",
         PAGE_FORMULAIRE: data.page || "",
         PAGE_ENTREE: data.landing || "",
-        // La page de provenance interne n'est PAS envoyée ici : Brevo rejette la
-        // création du contact si l'attribut n'existe pas côté compte, et la
-        // demande serait perdue dans le CRM sans que rien ne le signale.
-        // Créer PAGE_PROVENANCE (texte) dans Brevo, puis décommenter :
-        // PAGE_PROVENANCE: data.origine || "",
+        // Page interne d'où vient le prospect, distincte de PAGE_ENTREE (première
+        // page de la visite) et de PAGE_FORMULAIRE (celle d'où il écrit).
+        // L'attribut PAGE_PROVENANCE existe côté compte depuis le 20/08 : sans lui
+        // Brevo rejetterait la création du contact, et Promise.all n'en avertirait
+        // personne, la demande serait perdue dans le CRM en silence.
+        PAGE_PROVENANCE: data.origine || "",
         REFERRER: data.referrer || "",
         LOCALISATION: meta.location || "",
         NAVIGATEUR: meta.browser || "",
