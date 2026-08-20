@@ -1,0 +1,218 @@
+---
+import { attributionField } from "../lib/attribution";
+import { formLabels, type Lang } from "../lib/formLabels";
+import { localizePath } from "../lib/routes";
+import RatingLines from "./RatingLines.astro";
+
+// Formulaire de demande, partagé par les six landings et /contact.
+//
+// Les deux copies précédentes étaient identiques au caractère près sur tout le
+// script d'envoi, et avaient déjà divergé sur les libellés. Une seule source,
+// donc, pour que la prochaine correction ne s'applique pas à moitié.
+//
+// Le honeypot s'appelle « website » et non « _gotcha » : ne pas le renommer, le
+// serveur le lit sous ce nom.
+
+interface Props {
+  lang?: Lang;
+  cible: string;
+  submitLabel: string;
+  /** Ton de l'aide du champ message : projet daté ou prise de contact large. */
+  variant?: "project" | "contact";
+  /** Promesse de délai, éditable au CMS par landing. Remplace la première ligne. */
+  responseLine?: string;
+}
+const { lang = "fr", cible, submitLabel, variant = "project", responseLine } = Astro.props;
+
+const L = formLabels(lang);
+const attribution = attributionField(lang);
+const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
+const privacyHref = localizePath("/politique-de-confidentialite", lang);
+const messageHint = variant === "contact" ? L.messageHintContact : L.messageHintProject;
+
+// La promesse de délai reste pilotée au CMS ; les deux autres lignes sont des
+// mentions de traitement des données, elles n'ont pas à être éditables.
+const trustLines = [responseLine || L.reassurance[0], ...L.reassurance.slice(1)];
+---
+
+<form class="lead-form reveal" id="leadForm" novalidate>
+  <input type="hidden" name="cible" value={cible} />
+  <input type="hidden" name="utm_source" id="utmSource" />
+  <input type="hidden" name="utm_campaign" id="utmCampaign" />
+  {/* Provenance interne : qualifie la demande côté CRM sans ajouter un champ visible. */}
+  <input type="hidden" name="origine" id="leadOrigine" />
+  <input type="text" name="website" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
+
+  <div class="row">
+    <div class="field">
+      <label for="lf-prenom">{L.firstName}</label>
+      <input type="text" id="lf-prenom" name="prenom" autocomplete="given-name" required aria-describedby="err-prenom" />
+      <p class="field-error" id="err-prenom" hidden></p>
+    </div>
+    <div class="field">
+      <label for="lf-nom">{L.lastName}</label>
+      <input type="text" id="lf-nom" name="nom" autocomplete="family-name" required aria-describedby="err-nom" />
+      <p class="field-error" id="err-nom" hidden></p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="field">
+      <label for="lf-email">{L.email}</label>
+      <input type="email" id="lf-email" name="email" autocomplete="email" required aria-describedby="err-email" />
+      <p class="field-error" id="err-email" hidden></p>
+    </div>
+    <div class="field">
+      <label for="lf-tel">{L.phone} <span class="opt">({L.optional})</span></label>
+      <input type="tel" id="lf-tel" name="telephone" autocomplete="tel" aria-describedby="err-telephone" />
+      <p class="field-error" id="err-telephone" hidden></p>
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="lf-message">{L.message} <span class="opt">({L.optional})</span></label>
+    <textarea id="lf-message" name="message" rows="4" placeholder={messageHint}></textarea>
+  </div>
+
+  <div class="field">
+    <label class="attr-label" for="attribution">{attribution.prompt}</label>
+    <select name="attribution" id="attribution" class="attr-select">
+      <option value="">{L.selectPlaceholder}</option>
+      {attribution.options.map((o) => <option value={o.value}>{o.label}</option>)}
+    </select>
+  </div>
+
+  <button type="submit" class="btn-burgundy" id="submitBtn">{submitLabel}</button>
+  <p class="form-status" id="formStatus" role="status"></p>
+
+  {/* Rassurance au point d'envoi. « Réponse sous 24 heures » vivait seul 130 px
+      plus bas, après un vide : au moment de céder ses coordonnées, le visiteur ne
+      le voyait pas. */}
+  <p class="form-trust">
+    {trustLines.map((line) => <span>{line}</span>)}
+    <a href={privacyHref}>{L.privacyLabel}</a>
+  </p>
+  <RatingLines lang={lang} tone="light" />
+</form>
+
+<script is:inline define:vars={{ thanksPath, L }}>
+  (function () {
+    const form = document.getElementById("leadForm");
+    if (!form) return;
+    const status = document.getElementById("formStatus");
+    const btn = document.getElementById("submitBtn");
+    const q = new URLSearchParams(location.search);
+    document.getElementById("utmSource").value = q.get("utm_source") || "";
+    document.getElementById("utmCampaign").value = q.get("utm_campaign") || "";
+
+    // Qualification sans friction : la page de provenance renseigne un champ caché
+    // plutôt qu'un champ « objet » de plus, qui coûterait de la conversion.
+    // Priorité au paramètre explicite, puis au referrer interne.
+    (function setOrigine() {
+      const el = document.getElementById("leadOrigine");
+      if (!el) return;
+      const fromParam = q.get("origine") || q.get("from") || "";
+      let fromRef = "";
+      try {
+        const r = document.referrer ? new URL(document.referrer) : null;
+        if (r && r.host === location.host && r.pathname !== location.pathname) fromRef = r.pathname;
+      } catch (e) {}
+      el.value = fromParam || fromRef || "";
+    })();
+
+    async function sha256(str) {
+      if (!str || !crypto?.subtle) return "";
+      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str.trim().toLowerCase()));
+      return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    let formStarted = false;
+    form.addEventListener(
+      "focusin",
+      () => {
+        if (formStarted) return;
+        formStarted = true;
+        const cb = (form.querySelector("[name=cible]") || {}).value || "";
+        window.huberTrack && window.huberTrack("form_start", { cible: cb });
+      },
+      { passive: true }
+    );
+
+    // Validation posée dans la page, à côté du champ concerné. reportValidity()
+    // n'affichait qu'une bulle navigateur non stylée, une erreur à la fois, et
+    // laissait le lecteur d'écran sans rattachement au champ.
+    function messageFor(field) {
+      if (field.validity.valueMissing) return L.required;
+      if (field.validity.typeMismatch && field.type === "email") return L.invalidEmail;
+      return field.validationMessage || L.required;
+    }
+    function showError(field) {
+      const box = document.getElementById("err-" + field.name);
+      const ok = field.checkValidity();
+      field.setAttribute("aria-invalid", ok ? "false" : "true");
+      if (box) {
+        box.textContent = ok ? "" : messageFor(field);
+        box.hidden = ok;
+      }
+      return ok;
+    }
+    form.querySelectorAll("input[required], input[type=email]").forEach((f) => {
+      f.addEventListener("blur", () => showError(f));
+      f.addEventListener("input", () => {
+        if (f.getAttribute("aria-invalid") === "true") showError(f);
+      });
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const fields = Array.from(form.querySelectorAll("input[required], input[type=email]"));
+      const bad = fields.filter((f) => !showError(f));
+      if (bad.length) {
+        status.textContent = L.errorSummary;
+        bad[0].focus();
+        return;
+      }
+      btn.disabled = true;
+      status.textContent = L.sending;
+      const data = Object.fromEntries(new FormData(form).entries());
+      data.lang = (document.documentElement.lang || "fr").slice(0, 2);
+      data.browser_lang = navigator.language || "";
+      const qp = new URLSearchParams(location.search);
+      const cookie = (n) => (document.cookie.match(new RegExp("(?:^|; )" + n + "=([^;]*)")) || [])[1] || "";
+      // Attribution : UTM de l'URL courante (last-touch taggé) sinon first-touch du cookie ;
+      // referrer = la vraie porte d'entrée figée à l'arrivée, sinon document.referrer.
+      let attr = {};
+      try {
+        attr = JSON.parse(decodeURIComponent(cookie("ht_attr")) || "{}");
+      } catch (e) {}
+      data.utm_source = qp.get("utm_source") || attr.us || "";
+      data.utm_medium = qp.get("utm_medium") || attr.um || "";
+      data.utm_campaign = qp.get("utm_campaign") || attr.uc || "";
+      data.utm_term = qp.get("utm_term") || attr.ut || "";
+      data.utm_content = qp.get("utm_content") || attr.un || "";
+      data.page = location.pathname + location.search;
+      data.referrer = attr.ref || document.referrer || "";
+      data.landing = attr.lp || "";
+      data.gclid = decodeURIComponent(cookie("gclid"));
+      data.gbraid = decodeURIComponent(cookie("gbraid"));
+      data.wbraid = decodeURIComponent(cookie("wbraid"));
+      data.lead_id = crypto.randomUUID ? crypto.randomUUID() : String(Date.now());
+      try {
+        const res = await fetch("/api/lead", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        if (!res.ok) throw new Error("http " + res.status);
+        const em = await sha256(data.email);
+        const ph = await sha256((data.telephone || "").replace(/[^0-9+]/g, ""));
+        const params = new URLSearchParams({ cible: data.cible || "", em, ph, lead_id: data.lead_id });
+        if (data.gclid) params.set("gclid", data.gclid);
+        location.href = `${thanksPath}?${params.toString()}`;
+      } catch (err) {
+        btn.disabled = false;
+        status.textContent = L.errorGeneric;
+      }
+    });
+  })();
+</script>

@@ -33,28 +33,43 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
 
 /* ---------- HEADER ---------- */
 /* Header crème solide avec le logo aquarelle (DA d'origine, logo lisible sur clair). */
+/* Seuil du burger ramené de 1300 à 1200 px : un MacBook Air 13" affiche
+   1280 px de large, et toute la navigation d'un site qui doit convaincre y
+   était cachée derrière un bouton. Le header se resserre juste assez pour que
+   les huit liens tiennent dans les trois langues, l'italien étant le plus long. */
 .site-header{
   position:fixed;top:0;left:0;right:0;z-index:50;
   display:flex;align-items:center;justify-content:space-between;
-  padding:10px 48px;
+  padding:10px 40px;
   background:var(--bg);color:var(--ink);
   box-shadow:0 1px 0 var(--line-soft);
 }
 /* Transition uniquement après le 1er rendu (classe .anim ajoutée en JS),
    pour ne pas animer l'état initial à chaque changement de page. */
-.site-header.anim{transition:padding .4s,box-shadow .4s}
-.site-header.anim .brand-logo{transition:height .4s}
-.site-header.solid{padding:6px 48px;box-shadow:0 2px 14px rgba(0,0,0,.07)}
+/* Le rétrécissement au défilement passe par transform plutôt que par padding et
+   height : animer des propriétés de mise en page force un recalcul complet à
+   chaque image, et ce header est fixe au-dessus de pages très longues. La
+   hauteur reste constante, c'est le logo qui se met à l'échelle. */
+.site-header.anim{transition:box-shadow .4s,background .4s}
+.site-header.anim .brand-logo{transition:transform .4s;transform-origin:left center}
+.site-header.solid{box-shadow:0 2px 14px rgba(0,0,0,.07)}
 .brand{display:flex;align-items:center}
 .brand-logo{height:58px;width:auto;display:block}
-.site-header.solid .brand-logo{height:48px}
-.nav{display:flex;align-items:center;gap:18px}
+.site-header.solid .brand-logo{transform:scale(.83)}
+.nav{display:flex;align-items:center;gap:14px}
 .lang-switch{display:inline-flex;align-items:center;gap:6px;margin-left:14px;font-size:.78rem;letter-spacing:.04em}
+/* Trois cibles collées d'environ 20 px de haut, en bas du panneau burger, là où
+   le pouce est le moins précis. La zone cliquable monte à 44 px sans grossir le
+   texte : les marges négatives absorbent la hauteur ajoutée. */
 .lang-switch a{opacity:.6;text-decoration:none;color:inherit}
+.lang-switch a:focus-visible{outline:2px solid currentColor;outline-offset:-4px;opacity:1}
 .lang-switch a.active{opacity:1;font-weight:600}
 .lang-switch a:hover{opacity:1}
 .lang-switch .sep{opacity:.35}
-.nav a{font-family:'Montserrat',sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:400;opacity:.92;transition:opacity .3s}
+.nav a{font-family:'Montserrat',sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:400;opacity:.92;transition:opacity .3s}
+/* Le bouton d'action ne se met pas en retrait : l'opacité 0,92 héritée des liens
+   du menu rognait le blanc sur bordeaux du seul bouton persistant du site. */
+.nav .book,.book--bar{opacity:1}
 .nav a:hover{opacity:1;color:var(--burgundy)}
 .nav .book{
   background:var(--burgundy);color:#fff;border:1px solid var(--burgundy);
@@ -65,17 +80,30 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
    affiché dès que le menu passe en burger pour qu'il reste toujours visible et cliquable
    (sinon il disparaissait dans le panneau, cf. retour Patrick 06/07). */
 .book--bar{display:none;background:var(--burgundy);color:#fff;border:1px solid var(--burgundy);
-  font-family:'Montserrat',sans-serif;font-size:11px;font-weight:400;text-transform:uppercase;
+  font-family:'Montserrat',sans-serif;font-size:12px;font-weight:400;text-transform:uppercase;
   letter-spacing:.2em;text-decoration:none;padding:11px 22px;transition:all .35s}
 .book--bar:hover{background:#6e0808;border-color:#6e0808;color:#fff}
-.menu-toggle{display:none;background:none;border:0;cursor:pointer;padding:8px;flex-direction:column;gap:5px;color:inherit;z-index:60}
+/* « Demander un devis » est deux fois plus long que « Réserver » : sans ces
+   réglages il passe à la ligne et déforme la barre sur un écran de 390 px. */
+.book--bar{white-space:nowrap}
+@media(max-width:560px){
+  .book--bar{letter-spacing:.1em;padding:10px 14px}
+}
+/* Quand la barre d'action fixe est à l'écran, elle porte déjà le même appel à
+   l'action : le doublon du header s'efface et rend sa place au logo. Borné à
+   960 px, sinon le bouton disparaîtrait aussi entre 960 et 1300 px, où le menu
+   est en burger mais où la barre fixe, elle, n'existe pas. */
+@media(max-width:960px){
+  html.sticky-cta-on .book--bar{display:none}
+}
+.menu-toggle{display:none;background:none;border:0;cursor:pointer;padding:11px;flex-direction:column;gap:5px;color:inherit;z-index:60;min-width:44px;min-height:44px;align-items:center;justify-content:center}
 .menu-toggle span{display:block;width:24px;height:2px;background:currentColor;transition:transform .3s,opacity .3s}
 .site-header.nav-open .menu-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .site-header.nav-open .menu-toggle span:nth-child(2){opacity:0}
 .site-header.nav-open .menu-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 /* Sous 1200px, le menu déroule en panneau (le nav desktop devenait trop large
    et chevauchait le logo). Le burger ouvre/ferme. */
-@media(max-width:1300px){
+@media(max-width:1200px){
   .site-header{padding:16px 22px}
   .site-header.nav-open{background:var(--bg);color:var(--ink)}
   .menu-toggle{display:flex;margin-left:14px}
@@ -84,22 +112,42 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
   .nav .book{display:none}
   .nav{
     position:absolute;top:100%;left:0;right:0;
-    flex-direction:column;align-items:flex-start;gap:18px;
+    /* Les liens font eux-mêmes 44 px de haut : l'écart entre eux se resserre
+       d'autant, sinon le panneau gagne une demi-page pour rien. */
+    flex-direction:column;align-items:flex-start;gap:2px;
     background:var(--bg);color:var(--ink);
     padding:24px 22px 30px;border-top:1px solid var(--line-soft);
     box-shadow:0 12px 28px rgba(0,0,0,.12);display:none;
   }
   .nav.open{display:flex}
-  .nav a{color:var(--ink);opacity:.85}
+  .nav a{color:var(--ink);opacity:.85;display:inline-flex;align-items:center;min-height:44px}
   .nav .book{align-self:flex-start;border-color:var(--ink)}
   .nav .book:hover{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
   .lang-switch{margin-left:0;margin-top:4px;font-size:.85rem}
-  .lang-switch a{color:var(--ink)}
+  .lang-switch a{color:var(--ink);display:inline-flex;align-items:center;min-height:44px;padding:0 10px;margin:0 -4px}
+  /* Mariage et séminaire portent le panier moyen : dans un panneau de huit
+     liens tous au même poids, aucun n'est mis en avant, donc aucun ne l'est. */
+  .nav a.nav-key{color:var(--burgundy);font-weight:500}
 }
 
 /* ---------- HERO ---------- */
-.hero{position:relative;height:100vh;min-height:680px;overflow:hidden;background:#1a1a1a}
-.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.5) 0%,rgba(0,0,0,.15) 40%,rgba(0,0,0,.15) 60%,rgba(0,0,0,.6) 100%);z-index:1}
+/* Le héros grandit avec son contenu au lieu de le couper. En hauteur fixe à
+   100vh avec un contenu positionné en absolu, un portable en 1280x720 perdait
+   45 px du bas : le bas de la barre de réservation passait sous la ligne de
+   flottaison sans que rien ne l'indique. */
+.hero{position:relative;min-height:100vh;overflow:hidden;background:#1a1a1a;display:flex;align-items:center;
+  /* padding:0 explicite : le héros est un <section> et héritait des 140 px de
+     `section{padding:140px 48px}`. Invisible tant que sa hauteur était figée en
+     100vh, ces 280 px s'ajoutent dès que la hauteur suit le contenu. */
+  padding:0}
+.hero::after{content:"";position:absolute;inset:0;z-index:1;
+  /* Deux couches plutôt qu'un dégradé plat. La couche radiale charge la zone où
+     le texte est réellement posé, la couche verticale tient les bords. L'ancien
+     dégradé retombait à 15 % d'opacité entre 40 et 60 % de hauteur, c'est-à-dire
+     exactement sous le titre et le chapeau. */
+  background:
+    radial-gradient(115% 82% at 30% 54%, rgba(0,0,0,.62) 0%, rgba(0,0,0,.40) 52%, rgba(0,0,0,.10) 100%),
+    linear-gradient(180deg,rgba(0,0,0,.48) 0%,rgba(0,0,0,.26) 42%,rgba(0,0,0,.30) 64%,rgba(0,0,0,.62) 100%)}
 /* Image retournée en miroir : la masse d'arbres sombre passe à gauche, sous le titre
    calé à gauche, pour un meilleur contraste du texte blanc. */
 /* Les héros enveloppent leur <img> dans un <picture> (recadrage mobile) : le
@@ -107,46 +155,74 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
 .hero picture,.page-hero picture,.free-hero picture{display:contents}
 .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 50%;transform:scaleX(-1) scale(1.06);transition:transform 12s ease-out}
 .hero.loaded img{transform:scaleX(-1) scale(1)}
-.hero-content{position:absolute;left:0;right:0;top:50%;transform:translateY(-40%);z-index:2;text-align:left;color:#fff;padding:0 24px}
+/* Calage optique repris à l'identique : le bloc reste légèrement sous le centre,
+   obtenu ici par un écart de padding plutôt que par une translation. */
+.hero-content{position:relative;width:100%;z-index:2;text-align:left;color:#fff;padding:118px 24px 40px}
 .hero-content .container{max-width:1280px;margin:0 auto}
 .hero-inner{max-width:780px}
 /* Filet de marque court en ouverture, à la place de l'ancien sur-titre majuscule espacé. */
 .hero-rule{width:64px;height:2px;background:var(--burgundy);margin:0 0 30px}
-.eyebrow{font-family:'Montserrat',sans-serif;font-weight:400;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;display:inline-flex;align-items:center;gap:18px;margin-bottom:32px;opacity:.95}
-.eyebrow::before,.eyebrow::after{content:"";width:48px;height:1px;background:currentColor;opacity:.6}
+/* Le même filet ouvre les héros de page intérieure, où il remplace le sur-titre
+   en capitales espacées. Le contenu y est centré, le filet aussi. */
+.page-hero .hero-rule{display:block;margin:0 auto 30px}
 .hero h1{font-size:clamp(48px,7.2vw,92px);line-height:1.04;font-weight:400;letter-spacing:-.012em;color:#fff;margin-bottom:30px}
-.hero p.lead{font-family:'Montserrat',sans-serif;font-weight:300;font-size:clamp(14px,1.4vw,16px);max-width:560px;margin:0 0 40px;letter-spacing:.04em;line-height:1.85;opacity:.95}
+.hero p.lead{font-family:'Montserrat',sans-serif;font-weight:300;font-size:clamp(14px,1.4vw,16px);max-width:560px;margin:0 0 40px;letter-spacing:.04em;line-height:1.85}
 .hero-cta{display:flex;gap:30px;align-items:center;justify-content:flex-start;flex-wrap:wrap;margin-bottom:40px}
 /* CTA secondaire en lien souligné discret (réutilise le registre .act-link, sur fond sombre). */
-.hero-cta .hero-link{display:inline-flex;align-items:center;gap:12px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:#fff;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.6);transition:all .3s}
+.hero-cta .hero-link{display:inline-flex;align-items:center;gap:12px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:#fff;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.6);transition:all .3s}
 .hero-cta .hero-link::after{content:"→";font-family:Georgia,serif;font-size:14px;letter-spacing:0;transition:transform .3s}
 .hero-cta .hero-link:hover{border-color:#fff}
 .hero-cta .hero-link:hover::after{transform:translateX(4px)}
 
 /* Boutons */
-.btn-primary,.btn-ghost,.btn-burgundy{font-family:'Montserrat',sans-serif;font-weight:500;font-size:11px;letter-spacing:.26em;text-transform:uppercase;padding:18px 38px;cursor:pointer;transition:all .35s;border:1px solid;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
-.btn-primary{background:#fff;color:var(--ink);border-color:#fff}
-.btn-primary:hover{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
+.btn-primary,.btn-ghost,.btn-burgundy{font-family:'Montserrat',sans-serif;font-weight:500;font-size:12px;letter-spacing:.26em;text-transform:uppercase;padding:18px 38px;cursor:pointer;transition:all .35s;border:1px solid;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+/* Le bouton de demande de devis prend la couleur d'action du site. Au premier
+   écran, quatre appels à l'action se disputaient l'attention et le plus saturé,
+   le bouton Recherche du moteur, menait au tunnel le moins rentable : 296 clics
+   « Réserver » sur 30 jours pour 24 démarrages de formulaire. */
+.btn-primary{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
+.btn-primary:hover{background:#fff;color:var(--ink);border-color:#fff}
 .btn-ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.7)}
 .btn-ghost:hover{background:#fff;color:var(--ink);border-color:#fff}
 .btn-burgundy{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
 .btn-burgundy:hover{background:transparent;color:var(--burgundy)}
 
-.scroll-hint{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);z-index:2;color:#fff;font-family:'Montserrat',sans-serif;font-size:9.5px;letter-spacing:.44em;text-transform:uppercase;opacity:.75;display:flex;flex-direction:column;align-items:center;gap:12px}
+.scroll-hint{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);z-index:2;color:#fff;font-family:'Montserrat',sans-serif;font-size:12px;letter-spacing:.44em;text-transform:uppercase;opacity:.9;display:flex;flex-direction:column;align-items:center;gap:12px}
 .scroll-hint::after{content:"";display:block;width:1px;height:42px;background:currentColor;animation:scrollLine 2.6s ease-in-out infinite}
 @keyframes scrollLine{0%,100%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1)}}
 
 /* ---------- SECTIONS ---------- */
-section{padding:140px 48px;position:relative}
+/* 140 px en haut et en bas, plus 90 px sous chaque en-tête, produisaient des
+   écrans entiers sans information sur une page qui en compte déjà beaucoup. */
+section{padding:112px 48px;position:relative}
 .container{max-width:1280px;margin:0 auto}
-.section-eyebrow{font-family:'Montserrat',sans-serif;font-weight:400;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--burgundy);margin-bottom:28px;display:inline-block}
+/* Filet bordeaux à la place du sur-titre en capitales espacées. La charte le
+   bannit par écrit et demande « un traitement propre à la marque, filet
+   bordeaux, numérotation de section maison » : la numérotation, c'est .offer-num
+   dans le corps des landings, le filet ouvre les sections. Le texte du sur-titre
+   n'est pas repris ailleurs : le H2 ouvre seul, c'est l'arbitrage retenu.
+   Décoratif, donc aria-hidden dans le markup : rien à annoncer. */
+/* Le filet n'ouvre plus la section détaché du titre : posé à 40 px au-dessus, il
+   se lisait comme un objet orphelin et laissait la tête de section vide. Il passe
+   sous le titre, collé à lui, et devient une signature. Le span décoratif reste
+   dans le markup, masqué : le lot 3 attend une validation cliente et doit pouvoir
+   se défaire sans toucher aux composants. C'est le titre qui porte le trait. */
+.section-rule{display:none}
+.section-rule + h1::after,
+.section-rule + h2::after{content:"";display:block;width:56px;height:2px;background:var(--burgundy);margin:18px 0 0}
+/* Têtes de section centrées : le filet suit l'alignement du titre. */
+.section-head .section-rule + h2::after,
+.blog-masthead .section-rule + h1::after,
+.thanks-inner .section-rule + h1::after{margin-left:auto;margin-right:auto}
 .section-title{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(38px,5vw,62px);line-height:1.1;color:var(--ink);margin-bottom:32px}
-.section-head{text-align:center;max-width:760px;margin:0 auto 90px}
+.section-head{text-align:center;max-width:760px;margin:0 auto 64px}
 .section-head p{font-size:16px;color:var(--muted);font-weight:300;line-height:1.85;max-width:620px;margin:0 auto}
 
 /* ---------- INTRO ---------- */
-.intro{background:var(--bg);padding-top:180px}
-.intro .container{display:grid;grid-template-columns:1.05fr 1fr;gap:120px;align-items:center}
+.intro{background:var(--bg);padding-top:140px}
+/* align-items:start plutôt que center : les deux colonnes n'ont pas la même
+   hauteur, et le centrage laissait environ 400 px de crème vide sous le texte. */
+.intro .container{display:grid;grid-template-columns:1.05fr 1fr;gap:96px;align-items:start}
 .intro h2{font-size:clamp(38px,4.6vw,56px);line-height:1.12;margin-bottom:34px;font-weight:400}
 .intro p{font-size:16px;color:var(--ink-2);font-weight:300;line-height:1.9;margin:0 0 20px}
 .intro .visual{position:relative;aspect-ratio:4/5}
@@ -174,15 +250,15 @@ section{padding:140px 48px;position:relative}
 .act-text .list{list-style:none;padding:0;margin:0 0 36px;display:grid;gap:8px;font-size:13.5px;color:var(--muted);font-weight:300}
 .act-text .list li{display:flex;gap:14px;align-items:flex-start}
 .act-text .list li::before{content:"·";color:var(--burgundy);font-weight:700}
-.act-link{display:inline-flex;align-items:center;gap:16px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:var(--ink);padding-bottom:8px;border-bottom:1px solid var(--ink);transition:all .3s}
+.act-link{display:inline-flex;align-items:center;gap:16px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:var(--ink);padding-bottom:8px;border-bottom:1px solid var(--ink);transition:all .3s}
 .act-link::after{content:"→";font-family:Georgia,serif;font-size:14px;letter-spacing:0;transition:transform .3s}
 .act-link:hover{color:var(--burgundy);border-color:var(--burgundy)}
 .act-link:hover::after{transform:translateX(4px)}
 
 /* ---------- QUOTE ---------- */
 .quote{background:var(--bg-deep);padding:180px 48px;text-align:center;position:relative}
-.quote blockquote{margin:0 auto;max-width:920px;font-family:'Playfair Display',serif;font-size:clamp(30px,4vw,52px);line-height:1.22;font-style:italic;font-weight:400;color:var(--ink)}
-.quote cite{display:inline-flex;align-items:center;gap:18px;margin-top:42px;font-family:'Montserrat',sans-serif;font-style:normal;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--burgundy)}
+.quote blockquote{margin:0 auto;max-width:920px;font-family:'Playfair Display',serif;font-size:clamp(30px,4vw,52px);line-height:1.32;font-style:italic;font-weight:400;color:var(--ink)}
+.quote cite{display:inline-flex;align-items:center;gap:18px;margin-top:42px;font-family:'Montserrat',sans-serif;font-style:normal;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--burgundy)}
 .quote cite::before{content:"";width:48px;height:1px;background:var(--burgundy)}
 
 /* ---------- GALERIE ---------- */
@@ -201,7 +277,9 @@ section{padding:140px 48px;position:relative}
 /* ---------- LOCATION ---------- */
 .location{background:var(--ink-2);color:#fff;padding:160px 48px;position:relative}
 .location .container{display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center}
-.location .section-eyebrow{color:#E8C9A0}
+/* Le beige doré #E8C9A0 était hors palette officielle. Sur ce fond bleu-gris,
+   le filet passe en doré de charte (--gold), seule teinte chaude déclarée. */
+.location .section-rule + h2::after{background:var(--gold)}
 .location h2{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(38px,4.6vw,58px);line-height:1.1;margin-bottom:32px;color:#fff}
 .location p{font-size:15px;color:rgba(255,255,255,.85);font-weight:300;line-height:1.9;margin:0 0 20px}
 /* Bande de faits inline calée à gauche (au lieu de 3 colonnes égales = stat banner). */
@@ -209,13 +287,16 @@ section{padding:140px 48px;position:relative}
 .pin{padding-right:40px;margin-right:40px;border-right:1px solid rgba(255,255,255,.18)}
 .pin:last-child{padding-right:0;margin-right:0;border-right:none}
 .pin .big{font-family:'Playfair Display',serif;font-size:48px;font-weight:400;line-height:1;color:#fff}
-.pin .lbl{font-family:'Montserrat',sans-serif;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;opacity:.8;margin-top:14px;font-weight:400}
+/* Ces libellés portent les chiffres canoniques du lieu (14 hectares, 2 h 20 de
+   Paris, 10 minutes d'Amboise) : ils méritent d'être lus, pas suggérés.
+   L'opacité 0,8 sur des capitales fines très espacées les rendait pâles. */
+.pin .lbl{font-family:'Montserrat',sans-serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;margin-top:14px;font-weight:400}
 .location .visual{aspect-ratio:4/5;overflow:hidden;position:relative}
 .location .visual img{width:100%;height:100%;object-fit:cover}
 
 /* ---------- FINAL CTA ---------- */
 .final{background:var(--bg);padding:180px 48px;text-align:center}
-.final .section-eyebrow{color:var(--burgundy);margin-bottom:30px}
+.final .section-rule + h2::after{margin-left:auto;margin-right:auto}
 .final h2{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(42px,5.4vw,76px);line-height:1.08;margin-bottom:36px;color:var(--ink)}
 .final p{font-size:16px;color:var(--ink-2);font-weight:300;line-height:1.9;max-width:580px;margin:0 auto 52px}
 .final-cta{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
@@ -227,11 +308,11 @@ section{padding:140px 48px;position:relative}
 .footer-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:60px;align-items:start}
 .site-footer .name{font-family:'Playfair Display',serif;font-size:22px;color:#fff;margin-bottom:16px}
 .site-footer p{font-size:13px;line-height:1.9;margin:0 0 6px}
-.site-footer h4{font-family:'Montserrat',sans-serif;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:0 0 18px;font-weight:500}
+.site-footer h3{font-family:'Montserrat',sans-serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:0 0 18px;font-weight:500}
 .site-footer ul{list-style:none;padding:0;margin:0;display:grid;gap:10px}
 .site-footer ul a{font-size:13px;opacity:.85;transition:opacity .3s}
 .site-footer ul a:hover{opacity:1;color:#fff}
-.footer-bottom{max-width:1280px;margin:50px auto 0;padding-top:24px;border-top:1px solid rgba(255,255,255,.14);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:11px;letter-spacing:.05em;opacity:.6}
+.footer-bottom{max-width:1280px;margin:50px auto 0;padding-top:24px;border-top:1px solid rgba(255,255,255,.14);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;letter-spacing:.05em;opacity:.6}
 
 /* ---------- RESPONSIVE ---------- */
 @media(max-width:960px){
@@ -263,7 +344,9 @@ section{padding:140px 48px;position:relative}
   .hero-cta{gap:18px;margin-bottom:30px}
   /* Le recadrage vertical laisse le ciel derrière le titre : voile renforcé pour
      garder le texte blanc au-dessus de 4,5:1, sans noyer la photo. */
-  .hero::after{background:linear-gradient(180deg,rgba(0,0,0,.66) 0%,rgba(0,0,0,.54) 40%,rgba(0,0,0,.34) 66%,rgba(0,0,0,.55) 100%)}
+  .hero::after{background:
+    radial-gradient(135% 70% at 50% 48%, rgba(0,0,0,.58) 0%, rgba(0,0,0,.36) 60%, rgba(0,0,0,.08) 100%),
+    linear-gradient(180deg,rgba(0,0,0,.62) 0%,rgba(0,0,0,.50) 40%,rgba(0,0,0,.42) 66%,rgba(0,0,0,.60) 100%)}
   /* Le zoom d'ouverture rognait encore le cadrage mobile, déjà serré. */
   .hero img{transform:scaleX(-1)}
   .hero.loaded img{transform:scaleX(-1)}
@@ -276,14 +359,22 @@ section{padding:140px 48px;position:relative}
 
 /* ---------- PAGE INTÉRIEURE (mariage) ---------- */
 .page-hero{position:relative;height:74vh;min-height:680px;overflow:hidden;background:#1a1a1a}
-.page-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.55));z-index:1}
+.page-hero::after{content:"";position:absolute;inset:0;z-index:1;
+  /* Le texte est centré : le scrim doit l'être aussi. Sur /mariage en mobile, le
+     chapeau tombait en blanc sur la robe blanche de la mariée. */
+  background:
+    radial-gradient(105% 68% at 50% 52%, rgba(0,0,0,.58) 0%, rgba(0,0,0,.34) 62%, rgba(0,0,0,.06) 100%),
+    linear-gradient(180deg,rgba(0,0,0,.46),rgba(0,0,0,.54))}
 .page-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 /* Contenu centré mais biaisé vers le bas (padding-top > padding-bottom) pour
    dégager le header fixe (~90px) : le sur-titre reste visible et le CTA ne se
    fait pas rogner, même hero long (eyebrow + H1 2 lignes + lead + bouton). */
 .page-hero .inner{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;padding:128px 24px 56px}
-.page-hero h1{font-size:clamp(40px,6vw,76px);color:#fff;margin-bottom:20px}
-.page-hero p{max-width:560px;font-weight:300;letter-spacing:.04em;opacity:.95}
+/* Plafond ramené de 76 à 64 px : sur un héros de 74vh, un titre de deux lignes à
+   76 px occupait à lui seul le tiers de l'écran et poussait le chapeau et le
+   bouton hors du cadre confortable. */
+.page-hero h1{font-size:clamp(40px,5vw,64px);color:#fff;margin-bottom:20px}
+.page-hero p{max-width:560px;font-weight:300;letter-spacing:.04em}
 @media(max-width:600px){
   .page-hero{min-height:620px}
   .page-hero .inner{padding:118px 22px 48px}
@@ -302,14 +393,17 @@ section{padding:140px 48px;position:relative}
   .page-hero h1{font-size:34px;line-height:1.14;margin-bottom:18px}
   .page-hero p{font-size:14.5px}
 }
-.prose{max-width:760px;margin:0 auto}
+/* Largeur de colonne calée sous 80 caractères par ligne : au-delà, l'œil perd
+   sa ligne au retour chariot. Valeurs mesurées sur le rendu, pas estimées. */
+.prose{max-width:620px;margin:0 auto}
 .prose p{font-size:16px;color:var(--ink-2);font-weight:300;line-height:1.95;margin:0 0 22px}
 /* Liste éditoriale numérotée (remplace la grille de 3 cartes centrées remplies).
    Le numéral romain bordeaux sert de repère éditorial, texte calé à gauche. */
-.offer-list{max-width:940px;margin:0 auto;border-top:1px solid var(--line)}
+.offer-list{max-width:940px;margin:0 auto;padding:0;list-style:none;border-top:1px solid var(--line)}
 .offer-row{display:grid;grid-template-columns:120px 1fr;gap:48px;align-items:baseline;padding:46px 0;border-bottom:1px solid var(--line)}
 .offer-num{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(42px,5vw,64px);line-height:.9;color:var(--burgundy)}
-.offer-body h2{font-size:26px;margin-bottom:14px;color:var(--ink)}
+/* Sélecteur scopé : .offer-body p, plus spécifique, écrasait la taille sinon. */
+.offer-body .offer-title{font-family:'Playfair Display',serif;font-weight:400;font-size:26px;line-height:1.2;margin:0 0 14px;color:var(--ink);max-width:none}
 .offer-body p{font-size:15px;color:var(--ink-2);font-weight:300;line-height:1.9;margin:0;max-width:580px}
 @media(max-width:760px){
   .offer-row{grid-template-columns:1fr;gap:12px;padding:34px 0}
@@ -323,14 +417,31 @@ section{padding:140px 48px;position:relative}
   width:100%;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:300;color:var(--ink);
   background:#fff;border:1px solid var(--line);padding:15px 16px;transition:border-color .3s;
 }
-.lead-form textarea{margin-bottom:22px;resize:vertical}
-.lead-form input:focus,.lead-form textarea:focus{outline:none;border-color:var(--burgundy)}
-.lead-form input::placeholder,.lead-form textarea::placeholder{color:#9a9a9a}
+.lead-form textarea{resize:vertical}
+/* Anneau de focus visible au clavier. L'ancien outline:none le supprimait sur le
+   contrôle le plus important du site : au clavier, on ne savait plus où on était. */
+.lead-form input:focus,.lead-form textarea:focus,.lead-form select:focus{border-color:var(--burgundy);outline:none}
+.lead-form input:focus-visible,.lead-form textarea:focus-visible,.lead-form select:focus-visible,
+.lead-form button:focus-visible{outline:2px solid var(--burgundy);outline-offset:2px}
+/* Un champ par bloc, libellé au-dessus : en placeholder seul, l'intitulé
+   disparaissait à la première frappe et le lecteur d'écran n'avait rien à annoncer. */
+.lead-form .field{display:flex;flex-direction:column;margin-bottom:16px}
+.lead-form .row .field{margin-bottom:0}
+.lead-form label{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:400;color:var(--ink-2);margin:0 0 7px;letter-spacing:.02em}
+.lead-form label .opt{color:var(--muted);font-weight:300}
+.lead-form .field-error{margin:7px 0 0;font-family:'Montserrat',sans-serif;font-size:12.5px;line-height:1.45;color:var(--burgundy)}
+.lead-form [aria-invalid="true"]{border-color:var(--burgundy)}
+/* Rassurance au point d'envoi, dans le même bloc que le bouton. */
+.form-trust{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 12px;margin:16px 0 0;
+  font-family:'Montserrat',sans-serif;font-size:12.5px;line-height:1.5;color:#5c574c}
+.form-trust a{color:var(--burgundy)}
+.form-trust > *+ *::before{content:"·";margin-right:12px;opacity:.45}
+.lead-form input::placeholder,.lead-form textarea::placeholder{color:#6b6b6b}
 .lead-form .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 /* « Comment nous avez-vous connus ? » : facultatif, donc posé sous le message et
    annoncé par un vrai label plutôt qu'un placeholder, qui disparaît à la saisie.
    Chevron dessiné en CSS, l'apparence native varie trop d'un système à l'autre. */
-.lead-form .attr-label{display:block;font-family:'Montserrat',sans-serif;font-size:13px;color:var(--muted,#646464);margin:0 0 8px}
+.lead-form .attr-label{color:var(--muted,#646464)}
 .lead-form .attr-select{
   width:100%;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:300;color:var(--ink);
   background:#fff;border:1px solid var(--line);padding:15px 16px;margin-bottom:22px;transition:border-color .3s;
@@ -339,7 +450,7 @@ section{padding:140px 48px;position:relative}
   background-position:calc(100% - 20px) calc(50% + 2px),calc(100% - 14px) calc(50% + 2px);
   background-size:6px 6px,6px 6px;background-repeat:no-repeat;
 }
-.lead-form .attr-select:focus{outline:none;border-color:var(--burgundy)}
+.lead-form .attr-select:focus{border-color:var(--burgundy)}
 .lead-form button{width:100%;border:none;cursor:pointer}
 .lead-form button:disabled{opacity:.55;cursor:default}
 .form-status{min-height:20px;margin:16px 0 0;font-size:13px;color:var(--burgundy);text-align:center}
@@ -362,3 +473,21 @@ section{padding:140px 48px;position:relative}
 .pv-count{position:absolute;bottom:20px;left:0;right:0;text-align:center;color:#f4f2ec;font-family:'Montserrat',sans-serif;font-size:.8rem;letter-spacing:.1em}
 @media(prefers-reduced-motion:reduce){.pv-img{animation:none}}
 @media(max-width:640px){.pv-nav{width:44px;height:44px;font-size:26px}.pv-prev{left:10px}.pv-next{right:10px}.pv-img{max-width:96vw;max-height:82vh}.pv-close{top:12px;right:12px}}
+
+/* Barre d'action fixe (StickyCta) : sous 960 px elle occupe 52 px en bas d'écran.
+   Sans cette réserve, elle recouvre les mentions légales et le crédit du footer.
+   Le décalage du bandeau cookies vit dans CookieBanner.astro : le style scopé
+   d'Astro y est plus spécifique qu'une règle de feuille globale. */
+@media (max-width:960px){
+  body{padding-bottom:calc(52px + env(safe-area-inset-bottom,0px))}
+}
+@media (max-width:960px) and (max-height:420px){
+  body{padding-bottom:0}
+}
+
+/* Tag de chambre (« Chambre nuptiale », « Esprit marine »). Il réutilisait la
+   classe des sur-titres, dont il n'a jamais eu le rôle : c'est un libellé de
+   fiche. Cadre bordeaux fin, casse normale, angles vifs. */
+.room-tag{display:inline-block;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:400;
+  letter-spacing:.04em;color:var(--burgundy);border:1px solid rgba(139,0,0,.35);
+  padding:4px 10px;margin:0 0 10px;line-height:1.4}

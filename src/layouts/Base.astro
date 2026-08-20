@@ -15,6 +15,8 @@ import "@fontsource/montserrat/latin-400.css";
 import "@fontsource/montserrat/latin-500.css";
 import "@fontsource/montserrat/latin-600.css";
 import Header from "../components/Header.astro";
+import { ctaIntentFor, pageIdFromPath } from "../lib/routes";
+import StickyCta from "../components/StickyCta.astro";
 import Footer from "../components/Footer.astro";
 import CookieBanner from "../components/CookieBanner.astro";
 import settingsData from "../data/settings.json";
@@ -30,6 +32,10 @@ interface Props {
   noindex?: boolean; // pages à exclure de l'index (merci, etc.)
   ogType?: "website" | "article";
   schemas?: object[]; // données structurées spécifiques à la page
+  // Routage du bouton persistant, quand la page en sait plus que son chemin :
+  // un article de blog connaît sa catégorie, /en/blog/chateau-wedding-cost doit
+  // mener au devis mariage et non au moteur de réservation de chambres.
+  cta?: { kind: "form" | "book"; href?: string };
 }
 const {
   title,
@@ -40,9 +46,21 @@ const {
   noindex = false,
   ogType = "website",
   schemas = [],
+  cta,
 } = Astro.props;
 
 const s = settingsData[lang];
+
+// Intention du bouton persistant du header. Dérivée du chemin réel via routes.ts,
+// jamais d'une comparaison de chaîne : les slugs sont traduits en EN et IT.
+// Sur les cinq landings à devis, « Réserver » envoyait le lead dans un moteur de
+// chambres à l'unité ; il devient un lien interne vers le formulaire de la page.
+const ctaKind = cta?.kind ?? ctaIntentFor(Astro.url.pathname);
+const ctaHrefOverride = cta?.href;
+
+// Barre d'action mobile : partout sauf sur /contact, qui est déjà un formulaire,
+// et sur les pages hors index (/merci) où il n'y a plus rien à convertir.
+const showStickyCta = !noindex && pageIdFromPath(Astro.url.pathname) !== "contact";
 
 // Libellés localisés de la visionneuse photo (lightbox globale : markup + script en bas de page).
 const pvL = ({
@@ -140,6 +158,9 @@ const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
           var a = e.target && e.target.closest ? e.target.closest("a") : null;
           if (!a) return;
           var href = a.getAttribute("href") || "";
+          // Événement déclaré sur le lien lui-même (ex. bouton devis du header).
+          var declared = a.getAttribute("data-track");
+          if (declared) window.huberTrack(declared, { path: location.pathname });
           if (href.indexOf("tel:") === 0) window.huberTrack("contact_click", { method: "phone" });
           else if (href.indexOf("mailto:") === 0) window.huberTrack("contact_click", { method: "email" });
           else if (/octorate\.com|result\.xhtml/.test(href)) {
@@ -150,6 +171,38 @@ const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
         },
         true
       );
+
+      // Profondeur de scroll : sans cette mesure, aucun argument sur la longueur des pages
+      // n'est démontrable, ni avant ni après un chantier de densité.
+      (function () {
+        var marks = [25, 50, 75, 100];
+        var sent = {};
+        var ticking = false;
+        function measure() {
+          ticking = false;
+          var doc = document.documentElement;
+          var scrollable = doc.scrollHeight - window.innerHeight;
+          if (scrollable <= 0) return;
+          var pct = ((window.scrollY || doc.scrollTop) / scrollable) * 100;
+          for (var i = 0; i < marks.length; i++) {
+            var m = marks[i];
+            if (pct >= m && !sent[m]) {
+              sent[m] = true;
+              window.huberTrack("scroll_depth", { percent: m, path: location.pathname });
+            }
+          }
+        }
+        window.addEventListener(
+          "scroll",
+          function () {
+            if (ticking) return;
+            ticking = true;
+            window.requestAnimationFrame(measure);
+          },
+          { passive: true }
+        );
+        window.addEventListener("load", measure);
+      })();
     </script>
 
     {/* Google Tag Manager (chargé seulement si PUBLIC_GTM_ID est défini) */}
@@ -205,10 +258,11 @@ const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
     {GTM_ID && (
       <noscript set:html={`<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`} />
     )}
-    <Header settings={s} lang={lang} langs={langs} />
+    <Header settings={s} lang={lang} langs={langs} ctaKind={ctaKind} ctaHref={ctaHrefOverride} />
     <slot />
     <Footer settings={s} lang={lang} />
     <CookieBanner lang={lang} />
+    {showStickyCta && <StickyCta ctaKind={ctaKind} ctaHref={ctaHrefOverride} lang={lang} settings={s} />}
 
     {/* Visionneuse photo globale : rend cliquable/agrandissable toute image de contenu (hors header/footer). */}
     <div class="pv-lightbox" id="pvLightbox" role="dialog" aria-modal="true" aria-label={pvL.label} hidden>

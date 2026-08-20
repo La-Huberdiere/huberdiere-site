@@ -1,0 +1,61 @@
+---
+import reviews from "../data/reviews.json";
+
+// Les deux notes agrégées, en une ligne compacte, réutilisable partout où une
+// décision se prend : bas d'article, encart de milieu de landing, sous le bouton
+// du formulaire. Jusqu'ici elles ne vivaient que dans la section Avis de la home,
+// c'est-à-dire nulle part au moment du choix.
+//
+// Le calcul est repris de Reviews.astro à l'identique, séparateur décimal compris
+// (virgule en FR et IT, point en EN) : deux formatages divergents sur la même
+// donnée se remarquent.
+
+interface Props {
+  lang?: "fr" | "en" | "it";
+  /** "light" sur fond clair, "dark" sur le bloc bleu-gris de fin d'article. */
+  tone?: "light" | "dark";
+}
+const { lang = "fr", tone = "light" } = Astro.props;
+
+const ratings =
+  ((reviews as { ratings?: Array<{ source: string; value: string; best: string; count: string }> }).ratings) ?? [];
+const reviewWord: Record<string, string> = { fr: "avis", en: "reviews", it: "recensioni" };
+const dec = (v: string) => (lang === "en" ? v : v.replace(".", ","));
+const lines = ratings.map(
+  (r) => `${r.source} ${dec(r.value)}/${r.best} · ${r.count} ${reviewWord[lang] ?? reviewWord.fr}`
+);
+---
+{lines.length > 0 && (
+  <p class:list={["rating-lines-inline", tone]}>
+    {lines.map((line) => <span class="rl-item">{line}</span>)}
+  </p>
+)}
+
+<style>
+  .rating-lines-inline {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    gap: 6px 14px;
+    margin: 18px 0 0;
+    font-family: "Montserrat", sans-serif;
+    /* 12,5 px : au-dessus du plancher de lisibilité, sans concurrencer le bouton. */
+    font-size: 12.5px;
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+  }
+  .rating-lines-inline.light {
+    color: #5c574c;
+  }
+  .rating-lines-inline.dark {
+    color: #d7d2c8;
+  }
+  /* Le séparateur est porté par l'élément qui suit : isolé, il pourrait finir
+     seul en bout de ligne quand le bloc passe à la ligne. */
+  .rl-item + .rl-item::before {
+    content: "·";
+    margin-right: 14px;
+    opacity: 0.45;
+  }
+</style>

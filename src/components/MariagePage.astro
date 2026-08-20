@@ -1,4 +1,7 @@
 ---
+import LeadForm from "./LeadForm.astro";
+import Reviews from "./Reviews.astro";
+import RatingLines from "./RatingLines.astro";
 import { Image } from "astro:assets";
 import pHero from "../assets/SD_5.jpg";
 import v1 from "../assets/SD_6.jpg";
@@ -6,8 +9,7 @@ import v2 from "../assets/SD_9.jpg";
 import { reader, isLive } from "../lib/content";
 import { octorateUrl } from "../lib/octorate";
 import { landingMedia } from "../lib/landingMedia";
-import { localizePath } from "../lib/routes";
-import { attributionField } from "../lib/attribution";
+import { localizePath, BOOK_PAGE_IDS } from "../lib/routes";
 
 // Textes en props selon la langue ; image de hero variable par activité.
 const { m, cible = "mariage", heroImg } = Astro.props;
@@ -17,7 +19,6 @@ const hero = heroImg ?? pHero;
 const media = landingMedia[cible];
 
 const lang = (Astro.currentLocale as "fr" | "en" | "it") ?? "fr";
-const attribution = attributionField(lang);
 
 // Libellés des champs pratiques d'une chambre (lit, étage, orientation, clim, salle
 // de bain, vue) + textes de la section chambres, localisés. Les valeurs, elles,
@@ -76,17 +77,22 @@ if (lang === "fr") {
   );
   related = entries.filter((e): e is { slug: string; title: string } => e !== null);
 }
-const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
 
 // CTA principal par persona (routage ROIste, un seul appel à l'action clair).
 // Les personas « projet / devis » (mariage, séminaire, famille, retraite,
 // restauration) pointent vers le formulaire intégré (#final) : jamais vers
 // Octorate, une demande de mariage ou de privatisation n'est pas une
 // réservation en ligne. Seul le séjour (hôtel) route vers le moteur Octorate.
-const bookCibles = new Set(["sejour"]);
-const ctaKind: "form" | "book" = bookCibles.has(cible) ? "book" : "form";
+// BOOK_PAGE_IDS vit dans routes.ts : le header en a besoin aussi, et deux listes
+// qui divergent enverraient le visiteur et le bouton persistant à deux endroits.
+const ctaKind: "form" | "book" = BOOK_PAGE_IDS.has(cible) ? "book" : "form";
 const ctaLabel = ctaKind === "book" ? roomLabels.cta : m.final.submitLabel;
 const ctaHref = ctaKind === "book" ? reserveLink : "#final";
+const statsLabel = {
+  fr: "Le domaine en chiffres",
+  en: "The estate in numbers",
+  it: "La tenuta in cifre",
+}[lang];
 const midCtaLead = {
   fr: "Un projet en tête ? Parlons-en.",
   en: "Have a plan in mind? Let's talk.",
@@ -107,7 +113,7 @@ const midCtaLead = {
     <Image quality={68} src={hero} alt={m.hero.titleLine1} widths={[768, 1280, 1920]} sizes="(max-width: 768px) 250vw, 100vw" loading="eager" fetchpriority="high" />
   )}
   <div class="inner">
-    <div class="eyebrow">{m.hero.eyebrow}</div>
+    <span class="hero-rule" aria-hidden="true"></span>
     <h1>{m.hero.titleLine1}<br /><span class="italic">{m.hero.titleLine2Italic}</span></h1>
     <p>{m.hero.lead}</p>
     <div class="page-hero__cta">
@@ -121,9 +127,9 @@ const midCtaLead = {
 </section>
 
 {m.brief && m.brief.length > 0 && (
-  <section class="brief">
+  <section class="brief" aria-labelledby="briefLabel">
     <div class="brief-card reveal">
-      <span class="brief-label">{briefLabel}</span>
+      <span class="brief-label" id="briefLabel">{briefLabel}</span>
       <dl class="brief-list">
         {m.brief.map((b) => (
           <div class="brief-row">
@@ -137,7 +143,7 @@ const midCtaLead = {
 )}
 
 {m.stats && m.stats.length > 0 && (
-  <section class="stats-band">
+  <section class="stats-band" aria-label={statsLabel}>
     <div class="stats-row">
       {m.stats.map((s) => (
         <div class="stat reveal">
@@ -155,36 +161,31 @@ const midCtaLead = {
   </div>
 </section>
 
+{/* Un seul bloc là où il y en avait deux. La liste numérotée et le bloc « extras »
+    se suivaient à 1 500 px d'intervalle et disaient la même chose : sur /mariage,
+    « un interlocuteur dédié » apparaissait dans les deux, « 21 couchages » trois
+    fois sur la page. Ils partagent maintenant un titre et une section, la liste
+    portant les trois piliers et la grille le détail. Aucun texte n'est supprimé :
+    tout reste éditable au CMS, aux mêmes emplacements. */}
 <section style="padding-top:0">
-  <div class="offer-list">
+  {m.extrasHead?.title && (
+    <div class="extras-head reveal">
+      <span class="section-rule" aria-hidden="true"></span>
+      <h2 class="section-title">{m.extrasHead.title}</h2>
+    </div>
+  )}
+  <ol class="offer-list">
     {m.cards.map((card) => (
-      <div class="offer-row reveal">
-        <div class="offer-num">{card.num}</div>
+      <li class="offer-row reveal">
+        <div class="offer-num" aria-hidden="true">{card.num}</div>
         <div class="offer-body">
-          <h2>{card.title}</h2>
+          <h3 class="offer-title">{card.title}</h3>
           <p>{card.text}</p>
         </div>
-      </div>
+      </li>
     ))}
-  </div>
-</section>
-
-{ctaKind === "form" && (
-  <section class="mid-cta">
-    <div class="mid-cta__inner reveal">
-      <p class="mid-cta__lead">{midCtaLead}</p>
-      <a href="#final" class="btn-burgundy">{ctaLabel}</a>
-      <span class="mid-cta__hint">{m.final.responseLine}</span>
-    </div>
-  </section>
-)}
-
-{m.extras && m.extras.length > 0 && (
-  <section class="extras">
-    <div class="extras-head reveal">
-      {m.extrasHead?.eyebrow && <span class="section-eyebrow">{m.extrasHead.eyebrow}</span>}
-      {m.extrasHead?.title && <h2 class="section-title">{m.extrasHead.title}</h2>}
-    </div>
+  </ol>
+  {m.extras && m.extras.length > 0 && (
     <div class="extras-grid">
       {m.extras.map((e) => (
         <div class="extra-card reveal">
@@ -193,13 +194,24 @@ const midCtaLead = {
         </div>
       ))}
     </div>
+  )}
+</section>
+
+{ctaKind === "form" && (
+  <section class="mid-cta">
+    <div class="mid-cta__inner reveal">
+      <p class="mid-cta__lead">{midCtaLead}</p>
+      <a href="#final" class="btn-burgundy">{ctaLabel}</a>
+      <span class="mid-cta__hint">{m.final.responseLine}</span>
+      <RatingLines lang={lang} tone="light" />
+    </div>
   </section>
 )}
 
 {m.activities && m.activities.length > 0 && (
   <section class="activities">
     <div class="extras-head reveal">
-      {m.activitiesHead?.eyebrow && <span class="section-eyebrow">{m.activitiesHead.eyebrow}</span>}
+      <span class="section-rule" aria-hidden="true"></span>
       {m.activitiesHead?.title && <h2 class="section-title">{m.activitiesHead.title}</h2>}
       {m.activitiesHead?.intro && <p class="activities-intro">{m.activitiesHead.intro}</p>}
     </div>
@@ -217,7 +229,7 @@ const midCtaLead = {
 {m.rooms && m.rooms.length > 0 && (
   <section class="rooms">
     <div class="extras-head reveal">
-      {m.roomsHead?.eyebrow && <span class="section-eyebrow">{m.roomsHead.eyebrow}</span>}
+      <span class="section-rule" aria-hidden="true"></span>
       {m.roomsHead?.title && <h2 class="section-title">{m.roomsHead.title}</h2>}
     </div>
     <div class="rooms-list">
@@ -260,7 +272,7 @@ const midCtaLead = {
             )}
             <div class="room-card__body">
               <div class="room-card__head">
-                {r.tag && <span class="section-eyebrow">{r.tag}</span>}
+                {r.tag && <div class="room-tag-line"><span class="room-tag">{r.tag}</span></div>}
                 <h3>{r.name}</h3>
                 {r.size && <span class="room-size">{r.size}</span>}
               </div>
@@ -309,7 +321,7 @@ const midCtaLead = {
 {m.faq && m.faq.length > 0 && (
   <section class="faq">
     <div class="extras-head reveal">
-      {m.faqHead?.eyebrow && <span class="section-eyebrow">{m.faqHead.eyebrow}</span>}
+      <span class="section-rule" aria-hidden="true"></span>
       {m.faqHead?.title && <h2 class="section-title">{m.faqHead.title}</h2>}
     </div>
     <div class="faq-list">
@@ -354,7 +366,7 @@ const midCtaLead = {
 {related.length > 0 && (
   <section class="related-reads">
     <div class="extras-head reveal">
-      <span class="section-eyebrow">À lire</span>
+      <span class="section-rule" aria-hidden="true"></span>
       <h2 class="section-title">Pour aller plus loin</h2>
     </div>
     <div class="reads-grid">
@@ -369,107 +381,24 @@ const midCtaLead = {
   </section>
 )}
 
+{/* Les notes agrégées et les avis nommés vivaient uniquement sur la home. Sur une
+    landing, document.querySelector(".reviews") renvoyait null et le mot « Booking »
+    n'apparaissait pas une fois, alors que ce sont les pages d'atterrissage SEO et
+    SEA. Posés juste avant le formulaire, au moment de la décision. */}
+<Reviews lang={lang} />
+
 <section class="final" id="final" style="padding-top:120px;scroll-margin-top:80px">
-  <span class="section-eyebrow">{m.final.eyebrow}</span>
+  <span class="section-rule" aria-hidden="true"></span>
   <h2 class="reveal">{m.final.titleLine1}<br /><span class="italic">{m.final.titleLine2Italic}</span></h2>
   <p class="reveal">{m.final.text}</p>
 
-  <form class="lead-form reveal" id="leadForm" novalidate>
-    <input type="hidden" name="cible" value={cible} />
-    <input type="hidden" name="utm_source" id="utmSource" />
-    <input type="hidden" name="utm_campaign" id="utmCampaign" />
-    <input type="text" name="website" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
-
-    <div class="row">
-      <input type="text" name="prenom" placeholder="Prénom" required />
-      <input type="text" name="nom" placeholder="Nom" required />
-    </div>
-    <div class="row">
-      <input type="email" name="email" placeholder="Email" required />
-      <input type="tel" name="telephone" placeholder="Téléphone" />
-    </div>
-    <textarea name="message" rows="4" placeholder="Votre projet : date envisagée, nombre d'invités, vos envies…"></textarea>
-
-    <label class="attr-label" for="attribution">{attribution.prompt}</label>
-    <select name="attribution" id="attribution" class="attr-select">
-      <option value=""></option>
-      {attribution.options.map((o) => <option value={o.value}>{o.label}</option>)}
-    </select>
-
-    <button type="submit" class="btn-burgundy" id="submitBtn">{m.final.submitLabel}</button>
-    <p class="form-status" id="formStatus" role="status"></p>
-  </form>
-  <div class="response-line reveal">{m.final.responseLine}</div>
+  <LeadForm
+    lang={lang}
+    cible={cible}
+    submitLabel={m.final.submitLabel}
+    responseLine={m.final.responseLine}
+  />
 </section>
-
-<script is:inline define:vars={{ thanksPath }}>
-  (function () {
-    const form = document.getElementById("leadForm");
-    const status = document.getElementById("formStatus");
-    const btn = document.getElementById("submitBtn");
-    const q = new URLSearchParams(location.search);
-    document.getElementById("utmSource").value = q.get("utm_source") || "";
-    document.getElementById("utmCampaign").value = q.get("utm_campaign") || "";
-
-    async function sha256(str) {
-      if (!str || !crypto?.subtle) return "";
-      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str.trim().toLowerCase()));
-      return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
-    }
-
-    let formStarted = false;
-    form.addEventListener("focusin", () => {
-      if (formStarted) return;
-      formStarted = true;
-      const cb = (form.querySelector("[name=cible]") || {}).value || "";
-      window.huberTrack && window.huberTrack("form_start", { cible: cb });
-    }, { passive: true });
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      if (!form.reportValidity()) return;
-      btn.disabled = true;
-      status.textContent = "Envoi en cours…";
-      const data = Object.fromEntries(new FormData(form).entries());
-      data.lang = (document.documentElement.lang || "fr").slice(0, 2);
-      data.browser_lang = navigator.language || "";
-      const qp = new URLSearchParams(location.search);
-      const cookie = (n) => (document.cookie.match(new RegExp("(?:^|; )" + n + "=([^;]*)")) || [])[1] || "";
-      // Attribution : UTM de l'URL courante (last-touch taggé) sinon first-touch du cookie ;
-      // referrer = la vraie porte d'entrée figée à l'arrivée, sinon document.referrer.
-      let attr = {};
-      try { attr = JSON.parse(decodeURIComponent(cookie("ht_attr")) || "{}"); } catch (e) {}
-      data.utm_source = qp.get("utm_source") || attr.us || "";
-      data.utm_medium = qp.get("utm_medium") || attr.um || "";
-      data.utm_campaign = qp.get("utm_campaign") || attr.uc || "";
-      data.utm_term = qp.get("utm_term") || attr.ut || "";
-      data.utm_content = qp.get("utm_content") || attr.un || "";
-      data.page = location.pathname + location.search;
-      data.referrer = attr.ref || document.referrer || "";
-      data.landing = attr.lp || "";
-      data.gclid = decodeURIComponent(cookie("gclid"));
-      data.gbraid = decodeURIComponent(cookie("gbraid"));
-      data.wbraid = decodeURIComponent(cookie("wbraid"));
-      data.lead_id = crypto.randomUUID ? crypto.randomUUID() : String(Date.now());
-      try {
-        const res = await fetch("/api/lead", {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify(data),
-        });
-        if (!res.ok) throw new Error("http " + res.status);
-        const em = await sha256(data.email);
-        const ph = await sha256((data.telephone || "").replace(/[^0-9+]/g, ""));
-        const params = new URLSearchParams({ cible: data.cible || "", em, ph, lead_id: data.lead_id });
-        if (data.gclid) params.set("gclid", data.gclid);
-        location.href = `${thanksPath}?${params.toString()}`;
-      } catch (err) {
-        btn.disabled = false;
-        status.textContent = "Une erreur est survenue. Réessayez ou écrivez-nous à contact@chateaudelahuberdiere.com";
-      }
-    });
-  })();
-</script>
 
 <script>
   // Carrousel de photos par chambre : défilement natif scroll-snap + flèches + points.
@@ -514,7 +443,7 @@ const midCtaLead = {
   }
   .brief-label {
     display: block; font-family: "Montserrat", sans-serif;
-    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase;
     color: #8b0000; margin-bottom: 18px;
   }
   .brief-list { margin: 0; }
@@ -523,8 +452,8 @@ const midCtaLead = {
     padding: 16px 0; border-bottom: 1px solid #e6dfce; align-items: baseline;
   }
   .brief-row dt {
-    font-family: "Montserrat", sans-serif; font-size: 0.68rem; letter-spacing: 0.12em;
-    text-transform: uppercase; color: #8a857a; margin: 0;
+    font-family: "Montserrat", sans-serif; font-size: 12px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: #6b6558; margin: 0;
   }
   .brief-row dd {
     margin: 0; color: #2e3a48; font-size: 1rem; line-height: 1.55;
@@ -547,9 +476,14 @@ const midCtaLead = {
   }
 
   .extras { padding: 110px 24px 20px; }
-  .extras-head { text-align: center; max-width: 700px; margin: 0 auto 56px; }
+  /* Un titre appartient à ce qu'il introduit : l'espace au-dessus doit dépasser
+     celui du dessous. C'était l'inverse, 30 px au-dessus pour 56 px en dessous,
+     et le titre se lisait rattaché au bloc précédent. */
+  .extras-head { text-align: center; max-width: 700px; margin: 0 auto 34px; }
+  /* La grille suit désormais la liste numérotée dans la même section : elle
+     s'aligne sur sa largeur et prend l'air qui séparait autrefois les deux blocs. */
   .extras-grid {
-    max-width: 1080px; margin: 0 auto;
+    max-width: 940px; margin: 56px auto 0;
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px 32px;
   }
   .extra-card {
@@ -626,30 +560,33 @@ const midCtaLead = {
   .room-card__head {
     display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 14px; margin-bottom: 20px;
   }
-  .room-card__head .section-eyebrow { flex-basis: 100%; margin: 0; }
+  /* Le tag occupe sa propre ligne, mais son cadre épouse le texte : en élément
+     flex à base 100 %, la bordure s'étirait sur toute la largeur de la fiche. */
+  .room-tag-line { flex-basis: 100%; }
+  .room-card__head .room-tag { margin: 0; }
   .room-card__head h3 {
     font-family: "Playfair Display", Georgia, serif;
     color: #2e3a48; font-size: 1.65rem; margin: 0;
   }
   .room-size {
     flex: none; font-family: "Montserrat", sans-serif;
-    font-size: 0.72rem; letter-spacing: 0.08em; color: #8b0000;
-    border: 1px solid #8b0000; border-radius: 999px; padding: 3px 11px; white-space: nowrap;
+    font-size: 12px; letter-spacing: 0.08em; color: #8b0000;
+    border: 1px solid #8b0000; border-radius: 0; padding: 3px 11px; white-space: nowrap;
   }
   .room-fields {
     display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px; margin: 0 0 20px;
   }
   .room-field { padding: 10px 0; border-bottom: 1px solid #e6dfce; }
   .room-field dt {
-    font-family: "Montserrat", sans-serif; font-size: 0.62rem; letter-spacing: 0.14em;
-    text-transform: uppercase; color: #8a857a; margin-bottom: 3px;
+    font-family: "Montserrat", sans-serif; font-size: 12px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #6b6558; margin-bottom: 3px;
   }
   .room-field dd { margin: 0; font-size: 0.9rem; color: #2e3a48; }
-  .room-fine { font-size: 0.74rem; color: #a19b8f; margin: 0 0 10px; font-style: italic; letter-spacing: 0.01em; }
+  .room-fine { font-size: 12px; color: #736d5f; margin: 0 0 10px; font-style: italic; letter-spacing: 0.01em; }
   .room-amenities { font-size: 0.82rem; color: #646464; margin: 0 0 16px; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
   .room-amenities span {
-    font-family: "Montserrat", sans-serif; font-size: 0.6rem; letter-spacing: 0.14em;
-    text-transform: uppercase; color: #8a857a; font-weight: 600; white-space: nowrap;
+    font-family: "Montserrat", sans-serif; font-size: 12px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #6b6558; font-weight: 600; white-space: nowrap;
   }
   .room-desc { color: #646464; line-height: 1.75; margin: 0 0 16px; }
   .room-know {
@@ -658,7 +595,7 @@ const midCtaLead = {
     font-size: 0.86rem; color: #212121; line-height: 1.55;
   }
   .room-know span {
-    font-family: "Montserrat", sans-serif; font-size: 0.6rem; letter-spacing: 0.14em;
+    font-family: "Montserrat", sans-serif; font-size: 12px; letter-spacing: 0.14em;
     text-transform: uppercase; color: #8b0000; font-weight: 600; white-space: nowrap;
   }
   .rooms-cta {
@@ -747,7 +684,7 @@ const midCtaLead = {
   }
 
   .faq { padding: 90px 24px 30px; }
-  .faq-list { max-width: 820px; margin: 0 auto; }
+  .faq-list { max-width: 570px; margin: 0 auto; }
   .faq-item {
     border-bottom: 1px solid #ece6d8;
     padding: 6px 0;
@@ -790,7 +727,7 @@ const midCtaLead = {
   }
   .read-card:hover { border-color: #8b0000; transform: translateY(-2px); }
   .read-kicker {
-    font-family: "Montserrat", sans-serif; font-size: 0.72rem;
+    font-family: "Montserrat", sans-serif; font-size: 12px;
     letter-spacing: 0.1em; text-transform: uppercase; color: #8b0000;
   }
   .read-title {

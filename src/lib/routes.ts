@@ -104,3 +104,65 @@ export function alternatesFor(frPath: string): Record<Lang, string> {
     it: localizePath(frPath, "it"),
   };
 }
+
+// ---- Intention d'appel à l'action, dérivée du chemin ----
+//
+// Le header est rendu depuis Base.astro et ne voit pas le contexte de la page.
+// Sans cette dérivation, son unique bouton persistant envoyait le visiteur de
+// /mariage, /seminaire, /famille, /retraite et /restauration vers un moteur de
+// réservation de chambres à l'unité, dans un nouvel onglet : cinq landings sur
+// six, et 296 clics « Réserver » mesurés sur 30 jours pour 24 démarrages de
+// formulaire. Une demande de mariage ou de privatisation n'est pas une
+// réservation en ligne.
+//
+// Source unique de vérité, partagée avec MariagePage.astro.
+
+/** Pages dont l'appel à l'action légitime est le moteur Octorate. */
+export const BOOK_PAGE_IDS = new Set(["sejour"]);
+
+/** Pages qui portent le formulaire de devis (ancre #final) et son gabarit. */
+export const FORM_PAGE_IDS = new Set([
+  "mariage",
+  "seminaire",
+  "famille",
+  "retraite",
+  "restauration",
+]);
+
+export type CtaKind = "form" | "book";
+
+/**
+ * Id canonique d'une page à segment unique, à partir de son chemin localisé.
+ * Passe par PAGE_SLUGS, jamais par une comparaison de chaîne brute : les slugs
+ * sont traduits en EN et IT (`/en/chateau-wedding-loire` = `mariage`).
+ * Renvoie null pour la home, le blog, les pages libres et tout chemin non mappé.
+ */
+export function pageIdFromPath(pathname: string): string | null {
+  if (!pathname) return null;
+  let p = pathname.split("?")[0].split("#")[0].replace(/\/+$/, "");
+  if (p === "") return null;
+
+  let lang: Lang = "fr";
+  const pref = p.match(/^\/(en|it)(\/|$)/);
+  if (pref) {
+    lang = pref[1] as Lang;
+    p = p.slice(pref[1].length + 1);
+  }
+  const seg = p.replace(/^\//, "");
+  if (!seg || seg.includes("/")) return null;
+
+  for (const [id, slugs] of Object.entries(PAGE_SLUGS)) {
+    if (slugs[lang] === seg) return id;
+  }
+  return null;
+}
+
+/**
+ * Intention du bouton persistant pour un chemin donné. « form » uniquement sur
+ * les pages qui portent réellement l'ancre #final : partout ailleurs, le moteur
+ * de réservation reste la bonne destination.
+ */
+export function ctaIntentFor(pathname: string): CtaKind {
+  const id = pageIdFromPath(pathname);
+  return id && FORM_PAGE_IDS.has(id) ? "form" : "book";
+}

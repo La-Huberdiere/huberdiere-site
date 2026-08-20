@@ -48,7 +48,7 @@ const captionFeature =
   {/* .free-hero fait 66vh : le portrait n'y déborde que de 7 %, d'où 107vw. */}
   <HeroPicture desktop={imgs.hero} mobile={imgs.heroMobile} alt={entry.title} sizesMobile="107vw" />
   <div class="fh-inner">
-    <span class="fh-eyebrow">{locator}</span>
+    <span class="fh-rule" aria-hidden="true"></span>
     <h1>{entry.title}</h1>
   </div>
 </section>
@@ -80,15 +80,20 @@ const captionFeature =
   /* ---- Hero éditorial : photo plein cadre, texte calé en bas à gauche ---- */
   .free-hero { position: relative; height: 66vh; min-height: 520px; overflow: hidden; background: #1a1a1a; }
   .free-hero :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.04); animation: fh-zoom 9s ease-out forwards; }
+  /* Le texte est calé en bas à gauche : le dégradé horizontal seul laissait le
+     bas de la colonne sans appui dès que la photo y était claire. */
   .free-hero::after { content: ""; position: absolute; inset: 0; z-index: 1;
-    background: linear-gradient(90deg, rgba(20,16,14,0.72), rgba(20,16,14,0.32) 48%, rgba(20,16,14,0.05) 80%); }
+    background:
+      radial-gradient(90% 75% at 18% 82%, rgba(20,16,14,0.68) 0%, rgba(20,16,14,0.34) 60%, rgba(20,16,14,0) 100%),
+      linear-gradient(90deg, rgba(20,16,14,0.70), rgba(20,16,14,0.30) 48%, rgba(20,16,14,0.05) 80%); }
   .fh-inner { position: absolute; left: 0; bottom: 0; z-index: 2; color: #fff;
     padding: 0 24px clamp(38px, 5vw, 66px); max-width: 880px;
     animation: fh-rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
-  .fh-eyebrow { display: inline-block; font-family: "Montserrat", sans-serif; font-size: 11px;
-    letter-spacing: 0.22em; text-transform: uppercase; color: #e8c9a0; margin: 0 0 18px;
-    padding-left: 46px; position: relative; }
-  .fh-eyebrow::before { content: ""; position: absolute; left: 0; top: 0.5em; width: 32px; height: 2px; background: #b9132f; }
+  /* Le sur-titre en capitales espacées est remplacé par son seul filet, qui
+     était déjà là en ::before. Le beige doré #e8c9a0 disparaît avec lui : il
+     n'appartenait pas à la palette officielle. */
+  /* #b9132f n'est pas dans la charte : le bordeaux du domaine est #8B0000. */
+  .fh-rule { display: block; width: 56px; height: 2px; background: var(--burgundy); margin: 0 0 22px; }
   .free-hero h1 { font-family: "Playfair Display", Georgia, serif; font-weight: 400; color: #fff;
     font-size: clamp(40px, 6vw, 78px); line-height: 1.04; margin: 0; max-width: 14ch; }
   @keyframes fh-rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
@@ -134,18 +139,29 @@ const captionFeature =
 
   /* ---- Bloc d'appel ---- */
   .free-cta { text-align: center; padding: clamp(70px, 9vw, 120px) 24px; }
-  .cta-rule { display: block; width: 40px; height: 2px; background: var(--burgundy); margin: 0 auto 26px; }
+  /* Même traitement que les têtes de section : le filet se pose sous le titre
+     au lieu de flotter au-dessus, où il lisait comme un objet orphelin. */
+  .cta-rule { display: none; }
+  .cta-rule + h2::after { content: ""; display: block; width: 56px; height: 2px; background: var(--burgundy); margin: 18px auto 0; }
   .free-cta h2 { font-family: "Playfair Display", Georgia, serif; font-weight: 400;
     font-size: clamp(28px, 4vw, 44px); color: var(--ink); margin: 0 0 16px; }
   .free-cta p { max-width: 480px; margin: 0 auto 36px; color: var(--ink-2); font-weight: 300; line-height: 1.8; }
   .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-  .btn-ghost-line { font-family: "Montserrat", sans-serif; font-weight: 500; font-size: 11px;
+  .btn-ghost-line { font-family: "Montserrat", sans-serif; font-weight: 500; font-size: 12px;
     letter-spacing: 0.26em; text-transform: uppercase; padding: 18px 38px; border: 1px solid var(--ink);
     color: var(--ink); text-decoration: none; transition: all 0.35s; }
   .btn-ghost-line:hover { background: var(--ink); color: #fff; }
 
   @media (max-width: 760px) {
     .free-hero { height: 58vh; min-height: 420px; }
+    /* Le titre occupe toute la largeur sur un petit écran : un dégradé horizontal
+       laisse sa fin sans appui. Mesuré à 1,9:1 sur la photo de /en/things-to-do,
+       le pire pixel du site. On repasse à un dégradé vertical chargé en bas. */
+    .free-hero::after {
+      background:
+        radial-gradient(140% 62% at 50% 88%, rgba(20,16,14,0.72) 0%, rgba(20,16,14,0.42) 55%, rgba(20,16,14,0) 100%),
+        linear-gradient(180deg, rgba(20,16,14,0.28) 0%, rgba(20,16,14,0.34) 45%, rgba(20,16,14,0.68) 100%);
+    }
     .free-body { padding: 56px 22px 28px; }
     .free-prose :global(> p:first-of-type)::first-letter { font-size: 3.8em; }
   }

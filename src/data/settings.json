@@ -3,6 +3,7 @@
     "brandName": "Château de la Huberdière",
     "brandSub": "Touraine · Châteaux de la Loire",
     "reserveLabel": "Réserver",
+    "quoteLabel": "Demander un devis",
     "reserveHref": "https://book.octorate.com/octobook/site/reservation/result.xhtml?siteKey=cfa59f3552d511c8205e1a2bf27d6662",
     "booking": {
       "eyebrow": "Réservation directe",
@@ -114,6 +115,7 @@
     "brandName": "Château de la Huberdière",
     "brandSub": "Touraine · Loire Valley Châteaux",
     "reserveLabel": "Book",
+    "quoteLabel": "Request a quote",
     "reserveHref": "https://book.octorate.com/octobook/site/reservation/result.xhtml?siteKey=cfa59f3552d511c8205e1a2bf27d6662",
     "booking": {
       "eyebrow": "Direct booking",
@@ -225,6 +227,7 @@
     "brandName": "Château de la Huberdière",
     "brandSub": "Touraine · Castelli della Loira",
     "reserveLabel": "Prenota",
+    "quoteLabel": "Richiedi un preventivo",
     "reserveHref": "https://book.octorate.com/octobook/site/reservation/result.xhtml?siteKey=cfa59f3552d511c8205e1a2bf27d6662",
     "booking": {
       "eyebrow": "Prenotazione diretta",

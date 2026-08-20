@@ -11,7 +11,7 @@ const T = ((siteTexts as any)[lang] ?? (siteTexts as any).fr).thanks;
 ---
 <section class="thanks">
   <div class="thanks-inner">
-    <span class="section-eyebrow">{T.eyebrow}</span>
+    <span class="section-rule" aria-hidden="true"></span>
     <h1>{T.titleLine1}<br /><span class="it">{T.titleLine2Italic}</span></h1>
     <p class="thanks-lead">{T.lead}</p>
     <a class="btn-burgundy" href={prefix || "/"}>{T.home}</a>
@@ -72,7 +72,8 @@ const T = ((siteTexts as any)[lang] ?? (siteTexts as any).fr).thanks;
     margin: 14px 0 22px;
   }
   .thanks h1 :global(.it) { font-style: italic; color: #8b0000; }
-  .thanks-lead { color: #646464; line-height: 1.75; margin: 0 0 32px; font-family: "Montserrat", sans-serif; }
+  /* 84 caractères par ligne dans le conteneur hérité : colonne dédiée. */
+  .thanks-lead { color: #646464; line-height: 1.75; margin: 0 auto 32px; max-width: 580px; font-family: "Montserrat", sans-serif; }
   .thanks-response {
     margin-top: 22px; color: #8b0000; font-family: "Montserrat", sans-serif;
     font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase;

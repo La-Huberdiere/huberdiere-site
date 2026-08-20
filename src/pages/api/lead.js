@@ -136,6 +136,11 @@ export async function POST({ request }) {
         LEAD_ID: data.lead_id || "",
         PAGE_FORMULAIRE: data.page || "",
         PAGE_ENTREE: data.landing || "",
+        // La page de provenance interne n'est PAS envoyée ici : Brevo rejette la
+        // création du contact si l'attribut n'existe pas côté compte, et la
+        // demande serait perdue dans le CRM sans que rien ne le signale.
+        // Créer PAGE_PROVENANCE (texte) dans Brevo, puis décommenter :
+        // PAGE_PROVENANCE: data.origine || "",
         REFERRER: data.referrer || "",
         LOCALISATION: meta.location || "",
         NAVIGATEUR: meta.browser || "",
@@ -294,6 +299,11 @@ function notifyHtml(data, cibleLabel, meta, origin) {
     ["Contenu (utm_content)", data.utm_content],
     ["Page du formulaire", data.page],
     ["Page d'entrée (1re visite)", data.landing],
+    // Page interne d'où vient le prospect. Distincte du referrer, qui porte la
+    // provenance externe figée à l'arrivée : quelqu'un venu de Google puis passé
+    // par /mariage avant d'écrire depuis /contact a un referrer Google et une
+    // provenance /mariage. C'est la seconde qui dit le persona.
+    ["Page de provenance", data.origine],
     ["Provenance (referrer)", data.referrer],
     ["Langue du site", meta.lang],
     ["Langue du navigateur", meta.browserLang],

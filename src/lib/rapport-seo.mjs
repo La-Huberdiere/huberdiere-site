@@ -652,13 +652,17 @@ async function pullUmami(ym) {
     const id = UMAMI_WEBSITE_ID
     const q = (r) => `startAt=${r.start}&endAt=${r.end}`
     // Cette build d'Umami expose les pages via type=path (pas url) et les canaux
-    // d'acquisition déjà groupés via type=channel.
+    // d'acquisition déjà groupés via type=channel. type=entry donne la page par
+    // laquelle la visite commence : ce n'est pas le classement des pages vues, et
+    // c'est lui qui dit quelle porte du site travaille vraiment.
     const arr = (v) => (Array.isArray(v) ? v : [])
-    const [stats, statsPrev, pages, channels] = await Promise.all([
+    const [stats, statsPrev, pages, channels, entries, devices] = await Promise.all([
       umamiGet(`/api/websites/${id}/stats?${q(cur)}`, headers),
       umamiGet(`/api/websites/${id}/stats?${q(prev)}`, headers),
       umamiGet(`/api/websites/${id}/metrics?type=path&${q(cur)}&limit=8`, headers).then(arr).catch(() => []),
       umamiGet(`/api/websites/${id}/metrics?type=channel&${q(cur)}&limit=8`, headers).then(arr).catch(() => []),
+      umamiGet(`/api/websites/${id}/metrics?type=entry&${q(cur)}&limit=8`, headers).then(arr).catch(() => []),
+      umamiGet(`/api/websites/${id}/metrics?type=device&${q(cur)}&limit=8`, headers).then(arr).catch(() => []),
     ])
     // Umami v2 renvoie {value, prev} par métrique ; on ne garde que value.
     const val = (o, k) => (o && o[k] && typeof o[k] === "object" ? o[k].value : o?.[k]) ?? 0
@@ -678,6 +682,11 @@ async function pullUmami(ym) {
       avgSec: sess ? Math.round(totaltime / sess) : null,
       topPages: pages.filter((r) => r.x).slice(0, 8).map((r) => ({ path: r.x, views: r.y })),
       channels: channels.filter((r) => r.x).slice(0, 6).map((r) => ({ key: r.x, visits: r.y })),
+      entryPages: entries.filter((r) => r.x).slice(0, 8).map((r) => ({ path: r.x, visits: r.y })),
+      // Umami classe par largeur d'écran : la frontière laptop / desktop est un
+      // artefact de mesure, pas un usage. On regroupe les deux sous « ordinateur »,
+      // le détail reste dans le tableau de bord lié plus haut.
+      devices: groupDevices(devices),
     }
   } catch (e) {
     console.error("[rapport] pullUmami KO:", e.message)
@@ -689,6 +698,20 @@ function fmtDuration(sec) {
   if (sec == null) return "–"
   if (sec < 60) return `${sec} s`
   return `${Math.floor(sec / 60)} min ${String(sec % 60).padStart(2, "0")}`
+}
+
+// Umami sépare « laptop » et « desktop » sur un seuil de largeur d'écran. Les deux
+// sont le même usage pour le client, et le seuil produit des écarts qui ne veulent
+// rien dire d'un mois sur l'autre. Trois familles suffisent au rapport.
+const DEVICE_FAMILIES = { mobile: "Mobile", tablet: "Tablette", laptop: "Ordinateur", desktop: "Ordinateur" }
+function groupDevices(rows) {
+  const total = new Map()
+  for (const r of Array.isArray(rows) ? rows : []) {
+    const label = DEVICE_FAMILIES[r?.x] || (r?.x ? "Autre" : null)
+    if (!label) continue
+    total.set(label, (total.get(label) || 0) + (Number(r.y) || 0))
+  }
+  return [...total.entries()].map(([label, visits]) => ({ label, visits })).sort((a, b) => b.visits - a.visits)
 }
 
 // Traduit les canaux d'acquisition Umami en libellés client.
@@ -718,6 +741,10 @@ export function renderTraffic(td, monthLabel) {
     <div class="card"><p style="margin:0;color:var(--gris)">Aucune visite enregistrée sur cette période.</p></div>`
   }
   const pagesRows = td.topPages.map((p) => `<tr><td>${esc(p.path)}</td><td class="num">${fr(p.views)}</td></tr>`).join("")
+  // Page d'entrée : celle par laquelle la visite commence. Une page peut être très
+  // vue sans jamais faire entrer personne, et l'inverse est vrai aussi.
+  const entryRows = (td.entryPages || []).map((p) => `<tr><td>${esc(p.path)}</td><td class="num">${fr(p.visits)}</td></tr>`).join("")
+  const deviceRows = (td.devices || []).map((d) => `<tr><td>${esc(d.label)}</td><td class="num">${fr(d.visits)}</td></tr>`).join("")
   // Umami ne classe pas toutes les visites (le direct notamment) : on complète par
   // une ligne « reste » pour que la ventilation totalise bien les visites du mois.
   const rows = td.channels.map((c) => ({ label: channelLabel(c.key), visits: c.visits, key: c.key }))
@@ -741,10 +768,12 @@ export function renderTraffic(td, monthLabel) {
     <div class="kpi"><div class="l">Durée moyenne</div><div class="v">${fmtDuration(td.avgSec)}</div><div class="n">${td.bounceRate != null ? td.bounceRate + " % en une page" : "par visite"}</div></div>
   </div>
   <div class="leadsgrid" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:14px">
-    <div><table><thead><tr><th>Pages les plus vues</th><th class="num">Vues</th></tr></thead><tbody>${pagesRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
+    <div><table><thead><tr><th>Par où les visiteurs entrent</th><th class="num">Visites</th></tr></thead><tbody>${entryRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
     <div><table><thead><tr><th>D'où viennent les visiteurs</th><th class="num">Visites</th></tr></thead><tbody>${refRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
+    <div><table><thead><tr><th>Pages les plus vues</th><th class="num">Vues</th></tr></thead><tbody>${pagesRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
+    <div><table><thead><tr><th>Sur quel appareil</th><th class="num">Visites</th></tr></thead><tbody>${deviceRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
   </div>
-  <p class="note">« Visiteurs » compte les personnes uniques, « visites » leurs sessions, « pages vues » le total des pages ouvertes. Le taux « en une page » mesure les visiteurs partis après une seule page. Les canaux regroupent l'origine des visites : recherche Google, réseaux sociaux, publicité, accès direct, sites référents.${td.hasBaseline ? "" : " C'est le premier mois de mesure Umami : la comparaison avec le mois précédent apparaîtra au prochain rapport."}</p>`
+  <p class="note">« Visiteurs » compte les personnes uniques, « visites » leurs sessions, « pages vues » le total des pages ouvertes. Le taux « en une page » mesure les visiteurs partis après une seule page. Les canaux regroupent l'origine des visites : recherche Google, réseaux sociaux, publicité, accès direct, sites référents. « Par où les visiteurs entrent » compte la première page de chaque visite : c'est la porte d'entrée réelle du site, à ne pas confondre avec les pages les plus vues, qui incluent la navigation interne. L'appareil est déduit de la taille de l'écran.${td.hasBaseline ? "" : " C'est le premier mois de mesure Umami : la comparaison avec le mois précédent apparaîtra au prochain rapport."}</p>`
 }
 
 // Encart "Ce qui a été réalisé ce mois-ci" : le travail concret livré, en langage

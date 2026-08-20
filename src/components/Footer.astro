@@ -7,6 +7,12 @@ const f = s.footer;
 
 const localize = (href: string) => localizePath(href, lang as "fr" | "en" | "it");
 
+// L'année du copyright était figée à 2026 dans les trois langues des réglages :
+// au 1er janvier, le site affiche une année périmée sur toutes ses pages, et
+// personne n'y pense. Elle est recalculée à la construction, la chaîne reste
+// éditable au CMS pour tout le reste.
+const bottomLeft = String(f.bottomLeft ?? "").replace(/©\s*\d{4}/, `© ${new Date().getFullYear()}`);
+
 // Liens légaux : pages FR/EN/IT, libellés et URL localisés.
 const legalLabels = {
   fr: { ml: "Mentions légales", pc: "Politique de confidentialité" },
@@ -32,13 +38,13 @@ const creditLabel = {
       <p><a href={`mailto:${f.email}`}>{f.email}</a></p>
     </div>
     <div>
-      <h4>{f.col2Title}</h4>
+      <h3>{f.col2Title}</h3>
       <ul>
         {f.col2Links.map((l) => <li><a href={localize(l.href)}>{l.label}</a></li>)}
       </ul>
     </div>
     <div>
-      <h4>{f.col3Title}</h4>
+      <h3>{f.col3Title}</h3>
       <ul>
         {f.col3Links.map((l) => <li><a href={localize(l.href)}>{l.label}</a></li>)}
       </ul>
@@ -50,7 +56,7 @@ const creditLabel = {
     <a href={localize("/politique-de-confidentialite")}>{legalLabels.pc}</a>
   </nav>
   <div class="footer-bottom">
-    <span>{f.bottomLeft}</span>
+    <span>{bottomLeft}</span>
     <span>{f.bottomRight}</span>
   </div>
   <div class="footer-credit">
@@ -74,7 +80,7 @@ const creditLabel = {
     margin: 14px auto 0;
     padding: 0 24px;
     font-family: "Montserrat", sans-serif;
-    font-size: 10.5px;
+    font-size: 12px;
     letter-spacing: 0.05em;
     opacity: 0.4;
   }

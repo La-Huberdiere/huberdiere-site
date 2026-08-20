@@ -19,7 +19,19 @@ const warnMsg = {
   en: "Your stay includes one or more unavailable nights. Please adjust your dates to book online.",
   it: "Il tuo soggiorno include una o più notti non disponibili. Modifica le date per prenotare online.",
 }[lang] || "Votre séjour comprend une ou plusieurs nuits non disponibles. Modifiez vos dates pour réserver en ligne.";
+
+// Légende sous le calendrier. Elle était écrite en dur en français dans la
+// feuille de style et servie telle quelle aux visiteurs anglais et italiens, au
+// moment précis où ils doivent comprendre pourquoi une date est barrée. Le
+// calendrier est injecté dans <body> par le script d'Octorate, hors de ce
+// composant : la chaîne passe donc par une variable CSS posée sur :root.
+const calLegend = {
+  fr: "Dates en rouge ou grisées : complètes ou non réservables en ligne.",
+  en: "Dates in red or greyed out are full or cannot be booked online.",
+  it: "Le date in rosso o in grigio sono complete o non prenotabili online.",
+}[lang] || "Dates en rouge ou grisées : complètes ou non réservables en ligne.";
 ---
+<style is:inline set:html={`:root{--cal-legend:${JSON.stringify(calLegend)}}`}></style>
 <div class="octorate-widget">
   <script
     is:inline
@@ -41,6 +53,28 @@ const warnMsg = {
         window.huberTrack && window.huberTrack("booking_search", { source: "widget" });
       }
     }, true);
+    // Le widget propose 141 options dans le sélecteur « Adultes », pour un lieu
+    // qui compte 21 couchages. Sur mobile, c'est un rouleau interminable au tout
+    // premier geste du parcours. La liste n'est pas configurable côté Octorate :
+    // on la tronque dans le DOM, comme la validation de disponibilité plus bas.
+    var MAX_ADULTES = 21;
+    function trimPax() {
+      var sel = document.querySelector(".octobookpax select");
+      if (!sel || sel.dataset.huberTrimmed) return false;
+      var removed = 0;
+      for (var i = sel.options.length - 1; i >= 0; i--) {
+        var v = parseInt(sel.options[i].value || sel.options[i].text, 10);
+        if (!isNaN(v) && v > MAX_ADULTES) { sel.remove(i); removed++; }
+      }
+      if (removed) sel.dataset.huberTrimmed = "1";
+      return removed > 0;
+    }
+    // Le select est injecté par le script d'Octorate : on attend son arrivée.
+    var paxObserver = new MutationObserver(function () { if (trimPax()) paxObserver.disconnect(); });
+    paxObserver.observe(document.documentElement, { childList: true, subtree: true });
+    setTimeout(function () { paxObserver.disconnect(); }, 15000);
+    trimPax();
+
     var pad = function (n) { return String(n).padStart(2, "0"); };
     var key = function (y, m, d) { return y + "-" + pad(m) + "-" + pad(d); }; // m 1-based
     var closedNights = new Set(), noArrival = new Set(), noDeparture = new Set();
@@ -165,8 +199,8 @@ const warnMsg = {
   .ui-datepicker.ui-datepicker {
     background: #fff;
     border: 0;
-    border-radius: 14px;
-    box-shadow: 0 24px 64px rgba(0, 0, 0, .3);
+    border-radius: 0;
+    box-shadow: 0 14px 38px rgba(0, 0, 0, .26);
     padding: 16px 18px 6px;
     font-family: "Montserrat", sans-serif;
     z-index: 99999;
@@ -195,7 +229,7 @@ const warnMsg = {
     font-weight: 600;
     letter-spacing: .03em;
   }
-  .ui-datepicker .ui-datepicker-year { color: #8a8a8a; font-weight: 400; margin-left: 5px; }
+  .ui-datepicker .ui-datepicker-year { color: #6b6b6b; font-weight: 400; margin-left: 5px; }
   /* Flèches mois */
   .ui-datepicker .ui-datepicker-prev,
   .ui-datepicker .ui-datepicker-next {
@@ -209,8 +243,8 @@ const warnMsg = {
   }
   /* Noms des jours (Lu Ma Me...) */
   .ui-datepicker thead th {
-    color: #9a9a9a;
-    font-size: 10px;
+    color: #6b6b6b;
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: .06em;
     text-transform: uppercase;
@@ -259,7 +293,7 @@ const warnMsg = {
   /* COMPLET (arrêt ventes) : barré + teinte rouge claire */
   .ui-datepicker td.closed a,
   .ui-datepicker td.closed span {
-    color: #c98a8a !important;
+    color: #9c4d4d !important;
     text-decoration: line-through !important;
     text-decoration-thickness: 1.5px !important;
     cursor: not-allowed !important;
@@ -269,17 +303,17 @@ const warnMsg = {
   .ui-datepicker td.cta a,
   .ui-datepicker td.ctd a {
     background-image: linear-gradient(to top right, transparent calc(50% - .8px), #d9b4b4 calc(50% - .8px), #d9b4b4 calc(50% + .8px), transparent calc(50% + .8px));
-    color: #8a8a8a;
+    color: #6b6b6b;
   }
   /* Légende sous le calendrier */
   .ui-datepicker.ui-datepicker::after {
-    content: "Dates en rouge ou grisées : complètes ou non réservables en ligne." !important;
+    content: var(--cal-legend, "") !important;
     display: block !important;
     clear: both;
     white-space: normal;
     text-align: center;
-    font-size: 10px;
-    color: #9a9a9a;
+    font-size: 12px;
+    color: #6b6b6b;
     letter-spacing: .03em;
     border-top: 1px solid #eee;
     margin-top: 6px;
@@ -296,7 +330,7 @@ const warnMsg = {
     padding: 12px 18px;
     background: rgba(139, 0, 0, .92);
     color: #fff;
-    border-radius: 6px;
+    border-radius: 0;
     font-family: "Montserrat", sans-serif;
     font-size: 13px;
     font-weight: 500;
@@ -314,19 +348,22 @@ const warnMsg = {
   }
   .bb-avail-warn :global(a:hover) { opacity: .85; }
 
-  /* ---- Carte claire (verre dépoli) qui porte la barre ---- */
+  /* ---- Carte pleine qui porte la barre ----
+     Le verre dépoli est banni par la charte, et c'était l'élément le plus vu du
+     site : premier écran de la page qui reçoit 67 % des entrées. Fond plein
+     crème, angles vifs, filet bordeaux en tête et ombre courte. Un fond opaque
+     tient aussi mieux la lisibilité sur une photo claire qu'un blanc translucide. */
   .octorate-widget {
     max-width: 720px;
     margin: 44px auto 64px;
     position: relative;
     z-index: 4;
-    background: rgba(255, 255, 255, .96);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, .5);
-    border-radius: 8px;
-    box-shadow: 0 28px 70px rgba(0, 0, 0, .42);
-    padding: 20px 22px;
+    background: #F4F2EC;
+    border: 0;
+    border-top: 2px solid #8B0000;
+    border-radius: 0;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, .28);
+    padding: 22px 22px 20px;
   }
 
   /* ---- Neutraliser l'ancrage flottant + rangée en flex CENTRÉE ---- */
@@ -373,7 +410,7 @@ const warnMsg = {
     display: block !important;
     color: #646464 !important;
     font-family: "Montserrat", sans-serif !important;
-    font-size: 10px !important;
+    font-size: 12px !important;
     font-weight: 600 !important;
     letter-spacing: .18em !important;
     text-transform: uppercase !important;
@@ -388,7 +425,7 @@ const warnMsg = {
     height: 54px !important;
     background: #fff !important;
     border: 1px solid rgba(33, 33, 33, .2) !important;
-    border-radius: 5px !important;
+    border-radius: 0 !important;
     box-shadow: none !important;
     box-sizing: border-box !important;
   }
@@ -462,13 +499,16 @@ const warnMsg = {
     min-width: 168px !important;
     height: 54px !important;
     padding: 0 34px !important;
-    background: #8B0000 !important;
+    /* Bleu-gris de charte plutôt que bordeaux : le bouton reste un bouton plein
+       et parfaitement lisible dans une barre de recherche qui s'explique seule,
+       mais il cesse d'être l'élément le plus saturé du premier écran. */
+    background: #2E3A48 !important;
     color: #fff !important;
     border: 0 !important;
-    border-radius: 5px !important;
+    border-radius: 0 !important;
     font-family: "Montserrat", sans-serif !important;
     font-weight: 600 !important;
-    font-size: 11px !important;
+    font-size: 12px !important;
     letter-spacing: .22em !important;
     text-transform: uppercase !important;
     cursor: pointer !important;
