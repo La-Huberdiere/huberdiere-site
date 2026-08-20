@@ -302,7 +302,7 @@ const schemas = [
      bloc `position: sticky` ait de la course : sans ça, `align-items: start`
      dimensionne le cell à son contenu et le sticky ne colle jamais. */
   .article-rail { align-self: stretch; }
-  .article-main .prose { margin: 0; max-width: 720px; }
+  .article-main .prose { margin: 0; max-width: 620px; }
   /* Liens dans le corps de l'article (netlinking) : bordeaux souligné, bien visibles.
      Le corps est injecté via set:html, donc ses <a> ne portent pas le scope Astro :
      cibler avec :global() sinon la règle ne s'applique pas. */
@@ -349,7 +349,7 @@ const schemas = [
   /* padding: 0 pour annuler la règle globale `section { padding: 140px 48px }`
      (global.css) qui s'appliquait à la balise <section> de la FAQ et créait un
      énorme vide haut/bas. L'espacement se gère par la marge, pas ce padding. */
-  .article-faq { margin: 32px 0 0; padding: 0; max-width: 720px; }
+  .article-faq { margin: 32px 0 0; padding: 0; max-width: 570px; }
   .article-faq > h2 { font-family: "Playfair Display", Georgia, serif; font-weight: 500; font-size: 1.6rem; color: #2e3a48; margin: 0 0 18px; }
   .faq-list { border-top: 1px solid #e2dccc; }
   .article-faq details { border-bottom: 1px solid #e2dccc; }

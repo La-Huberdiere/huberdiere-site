@@ -175,7 +175,9 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
 @keyframes scrollLine{0%,100%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1)}}
 
 /* ---------- SECTIONS ---------- */
-section{padding:140px 48px;position:relative}
+/* 140 px en haut et en bas, plus 90 px sous chaque en-tête, produisaient des
+   écrans entiers sans information sur une page qui en compte déjà beaucoup. */
+section{padding:112px 48px;position:relative}
 .container{max-width:1280px;margin:0 auto}
 /* Filet bordeaux à la place du sur-titre en capitales espacées. La charte le
    bannit par écrit et demande « un traitement propre à la marque, filet
@@ -183,15 +185,17 @@ section{padding:140px 48px;position:relative}
    dans le corps des landings, le filet ouvre les sections. Le texte du sur-titre
    n'est pas repris ailleurs : le H2 ouvre seul, c'est l'arbitrage retenu.
    Décoratif, donc aria-hidden dans le markup : rien à annoncer. */
-.section-rule{display:block;width:48px;height:2px;background:var(--burgundy);margin:0 0 30px;flex:none}
+.section-rule{display:block;width:48px;height:2px;background:var(--burgundy);margin:0 0 40px;flex:none}
 .section-head .section-rule{margin-left:auto;margin-right:auto}
 .section-title{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(38px,5vw,62px);line-height:1.1;color:var(--ink);margin-bottom:32px}
-.section-head{text-align:center;max-width:760px;margin:0 auto 90px}
+.section-head{text-align:center;max-width:760px;margin:0 auto 64px}
 .section-head p{font-size:16px;color:var(--muted);font-weight:300;line-height:1.85;max-width:620px;margin:0 auto}
 
 /* ---------- INTRO ---------- */
-.intro{background:var(--bg);padding-top:180px}
-.intro .container{display:grid;grid-template-columns:1.05fr 1fr;gap:120px;align-items:center}
+.intro{background:var(--bg);padding-top:140px}
+/* align-items:start plutôt que center : les deux colonnes n'ont pas la même
+   hauteur, et le centrage laissait environ 400 px de crème vide sous le texte. */
+.intro .container{display:grid;grid-template-columns:1.05fr 1fr;gap:96px;align-items:start}
 .intro h2{font-size:clamp(38px,4.6vw,56px);line-height:1.12;margin-bottom:34px;font-weight:400}
 .intro p{font-size:16px;color:var(--ink-2);font-weight:300;line-height:1.9;margin:0 0 20px}
 .intro .visual{position:relative;aspect-ratio:4/5}
@@ -362,14 +366,17 @@ section{padding:140px 48px;position:relative}
   .page-hero h1{font-size:34px;line-height:1.14;margin-bottom:18px}
   .page-hero p{font-size:14.5px}
 }
-.prose{max-width:760px;margin:0 auto}
+/* Largeur de colonne calée sous 80 caractères par ligne : au-delà, l'œil perd
+   sa ligne au retour chariot. Valeurs mesurées sur le rendu, pas estimées. */
+.prose{max-width:620px;margin:0 auto}
 .prose p{font-size:16px;color:var(--ink-2);font-weight:300;line-height:1.95;margin:0 0 22px}
 /* Liste éditoriale numérotée (remplace la grille de 3 cartes centrées remplies).
    Le numéral romain bordeaux sert de repère éditorial, texte calé à gauche. */
-.offer-list{max-width:940px;margin:0 auto;border-top:1px solid var(--line)}
+.offer-list{max-width:940px;margin:0 auto;padding:0;list-style:none;border-top:1px solid var(--line)}
 .offer-row{display:grid;grid-template-columns:120px 1fr;gap:48px;align-items:baseline;padding:46px 0;border-bottom:1px solid var(--line)}
 .offer-num{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(42px,5vw,64px);line-height:.9;color:var(--burgundy)}
-.offer-body h2{font-size:26px;margin-bottom:14px;color:var(--ink)}
+/* Sélecteur scopé : .offer-body p, plus spécifique, écrasait la taille sinon. */
+.offer-body .offer-title{font-family:'Playfair Display',serif;font-weight:400;font-size:26px;line-height:1.2;margin:0 0 14px;color:var(--ink);max-width:none}
 .offer-body p{font-size:15px;color:var(--ink-2);font-weight:300;line-height:1.9;margin:0;max-width:580px}
 @media(max-width:760px){
   .offer-row{grid-template-columns:1fr;gap:12px;padding:34px 0}
