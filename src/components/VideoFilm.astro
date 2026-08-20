@@ -18,7 +18,8 @@ const teaser = "/video/huberdiere-film-teaser.mp4";
     <p>{c.text}</p>
   </div>
 
-  <figure class="film-frame" data-film data-video={videoId} data-teaser={teaser}>
+  <figure class="film-figure">
+  <div class="film-frame" data-film data-video={videoId} data-teaser={teaser}>
     <Image
       class="film-poster"
       src={poster}
@@ -36,7 +37,8 @@ const teaser = "/video/huberdiere-film-teaser.mp4";
       </span>
       <span class="film-play-label">{c.playLabel}</span>
     </button>
-    <figcaption class="film-caption">{c.caption}</figcaption>
+  </div>
+  <figcaption class="film-caption">{c.caption}</figcaption>
   </figure>
 </section>
 
@@ -168,6 +170,9 @@ const teaser = "/video/huberdiere-film-teaser.mp4";
     max-width: 62ch;
   }
 
+  .film-figure {
+    margin: 0;
+  }
   .film-frame {
     position: relative;
     margin: 0;
@@ -222,8 +227,7 @@ const teaser = "/video/huberdiere-film-teaser.mp4";
     transition: opacity 0.3s ease;
   }
   .film-frame.is-film::after,
-  .film-frame.is-film .film-play,
-  .film-frame.is-film .film-caption {
+  .film-frame.is-film .film-play {
     opacity: 0;
     pointer-events: none;
   }
@@ -238,8 +242,10 @@ const teaser = "/video/huberdiere-film-teaser.mp4";
     align-items: center;
     gap: 14px;
     padding: 15px 24px;
-    background: rgba(16, 22, 29, 0.42);
-    border: 1px solid rgba(255, 255, 255, 0.7);
+    /* Fond plein : à 0,42 d'opacité le libellé passait sous AA sur les plans
+       clairs, et le flou d'arrière-plan est un verre dépoli que la charte bannit. */
+    background: #10161D;
+    border: 1px solid #10161D;
     color: #fff;
     font-family: "Montserrat", sans-serif;
     font-size: 12px;
@@ -248,8 +254,6 @@ const teaser = "/video/huberdiere-film-teaser.mp4";
     text-transform: uppercase;
     cursor: pointer;
     transition: background 0.35s ease, border-color 0.35s ease, opacity 0.3s ease;
-    -webkit-backdrop-filter: blur(2px);
-    backdrop-filter: blur(2px);
   }
   .film-play:hover,
   .film-play:focus-visible {
@@ -260,20 +264,20 @@ const teaser = "/video/huberdiere-film-teaser.mp4";
     display: inline-flex;
     align-items: center;
   }
+  /* La légende est sortie de l'image. Posée en blanc sur le bas du cadre, elle
+     tombait à 1,2:1 quand le plan est un escalier de pierre en plein soleil, et
+     assombrir l'image jusqu'à la rendre lisible aurait éteint le film. Sous le
+     cadre, sur le crème, elle est lisible en permanence, y compris pendant la
+     lecture, et c'est la place d'une légende dans une mise en page de magazine. */
   .film-caption {
-    position: absolute;
-    z-index: 2;
-    right: 48px;
-    bottom: 52px;
-    max-width: 34ch;
+    max-width: 46ch;
+    margin: 16px 0 0 auto;
     text-align: right;
     font-family: "Playfair Display", Georgia, serif;
     font-style: italic;
     font-size: 15px;
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.88);
-    text-shadow: 0 1px 18px rgba(0, 0, 0, 0.55);
-    transition: opacity 0.3s ease;
+    color: var(--muted);
   }
 
   @media (max-width: 960px) {
@@ -306,8 +310,14 @@ const teaser = "/video/huberdiere-film-teaser.mp4";
       font-size: 12px;
       letter-spacing: 0.18em;
     }
+    /* Elle était masquée en mobile parce qu'elle se posait sur l'image. Sous le
+       cadre, elle tient : le mobile récupère au passage l'ancrage géographique
+       du lieu, qu'il perdait jusqu'ici. */
     .film-caption {
-      display: none;
+      max-width: none;
+      margin: 14px 0 0;
+      text-align: left;
+      font-size: 14px;
     }
   }
 

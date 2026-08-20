@@ -118,7 +118,15 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
 }
 
 /* ---------- HERO ---------- */
-.hero{position:relative;height:100vh;min-height:680px;overflow:hidden;background:#1a1a1a}
+/* Le héros grandit avec son contenu au lieu de le couper. En hauteur fixe à
+   100vh avec un contenu positionné en absolu, un portable en 1280x720 perdait
+   45 px du bas : le bas de la barre de réservation passait sous la ligne de
+   flottaison sans que rien ne l'indique. */
+.hero{position:relative;min-height:100vh;overflow:hidden;background:#1a1a1a;display:flex;align-items:center;
+  /* padding:0 explicite : le héros est un <section> et héritait des 140 px de
+     `section{padding:140px 48px}`. Invisible tant que sa hauteur était figée en
+     100vh, ces 280 px s'ajoutent dès que la hauteur suit le contenu. */
+  padding:0}
 .hero::after{content:"";position:absolute;inset:0;z-index:1;
   /* Deux couches plutôt qu'un dégradé plat. La couche radiale charge la zone où
      le texte est réellement posé, la couche verticale tient les bords. L'ancien
@@ -134,7 +142,9 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
 .hero picture,.page-hero picture,.free-hero picture{display:contents}
 .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 50%;transform:scaleX(-1) scale(1.06);transition:transform 12s ease-out}
 .hero.loaded img{transform:scaleX(-1) scale(1)}
-.hero-content{position:absolute;left:0;right:0;top:50%;transform:translateY(-40%);z-index:2;text-align:left;color:#fff;padding:0 24px}
+/* Calage optique repris à l'identique : le bloc reste légèrement sous le centre,
+   obtenu ici par un écart de padding plutôt que par une translation. */
+.hero-content{position:relative;width:100%;z-index:2;text-align:left;color:#fff;padding:118px 24px 40px}
 .hero-content .container{max-width:1280px;margin:0 auto}
 .hero-inner{max-width:780px}
 /* Filet de marque court en ouverture, à la place de l'ancien sur-titre majuscule espacé. */
@@ -143,7 +153,7 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
    en capitales espacées. Le contenu y est centré, le filet aussi. */
 .page-hero .hero-rule{display:block;margin:0 auto 30px}
 .hero h1{font-size:clamp(48px,7.2vw,92px);line-height:1.04;font-weight:400;letter-spacing:-.012em;color:#fff;margin-bottom:30px}
-.hero p.lead{font-family:'Montserrat',sans-serif;font-weight:300;font-size:clamp(14px,1.4vw,16px);max-width:560px;margin:0 0 40px;letter-spacing:.04em;line-height:1.85;opacity:.95}
+.hero p.lead{font-family:'Montserrat',sans-serif;font-weight:300;font-size:clamp(14px,1.4vw,16px);max-width:560px;margin:0 0 40px;letter-spacing:.04em;line-height:1.85}
 .hero-cta{display:flex;gap:30px;align-items:center;justify-content:flex-start;flex-wrap:wrap;margin-bottom:40px}
 /* CTA secondaire en lien souligné discret (réutilise le registre .act-link, sur fond sombre). */
 .hero-cta .hero-link{display:inline-flex;align-items:center;gap:12px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:#fff;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.6);transition:all .3s}
@@ -216,7 +226,7 @@ section{padding:140px 48px;position:relative}
 
 /* ---------- QUOTE ---------- */
 .quote{background:var(--bg-deep);padding:180px 48px;text-align:center;position:relative}
-.quote blockquote{margin:0 auto;max-width:920px;font-family:'Playfair Display',serif;font-size:clamp(30px,4vw,52px);line-height:1.22;font-style:italic;font-weight:400;color:var(--ink)}
+.quote blockquote{margin:0 auto;max-width:920px;font-family:'Playfair Display',serif;font-size:clamp(30px,4vw,52px);line-height:1.32;font-style:italic;font-weight:400;color:var(--ink)}
 .quote cite{display:inline-flex;align-items:center;gap:18px;margin-top:42px;font-family:'Montserrat',sans-serif;font-style:normal;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--burgundy)}
 .quote cite::before{content:"";width:48px;height:1px;background:var(--burgundy)}
 
@@ -246,7 +256,10 @@ section{padding:140px 48px;position:relative}
 .pin{padding-right:40px;margin-right:40px;border-right:1px solid rgba(255,255,255,.18)}
 .pin:last-child{padding-right:0;margin-right:0;border-right:none}
 .pin .big{font-family:'Playfair Display',serif;font-size:48px;font-weight:400;line-height:1;color:#fff}
-.pin .lbl{font-family:'Montserrat',sans-serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;opacity:.8;margin-top:14px;font-weight:400}
+/* Ces libellés portent les chiffres canoniques du lieu (14 hectares, 2 h 20 de
+   Paris, 10 minutes d'Amboise) : ils méritent d'être lus, pas suggérés.
+   L'opacité 0,8 sur des capitales fines très espacées les rendait pâles. */
+.pin .lbl{font-family:'Montserrat',sans-serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;margin-top:14px;font-weight:400}
 .location .visual{aspect-ratio:4/5;overflow:hidden;position:relative}
 .location .visual img{width:100%;height:100%;object-fit:cover}
 
