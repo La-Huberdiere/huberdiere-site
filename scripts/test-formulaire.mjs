@@ -23,11 +23,25 @@ const BASE = arg("--base", "http://127.0.0.1:4321").replace(/\/$/, "");
 
 /** Une page de formulaire par langue, plus /contact qui a sa propre variante. */
 const CASES = [
-  ["/mariage/", "fr", "Prénom"],
-  ["/en/chateau-wedding-loire/", "en", "First name"],
-  ["/it/matrimonio-castello-loira/", "it", "Nome"],
-  ["/contact/", "fr", "Prénom"],
+  ["/mariage", "fr", "Prénom"],
+  ["/en/chateau-wedding-loire", "en", "First name"],
+  ["/it/matrimonio-castello-loira", "it", "Nome"],
+  ["/contact", "fr", "Prénom"],
 ];
+
+/**
+ * Le site est en `trailingSlash: "never"` : contre `astro dev`, une URL à slash
+ * final rend 404 et le script expirait ensuite sur un sélecteur absent, sans
+ * jamais dire pourquoi. On demande la forme canonique, on bascule sur l'autre si
+ * le serveur la refuse, et on échoue bruyamment si aucune des deux ne répond.
+ */
+async function gotoPath(page, path, opts) {
+  const alt = path.endsWith("/") ? path.replace(/\/+$/, "") : path + "/";
+  let res = await page.goto(BASE + path, opts);
+  if (res && res.status() === 404) res = await page.goto(BASE + alt, opts);
+  if (!res || !res.ok()) throw new Error(`${BASE}${path} répond ${res ? res.status() : "rien"}`);
+  return res;
+}
 
 /** Clés que le back attend : leur disparition casse l'attribution sans rien signaler. */
 const PAYLOAD_KEYS = [
@@ -51,7 +65,7 @@ for (const [path, lang, expectedLabel] of CASES) {
     await route.fulfill({ status: 200, contentType: "application/json", body: "{}" });
   });
 
-  await page.goto(BASE + path, { waitUntil: "domcontentloaded" });
+  await gotoPath(page, path, { waitUntil: "domcontentloaded" });
   await page.waitForTimeout(1800);
 
   const label = (await page.textContent("label[for=lf-prenom]")) || "";

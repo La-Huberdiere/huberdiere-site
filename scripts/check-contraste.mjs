@@ -16,13 +16,13 @@
 const AA = 4.5;
 const PATHS = [
   ["/", "home"],
-  ["/mariage/", "mariage"],
-  ["/seminaire/", "seminaire"],
-  ["/sejour/", "sejour"],
-  ["/famille/", "famille"],
-  ["/retraite/", "retraite"],
-  ["/restauration/", "restauration"],
-  ["/en/things-to-do/", "page-libre"],
+  ["/mariage", "mariage"],
+  ["/seminaire", "seminaire"],
+  ["/sejour", "sejour"],
+  ["/famille", "famille"],
+  ["/retraite", "retraite"],
+  ["/restauration", "restauration"],
+  ["/en/things-to-do", "page-libre"],
 ];
 const VIEWPORTS = [
   [1440, 900, "desktop"],
@@ -56,9 +56,20 @@ for (const [width, height, vpName] of VIEWPORTS) {
   const context = await browser.newContext({ viewport: { width, height } });
   for (const [path, pageName] of PATHS) {
     const page = await context.newPage();
+    // Le site est en `trailingSlash: "never"` ; certains serveurs statiques
+    // veulent l'autre forme. On tente la canonique puis l'autre. Une page
+    // injoignable est un échec, pas un saut : sauter en silence faisait passer
+    // le contrôle en ne mesurant rien.
     try {
-      await page.goto(base + path, { waitUntil: "domcontentloaded", timeout: 45000 });
-    } catch {
+      const alt = path.endsWith("/") ? path.replace(/\/+$/, "") : path + "/";
+      let res = await page.goto(base + path, { waitUntil: "domcontentloaded", timeout: 45000 });
+      if (res && res.status() === 404 && alt !== path) {
+        res = await page.goto(base + alt, { waitUntil: "domcontentloaded", timeout: 45000 });
+      }
+      if (!res || !res.ok()) throw new Error(`HTTP ${res ? res.status() : "sans réponse"}`);
+    } catch (e) {
+      failures.push(`${vpName} ${pageName} → page injoignable (${e.message})`);
+      console.log(`!! ${vpName.padEnd(8)} ${pageName.padEnd(12)} page injoignable : ${e.message}`);
       await page.close();
       continue;
     }
