@@ -47,15 +47,18 @@ const policyHref = "/politique-de-confidentialite";
 <style>
   .cookie-banner {
     position: fixed;
-    left: 16px;
+    /* Ancré à droite, pas centré : centré et large de 720 px, il se posait pile sur
+       la barre de recherche Octorate, qui fait la même largeur sur le même axe.
+       Tout nouveau visiteur voyait le seul élément transactionnel de la home masqué. */
+    left: auto;
     right: 16px;
     bottom: 16px;
     z-index: 9999;
-    max-width: 720px;
-    margin: 0 auto;
+    max-width: 420px;
+    margin: 0;
     background: #fffdf9;
     border: 1px solid #e6dfce;
-    border-radius: 10px;
+    border-radius: 0;
     box-shadow: 0 12px 40px rgba(33, 33, 33, 0.18);
     padding: 18px 20px;
     display: flex;
@@ -80,7 +83,7 @@ const policyHref = "/politique-de-confidentialite";
   .cookie-actions { display: flex; gap: 10px; margin-left: auto; }
   .cookie-btn {
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: 0;
     padding: 10px 20px;
     font-family: "Montserrat", sans-serif;
     font-size: 0.84rem;
@@ -92,6 +95,9 @@ const policyHref = "/politique-de-confidentialite";
   .cookie-btn.ghost { background: transparent; color: #8b0000; }
   .cookie-btn:hover { opacity: 0.85; }
   @media (max-width: 560px) {
+    /* Sous 560 px il n'y a plus de place pour un encart de côté : la bannière
+       reprend toute la largeur, mais reste en bas et hors de la barre Octorate. */
+    .cookie-banner { left: 16px; right: 16px; max-width: none; }
     .cookie-actions { width: 100%; }
     .cookie-btn { flex: 1; }
   }

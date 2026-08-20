@@ -227,7 +227,7 @@ section{padding:140px 48px;position:relative}
 .footer-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:60px;align-items:start}
 .site-footer .name{font-family:'Playfair Display',serif;font-size:22px;color:#fff;margin-bottom:16px}
 .site-footer p{font-size:13px;line-height:1.9;margin:0 0 6px}
-.site-footer h4{font-family:'Montserrat',sans-serif;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:0 0 18px;font-weight:500}
+.site-footer h3{font-family:'Montserrat',sans-serif;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:0 0 18px;font-weight:500}
 .site-footer ul{list-style:none;padding:0;margin:0;display:grid;gap:10px}
 .site-footer ul a{font-size:13px;opacity:.85;transition:opacity .3s}
 .site-footer ul a:hover{opacity:1;color:#fff}
