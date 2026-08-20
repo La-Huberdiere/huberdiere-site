@@ -3,6 +3,9 @@ import { Image } from "astro:assets";
 import logo from "../assets/logo.png";
 import { octorateUrl } from "../lib/octorate";
 import { localizePath } from "../lib/routes";
+
+// Pages à plus fort panier moyen : mises en avant dans le panneau burger.
+const KEY_PAGES = new Set(["mariage", "seminaire"]);
 // Réglages + langue passés par Base. On localise les liens internes (slug traduit
 // + préfixe de langue via localizePath), et on affiche le sélecteur de langue.
 // En dessous de 1200px, le menu passe en burger (styles dans global.css).
@@ -34,7 +37,9 @@ const homeHref = lang === "fr" ? "/" : `/${lang}`;
     <span></span><span></span><span></span>
   </button>
   <nav class="nav" id="siteNav">
-    {s.nav.map((n) => <a href={localize(n.href)}>{n.label}</a>)}
+    {s.nav.map((n) => (
+      <a href={localize(n.href)} class:list={[KEY_PAGES.has(n.href.replace(/^\//, "")) && "nav-key"]}>{n.label}</a>
+    ))}
     <a href={ctaHref} class="book" {...ctaAttrs}>{ctaLabel}</a>
     <span class="lang-switch">
       {langs.map((l, i) => (

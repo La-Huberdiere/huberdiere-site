@@ -114,6 +114,10 @@
         "a": "Jusqu'à 20 collaborateurs logés sur place en 10 suites, et des plénières jusqu'à 100 personnes à l'Orangerie."
       },
       {
+        "q": "Quelles sont vos formules tarifaires ?",
+        "a": "Journée d'étude : salle équipée, deux pauses café et déjeuner buffet, à partir de 70 € HT par personne. Séminaire résidentiel demi-pension : journée d'étude, nuitée en single et petit-déjeuner, à partir de 250 € HT par personne. Pension complète : la demi-pension agrémentée d'un dîner servi (entrée, plat, fromage, dessert), à partir de 290 € HT par personne."
+      },
+      {
         "q": "Quels espaces de travail sont disponibles ?",
         "a": "Quatre salons modulables et l'Orangerie, équipés vidéoprojecteur et paperboard, plus le parc pour les sessions en plein air."
       },
@@ -128,10 +132,6 @@
       {
         "q": "Le séminaire est-il en privatisation exclusive ?",
         "a": "Oui, le domaine est réservé à votre entreprise seule, sans autre groupe en parallèle."
-      },
-      {
-        "q": "Quelles sont vos formules tarifaires ?",
-        "a": "Journée d'étude : salle équipée, deux pauses café et déjeuner buffet, à partir de 70 € HT par personne. Séminaire résidentiel demi-pension : journée d'étude, nuitée en single et petit-déjeuner, à partir de 250 € HT par personne. Pension complète : la demi-pension agrémentée d'un dîner servi (entrée, plat, fromage, dessert), à partir de 290 € HT par personne."
       },
       {
         "q": "Quels équipements techniques sont inclus ?",
@@ -266,6 +266,10 @@
         "a": "Up to 20 staff housed on site in 10 suites, and plenary sessions of up to 100 people in the Orangery."
       },
       {
+        "q": "What are your pricing packages?",
+        "a": "Study day: equipped room, two coffee breaks and a buffet lunch, from €70 excl. VAT per person. Half-board residential seminar: study day, single-room night and breakfast, from €250 excl. VAT per person. Full board: half board plus a served dinner (starter, main, cheese, dessert), from €290 excl. VAT per person."
+      },
+      {
         "q": "What workspaces are available?",
         "a": "Four modular lounges and the Orangery, fitted with a video projector and flip chart, plus the grounds for outdoor sessions."
       },
@@ -280,10 +284,6 @@
       {
         "q": "Is the seminar on an exclusive-use basis?",
         "a": "Yes, the estate is reserved for your company alone, with no other group at the same time."
-      },
-      {
-        "q": "What are your pricing packages?",
-        "a": "Study day: equipped room, two coffee breaks and a buffet lunch, from €70 excl. VAT per person. Half-board residential seminar: study day, single-room night and breakfast, from €250 excl. VAT per person. Full board: half board plus a served dinner (starter, main, cheese, dessert), from €290 excl. VAT per person."
       },
       {
         "q": "What technical equipment is included?",
@@ -418,6 +418,10 @@
         "a": "Fino a 20 collaboratori alloggiati in loco in 10 suite, e plenarie fino a 100 persone all'Orangerie."
       },
       {
+        "q": "Quali sono le vostre formule tariffarie?",
+        "a": "Giornata di studio: sala attrezzata, due pause caffè e pranzo a buffet, a partire da 70 € IVA esclusa a persona. Seminario residenziale in mezza pensione: giornata di studio, pernottamento in singola e colazione, a partire da 250 € IVA esclusa a persona. Pensione completa: la mezza pensione arricchita da una cena servita (antipasto, piatto, formaggio, dessert), a partire da 290 € IVA esclusa a persona."
+      },
+      {
         "q": "Quali spazi di lavoro sono disponibili?",
         "a": "Quattro saloni modulabili e l'Orangerie, dotati di videoproiettore e lavagna a fogli mobili, più il parco per le sessioni all'aperto."
       },
@@ -432,10 +436,6 @@
       {
         "q": "Il seminario è in affitto in esclusiva?",
         "a": "Sì, la tenuta è riservata alla vostra sola azienda, senza altri gruppi in parallelo."
-      },
-      {
-        "q": "Quali sono le vostre formule tariffarie?",
-        "a": "Giornata di studio: sala attrezzata, due pause caffè e pranzo a buffet, a partire da 70 € IVA esclusa a persona. Seminario residenziale in mezza pensione: giornata di studio, pernottamento in singola e colazione, a partire da 250 € IVA esclusa a persona. Pensione completa: la mezza pensione arricchita da una cena servita (antipasto, piatto, formaggio, dessert), a partire da 290 € IVA esclusa a persona."
       },
       {
         "q": "Quali attrezzature tecniche sono incluse?",

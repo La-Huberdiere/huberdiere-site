@@ -33,33 +33,43 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
 
 /* ---------- HEADER ---------- */
 /* Header crème solide avec le logo aquarelle (DA d'origine, logo lisible sur clair). */
+/* Seuil du burger ramené de 1300 à 1200 px : un MacBook Air 13" affiche
+   1280 px de large, et toute la navigation d'un site qui doit convaincre y
+   était cachée derrière un bouton. Le header se resserre juste assez pour que
+   les huit liens tiennent dans les trois langues, l'italien étant le plus long. */
 .site-header{
   position:fixed;top:0;left:0;right:0;z-index:50;
   display:flex;align-items:center;justify-content:space-between;
-  padding:10px 48px;
+  padding:10px 40px;
   background:var(--bg);color:var(--ink);
   box-shadow:0 1px 0 var(--line-soft);
 }
 /* Transition uniquement après le 1er rendu (classe .anim ajoutée en JS),
    pour ne pas animer l'état initial à chaque changement de page. */
-.site-header.anim{transition:padding .4s,box-shadow .4s}
-.site-header.anim .brand-logo{transition:height .4s}
-.site-header.solid{padding:6px 48px;box-shadow:0 2px 14px rgba(0,0,0,.07)}
+/* Le rétrécissement au défilement passe par transform plutôt que par padding et
+   height : animer des propriétés de mise en page force un recalcul complet à
+   chaque image, et ce header est fixe au-dessus de pages très longues. La
+   hauteur reste constante, c'est le logo qui se met à l'échelle. */
+.site-header.anim{transition:box-shadow .4s,background .4s}
+.site-header.anim .brand-logo{transition:transform .4s;transform-origin:left center}
+.site-header.solid{box-shadow:0 2px 14px rgba(0,0,0,.07)}
 .brand{display:flex;align-items:center}
 .brand-logo{height:58px;width:auto;display:block}
-.site-header.solid .brand-logo{height:48px}
-.nav{display:flex;align-items:center;gap:18px}
+.site-header.solid .brand-logo{transform:scale(.83)}
+.nav{display:flex;align-items:center;gap:14px}
 .lang-switch{display:inline-flex;align-items:center;gap:6px;margin-left:14px;font-size:.78rem;letter-spacing:.04em}
 /* Trois cibles collées d'environ 20 px de haut, en bas du panneau burger, là où
    le pouce est le moins précis. La zone cliquable monte à 44 px sans grossir le
    texte : les marges négatives absorbent la hauteur ajoutée. */
-.lang-switch a{opacity:.6;text-decoration:none;color:inherit;
-  display:inline-flex;align-items:center;min-height:44px;padding:0 8px;margin:-12px -2px}
+.lang-switch a{opacity:.6;text-decoration:none;color:inherit}
 .lang-switch a:focus-visible{outline:2px solid currentColor;outline-offset:-4px;opacity:1}
 .lang-switch a.active{opacity:1;font-weight:600}
 .lang-switch a:hover{opacity:1}
 .lang-switch .sep{opacity:.35}
 .nav a{font-family:'Montserrat',sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:400;opacity:.92;transition:opacity .3s}
+/* Le bouton d'action ne se met pas en retrait : l'opacité 0,92 héritée des liens
+   du menu rognait le blanc sur bordeaux du seul bouton persistant du site. */
+.nav .book,.book--bar{opacity:1}
 .nav a:hover{opacity:1;color:var(--burgundy)}
 .nav .book{
   background:var(--burgundy);color:#fff;border:1px solid var(--burgundy);
@@ -93,7 +103,7 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
 .site-header.nav-open .menu-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 /* Sous 1200px, le menu déroule en panneau (le nav desktop devenait trop large
    et chevauchait le logo). Le burger ouvre/ferme. */
-@media(max-width:1300px){
+@media(max-width:1200px){
   .site-header{padding:16px 22px}
   .site-header.nav-open{background:var(--bg);color:var(--ink)}
   .menu-toggle{display:flex;margin-left:14px}
@@ -114,7 +124,10 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
   .nav .book{align-self:flex-start;border-color:var(--ink)}
   .nav .book:hover{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
   .lang-switch{margin-left:0;margin-top:4px;font-size:.85rem}
-  .lang-switch a{color:var(--ink)}
+  .lang-switch a{color:var(--ink);display:inline-flex;align-items:center;min-height:44px;padding:0 10px;margin:0 -4px}
+  /* Mariage et séminaire portent le panier moyen : dans un panneau de huit
+     liens tous au même poids, aucun n'est mis en avant, donc aucun ne l'est. */
+  .nav a.nav-key{color:var(--burgundy);font-weight:500}
 }
 
 /* ---------- HERO ---------- */
@@ -163,8 +176,12 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
 
 /* Boutons */
 .btn-primary,.btn-ghost,.btn-burgundy{font-family:'Montserrat',sans-serif;font-weight:500;font-size:12px;letter-spacing:.26em;text-transform:uppercase;padding:18px 38px;cursor:pointer;transition:all .35s;border:1px solid;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
-.btn-primary{background:#fff;color:var(--ink);border-color:#fff}
-.btn-primary:hover{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
+/* Le bouton de demande de devis prend la couleur d'action du site. Au premier
+   écran, quatre appels à l'action se disputaient l'attention et le plus saturé,
+   le bouton Recherche du moteur, menait au tunnel le moins rentable : 296 clics
+   « Réserver » sur 30 jours pour 24 démarrages de formulaire. */
+.btn-primary{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
+.btn-primary:hover{background:#fff;color:var(--ink);border-color:#fff}
 .btn-ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.7)}
 .btn-ghost:hover{background:#fff;color:var(--ink);border-color:#fff}
 .btn-burgundy{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}

@@ -1,0 +1,37 @@
+{
+  "detector": {
+    "ignoreRules": [
+      "cream-palette"
+    ],
+    "ignoreFiles": [
+      "src/pages/api/**",
+      "src/pages/rapport.js"
+    ],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "montserrat",
+        "createdAt": "2026-08-20T11:31:35.171Z",
+        "reason": "Police de marque imposée par la charte du client, cf. docs/da-huberdiere.md"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "rgb(244, 242, 236)",
+        "createdAt": "2026-08-20T11:31:35.651Z",
+        "reason": "Crème #F4F2EC : neutre teinté de la palette officielle, pas un fond par défaut"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "rgb(244,242,236)",
+        "createdAt": "2026-08-20T11:33:54.817Z",
+        "reason": "Crème #F4F2EC : neutre teinté de la palette officielle"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "#f4f2ec",
+        "createdAt": "2026-08-20T11:33:55.289Z",
+        "reason": "Crème de la palette officielle"
+      }
+    ]
+  }
+}

@@ -1,5 +1,7 @@
 ---
 import LeadForm from "./LeadForm.astro";
+import Reviews from "./Reviews.astro";
+import RatingLines from "./RatingLines.astro";
 import { Image } from "astro:assets";
 import pHero from "../assets/SD_5.jpg";
 import v1 from "../assets/SD_6.jpg";
@@ -201,6 +203,7 @@ const midCtaLead = {
       <p class="mid-cta__lead">{midCtaLead}</p>
       <a href="#final" class="btn-burgundy">{ctaLabel}</a>
       <span class="mid-cta__hint">{m.final.responseLine}</span>
+      <RatingLines lang={lang} tone="light" />
     </div>
   </section>
 )}
@@ -377,6 +380,12 @@ const midCtaLead = {
     </div>
   </section>
 )}
+
+{/* Les notes agrégées et les avis nommés vivaient uniquement sur la home. Sur une
+    landing, document.querySelector(".reviews") renvoyait null et le mot « Booking »
+    n'apparaissait pas une fois, alors que ce sont les pages d'atterrissage SEO et
+    SEA. Posés juste avant le formulaire, au moment de la décision. */}
+<Reviews lang={lang} />
 
 <section class="final" id="final" style="padding-top:120px;scroll-margin-top:80px">
   <span class="section-rule" aria-hidden="true"></span>

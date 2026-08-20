@@ -225,7 +225,9 @@ const schemas = [
         var rect = article.getBoundingClientRect();
         var total = article.offsetHeight - window.innerHeight;
         var done = Math.min(1, Math.max(0, -rect.top / (total > 0 ? total : 1)));
-        bar.style.width = (done * 100).toFixed(1) + "%";
+        // scaleX plutôt que width : la barre est repeinte à chaque pixel de
+        // défilement, et une transformation ne déclenche pas de recalcul de mise en page.
+        bar.style.transform = "scaleX(" + done.toFixed(4) + ")";
       }
       window.addEventListener("scroll", onScroll, { passive: true });
       window.addEventListener("resize", onScroll);
@@ -271,7 +273,7 @@ const schemas = [
 </Base>
 
 <style>
-  .reading-progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: #8b0000; z-index: 200; transition: width 0.1s linear; }
+  .reading-progress { position: fixed; top: 0; left: 0; height: 3px; width: 100%; background: #8b0000; z-index: 200; transform: scaleX(0); transform-origin: left center; transition: transform 0.1s linear; }
   .article { max-width: 1180px; margin: 0 auto; padding: 0 24px 100px; }
   .breadcrumb { padding: 130px 0 0; }
   .breadcrumb ol {
@@ -318,8 +320,11 @@ const schemas = [
      arrive. Les portraits sont générés plus étroits que les paysages, et cette
      alternance de largeurs donne son rythme à la colonne. */
   .article-main .prose :global(figure.article-figure img) { max-width: 100%; height: auto; display: block; }
+  /* La légende est plus petite que le corps : à largeur de colonne égale elle
+     atteignait 100 caractères par ligne quand le corps en fait 79. Colonne
+     dédiée, calée sur la même cible que le reste de l'article. */
   .article-main .prose :global(figure.article-figure figcaption) {
-    position: relative; margin-top: 16px; padding-top: 13px;
+    position: relative; margin-top: 16px; padding-top: 13px; max-width: 480px;
     font-family: "Montserrat", sans-serif; font-size: 0.82rem; line-height: 1.5; color: #646464;
   }
   .article-main .prose :global(figure.article-figure figcaption)::before {
@@ -394,7 +399,8 @@ const schemas = [
   .rail-sticky::-webkit-scrollbar { width: 6px; }
   .rail-sticky::-webkit-scrollbar-thumb { background: #d8d1c0; border-radius: 3px; }
   .rail-title { font-family: "Montserrat", sans-serif; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #8b0000; margin: 0 0 14px; }
-  .toc ul { list-style: none; margin: 0; padding: 0; border-left: 2px solid #e2dccc; }
+  /* Le filet touchait le texte : le retrait vit sur la liste, pas sur chaque lien. */
+  .toc ul { list-style: none; margin: 0; padding: 0 0 0 4px; border-left: 2px solid #e2dccc; }
   .toc li { margin: 0; }
   .toc a { display: block; padding: 7px 0 7px 16px; margin-left: -2px; border-left: 2px solid transparent; font-family: "Montserrat", sans-serif; font-size: 0.86rem; color: #646464; text-decoration: none; line-height: 1.4; transition: color 0.15s, border-color 0.15s; }
   .toc a:hover { color: #8b0000; }

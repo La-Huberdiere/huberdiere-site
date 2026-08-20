@@ -48,7 +48,12 @@ const heroSrcSet =
 </nav>
 
 <div class="gallery-wrap">
-  {chapters.map((c) => (
+  {/* Le premier chapitre se charge sans attendre l'observateur de défilement :
+      113 vignettes en lazy, c'était plusieurs secondes de rectangles beiges au
+      moment précis où le visiteur arrive sur une page qui ne vend que des images.
+      Les dimensions sont déjà déclarées partout, il n'y a donc pas de saut de
+      mise en page ; c'est bien la perception de lenteur qu'on corrige. */}
+  {chapters.map((c, ci) => (
     <section class="gchapter" id={c.id}>
       <header class="gchapter__head">
         <span class="gc-num">{c.numeral}</span>
@@ -56,13 +61,13 @@ const heroSrcSet =
         <p class="gc-intro">{c.intro}</p>
       </header>
       <button type="button" class="tile tile--lead" data-full={c.photos[0].full} data-alt={c.photos[0].alt} aria-label={c.photos[0].alt}>
-        <img src={c.photos[0].thumb} alt={c.photos[0].alt} loading="lazy" decoding="async" width={c.photos[0].w} height={c.photos[0].h} />
+        <img src={c.photos[0].thumb} alt={c.photos[0].alt} loading={ci === 0 ? "eager" : "lazy"} fetchpriority={ci === 0 ? "high" : undefined} decoding="async" width={c.photos[0].w} height={c.photos[0].h} />
         <span class="tile__cue" aria-hidden="true"><i>⤢</i></span>
       </button>
       <div class="mosaic">
-        {c.photos.slice(1).map((p) => (
+        {c.photos.slice(1).map((p, pi) => (
           <button type="button" class="tile" data-full={p.full} data-alt={p.alt} aria-label={p.alt}>
-            <img src={p.thumb} alt={p.alt} loading="lazy" decoding="async" width={p.w} height={p.h} />
+            <img src={p.thumb} alt={p.alt} loading={ci === 0 && pi < 5 ? "eager" : "lazy"} decoding="async" width={p.w} height={p.h} />
             <span class="tile__cue" aria-hidden="true"><i>⤢</i></span>
           </button>
         ))}
@@ -220,11 +225,13 @@ const heroSrcSet =
   .tile:hover .tile__cue, .tile:focus-visible .tile__cue { opacity: 1; transform: none; }
   .tile:hover::after, .tile:focus-visible::after { opacity: 1; }
 
+  /* Interlettrage ramené à zéro : au-delà de 0,05em sur du texte courant, les
+     groupes de lettres se défont et la lecture ralentit. */
   .gallery-hint {
     text-align: center;
     margin: clamp(40px, 6vw, 72px) 0 0;
-    font-size: 12px;
-    letter-spacing: 0.06em;
+    font-size: 13px;
+    letter-spacing: 0;
     color: var(--muted);
   }
 

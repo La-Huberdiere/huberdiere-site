@@ -19,7 +19,19 @@ const warnMsg = {
   en: "Your stay includes one or more unavailable nights. Please adjust your dates to book online.",
   it: "Il tuo soggiorno include una o più notti non disponibili. Modifica le date per prenotare online.",
 }[lang] || "Votre séjour comprend une ou plusieurs nuits non disponibles. Modifiez vos dates pour réserver en ligne.";
+
+// Légende sous le calendrier. Elle était écrite en dur en français dans la
+// feuille de style et servie telle quelle aux visiteurs anglais et italiens, au
+// moment précis où ils doivent comprendre pourquoi une date est barrée. Le
+// calendrier est injecté dans <body> par le script d'Octorate, hors de ce
+// composant : la chaîne passe donc par une variable CSS posée sur :root.
+const calLegend = {
+  fr: "Dates en rouge ou grisées : complètes ou non réservables en ligne.",
+  en: "Dates in red or greyed out are full or cannot be booked online.",
+  it: "Le date in rosso o in grigio sono complete o non prenotabili online.",
+}[lang] || "Dates en rouge ou grisées : complètes ou non réservables en ligne.";
 ---
+<style is:inline set:html={`:root{--cal-legend:${JSON.stringify(calLegend)}}`}></style>
 <div class="octorate-widget">
   <script
     is:inline
@@ -41,6 +53,28 @@ const warnMsg = {
         window.huberTrack && window.huberTrack("booking_search", { source: "widget" });
       }
     }, true);
+    // Le widget propose 141 options dans le sélecteur « Adultes », pour un lieu
+    // qui compte 21 couchages. Sur mobile, c'est un rouleau interminable au tout
+    // premier geste du parcours. La liste n'est pas configurable côté Octorate :
+    // on la tronque dans le DOM, comme la validation de disponibilité plus bas.
+    var MAX_ADULTES = 21;
+    function trimPax() {
+      var sel = document.querySelector(".octobookpax select");
+      if (!sel || sel.dataset.huberTrimmed) return false;
+      var removed = 0;
+      for (var i = sel.options.length - 1; i >= 0; i--) {
+        var v = parseInt(sel.options[i].value || sel.options[i].text, 10);
+        if (!isNaN(v) && v > MAX_ADULTES) { sel.remove(i); removed++; }
+      }
+      if (removed) sel.dataset.huberTrimmed = "1";
+      return removed > 0;
+    }
+    // Le select est injecté par le script d'Octorate : on attend son arrivée.
+    var paxObserver = new MutationObserver(function () { if (trimPax()) paxObserver.disconnect(); });
+    paxObserver.observe(document.documentElement, { childList: true, subtree: true });
+    setTimeout(function () { paxObserver.disconnect(); }, 15000);
+    trimPax();
+
     var pad = function (n) { return String(n).padStart(2, "0"); };
     var key = function (y, m, d) { return y + "-" + pad(m) + "-" + pad(d); }; // m 1-based
     var closedNights = new Set(), noArrival = new Set(), noDeparture = new Set();
@@ -273,7 +307,7 @@ const warnMsg = {
   }
   /* Légende sous le calendrier */
   .ui-datepicker.ui-datepicker::after {
-    content: "Dates en rouge ou grisées : complètes ou non réservables en ligne." !important;
+    content: var(--cal-legend, "") !important;
     display: block !important;
     clear: both;
     white-space: normal;
@@ -465,7 +499,10 @@ const warnMsg = {
     min-width: 168px !important;
     height: 54px !important;
     padding: 0 34px !important;
-    background: #8B0000 !important;
+    /* Bleu-gris de charte plutôt que bordeaux : le bouton reste un bouton plein
+       et parfaitement lisible dans une barre de recherche qui s'explique seule,
+       mais il cesse d'être l'élément le plus saturé du premier écran. */
+    background: #2E3A48 !important;
     color: #fff !important;
     border: 0 !important;
     border-radius: 0 !important;

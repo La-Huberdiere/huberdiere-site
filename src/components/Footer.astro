@@ -7,6 +7,12 @@ const f = s.footer;
 
 const localize = (href: string) => localizePath(href, lang as "fr" | "en" | "it");
 
+// L'année du copyright était figée à 2026 dans les trois langues des réglages :
+// au 1er janvier, le site affiche une année périmée sur toutes ses pages, et
+// personne n'y pense. Elle est recalculée à la construction, la chaîne reste
+// éditable au CMS pour tout le reste.
+const bottomLeft = String(f.bottomLeft ?? "").replace(/©\s*\d{4}/, `© ${new Date().getFullYear()}`);
+
 // Liens légaux : pages FR/EN/IT, libellés et URL localisés.
 const legalLabels = {
   fr: { ml: "Mentions légales", pc: "Politique de confidentialité" },
@@ -50,7 +56,7 @@ const creditLabel = {
     <a href={localize("/politique-de-confidentialite")}>{legalLabels.pc}</a>
   </nav>
   <div class="footer-bottom">
-    <span>{f.bottomLeft}</span>
+    <span>{bottomLeft}</span>
     <span>{f.bottomRight}</span>
   </div>
   <div class="footer-credit">
