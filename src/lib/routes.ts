@@ -45,6 +45,7 @@ export const ARTICLE_SLUGS: Record<string, { en: string; it: string }> = {
   "team-building-touraine-activites": { en: "outdoor-team-building-loire", it: "attivita-team-building-castello" },
   "visiter-chateaux-de-la-loire": { en: "visiting-loire-chateaux", it: "visitare-castelli-loira" },
   "week-end-romantique-pres-amboise": { en: "romantic-weekend-loire-chateau", it: "weekend-romantico-castello-loira" },
+  "week-end-entre-amis-chateau": { en: "chateau-weekend-with-friends", it: "weekend-amici-castello" },
 };
 
 /** Slug localisé d'une page à segment unique (id → slug de la langue). */
