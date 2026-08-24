@@ -127,7 +127,9 @@ const teaser = "/video/huberdiere-film-teaser.mp4";
      pour que le film respire là où tout le reste est contenu. */
   .film {
     background: var(--bg-deep);
-    padding: 130px 0 0;
+    /* Le bas de la bande reprend l'écart qui sépare la légende du cadre : sans
+       lui, le texte tombait sur la couture des deux fonds, à zéro pixel. */
+    padding: 130px 0 24px;
     overflow: hidden;
   }
   .film-head {
@@ -262,7 +264,7 @@ const teaser = "/video/huberdiere-film-teaser.mp4";
   .film-caption {
     box-sizing: border-box;
     max-width: 1280px;
-    margin: 18px auto 0;
+    margin: 24px auto 0;
     padding: 0 48px;
     text-align: center;
     font-family: "Playfair Display", Georgia, serif;
@@ -275,6 +277,7 @@ const teaser = "/video/huberdiere-film-teaser.mp4";
   @media (max-width: 960px) {
     .film {
       padding-top: 80px;
+      padding-bottom: 18px;
     }
     .film-head {
       grid-template-columns: 1fr;
@@ -306,7 +309,7 @@ const teaser = "/video/huberdiere-film-teaser.mp4";
        du lieu, qu'il perdait jusqu'ici. Même marge de 22 px que le reste de la
        page, sans quoi les deux lignes touchent les deux bords à la fois. */
     .film-caption {
-      margin-top: 14px;
+      margin-top: 18px;
       padding: 0 22px;
       font-size: 14px;
     }
