@@ -8,6 +8,8 @@ import poster from "../assets/film-poster.jpg";
 
 const { c, videoId } = Astro.props;
 const teaser = "/video/huberdiere-film-teaser.mp4";
+// Même plan, taillé pour le téléphone : 768 px et 650 Ko au lieu de 3 Mo.
+const teaserMobile = "/video/huberdiere-film-teaser-mobile.mp4";
 ---
 
 <section class="film" id="film" aria-labelledby="film-title">
@@ -18,7 +20,7 @@ const teaser = "/video/huberdiere-film-teaser.mp4";
   </div>
 
   <figure class="film-figure">
-  <div class="film-frame" data-film data-video={videoId} data-teaser={teaser}>
+  <div class="film-frame" data-film data-video={videoId} data-teaser={teaser} data-teaser-mobile={teaserMobile}>
     <Image
       class="film-poster"
       src={poster}
@@ -48,22 +50,25 @@ const teaser = "/video/huberdiere-film-teaser.mp4";
     const video = frame.querySelector(".film-loop") as HTMLVideoElement | null;
     const button = frame.querySelector(".film-play") as HTMLButtonElement | null;
     const teaser = frame.dataset.teaser || "";
+    const teaserMobile = frame.dataset.teaserMobile || teaser;
     const videoId = frame.dataset.video || "";
 
-    // On ne télécharge pas les 3 Mo du teaser si l'utilisateur a demandé moins
-    // d'animation, s'il est en économie de données, ou s'il est sur téléphone :
-    // là, l'affiche fixe et le bouton suffisent, le film reste à une pression.
+    // La boucle tourne aussi sur téléphone, mais sur le fichier taillé pour lui :
+    // le plan est large et lointain, la définition desktop ne se voit pas sur
+    // 375 px de large, elle ne ferait que coûter du forfait. On s'abstient quand
+    // même si l'utilisateur a demandé moins d'animation ou s'il est en économie
+    // de données : là, l'affiche fixe suffit, le film reste à une pression.
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const smallScreen = window.matchMedia("(max-width: 768px)").matches;
     const conn = (navigator as any).connection;
     const saveData = !!(conn && (conn.saveData || /2g/.test(conn.effectiveType || "")));
-    const wantsLoop = !reducedMotion && !saveData && !smallScreen;
+    const wantsLoop = !reducedMotion && !saveData;
 
     /** Charge la source du teaser au dernier moment, puis le lance. */
     const startLoop = () => {
       if (!video || video.dataset.ready) return;
       video.dataset.ready = "1";
-      video.src = teaser;
+      video.src = smallScreen ? teaserMobile : teaser;
       video.addEventListener("playing", () => frame.classList.add("is-playing"), { once: true });
       video.play().catch(() => {
         // Autoplay refusé : le poster reste affiché, rien à réparer.
