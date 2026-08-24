@@ -255,11 +255,16 @@ const teaser = "/video/huberdiere-film-teaser.mp4";
      tombait à 1,2:1 quand le plan est un escalier de pierre en plein soleil, et
      assombrir l'image jusqu'à la rendre lisible aurait éteint le film. Sous le
      cadre, sur le crème, elle est lisible en permanence, y compris pendant la
-     lecture, et c'est la place d'une légende dans une mise en page de magazine. */
+     lecture, et c'est la place d'une légende dans une mise en page de magazine.
+     Le cadre est pleine largeur, pas elle : elle reprend la gouttière du site
+     (1280 px, 48 px de marge), sinon le texte vient buter contre le bord de
+     l'écran, où l'œil ne va pas le chercher. */
   .film-caption {
-    max-width: 46ch;
-    margin: 16px 0 0 auto;
-    text-align: right;
+    box-sizing: border-box;
+    max-width: 1280px;
+    margin: 18px auto 0;
+    padding: 0 48px;
+    text-align: center;
     font-family: "Playfair Display", Georgia, serif;
     font-style: italic;
     font-size: 15px;
@@ -298,11 +303,11 @@ const teaser = "/video/huberdiere-film-teaser.mp4";
     }
     /* Elle était masquée en mobile parce qu'elle se posait sur l'image. Sous le
        cadre, elle tient : le mobile récupère au passage l'ancrage géographique
-       du lieu, qu'il perdait jusqu'ici. */
+       du lieu, qu'il perdait jusqu'ici. Même marge de 22 px que le reste de la
+       page, sans quoi les deux lignes touchent les deux bords à la fois. */
     .film-caption {
-      max-width: none;
-      margin: 14px 0 0;
-      text-align: left;
+      margin-top: 14px;
+      padding: 0 22px;
       font-size: 14px;
     }
   }
