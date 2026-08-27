@@ -600,31 +600,50 @@ export function renderLeads(ld, monthLabel) {
 
 // ── Fréquentation du site (Umami, analytics cookieless) ────────────────────
 const UMAMI_BASE = (process.env.UMAMI_BASE || "https://umami.morain.fr").replace(/\/+$/, "")
-const UMAMI_WEBSITE_ID = process.env.UMAMI_WEBSITE_ID || process.env.PUBLIC_UMAMI_WEBSITE_ID || ""
+let _umamiWebsiteId = process.env.UMAMI_WEBSITE_ID || process.env.PUBLIC_UMAMI_WEBSITE_ID || ""
 // Tableau de bord Umami public partagé, proposé au client pour aller plus loin.
 const UMAMI_SHARE_URL = process.env.UMAMI_SHARE_URL || "https://umami.morain.fr/share/JFnzMWJRC8wXe752"
 // En deçà, le mois précédent n'est pas une base fiable (mise en place d'Umami en
 // cours) : on masque alors les comparaisons M-1 plutôt que d'afficher un delta faux.
 const UMAMI_MIN_BASELINE = 100
 
-// Auth Umami : soit une clé API (x-umami-api-key), soit un couple login/mot de
-// passe (self-hosted classique) échangé contre un token Bearer, mis en cache le
-// temps de l'exécution.
-let _umamiToken = null
+// Auth Umami, dans cet ordre : clé API, couple login/mot de passe, puis le jeton
+// du tableau de bord public déjà partagé au client. Ce dernier ne demande aucun
+// secret, donc il tient quand le mot de passe change ou manque sur Vercel : sans
+// ce repli, le bloc « Fréquentation » disparaissait du rapport sans un mot.
+let _umamiHeaders = null
+
+async function umamiShareHeaders() {
+  const shareId = (UMAMI_SHARE_URL.match(/\/share\/([^/?#]+)/) || [])[1]
+  if (!shareId) return null
+  const res = await fetch(`${UMAMI_BASE}/api/share/${shareId}`, { signal: AbortSignal.timeout(15000) })
+  if (!res.ok) throw new Error(`Umami share ${res.status}`)
+  const data = await res.json()
+  // Le partage porte lui-même l'identifiant du site : dernier filet si la variable
+  // d'environnement manque.
+  if (!_umamiWebsiteId) _umamiWebsiteId = data.websiteId || ""
+  return { "x-umami-share-token": data.token }
+}
+
 async function umamiAuthHeaders() {
   if (process.env.UMAMI_API_KEY) return { "x-umami-api-key": process.env.UMAMI_API_KEY }
-  if (_umamiToken) return { authorization: `Bearer ${_umamiToken}` }
+  if (_umamiHeaders) return _umamiHeaders
   const user = process.env.UMAMI_USERNAME, pass = process.env.UMAMI_PASSWORD
-  if (!user || !pass) return null
-  const res = await fetch(`${UMAMI_BASE}/api/auth/login`, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ username: user, password: pass }),
-    signal: AbortSignal.timeout(15000),
-  })
-  if (!res.ok) throw new Error(`Umami login ${res.status}`)
-  _umamiToken = (await res.json()).token
-  return { authorization: `Bearer ${_umamiToken}` }
+  if (user && pass) {
+    try {
+      const res = await fetch(`${UMAMI_BASE}/api/auth/login`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ username: user, password: pass }),
+        signal: AbortSignal.timeout(15000),
+      })
+      if (res.ok) return (_umamiHeaders = { authorization: `Bearer ${(await res.json()).token}` })
+      console.warn(`[rapport] Umami : login ${res.status}, repli sur le tableau de bord partagé.`)
+    } catch (e) {
+      console.warn(`[rapport] Umami : login injoignable (${e.message}), repli sur le tableau de bord partagé.`)
+    }
+  }
+  return (_umamiHeaders = await umamiShareHeaders())
 }
 
 async function umamiGet(path, headers) {
@@ -642,14 +661,14 @@ function monthRangeMs(ym) {
 // Tire les stats du mois + du mois précédent (deltas maison), plus le top des
 // pages et des sources. Renvoie null sans website id ou sans identifiants.
 async function pullUmami(ym) {
-  if (!UMAMI_WEBSITE_ID) { console.log("[rapport] Umami : website id absent, bloc trafic ignoré."); return null }
   try {
     const headers = await umamiAuthHeaders()
-    if (!headers) { console.log("[rapport] Umami : identifiants absents, bloc trafic ignoré."); return null }
+    if (!headers) { console.log("[rapport] Umami : ni identifiants ni tableau partagé, bloc trafic ignoré."); return null }
+    if (!_umamiWebsiteId) { console.log("[rapport] Umami : website id absent, bloc trafic ignoré."); return null }
     const [y, m] = ym.split("-").map(Number)
     const prevYm = m === 1 ? `${y - 1}-12` : `${y}-${String(m - 1).padStart(2, "0")}`
     const cur = monthRangeMs(ym), prev = monthRangeMs(prevYm)
-    const id = UMAMI_WEBSITE_ID
+    const id = _umamiWebsiteId
     const q = (r) => `startAt=${r.start}&endAt=${r.end}`
     // Cette build d'Umami expose les pages via type=path (pas url) et les canaux
     // d'acquisition déjà groupés via type=channel. type=entry donne la page par

@@ -2,9 +2,13 @@
   "2026-08": [
     "Adaptation du site à l'arrivée des aperçus IA de Google, déployés en France le 22 juillet et généralisés d'ici le 23 septembre. Sur les recherches où cet encart s'affiche, une partie des internautes lit la réponse sans plus cliquer les résultats : l'enjeu n'est plus seulement d'être bien classé, il est d'être la source que Google cite dans son résumé.",
     "Nouveau suivi des aperçus IA dans ce rapport : sur chacun de vos mots-clés, on mesure désormais si l'encart s'affiche, si le château y figure comme source, et quels sites occupent la place à sa place.",
+    "Reprise de fond de l'ergonomie et de l'accessibilité du site, sur toutes les pages et dans les trois langues : 525 défauts relevés par un contrôle automatisé ont été corrigés, jusqu'au dernier. Contrastes, tailles de texte, navigation au clavier et lecture par les logiciels d'assistance sont désormais au niveau AA, le standard européen. Google traite ces signaux comme des critères de qualité, et un site lisible par tous se lit mieux par tout le monde.",
+    "Nouvelle mise en page sur l'ensemble des pages, tenue comme une revue plutôt que comme un site d'hôtel : titres dégagés, filet bordeaux, photographies qui respirent, hiérarchie de lecture plus franche du premier écran jusqu'à la demande de renseignements.",
+    "Formulaire de demande traduit en anglais et en italien. Il s'affichait encore en français au bout de pages pourtant entièrement traduites, à l'endroit même où le visiteur étranger décide de vous écrire.",
     "Photos ajoutées et légendées à l'intérieur de vos treize articles, dans les trois langues. Les pages qui mêlent texte et images sont nettement plus souvent reprises par les moteurs, et vos photos sont votre meilleur argument.",
     "Vos deux noms mis en avant comme auteurs des articles, avec photo, biographie et rattachement à la page « Notre histoire ». Les moteurs reconnaissent ainsi de vraies personnes derrière le contenu, ce qui pèse lourd dans la confiance accordée au site.",
     "Nouveau champ « Comment nous avez-vous connus ? » dans les formulaires du site. Près de la moitié des demandes arrivaient sans origine identifiable : cette question est le seul moyen fiable de savoir ce qui amène réellement vos clients, bouche à oreille et réponses d'IA compris.",
+    "Le film du château se lance désormais aussi sur téléphone, sur une version allégée du fichier pensée pour ne pas consommer le forfait mobile de vos visiteurs.",
     "Nouveaux articles de blog optimisés pour le référencement, publiés et programmés sur le mois.",
     "Suivi et entretien de la fiche Google du château."
   ],
