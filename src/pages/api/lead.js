@@ -89,6 +89,7 @@ export async function POST({ request }) {
     browser: client.browser,
     os: client.os,
     device: client.device,
+    country: request.headers.get("x-vercel-ip-country") || "",
     location: [
       dec(request.headers.get("x-vercel-ip-city")),
       dec(request.headers.get("x-vercel-ip-country-region")),
@@ -120,45 +121,41 @@ export async function POST({ request }) {
   // nous avez-vous connus ? » était envoyé à chaque demande et n'a jamais été
   // enregistré. Avant d'ajouter une clé, la créer côté compte et le vérifier :
   //   GET https://api.brevo.com/v3/contacts/attributes
-  const contact = fetch("https://api.brevo.com/v3/contacts", {
-    method: "POST",
-    headers,
-    body: JSON.stringify({
-      email: data.email,
-      updateEnabled: true,
-      attributes: {
-        PRENOM: data.prenom || "",
-        NOM: data.nom || "",
-        SMS: data.telephone || "",
-        MESSAGE: data.message || "",
-        FORM: [tag],
-        CANAL: origin,
-        // Déclaratif du prospect, seul rattrapage des leads en accès direct.
-        ATTRIBUTION: attributionLabel(data.attribution),
-        UTM_SOURCE: data.utm_source || "",
-        UTM_MEDIUM: data.utm_medium || "",
-        UTM_TERM: data.utm_term || "",
-        UTM_CAMPAIGN: data.utm_campaign || "",
-        UTM_CONTENT: data.utm_content || "",
-        GCLID: data.gclid || "",
-        LEAD_ID: data.lead_id || "",
-        PAGE_FORMULAIRE: data.page || "",
-        PAGE_ENTREE: data.landing || "",
-        // Page interne d'où vient le prospect, distincte de PAGE_ENTREE (première
-        // page de la visite) et de PAGE_FORMULAIRE (celle d'où il écrit).
-        // L'attribut PAGE_PROVENANCE existe côté compte depuis le 20/08 : sans lui
-        // Brevo rejetterait la création du contact, et Promise.all n'en avertirait
-        // personne, la demande serait perdue dans le CRM en silence.
-        PAGE_PROVENANCE: data.origine || "",
-        REFERRER: data.referrer || "",
-        LOCALISATION: meta.location || "",
-        NAVIGATEUR: meta.browser || "",
-        APPAREIL: meta.device || "",
-        SYSTEME: meta.os || "",
-        LANGUE_SITE: meta.lang || "",
-        LANGUE_NAVIGATEUR: meta.browserLang || "",
-      },
-    }),
+  const contact = postContact(headers, {
+    email: data.email,
+    updateEnabled: true,
+    attributes: {
+      PRENOM: data.prenom || "",
+      NOM: data.nom || "",
+      SMS: normalizePhone(data.telephone, meta.country),
+      MESSAGE: data.message || "",
+      FORM: [tag],
+      CANAL: origin,
+      // Déclaratif du prospect, seul rattrapage des leads en accès direct.
+      ATTRIBUTION: attributionLabel(data.attribution),
+      UTM_SOURCE: data.utm_source || "",
+      UTM_MEDIUM: data.utm_medium || "",
+      UTM_TERM: data.utm_term || "",
+      UTM_CAMPAIGN: data.utm_campaign || "",
+      UTM_CONTENT: data.utm_content || "",
+      GCLID: data.gclid || "",
+      LEAD_ID: data.lead_id || "",
+      PAGE_FORMULAIRE: data.page || "",
+      PAGE_ENTREE: data.landing || "",
+      // Page interne d'où vient le prospect, distincte de PAGE_ENTREE (première
+      // page de la visite) et de PAGE_FORMULAIRE (celle d'où il écrit).
+      // L'attribut PAGE_PROVENANCE existe côté compte depuis le 20/08 : sans lui
+      // Brevo rejetterait la création du contact, et Promise.all n'en avertirait
+      // personne, la demande serait perdue dans le CRM en silence.
+      PAGE_PROVENANCE: data.origine || "",
+      REFERRER: data.referrer || "",
+      LOCALISATION: meta.location || "",
+      NAVIGATEUR: meta.browser || "",
+      APPAREIL: meta.device || "",
+      SYSTEME: meta.os || "",
+      LANGUE_SITE: meta.lang || "",
+      LANGUE_NAVIGATEUR: meta.browserLang || "",
+    },
   });
 
   // 2) Notification à l'équipe (contact@ + Alexis), réponse possible au prospect.
@@ -198,6 +195,55 @@ export async function POST({ request }) {
     // On ne bloque pas le prospect : le parcours se termine quand même.
     return json({ ok: true, brevo: false });
   }
+}
+
+// Brevo VALIDE l'attribut SMS comme un numéro de téléphone, malgré son type
+// « text » déclaré côté compte. Un numéro local (« 06 59 90 82 64 ») fait rendre
+// 400 invalid_parameter, et c'est la création du CONTACT ENTIER qui est refusée :
+// la demande disparaît du CRM pendant que les deux mails partent normalement.
+// Même famille de piège que l'attribut ATTRIBUTION inexistant, en plus ancien.
+// Deux parades, dans cet ordre : normaliser quand le pays est connu, puis
+// recréer le contact sans le numéro plutôt que de perdre la demande.
+const DIAL = {
+  FR: "33", GB: "44", US: "1", CA: "1", DE: "49", IT: "39", ES: "34", BE: "32", CH: "41",
+  NL: "31", PT: "351", IE: "353", LU: "352", AT: "43", DK: "45", SE: "46", NO: "47",
+  FI: "358", PL: "48", CZ: "420", SK: "421", HU: "36", RO: "40", BG: "359", GR: "30",
+  HR: "385", SI: "386", LT: "370", LV: "371", EE: "372", UA: "380", RS: "381", TR: "90",
+  AU: "61", NZ: "64", JP: "81", CN: "86", IN: "91", SG: "65", HK: "852", IL: "972",
+  AE: "971", BR: "55", MX: "52", ZA: "27", MA: "212", TN: "216", DZ: "213", RU: "7",
+};
+
+// Rend un numéro au format international, ou "" si le pays est inconnu : on
+// préfère un contact sans numéro à un indicatif inventé.
+export function normalizePhone(raw, country) {
+  const s = String(raw || "").replace(/[^\d+]/g, "");
+  if (!s) return "";
+  if (s.startsWith("+")) return s;
+  if (s.startsWith("00")) return "+" + s.slice(2);
+  const dial = DIAL[String(country || "").toUpperCase()];
+  if (!dial) return "";
+  if (s.startsWith("0")) return "+" + dial + s.replace(/^0+/, "");
+  // Numéro déjà écrit avec son indicatif, mais sans le +.
+  if (s.startsWith(dial) && s.length > dial.length + 6) return "+" + s;
+  return "+" + dial + s;
+}
+
+// Crée le contact, et retente SANS le numéro si Brevo refuse : le téléphone est
+// le seul champ que l'API valide, et il ne doit jamais coûter la demande. Le
+// numéro reste dans le mail de notification, qui part de toute façon.
+async function postContact(headers, payload) {
+  const post = (body) =>
+    fetch("https://api.brevo.com/v3/contacts", { method: "POST", headers, body: JSON.stringify(body) });
+  const res = await post(payload);
+  if (res.ok || !payload.attributes.SMS) return res;
+  console.error("[lead] Brevo contact refusé:", res.status, await safeText(res));
+  const retry = await post({ ...payload, attributes: { ...payload.attributes, SMS: "" } });
+  console.error(
+    retry.ok
+      ? `[lead] contact recréé sans le numéro (${payload.attributes.SMS}), à ressaisir à la main`
+      : "[lead] contact refusé même sans le numéro, demande absente du CRM",
+  );
+  return retry;
 }
 
 function confirmHtml(lang, prenom) {
