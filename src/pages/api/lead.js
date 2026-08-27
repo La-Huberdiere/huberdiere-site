@@ -228,22 +228,42 @@ export function normalizePhone(raw, country) {
   return "+" + dial + s;
 }
 
-// Crée le contact, et retente SANS le numéro si Brevo refuse : le téléphone est
-// le seul champ que l'API valide, et il ne doit jamais coûter la demande. Le
-// numéro reste dans le mail de notification, qui part de toute façon.
+// Brevo refuse le CONTACT ENTIER dès qu'un seul attribut lui déplaît, et se tait :
+// un attribut inconnu du compte (le cas ATTRIBUTION) comme un numéro mal formé
+// (le cas SMS) suffisait à faire disparaître la demande du CRM pendant que les
+// deux mails partaient normalement. 17 demandes sur 35 ont été perdues ainsi entre
+// juillet et août 2026. La parade n'est pas de corriger un champ de plus à chaque
+// incident, c'est de DÉGRADER au lieu de perdre : on retente en retirant d'abord le
+// seul champ que l'API valide, puis en ne gardant que le noyau. Un contact
+// incomplet se répare, un contact absent ne se remarque même pas.
+const NOYAU_CONTACT = ["PRENOM", "NOM", "MESSAGE", "FORM"];
+
 async function postContact(headers, payload) {
   const post = (body) =>
     fetch("https://api.brevo.com/v3/contacts", { method: "POST", headers, body: JSON.stringify(body) });
-  const res = await post(payload);
-  if (res.ok || !payload.attributes.SMS) return res;
-  console.error("[lead] Brevo contact refusé:", res.status, await safeText(res));
-  const retry = await post({ ...payload, attributes: { ...payload.attributes, SMS: "" } });
-  console.error(
-    retry.ok
-      ? `[lead] contact recréé sans le numéro (${payload.attributes.SMS}), à ressaisir à la main`
-      : "[lead] contact refusé même sans le numéro, demande absente du CRM",
-  );
-  return retry;
+  const attrs = payload.attributes;
+
+  const variantes = [{ nom: "complet", body: payload }];
+  if (attrs.SMS) variantes.push({ nom: "sans le numéro", body: { ...payload, attributes: { ...attrs, SMS: "" } } });
+  variantes.push({
+    nom: "réduit au noyau",
+    body: { ...payload, attributes: Object.fromEntries(NOYAU_CONTACT.filter((k) => k in attrs).map((k) => [k, attrs[k]])) },
+  });
+
+  let res;
+  for (let i = 0; i < variantes.length; i++) {
+    res = await post(variantes[i].body);
+    if (res.ok) {
+      if (i > 0) console.error(`[lead] contact créé en mode « ${variantes[i].nom} » : des champs manquent dans le CRM pour ${payload.email}`);
+      return res;
+    }
+    // On ne lit le corps que des tentatives suivies d'une autre : la dernière
+    // réponse repart intacte vers l'appelant, qui la journalise à son tour.
+    if (i < variantes.length - 1) {
+      console.error(`[lead] Brevo refuse le contact (${variantes[i].nom}):`, res.status, await safeText(res));
+    }
+  }
+  return res;
 }
 
 function confirmHtml(lang, prenom) {

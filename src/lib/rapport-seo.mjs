@@ -500,10 +500,17 @@ const isTestEmail = (e) => {
 
 // Segmentation pure (testable hors ligne) : contacts Brevo bruts + mois AAAA-MM →
 // totaux, ventilation par activité et par canal.
-export function buildLeadsData(contacts, ym) {
+// `moisSoumission` (Map email -> AAAA-MM) rattache chaque demande au mois où le
+// prospect a RÉELLEMENT écrit, lu dans les mails de confirmation. Sans lui, le
+// mois vient de `createdAt`, c'est-à-dire de la date à laquelle Brevo a bien
+// voulu stocker la ligne : une demande de juillet ressaisie en août comptait pour
+// août. Les contacts sans confirmation (imports Octorate, saisies manuelles)
+// retombent sur `createdAt`, faute de mieux.
+export function buildLeadsData(contacts, ym, moisSoumission = null) {
   const A = (x, k) => (x.attributes || {})[k]
   const first = (v) => (Array.isArray(v) ? v[0] : v)
-  const rows = (Array.isArray(contacts) ? contacts : []).filter((x) => (x.createdAt || "").slice(0, 7) === ym)
+  const moisDe = (x) => moisSoumission?.get(String(x.email || "").toLowerCase()) || (x.createdAt || "").slice(0, 7)
+  const rows = (Array.isArray(contacts) ? contacts : []).filter((x) => moisDe(x) === ym)
 
   let newsletter = 0
   const demandes = []
@@ -536,6 +543,82 @@ export function buildLeadsData(contacts, ym) {
   }
 }
 
+// ── Contrôle mensuel : le CRM a-t-il bien tout enregistré ? ────────────────
+// Le bloc « Demandes reçues » compte des CONTACTS Brevo. Or Brevo peut refuser
+// un contact en silence et la demande disparaît du CRM alors que le prospect a
+// bien écrit. Le témoin qui survit à ce rejet, c'est le mail de confirmation :
+// il part à chaque soumission du formulaire, avant et indépendamment du sort du
+// contact. Comparer les deux, c'est savoir si le chiffre montré au client est
+// vrai. Réconciliation faite par le préflight du cron quotidien, pas par le
+// rapport lui-même : elle doit alerter Alexis, jamais apparaître côté client.
+const CONFIRM_SUBJECTS = [
+  "Nous avons bien reçu votre demande",
+  "We have received your enquiry",
+  "Abbiamo ricevuto la tua richiesta",
+]
+
+// Première confirmation envoyée à chaque adresse, entre deux dates. C'est la
+// trace de la soumission elle-même : elle part avant que le contact soit créé, et
+// survit donc à un rejet du CRM.
+const PREMIER_MOIS = "2026-06" // mise en ligne du formulaire
+
+export async function pullConfirmations(depuisYm = PREMIER_MOIS, jusquaYm = null) {
+  const key = process.env.BREVO_API_KEY
+  if (!key) return null
+  const headers = { "api-key": key, accept: "application/json" }
+  const jour = (ms) => new Date(ms).toISOString().slice(0, 10)
+  const debut = jour(monthRangeMs(`${depuisYm}`).start)
+  // Brevo refuse une endDate future : sur le mois courant, on s'arrête à aujourd'hui.
+  const fin = jour(Math.min(jusquaYm ? monthRangeMs(jusquaYm).end : Date.now(), Date.now()))
+
+  const premiere = new Map()
+  for (let offset = 0; offset < 20000; offset += 1000) {
+    const u = `https://api.brevo.com/v3/smtp/statistics/events?limit=1000&offset=${offset}&startDate=${debut}&endDate=${fin}`
+    const res = await fetch(u, { headers, signal: AbortSignal.timeout(20000) })
+    if (!res.ok) throw new Error(`Brevo events ${res.status}`)
+    const events = (await res.json()).events || []
+    for (const e of events) {
+      if (!CONFIRM_SUBJECTS.some((x) => (e.subject || "").startsWith(x))) continue
+      const email = (e.email || "").toLowerCase()
+      const d = (e.date || "").slice(0, 16)
+      if (email && (!premiere.has(email) || d < premiere.get(email))) premiere.set(email, d)
+    }
+    if (events.length < 1000) break
+  }
+  return premiere
+}
+
+// Mois de soumission par adresse, prêt à être passé à buildLeadsData().
+export async function pullMoisSoumission() {
+  const premiere = await pullConfirmations()
+  if (!premiere) return null
+  return new Map([...premiere].map(([email, d]) => [email, d.slice(0, 7)]))
+}
+
+export async function reconcileLeads(ym) {
+  const soumissions = await pullConfirmations(ym, ym)
+  if (!soumissions) return null
+  const headers = { "api-key": process.env.BREVO_API_KEY, accept: "application/json" }
+
+  // Les soumissions du mois qui n'ont pas de contact. Un appel par adresse,
+  // jamais plus de quelques dizaines par mois.
+  const manquants = []
+  for (const [email, date] of soumissions) {
+    const res = await fetch(`https://api.brevo.com/v3/contacts/${encodeURIComponent(email)}`, {
+      headers, signal: AbortSignal.timeout(15000),
+    })
+    if (res.status === 404) manquants.push({ email, date })
+  }
+  return { ym, soumissions: soumissions.size, manquants }
+}
+
+// Le mois est-il documenté dans l'encart « Ce qui a été réalisé » ? Sans lui, le
+// client reçoit un rapport qui ne dit pas ce qu'on a fait pour lui.
+export function travauxManquants(ym) {
+  const items = TRAVAUX[ym]
+  return !Array.isArray(items) || items.length === 0
+}
+
 async function pullLeads(ym) {
   const key = process.env.BREVO_API_KEY
   if (!key) { console.log("[rapport] BREVO_API_KEY absente, bloc demandes ignoré."); return null }
@@ -551,7 +634,14 @@ async function pullLeads(ym) {
       contacts.push(...page)
       if (page.length < 1000) break
     }
-    return buildLeadsData(contacts, ym)
+    // Le mois d'une demande, c'est la date à laquelle le prospect a écrit, pas
+    // celle où Brevo a stocké la ligne. Si la lecture échoue, on retombe sur
+    // createdAt plutôt que de rendre un bloc vide.
+    const moisSoumission = await pullMoisSoumission().catch((e) => {
+      console.error("[rapport] mois de soumission indisponible, repli sur createdAt:", e.message)
+      return null
+    })
+    return buildLeadsData(contacts, ym, moisSoumission)
   } catch (e) {
     console.error("[rapport] pullLeads KO:", e.message)
     return null
