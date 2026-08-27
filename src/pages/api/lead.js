@@ -301,6 +301,14 @@ const SOURCE_NAMES = {
   newsletter: "Newsletter", brevo: "Newsletter", email: "Email",
   "mariages-net": "Mariages.net", grandsgites: "Grands Gîtes",
   "gites-de-france": "Gîtes de France", abcsalles: "ABC Salles",
+  // Les moteurs de réponse posent leur propre utm_source. Sans ces entrées, le
+  // canal s'écrit « chatgpt.com » dans un rapport client, alors que la
+  // visibilité dans les IA est justement ce que la mission cherche à démontrer.
+  "chatgpt.com": "ChatGPT", chatgpt: "ChatGPT", openai: "ChatGPT",
+  "perplexity.ai": "Perplexity", perplexity: "Perplexity",
+  "gemini.google.com": "Gemini", gemini: "Gemini",
+  "copilot.microsoft.com": "Copilot", copilot: "Copilot",
+  "claude.ai": "Claude",
 };
 const SOCIAL_SOURCES = new Set([
   "ig", "instagram", "insta", "fb", "facebook", "meta", "li", "linkedin",
