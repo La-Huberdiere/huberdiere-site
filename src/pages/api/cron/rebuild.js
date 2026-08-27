@@ -57,8 +57,9 @@ async function preflight(ym) {
     const r = await reconcileLeads(ym)
     if (r && r.manquants.length) {
       const lignes = r.manquants.map((m) => `<li><code>${esc(m.email)}</code> — ${esc(m.date)}</li>`).join("")
+      const n = r.manquants.length
       soucis.push(
-        `<p><strong>${r.manquants.length} demande(s) sur ${r.soumissions} absente(s) du CRM.</strong><br>` +
+        `<p><strong>${n} demande${n > 1 ? "s" : ""} sur ${r.soumissions} ${n > 1 ? "absentes" : "absente"} du CRM.</strong><br>` +
           `Le prospect a bien écrit et reçu sa confirmation, mais Brevo a refusé le contact. ` +
           `Le bloc « Demandes reçues » du rapport comptera donc faux.</p><ul>${lignes}</ul>` +
           `<p>Le contenu de chaque demande est dans le mail de notification reçu à <code>contact@</code>.</p>`,
@@ -79,7 +80,7 @@ async function preflight(ym) {
     `<h1 style="font-family:Georgia,serif;color:#8B0000;font-size:20px;font-weight:normal">Préflight du rapport ${esc(ym)}</h1>` +
     soucis.join("") +
     `<p style="color:#646464;font-size:13px">Message automatique du cron quotidien, envoyé à toi seul. Le rapport client part entre le 28 et le 31.</p></div>`
-  const alerte = await alerter(`Préflight rapport ${ym} : ${soucis.length} point(s) à traiter`, html)
+  const alerte = await alerter(`Préflight rapport ${ym} : ${soucis.length} point${soucis.length > 1 ? "s" : ""} à traiter`, html)
   return { ok: true, alerte, soucis: soucis.length }
 }
 
