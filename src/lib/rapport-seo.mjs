@@ -950,6 +950,10 @@ function renderHtml(data) {
   // Le tableau des articles ne montre que la production du mois : le cumul
   // rallongeait la liste à chaque rapport sans rien dire du travail livré.
   const articlesMois = articles.filter((a) => (a.publishedAt || "").slice(0, 7) === month)
+  // Le tableau des positions ne détaille que les recherches où le château apparaît.
+  // Les autres disaient toutes la même chose sur onze lignes : « non classé ».
+  const serpClasses = serp.filter((s) => s.position != null).sort((a, b) => a.position - b.position)
+  const serpAbsents = serp.filter((s) => s.position == null)
   const aioKw = serp.filter((s) => s.aio)
   const aioCitedKw = serp.filter((s) => s.aioCited)
 
@@ -1038,31 +1042,29 @@ function renderHtml(data) {
   ${renderTraffic(traffic, monthLabel)}
 
   ${brand && brand.serie.length ? `<h2>Notoriété : on cherche le château par son nom</h2>
-  <p class="lead">Nombre de recherches Google portant sur « Château de la Huberdière » et ses variantes, mois par mois. C'est devenu l'indicateur le plus fiable du travail de visibilité, et voici pourquoi.</p>
+  <p class="lead">Nombre de recherches Google portant sur « Château de la Huberdière » et ses variantes, mois par mois. C'est la trace la plus directe de votre notoriété, et voici pourquoi elle compte plus qu'avant.</p>
   <div class="card"><canvas id="brandChart"></canvas></div>
   <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
     <div class="kpi"><div class="l">Dernier mois connu</div><div class="v">${fr(brand.serie[brand.serie.length - 1].volume)}</div><div class="n">${esc(brand.serie[brand.serie.length - 1].label)}, sur le nom du château</div></div>
     <div class="kpi"><div class="l">Il y a un an</div><div class="v">${brand.serie.length >= 12 ? fr(brand.serie[0].volume) : "–"}</div><div class="n">${brand.serie.length >= 12 ? esc(brand.serie[0].label) : "historique incomplet"}</div></div>
     <div class="kpi"><div class="l">Moyenne mensuelle</div><div class="v">${fr(brand.moyenne)}</div><div class="n">sur les 12 derniers mois</div></div>
   </div>
-  <p class="note">Depuis que Google répond directement dans son aperçu IA, une partie des internautes ne clique plus le lien : ils lisent la réponse, retiennent le nom du château, et reviennent quelques jours plus tard en le tapant dans Google ou en allant droit sur le site. Ce trajet-là n'apparaît nulle part dans les statistiques de trafic. En revanche il se voit ici : plus le nom est cherché, plus le château a été vu et retenu, quel que soit l'endroit où il a été vu. Une courbe qui monte pendant que le trafic depuis les résultats de recherche stagne n'est pas une contradiction, c'est la signature de ce nouveau fonctionnement. Google publie ces volumes avec un mois de décalage : le dernier mois affiché est donc celui qui précède ce rapport.</p>` : ""}
+  <p class="note">Depuis que Google répond directement dans son aperçu IA, une partie des internautes ne clique plus le lien : ils lisent la réponse, retiennent le nom du château, et reviennent quelques jours plus tard en le tapant dans Google ou en allant droit sur le site. Ce trajet-là n'apparaît nulle part dans les statistiques de trafic. En revanche il se voit ici : plus le nom est cherché, plus le château a été vu et retenu, quel que soit l'endroit où il a été vu. Une courbe qui monte pendant que le trafic depuis les résultats de recherche stagne n'est pas une contradiction, c'est la signature de ce nouveau fonctionnement.</p>
+  <p class="note">Deux précautions de lecture. Google publie ces volumes avec un mois de décalage : le dernier mois affiché précède ce rapport. Et ce sont des estimations de son outil publicitaire, arrondies par paliers fixes (320, 390, 480, 590, 720, 880, 1 000…) : un mois isolé peut sauter plusieurs paliers sans qu'il se soit rien passé de réel. Ce qui compte ici est la pente sur plusieurs mois, jamais le dernier point pris seul.</p>` : ""}
 
-  <h2>Progression des positions Google</h2>
-  <p class="lead">Position de vos mots-clés cibles, avec le mouvement depuis le rapport précédent. Position 1 = tout en haut de Google, donc plus le chiffre est petit, mieux c'est.</p>
-  <table>
-    <thead><tr><th>Mot-clé</th><th>Intention</th><th class="num">Position</th><th class="num">Évolution</th><th class="num">Aperçu IA</th><th>En tête aujourd'hui</th></tr></thead>
-    <tbody>${serp.map((s) => {
+  <h2>Où vous sortez dans Google</h2>
+  <p class="lead">Les recherches suivies sur lesquelles le château apparaît, et son mouvement depuis le rapport précédent. Position 1 = tout en haut : plus le chiffre est petit, mieux c'est.</p>
+  ${serpClasses.length ? `<table>
+    <thead><tr><th>Recherche</th><th class="num">Position</th><th class="num">Évolution</th><th>Qui est devant vous</th></tr></thead>
+    <tbody>${serpClasses.map((s) => {
       const mv = movement(s.position, prevPos[s.keyword], hasPrev)
-      const posCell = s.position != null
-        ? (s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${s.position}</a>` : String(s.position))
-        : '<span style="color:var(--gris)">non classé</span>'
-      const aioCell = !s.aio
-        ? '<span style="color:var(--gris)">aucun</span>'
-        : s.aioCited ? '<span class="badge">château cité</span>' : '<span class="down">présent</span>'
-      return `<tr><td>${esc(s.keyword)}</td><td>${esc(s.intent)}</td><td class="num pos">${posCell}</td><td class="num ${mv.cls}">${mv.txt}</td><td class="num">${aioCell}</td><td style="color:var(--gris)">${esc(s.leader || "")}</td></tr>`
+      const posCell = s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${s.position}</a>` : String(s.position)
+      const tete = s.position === 1 ? '<span class="badge">vous</span>' : esc(s.leader || "")
+      return `<tr><td>${esc(s.keyword)}</td><td class="num pos">${posCell}</td><td class="num ${mv.cls}">${mv.txt}</td><td style="color:var(--gris)">${tete}</td></tr>`
     }).join("")}</tbody>
-  </table>
-  <p class="note">La colonne « Évolution » apparaît dès le 2ᵉ rapport : ce mois pose la référence pour les mots-clés qui viennent d'être ajoutés. La colonne « Aperçu IA » indique si Google affiche un résumé rédigé par son intelligence artificielle au-dessus des résultats, et si le château y est cité comme source. Les mots-clés notés « Blog » sont les recherches que visent vos articles : ce sont elles qui déclenchent presque toujours un aperçu IA, alors que vos recherches commerciales et locales en déclenchent rarement.</p>
+  </table>` : `<div class="card">Aucune des recherches suivies ne place encore le château dans les 100 premiers résultats.</div>`}
+  ${serpAbsents.length ? `<p class="note"><strong>${serpAbsents.length} autres recherches suivies</strong> ne placent pas encore le château : ${serpAbsents.map((s) => `<span class="tag">${esc(s.keyword)}</span>`).join("")}</p>` : ""}
+  <p class="note">« Évolution » compare au rapport du mois dernier ; une case vide signale une recherche entrée dans le suivi ce mois-ci.</p>
 
   ${renderCompetitors(competitors)}
 
@@ -1214,8 +1216,12 @@ export async function generateReport(prevHistory = [], month = null) {
   byMonth.set(ym, cur)
   const history = [...byMonth.values()].sort((a, b) => a.month.localeCompare(b.month))
 
+  // Tout ce dont le rendu a besoin, figé tel quel. `exec` en est exclu : c'est du
+  // texte dérivé, on le recalcule au rendu pour qu'un changement de formulation
+  // profite aussi aux mois passés.
+  const snapshot = { month: ym, serp, gbp, llm, articles, history, leads, traffic, brand, competitors }
   const exec = buildExec({ month: ym, serp, articlesNew, citedTotal, answeredTotal, gbp, leads })
-  const html = renderHtml({ month: ym, serp, gbp, llm, articles, history, exec, leads, traffic, brand, competitors })
+  const html = renderHtml({ ...snapshot, exec })
 
   const summary = {
     month: ym,
@@ -1236,5 +1242,29 @@ export async function generateReport(prevHistory = [], month = null) {
     visiteurs: traffic?.visitors ?? null,
     pagesVues: traffic?.pageviews ?? null,
   }
-  return { html, history, summary, monthLabel: monthLong(ym), month: ym }
+  return { html, history, summary, snapshot, monthLabel: monthLong(ym), month: ym }
+}
+
+/**
+ * Rejoue le HTML d'un mois depuis son instantané, sans le moindre appel d'API.
+ *
+ * C'est ce qui permet de changer la mise en page et de la répercuter sur les mois
+ * déjà envoyés. Un nouvel appel rendrait les positions et les réponses d'IA DU
+ * JOUR : le rapport d'août afficherait des chiffres de septembre sous un titre
+ * d'août, et le client lirait autre chose que ce qu'il a reçu. L'instantané est
+ * donc une question de fidélité avant d'être une question de coût.
+ *
+ * L'encart « Ce qui a été réalisé » (`rapport-travaux.json`) et le texte de
+ * synthèse sont volontairement relus au rendu : eux peuvent encore être corrigés.
+ */
+export function renderFromSnapshot(snap) {
+  const { month, serp, gbp, llm, articles, history, leads, traffic, brand, competitors } = snap
+  if (!month || !Array.isArray(serp) || !Array.isArray(llm)) {
+    throw new Error("Instantané incomplet : month, serp et llm sont requis.")
+  }
+  const citedTotal = llm.reduce((s, e) => s + e.rows.filter((r) => r.cited).length, 0)
+  const answeredTotal = llm.reduce((s, e) => s + e.rows.filter((r) => !r.error).length, 0)
+  const articlesNew = (articles ?? []).filter((a) => (a.publishedAt || "").slice(0, 7) === month).length
+  const exec = buildExec({ month, serp, articlesNew, citedTotal, answeredTotal, gbp, leads })
+  return renderHtml({ month, serp, gbp, llm, articles: articles ?? [], history: history ?? [], exec, leads, traffic, brand, competitors })
 }

@@ -5,14 +5,25 @@
 export const prerender = false
 
 import { put, head } from "@vercel/blob"
-import { generateReport } from "../../../lib/rapport-seo.mjs"
+import { generateReport, renderFromSnapshot } from "../../../lib/rapport-seo.mjs"
 
 const HISTORY_PATH = "rapport/history.json"
 const HTML_PATH = "rapport/index.html"
+// Instantané des données brutes d'un mois. Sans lui, refaire la mise en page d'un
+// rapport déjà envoyé obligeait à retirer les données : le rapport d'août se serait
+// rempli de positions de septembre. Un mois = un instantané, figé le jour de l'envoi.
+const snapshotPath = (ym) => `rapport/m/${ym}.data.json`
 // Domaine basculé sur Vercel (6/07) : le rapport est servi sur le domaine final,
 // protégé par mot de passe (cf. src/pages/rapport.js).
 const REPORT_URL = "https://www.chateaudelahuberdiere.com/rapport"
 const SENDER = { name: "Reporting Huberdière", email: "hello@chateaudelahuberdiere.com" }
+
+async function loadBlobJson(path) {
+  const h = await head(path)
+  const r = await fetch(h.url, { cache: "no-store" })
+  if (!r.ok) throw new Error(`lecture ${path} : HTTP ${r.status}`)
+  return r.json()
+}
 
 async function loadHistory() {
   try {
@@ -76,6 +87,44 @@ export async function GET({ request, url }) {
   const ok = secret && (auth === `Bearer ${secret}` || url.searchParams.get("key") === secret)
   if (!ok) return new Response("unauthorized", { status: 401 })
 
+  // Rejeu de mise en page : reconstruit le HTML d'un mois (ou de tous) depuis son
+  // instantané. Aucun appel DataForSEO, aucun mail, l'historique n'est pas touché.
+  // Sert après un changement de rendu, pour que les mois déjà envoyés en profitent.
+  if (url.searchParams.get("rerender") === "1") {
+    try {
+      const hist = await loadHistory()
+      const seul = url.searchParams.get("month")
+      const mois = (seul ? [seul] : hist.filter((h) => h.hasReport).map((h) => h.month)).sort()
+      const dernier = [...hist].filter((h) => h.hasReport).map((h) => h.month).sort().pop()
+      const faits = [], echecs = []
+      for (const ym of mois) {
+        try {
+          const html = renderFromSnapshot(await loadBlobJson(snapshotPath(ym)))
+          await put(`rapport/m/${ym}.html`, html, {
+            access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "text/html; charset=utf-8",
+          })
+          // `rapport/index.html` est la copie « dernier rapport » : seul le mois le
+          // plus récent a le droit de l'écraser.
+          if (ym === dernier) {
+            await put(HTML_PATH, html, {
+              access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "text/html; charset=utf-8",
+            })
+          }
+          faits.push(ym)
+        } catch (e) {
+          echecs.push({ month: ym, error: String(e?.message || e) })
+        }
+      }
+      return new Response(JSON.stringify({ ok: echecs.length === 0, rerendered: faits, echecs }), {
+        status: 200, headers: { "content-type": "application/json" },
+      })
+    } catch (e) {
+      return new Response(JSON.stringify({ ok: false, error: String(e?.message || e) }), {
+        status: 500, headers: { "content-type": "application/json" },
+      })
+    }
+  }
+
   try {
     const override = url.searchParams.get("month") // override optionnel YYYY-MM
     // Envoi anticipé ponctuel : le rapport doit partir un jour donné (call client) sans
@@ -110,7 +159,7 @@ export async function GET({ request, url }) {
       })
     }
 
-    const { html, history, summary, monthLabel, month: ym } = await generateReport(prev, override)
+    const { html, history, summary, snapshot, monthLabel, month: ym } = await generateReport(prev, override)
 
     // Régénération silencieuse : reconstruit le rapport en ligne (blob + archive) sans
     // réexpédier de mail. Sert à corriger un rapport déjà envoyé. Le drapeau `emailed`
@@ -128,6 +177,11 @@ export async function GET({ request, url }) {
     }
 
     await put(HISTORY_PATH, JSON.stringify(history, null, 2), {
+      access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json",
+    })
+    // Données brutes du mois, figées : permettent de rejouer la mise en page plus
+    // tard sans redemander les chiffres, donc sans réécrire l'histoire.
+    await put(snapshotPath(ym), JSON.stringify(snapshot), {
       access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json",
     })
     // Instantané mensuel permanent (archives) + copie « dernier rapport ».
