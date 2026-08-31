@@ -363,14 +363,37 @@ async function pullBrandVolume() {
  * un bloc du rapport parce qu'une clé a expiré ou n'est pas encore en place.
  */
 async function pullBrand(ym) {
+  let gsc = null
   try {
-    const gsc = await pullBrandGsc(ym)
-    if (gsc) return gsc
-    console.log("[rapport] GSC non configurée, notoriété via Keyword Planner.")
+    gsc = await pullBrandGsc(ym)
+    if (!gsc) console.log("[rapport] GSC non configurée, notoriété via Keyword Planner.")
   } catch (e) {
     console.error("[rapport] GSC KO, repli Keyword Planner :", e.message)
   }
-  return pullBrandVolume()
+  const ads = await pullBrandVolume()
+  if (!gsc) return ads
+  if (!ads?.serie?.length) return gsc
+
+  // Une seule courbe, la plus longue possible. La Search Console ne remonte pas
+  // avant la vérification de la propriété ; Keyword Planner couvre les douze mois
+  // précédents. Les deux estiment la MÊME chose, le nombre de gens qui cherchent
+  // le nom du château : l'un le modélise, l'autre le compte. On les met bout à
+  // bout, avec la couture VISIBLE au rendu (couleur + note), jamais fondues.
+  //
+  // Charnière = premier mois COMPLET de la Search Console. Le mois partiel de
+  // démarrage (six jours en juin 2026) est écarté au profit du mois entier de
+  // Keyword Planner, qui couvre mieux la même période.
+  const premierMesure = gsc.serie.find((p) => p.complet)?.ym
+  if (!premierMesure) return ads
+  const avant = ads.serie.filter((p) => p.ym < premierMesure).map((p) => ({ ...p, mesure: false, complet: true }))
+  const apres = gsc.serie.filter((p) => p.ym >= premierMesure).map((p) => ({ ...p, mesure: true }))
+  const complets = apres.filter((p) => p.complet)
+  return {
+    source: "mixte",
+    charniere: premierMesure,
+    moyenne: complets.length ? Math.round(complets.reduce((s, p) => s + p.volume, 0) / complets.length) : gsc.moyenne,
+    serie: [...avant, ...apres],
+  }
 }
 
 async function pullBacklinks() {
@@ -1077,9 +1100,17 @@ function renderHtml(data) {
   // Les autres disaient toutes la même chose sur onze lignes : « non classé ».
   // Notoriété. `complet` n'existe pas dans les instantanés d'avant la Search
   // Console : on y retombe sur l'ancienne règle, le dernier point n'est pas annoncé.
-  const brandPts = (brand?.serie ?? []).map((p, i, a) => ({ ...p, complet: p.complet ?? i < a.length - 1 }))
-  const brandGsc = (brand?.source ?? "ads") === "gsc"
-  const brandConfirme = [...brandPts].reverse().find((p) => p.complet) ?? null
+  const brandPts = (brand?.serie ?? []).map((p, i, a) => ({
+    ...p,
+    complet: p.complet ?? i < a.length - 1,
+    mesure: p.mesure ?? false, // instantanés d'avant la Search Console : tout était estimé
+  }))
+  const brandMixte = brand?.source === "mixte"
+  const brandGsc = brand?.source === "gsc" || brandMixte
+  // Le chiffre annoncé vient toujours d'un mois MESURÉ et complet. À défaut de
+  // mesure, du dernier mois complet, quitte à ce qu'il soit estimé.
+  const brandConfirme = [...brandPts].reverse().find((p) => p.complet && p.mesure)
+    ?? [...brandPts].reverse().find((p) => p.complet) ?? null
   const brandAnPasse = brandPts.length >= 12 ? brandPts[0] : null
   const serpClasses = serp.filter((s) => s.position != null).sort((a, b) => a.position - b.position)
   const serpAbsents = serp.filter((s) => s.position == null)
@@ -1171,16 +1202,20 @@ function renderHtml(data) {
   ${renderTraffic(traffic, monthLabel)}
 
   ${brandPts.length ? `<h2>Notoriété : on cherche le château par son nom</h2>
-  <p class="lead">${brandGsc
+  <p class="lead">${brandMixte
+    ? "Combien de personnes cherchent le nom du château sur Google, mois par mois. Les premiers mois sont l'estimation de Google, les derniers le comptage réel de votre Search Console."
+    : brandGsc
     ? "Nombre de fois où quelqu'un a cherché le nom du château sur Google et vu votre site dans les résultats, mois par mois. Relevé dans votre Search Console."
     : "Nombre de recherches Google portant sur « Château de la Huberdière » et ses variantes, mois par mois."} C'est la trace la plus directe de votre notoriété, et voici pourquoi elle compte plus qu'avant.</p>
   <div class="card"><canvas id="brandChart"></canvas></div>
   ${brandConfirme ? `<div class="kpis" style="grid-template-columns:repeat(2,1fr)">
-    <div class="kpi"><div class="l">Dernier mois complet</div><div class="v">${fr(brandConfirme.volume)}</div><div class="n">${esc(brandConfirme.label)}, sur le nom du château</div></div>
-    <div class="kpi"><div class="l">Il y a un an</div><div class="v">${brandAnPasse ? fr(brandAnPasse.volume) : "–"}</div><div class="n">${brandAnPasse ? esc(brandAnPasse.label) : "historique encore court"}</div></div>
+    <div class="kpi"><div class="l">${brandConfirme.mesure ? "Dernier mois mesuré" : "Dernier mois complet"}</div><div class="v">${fr(brandConfirme.volume)}</div><div class="n">${esc(brandConfirme.label)}, sur le nom du château</div></div>
+    <div class="kpi"><div class="l">Il y a un an</div><div class="v">${brandAnPasse ? fr(brandAnPasse.volume) : "–"}</div><div class="n">${brandAnPasse ? `${esc(brandAnPasse.label)}${brandAnPasse.mesure ? "" : ", estimation"}` : "historique encore court"}</div></div>
   </div>` : ""}
   <p class="note">Depuis que Google répond directement dans son aperçu IA, une partie des internautes ne clique plus le lien : ils lisent la réponse, retiennent le nom du château, et reviennent quelques jours plus tard en le tapant dans Google ou en allant droit sur le site. Ce trajet-là n'apparaît nulle part dans les statistiques de trafic. En revanche il se voit ici : plus le nom est cherché, plus le château a été vu et retenu, quel que soit l'endroit où il a été vu. Une courbe qui monte pendant que le trafic depuis les résultats de recherche stagne n'est pas une contradiction, c'est la signature de ce nouveau fonctionnement.</p>
-  <p class="note">${brandGsc
+  <p class="note">${brandMixte
+    ? `<span style="color:var(--or);font-weight:600">Les barres dorées</span> sont l'estimation de l'outil publicitaire de Google, seule source qui remonte aussi loin, arrondie par paliers fixes. <span style="color:var(--bordeaux);font-weight:600">Les barres bordeaux</span> sont le comptage réel de votre Search Console, disponible depuis ${esc(monthLong(brand.charniere))}. Les deux mesurent la même chose, la première l'estime et la seconde la compte : le changement d'outil se voit à la couleur, il n'est jamais fondu dans la courbe. Une barre pâle est un mois encore inachevé, que nous n'annonçons pas.`
+    : brandGsc
     ? "Ces chiffres sont comptés par Google dans votre Search Console, pas estimés. Google consolide ses données avec deux à trois jours de retard : la dernière barre du graphique est donc tracée en clair tant que son mois n'est pas terminé, et les chiffres ci-dessus s'arrêtent au dernier mois complet."
     : "Ces volumes sont des estimations de l'outil publicitaire de Google, arrondies par paliers fixes (320, 390, 480, 590, 720, 880, 1 000…) et publiées avec un mois de décalage. La dernière barre est tracée en clair parce qu'un mois tout juste publié saute parfois plusieurs paliers d'un coup, sans que rien ne l'ait justifié : nous ne l'annonçons qu'une fois le mois suivant arrivé."} C'est la pente sur plusieurs mois qui raconte l'essentiel, jamais le dernier point pris seul.</p>` : ""}
 
@@ -1261,7 +1296,8 @@ const HISTORY = ${JSON.stringify(history)};
       label: "Recherches sur le nom du château",
       data: B.map(p => p.volume),
       // Dernière barre en clair : mois publié à l'instant, pas encore confirmé.
-      backgroundColor: B.map(p => p.complet ? "#8B0000" : "#d9b3b3"),
+      // Trois états, une seule courbe : estimé (doré), mesuré (bordeaux), inachevé (pâle).
+      backgroundColor: B.map(p => !p.complet ? "#d9b3b3" : p.mesure === false ? "#B08D57" : "#8B0000"),
       borderRadius: 0,
     }] },
     options: {
@@ -1269,7 +1305,11 @@ const HISTORY = ${JSON.stringify(history)};
       scales: { y: { beginAtZero: true, title: { display: true, text: "Recherches par mois" }, ticks: { precision: 0 } } },
       plugins: {
         legend: { display: false },
-        tooltip: { callbacks: { afterLabel: (c) => B[c.dataIndex].complet ? "" : "mois incomplet, non annoncé" } },
+        tooltip: { callbacks: { afterLabel: (c) => {
+          const p = B[c.dataIndex]
+          if (!p.complet) return "mois incomplet, non annoncé"
+          return p.mesure === false ? "estimation Google" : "mesuré en Search Console"
+        } } },
       }
     }
   });
