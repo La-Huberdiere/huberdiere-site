@@ -1044,13 +1044,12 @@ function renderHtml(data) {
   ${brand && brand.serie.length ? `<h2>Notoriété : on cherche le château par son nom</h2>
   <p class="lead">Nombre de recherches Google portant sur « Château de la Huberdière » et ses variantes, mois par mois. C'est la trace la plus directe de votre notoriété, et voici pourquoi elle compte plus qu'avant.</p>
   <div class="card"><canvas id="brandChart"></canvas></div>
-  <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
-    <div class="kpi"><div class="l">Dernier mois connu</div><div class="v">${fr(brand.serie[brand.serie.length - 1].volume)}</div><div class="n">${esc(brand.serie[brand.serie.length - 1].label)}, sur le nom du château</div></div>
+  ${brand.serie.length >= 2 ? `<div class="kpis" style="grid-template-columns:repeat(2,1fr)">
+    <div class="kpi"><div class="l">Dernier mois confirmé</div><div class="v">${fr(brand.serie[brand.serie.length - 2].volume)}</div><div class="n">${esc(brand.serie[brand.serie.length - 2].label)}, sur le nom du château</div></div>
     <div class="kpi"><div class="l">Il y a un an</div><div class="v">${brand.serie.length >= 12 ? fr(brand.serie[0].volume) : "–"}</div><div class="n">${brand.serie.length >= 12 ? esc(brand.serie[0].label) : "historique incomplet"}</div></div>
-    <div class="kpi"><div class="l">Moyenne mensuelle</div><div class="v">${fr(brand.moyenne)}</div><div class="n">sur les 12 derniers mois</div></div>
-  </div>
+  </div>` : ""}
   <p class="note">Depuis que Google répond directement dans son aperçu IA, une partie des internautes ne clique plus le lien : ils lisent la réponse, retiennent le nom du château, et reviennent quelques jours plus tard en le tapant dans Google ou en allant droit sur le site. Ce trajet-là n'apparaît nulle part dans les statistiques de trafic. En revanche il se voit ici : plus le nom est cherché, plus le château a été vu et retenu, quel que soit l'endroit où il a été vu. Une courbe qui monte pendant que le trafic depuis les résultats de recherche stagne n'est pas une contradiction, c'est la signature de ce nouveau fonctionnement.</p>
-  <p class="note">Deux précautions de lecture. Google publie ces volumes avec un mois de décalage : le dernier mois affiché précède ce rapport. Et ce sont des estimations de son outil publicitaire, arrondies par paliers fixes (320, 390, 480, 590, 720, 880, 1 000…) : un mois isolé peut sauter plusieurs paliers sans qu'il se soit rien passé de réel. Ce qui compte ici est la pente sur plusieurs mois, jamais le dernier point pris seul.</p>` : ""}
+  <p class="note">Ces volumes sont des estimations de l'outil publicitaire de Google, arrondies par paliers fixes (320, 390, 480, 590, 720, 880, 1 000…), et publiées avec un mois de décalage : le dernier mois du graphique précède déjà ce rapport. Sa dernière barre est tracée en clair parce qu'un mois tout juste publié saute parfois plusieurs paliers d'un coup, sans que rien ne l'ait justifié ; nous ne l'annonçons donc qu'une fois le mois suivant arrivé. Les chiffres ci-dessus s'arrêtent au dernier mois confirmé, et c'est la pente sur plusieurs mois qui raconte l'essentiel.</p>` : ""}
 
   <h2>Où vous sortez dans Google</h2>
   <p class="lead">Les recherches suivies sur lesquelles le château apparaît, et son mouvement depuis le rapport précédent. Position 1 = tout en haut : plus le chiffre est petit, mieux c'est.</p>
@@ -1125,11 +1124,20 @@ const HISTORY = ${JSON.stringify(history)};
   if (!B.length) return;
   new Chart(document.getElementById("brandChart"), {
     type: "bar",
-    data: { labels: B.map(p => p.label), datasets: [{ label: "Recherches sur le nom du château", data: B.map(p => p.volume), backgroundColor: "#8B0000", borderRadius: 0 }] },
+    data: { labels: B.map(p => p.label), datasets: [{
+      label: "Recherches sur le nom du château",
+      data: B.map(p => p.volume),
+      // Dernière barre en clair : mois publié à l'instant, pas encore confirmé.
+      backgroundColor: B.map((p, i) => i === B.length - 1 ? "#d9b3b3" : "#8B0000"),
+      borderRadius: 0,
+    }] },
     options: {
       responsive: true,
       scales: { y: { beginAtZero: true, title: { display: true, text: "Recherches par mois" }, ticks: { precision: 0 } } },
-      plugins: { legend: { display: false } }
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { afterLabel: (c) => c.dataIndex === B.length - 1 ? "mois non confirmé" : "" } },
+      }
     }
   });
 })();
@@ -1233,7 +1241,10 @@ export async function generateReport(prevHistory = [], month = null) {
     llmAnswered: answeredTotal,
     aioPresent: serp.filter((s) => s.aio).length,
     aioCited: serp.filter((s) => s.aioCited).length,
-    marque: brand?.serie[brand.serie.length - 1]?.volume ?? null,
+    // Dernier mois CONFIRMÉ, pas le plus récent : le point tout juste publié par
+    // Keyword Planner est trop instable pour être annoncé au client (cf. renderHtml).
+    marque: brand && brand.serie.length >= 2 ? brand.serie[brand.serie.length - 2].volume : null,
+    marqueMois: brand && brand.serie.length >= 2 ? brand.serie[brand.serie.length - 2].label : null,
     marqueAnPasse: brand && brand.serie.length >= 12 ? brand.serie[0].volume : null,
     backlinks: backlinks.backlinks,
     gbpNote: gbp?.note ?? null,

@@ -58,9 +58,11 @@ async function sendEmail(summary, monthLabel) {
     : ` Google affiche désormais son résumé IA sur ${s.aioPresent} de vos mots-clés suivis${s.aioCited > 0 ? `, et le château y figure comme source sur ${s.aioCited} d'entre eux` : ", le château n'y figure pas encore comme source"}.`
   // Notoriété : le chiffre à regarder maintenant que le clic depuis Google n'est
   // plus attribuable. On ne le commente que si l'historique permet la comparaison.
+  // Google publie ses volumes avec un mois de retard et révise le plus récent : on
+  // annonce le dernier mois CONFIRMÉ, en le nommant, plutôt qu'un « ce mois-ci » faux.
   const marque = s.marque == null ? ""
-    : s.marqueAnPasse == null ? ` Sur le nom du château, ${s.marque} recherches Google ce mois-ci.`
-    : ` Sur le nom du château, ${s.marque} recherches Google ce mois-ci contre ${s.marqueAnPasse} il y a un an${s.marque > s.marqueAnPasse ? ", c'est la courbe qui compte le plus aujourd'hui" : ""}.`
+    : s.marqueAnPasse == null ? ` Sur le nom du château, ${s.marque} recherches Google en ${s.marqueMois}.`
+    : ` Sur le nom du château, ${s.marque} recherches Google en ${s.marqueMois} contre ${s.marqueAnPasse} un an plus tôt${s.marque > s.marqueAnPasse ? ", c'est la courbe qui compte le plus aujourd'hui" : ""}.`
   const dem = s.demandes == null || s.demandes === 0 ? ""
     : ` Côté demandes, vous avez reçu ${s.demandes} contact${s.demandes > 1 ? "s" : ""} via le site${s.demandesChatgpt > 0 ? `, dont ${s.demandesChatgpt} en provenance de ChatGPT` : ""}.`
   const html = `
