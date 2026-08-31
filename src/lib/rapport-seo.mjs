@@ -170,7 +170,10 @@ function aioReferences(aio) {
   for (const el of aio.items ?? []) push(el.references)
   const seen = new Set()
   return out.filter((r) => {
-    const key = (r.url || r.domain).toLowerCase()
+    // Google se cite lui-même (liens de rebond internes) : ce n'est pas une source.
+    if (/(^|\.)google\.[a-z.]+$/i.test(r.domain ?? "")) return false
+    // Dédoublonnage par DOMAINE : quatre URLs d'un même site = un seul site cité.
+    const key = (r.domain || r.url).toLowerCase()
     if (seen.has(key)) return false
     seen.add(key)
     return true
@@ -252,30 +255,6 @@ async function pullBacklinks() {
   let s = {}
   try { s = (await dfs("/backlinks/summary/live", { target, include_subdomains: true, exclude_internal_backlinks: true, backlinks_status_type: "live", internal_list_limit: 1 }))[0] ?? {} } catch (e) { console.error("BL summary", e.message) }
   return { backlinks: s.backlinks ?? 0, referringDomains: s.referring_domains ?? 0, spamScore: s.backlinks_spam_score ?? 0, referringMainDomains: s.referring_main_domains ?? 0 }
-}
-
-// Détail : top domaines référents (les sites qui pointent vers le château).
-async function pullReferringDomains() {
-  try {
-    const result = await dfs("/backlinks/referring_domains/live", {
-      target: DOMAIN, limit: 12, order_by: ["rank,desc"], backlinks_status_type: "live",
-      filters: [["domain", "not_like", `%${DOMAIN}%`]],
-    })
-    return (result[0]?.items ?? []).map((i) => ({
-      domain: i.domain, backlinks: i.backlinks ?? 0, dofollow: i.dofollow ?? 0, rank: i.rank ?? 0,
-    }))
-  } catch (e) { console.error("Ref domains KO", e.message); return [] }
-}
-
-// Historique mensuel du netlinking (backlinks + domaines référents) → permet la
-// comparaison N-1 dès le premier rapport et la mini-courbe de tendance.
-async function pullBacklinksHistory() {
-  try {
-    const result = await dfs("/backlinks/timeseries_summary/live", { target: DOMAIN, group_range: "month" })
-    return (result[0]?.items ?? [])
-      .map((i) => ({ ym: String(i.date || "").slice(0, 7), backlinks: i.backlinks ?? 0, referringDomains: i.referring_domains ?? 0 }))
-      .filter((i) => i.ym)
-  } catch (e) { console.error("BL history KO", e.message); return [] }
 }
 
 async function pullGbp() {
@@ -849,7 +828,6 @@ export function renderTraffic(td, monthLabel) {
     <p class="lead">Le trafic mesuré sur le site en ${esc(monthLabel)} (mesure anonyme, sans cookie). <a href="${UMAMI_SHARE_URL}" target="_blank" rel="noopener">Voir le tableau de bord détaillé &rarr;</a></p>
     <div class="card"><p style="margin:0;color:var(--gris)">Aucune visite enregistrée sur cette période.</p></div>`
   }
-  const pagesRows = td.topPages.map((p) => `<tr><td>${esc(p.path)}</td><td class="num">${fr(p.views)}</td></tr>`).join("")
   // Page d'entrée : celle par laquelle la visite commence. Une page peut être très
   // vue sans jamais faire entrer personne, et l'inverse est vrai aussi.
   const entryRows = (td.entryPages || []).map((p) => `<tr><td>${esc(p.path)}</td><td class="num">${fr(p.visits)}</td></tr>`).join("")
@@ -879,10 +857,9 @@ export function renderTraffic(td, monthLabel) {
   <div class="leadsgrid" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:14px">
     <div><table><thead><tr><th>Par où les visiteurs entrent</th><th class="num">Visites</th></tr></thead><tbody>${entryRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
     <div><table><thead><tr><th>D'où viennent les visiteurs</th><th class="num">Visites</th></tr></thead><tbody>${refRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
-    <div><table><thead><tr><th>Pages les plus vues</th><th class="num">Vues</th></tr></thead><tbody>${pagesRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
     <div><table><thead><tr><th>Sur quel appareil</th><th class="num">Visites</th></tr></thead><tbody>${deviceRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
   </div>
-  <p class="note">« Visiteurs » compte les personnes uniques, « visites » leurs sessions, « pages vues » le total des pages ouvertes. Le taux « en une page » mesure les visiteurs partis après une seule page. Les canaux regroupent l'origine des visites : recherche Google, réseaux sociaux, publicité, accès direct, sites référents. « Par où les visiteurs entrent » compte la première page de chaque visite : c'est la porte d'entrée réelle du site, à ne pas confondre avec les pages les plus vues, qui incluent la navigation interne. L'appareil est déduit de la taille de l'écran.${td.hasBaseline ? "" : " C'est le premier mois de mesure Umami : la comparaison avec le mois précédent apparaîtra au prochain rapport."}</p>`
+  <p class="note">« Visiteurs » compte les personnes uniques, « visites » leurs sessions, « pages vues » le total des pages ouvertes. Le taux « en une page » mesure les visiteurs partis après une seule page. Les canaux regroupent l'origine des visites : recherche Google, réseaux sociaux, publicité, accès direct, sites référents. « Par où les visiteurs entrent » compte la première page de chaque visite : c'est la porte d'entrée réelle du site. L'appareil est déduit de la taille de l'écran.${td.hasBaseline ? "" : " C'est le premier mois de mesure Umami : la comparaison avec le mois précédent apparaîtra au prochain rapport."}</p>`
 }
 
 // Encart "Ce qui a été réalisé ce mois-ci" : le travail concret livré, en langage
@@ -955,7 +932,7 @@ export function renderGains(opportunities, cp) {
 }
 
 function renderHtml(data) {
-  const { month, serp, backlinks, refDomains, blHistory, gbp, llm, articles, history, exec, leads, traffic, brand, competitors } = data
+  const { month, serp, gbp, llm, articles, history, exec, leads, traffic, brand, competitors } = data
   const monthLabel = monthLong(month)
   const rankedCount = serp.filter((s) => s.position !== null).length
   const bestPos = bestKeyword(serp)
@@ -965,34 +942,16 @@ function renderHtml(data) {
   const hasPrev = !!prevReport
   const prevPos = prevReport?.positions ?? {}
 
-  // Netlinking N-1 : deux derniers points de l'historique DataForSEO.
-  const blSorted = [...blHistory].sort((a, b) => a.ym.localeCompare(b.ym))
-  const blNow = blSorted[blSorted.length - 1] ?? { backlinks: backlinks.backlinks, referringDomains: backlinks.referringDomains }
-  const blPrev = blSorted[blSorted.length - 2]
-  const deltaBl = blPrev ? blNow.backlinks - blPrev.backlinks : null
-  const deltaRd = blPrev ? blNow.referringDomains - blPrev.referringDomains : null
-  // Rang du château parmi les quatre établissements sur les domaines référents.
-  const rangLiens = competitors?.rows?.length
-    ? [...competitors.rows].sort((a, b) => b.referringDomains - a.referringDomains).findIndex((r) => r.isBrand) + 1
-    : 0
-  const deltaBadge = (d) => d == null ? "" : d > 0 ? `<span class="up">▲ +${fr(d)}</span>` : d < 0 ? `<span class="down">▼ ${fr(d)}</span>` : `<span class="flat">=</span>`
-
   // Opportunités : mots-clés en page 2-3 (11 à 30), les plus proches de la page 1.
   const opportunities = serp.filter((s) => s.position != null && s.position >= 11 && s.position <= 30).sort((a, b) => a.position - b.position)
 
   // Aperçus IA de Google (AI Overviews). Déployés en France le 22 juillet 2026 :
   // on mesure sur quels mots-clés l'encart s'affiche, et s'il cite le château.
+  // Le tableau des articles ne montre que la production du mois : le cumul
+  // rallongeait la liste à chaque rapport sans rien dire du travail livré.
+  const articlesMois = articles.filter((a) => (a.publishedAt || "").slice(0, 7) === month)
   const aioKw = serp.filter((s) => s.aio)
   const aioCitedKw = serp.filter((s) => s.aioCited)
-  const aioTopDomains = (() => {
-    const count = new Map()
-    for (const s of aioKw) {
-      for (const d of new Set(s.aioRefs.map((r) => r.domain).filter(Boolean))) {
-        count.set(d, (count.get(d) ?? 0) + 1)
-      }
-    }
-    return [...count.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 8)
-  })()
 
   // Visibilité IA : pivot par question (thème × moteurs).
   const perQuestion = LLM_PROMPTS.map((p, idx) => {
@@ -1059,7 +1018,7 @@ function renderHtml(data) {
 <header><div class="wrap">
   <div class="sub">Château de la Huberdière · Reporting SEO & visibilité</div>
   <h1>Où en est votre référencement, ${esc(monthLabel)}</h1>
-  <div class="sub">Positions Google, comparaison avec les châteaux voisins, articles publiés, netlinking, présence dans les réponses IA.</div>
+  <div class="sub">Demandes reçues, fréquentation, notoriété, positions Google, comparaison avec les châteaux voisins, présence dans les réponses IA.</div>
 </div></header>
 <div class="wrap">
 
@@ -1068,7 +1027,7 @@ function renderHtml(data) {
   <div class="kpis">
     <div class="kpi"><div class="l">Mots-clés classés</div><div class="v">${rankedCount}<span style="font-size:15px;color:var(--gris)"> / ${serp.length}</span></div><div class="n">dans le top 100 Google</div></div>
     <div class="kpi"><div class="l">Meilleure position</div><div class="v">${bestPos ? "#" + bestPos.position : "–"}</div><div class="n">${bestPos ? esc(bestPos.keyword) : "à conquérir"}</div></div>
-    <div class="kpi"><div class="l">Backlinks</div><div class="v">${fr(blNow.backlinks)}</div><div class="n">${deltaBadge(deltaBl)} vs mois dernier</div></div>
+    <div class="kpi"><div class="l">Demandes reçues</div><div class="v">${leads?.total ?? "–"}</div><div class="n">via les formulaires du site</div></div>
     <div class="kpi"><div class="l">Cité par les IA</div><div class="v">${citedTotal}<span style="font-size:15px;color:var(--gris)"> / ${answeredTotal}</span></div><div class="n">réponses testées</div></div>
   </div>
 
@@ -1082,15 +1041,14 @@ function renderHtml(data) {
   <p class="lead">Nombre de recherches Google portant sur « Château de la Huberdière » et ses variantes, mois par mois. C'est devenu l'indicateur le plus fiable du travail de visibilité, et voici pourquoi.</p>
   <div class="card"><canvas id="brandChart"></canvas></div>
   <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
-    <div class="kpi"><div class="l">Recherches ce mois</div><div class="v">${fr(brand.serie[brand.serie.length - 1].volume)}</div><div class="n">sur le nom du château</div></div>
+    <div class="kpi"><div class="l">Dernier mois connu</div><div class="v">${fr(brand.serie[brand.serie.length - 1].volume)}</div><div class="n">${esc(brand.serie[brand.serie.length - 1].label)}, sur le nom du château</div></div>
     <div class="kpi"><div class="l">Il y a un an</div><div class="v">${brand.serie.length >= 12 ? fr(brand.serie[0].volume) : "–"}</div><div class="n">${brand.serie.length >= 12 ? esc(brand.serie[0].label) : "historique incomplet"}</div></div>
     <div class="kpi"><div class="l">Moyenne mensuelle</div><div class="v">${fr(brand.moyenne)}</div><div class="n">sur les 12 derniers mois</div></div>
   </div>
-  <p class="note">Depuis que Google répond directement dans son aperçu IA, une partie des internautes ne clique plus le lien : ils lisent la réponse, retiennent le nom du château, et reviennent quelques jours plus tard en le tapant dans Google ou en allant droit sur le site. Ce trajet-là n'apparaît nulle part dans les statistiques de trafic. En revanche il se voit ici : plus le nom est cherché, plus le château a été vu et retenu, quel que soit l'endroit où il a été vu. Une courbe qui monte pendant que le trafic depuis les résultats de recherche stagne n'est pas une contradiction, c'est la signature de ce nouveau fonctionnement.</p>` : ""}
+  <p class="note">Depuis que Google répond directement dans son aperçu IA, une partie des internautes ne clique plus le lien : ils lisent la réponse, retiennent le nom du château, et reviennent quelques jours plus tard en le tapant dans Google ou en allant droit sur le site. Ce trajet-là n'apparaît nulle part dans les statistiques de trafic. En revanche il se voit ici : plus le nom est cherché, plus le château a été vu et retenu, quel que soit l'endroit où il a été vu. Une courbe qui monte pendant que le trafic depuis les résultats de recherche stagne n'est pas une contradiction, c'est la signature de ce nouveau fonctionnement. Google publie ces volumes avec un mois de décalage : le dernier mois affiché est donc celui qui précède ce rapport.</p>` : ""}
 
   <h2>Progression des positions Google</h2>
   <p class="lead">Position de vos mots-clés cibles, avec le mouvement depuis le rapport précédent. Position 1 = tout en haut de Google, donc plus le chiffre est petit, mieux c'est.</p>
-  <div class="card"><canvas id="posChart"></canvas></div>
   <table>
     <thead><tr><th>Mot-clé</th><th>Intention</th><th class="num">Position</th><th class="num">Évolution</th><th class="num">Aperçu IA</th><th>En tête aujourd'hui</th></tr></thead>
     <tbody>${serp.map((s) => {
@@ -1104,40 +1062,30 @@ function renderHtml(data) {
       return `<tr><td>${esc(s.keyword)}</td><td>${esc(s.intent)}</td><td class="num pos">${posCell}</td><td class="num ${mv.cls}">${mv.txt}</td><td class="num">${aioCell}</td><td style="color:var(--gris)">${esc(s.leader || "")}</td></tr>`
     }).join("")}</tbody>
   </table>
-  <p class="note">La colonne « Évolution » apparaît dès le 2ᵉ rapport : ce mois pose la référence pour les mots-clés qui viennent d'être ajoutés. La colonne « Aperçu IA » indique si Google affiche un résumé rédigé par son intelligence artificielle au-dessus des résultats, et si le château y est cité comme source. Les mots-clés notés « Blog » sont les recherches que visent vos articles : ce sont elles qui déclenchent presque toujours un aperçu IA, alors que vos recherches commerciales et locales en déclenchent rarement. Le graphe ci-dessus ne trace que ces dernières, pour rester lisible.</p>
-
-  <h2>Visibilité globale sur Google</h2>
-  <p class="lead">Combien de mots-clés du site sont bien placés dans Google, et le trafic que ça rapporte, mois après mois.</p>
-  <div class="card"><canvas id="domChart"></canvas></div>
-  <p class="note">Les barres empilent vos mots-clés par qualité de position : <span style="color:#8B0000;font-weight:600">top 3</span> (première ligne de Google), <span style="color:#c0714e;font-weight:600">4 à 10</span> (reste de la page 1), <span style="color:#e2b48c;font-weight:600">11 à 20</span> (page 2). Plus la barre est haute et foncée, meilleure est la présence. La ligne dorée est le nombre de visiteurs mensuels estimés depuis Google.</p>
+  <p class="note">La colonne « Évolution » apparaît dès le 2ᵉ rapport : ce mois pose la référence pour les mots-clés qui viennent d'être ajoutés. La colonne « Aperçu IA » indique si Google affiche un résumé rédigé par son intelligence artificielle au-dessus des résultats, et si le château y est cité comme source. Les mots-clés notés « Blog » sont les recherches que visent vos articles : ce sont elles qui déclenchent presque toujours un aperçu IA, alors que vos recherches commerciales et locales en déclenchent rarement.</p>
 
   ${renderCompetitors(competitors)}
 
   ${renderGains(opportunities, competitors)}
 
-  <h2>Articles rédigés</h2>
-  <p class="lead">Le contenu publié pour le château, avec les mots-clés visés. Cliquez le titre pour lire l'article en ligne.</p>
-  <table>
+  <h2>Articles publiés ce mois-ci</h2>
+  <p class="lead">Le contenu mis en ligne pour le château en ${esc(monthLabel)}, avec les mots-clés visés. Cliquez le titre pour lire l'article.</p>
+  ${articlesMois.length ? `<table>
     <thead><tr><th>Article</th><th>Publié le</th><th>Thème</th><th>Mots-clés visés</th></tr></thead>
-    <tbody>${articles.map((a) => `<tr><td><a href="${esc(a.url)}" target="_blank" rel="noopener"><strong>${esc(a.title)}</strong></a></td><td style="white-space:nowrap">${esc(a.publishedAt)}</td><td>${esc(a.category)}</td><td>${a.keywords.map((k) => `<span class="tag">${esc(k)}</span>`).join("")}</td></tr>`).join("")}</tbody>
-  </table>
-  <p class="note">Les prochains contenus sont planifiés dans votre <a href="/rapport?doc=calendrier">calendrier éditorial SEO &rarr;</a> : quatre articles par mois, chacun visant une recherche précise de vos futurs clients.</p>
+    <tbody>${articlesMois.map((a) => `<tr><td><a href="${esc(a.url)}" target="_blank" rel="noopener"><strong>${esc(a.title)}</strong></a></td><td style="white-space:nowrap">${esc(a.publishedAt)}</td><td>${esc(a.category)}</td><td>${a.keywords.map((k) => `<span class="tag">${esc(k)}</span>`).join("")}</td></tr>`).join("")}</tbody>
+  </table>` : `<div class="card"><p style="margin:0;color:var(--gris)">Aucun article publié sur cette période.</p></div>`}
+  <p class="note">Votre blog compte désormais ${articles.length} article${articles.length > 1 ? "s" : ""} en ligne. Les prochains sont planifiés dans votre <a href="/rapport?doc=calendrier">calendrier éditorial SEO &rarr;</a> : quatre articles par mois, chacun visant une recherche précise de vos futurs clients.</p>
 
   <h2>Aperçus IA de Google</h2>
   <p class="lead">Depuis le 22 juillet 2026, Google affiche en France un résumé rédigé par son IA au-dessus des résultats classiques. Il répond directement à la question de l'internaute et cite quelques sites en source. Être cité dans cet encart, c'est occuper la place la plus visible de la page.</p>
-  <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
+  <div class="kpis" style="grid-template-columns:repeat(2,1fr)">
     <div class="kpi"><div class="l">Mots-clés avec aperçu IA</div><div class="v">${aioKw.length}<span style="font-size:15px;color:var(--gris)"> / ${serp.length}</span></div><div class="n">sur vos mots-clés suivis</div></div>
-    <div class="kpi"><div class="l">Château cité en source</div><div class="v">${aioCitedKw.length}</div><div class="n">${aioKw.length ? `sur ${aioKw.length} aperçu${aioKw.length > 1 ? "x" : ""} affiché${aioKw.length > 1 ? "s" : ""}` : "aucun aperçu ce mois-ci"}</div></div>
-    <div class="kpi"><div class="l">Sites cités à votre place</div><div class="v">${aioTopDomains.length}</div><div class="n">domaines distincts relevés</div></div>
+    <div class="kpi"><div class="l">Château cité en source</div><div class="v">${aioCitedKw.length}</div><div class="n">${aioKw.length ? `sur ${aioKw.length} aperçu${aioKw.length > 1 ? "s" : ""} affiché${aioKw.length > 1 ? "s" : ""}` : "aucun aperçu ce mois-ci"}</div></div>
   </div>
   ${aioKw.length ? `<table style="margin-top:16px">
     <thead><tr><th>Mot-clé déclenchant un aperçu</th><th class="num">Votre position</th><th class="num">Château cité</th><th>Sites cités dans l'aperçu</th></tr></thead>
     <tbody>${aioKw.map((s) => `<tr><td>${esc(s.keyword)}</td><td class="num pos">${s.position != null ? s.position : '<span style="color:var(--gris)">non classé</span>'}</td><td class="num">${s.aioCited ? '<span class="yes">oui</span>' : '<span class="no">non</span>'}</td><td style="color:var(--gris)">${s.aioRefs.length ? s.aioRefs.map((r) => esc(r.domain)).filter(Boolean).slice(0, 4).join(", ") : "sources non communiquées"}</td></tr>`).join("")}</tbody>
   </table>` : `<div class="card">Aucun aperçu IA relevé ce mois-ci sur vos mots-clés suivis. C'est cohérent : Google en affiche peu sur les recherches locales et commerciales, qui sont justement les vôtres. Le déploiement français se poursuit jusqu'au 23 septembre 2026, on surveille mois par mois.</div>`}
-  ${aioTopDomains.length ? `<table style="margin-top:18px">
-    <thead><tr><th>Sites qui occupent le plus souvent les aperçus IA</th><th class="num">Aperçus où ils sont cités</th></tr></thead>
-    <tbody>${aioTopDomains.map(([d, n]) => `<tr><td>${domMatch(d, DOMAIN) ? `<strong>${esc(d)}</strong> <span class="badge">vous</span>` : esc(d)}</td><td class="num">${n}</td></tr>`).join("")}</tbody>
-  </table>` : ""}
   <p class="note">Sur les recherches où un aperçu s'affiche, le nombre de clics vers les sites baisse nettement, y compris pour la première position. La parade n'est pas de monter d'un rang, c'est d'être la source que l'IA cite. C'est ce qui guide la façon dont vos articles sont désormais écrits : une question par titre, une réponse nette dessous, des chiffres et des détails que personne d'autre ne peut donner sur le château.</p>
 
   <h2>Visibilité dans les réponses IA</h2>
@@ -1157,34 +1105,19 @@ function renderHtml(data) {
   </table>
   <p class="note">Les réponses des IA varient d'un jour à l'autre : lisez ce bloc comme une tendance, pas comme une note figée.</p>
 
-  <h2>Netlinking</h2>
-  <p class="lead">Les autres sites qui pointent vers le château, un signal de confiance pour Google. Évolution sur les derniers mois et détail des principaux domaines.</p>
-  <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
-    <div class="kpi"><div class="l">Backlinks</div><div class="v">${fr(blNow.backlinks)}</div><div class="n">${deltaBadge(deltaBl)} vs mois dernier</div></div>
-    <div class="kpi"><div class="l">Domaines référents</div><div class="v">${fr(blNow.referringDomains)}</div><div class="n">${deltaBadge(deltaRd)} vs mois dernier</div></div>
-    <div class="kpi"><div class="l">Face aux voisins</div><div class="v">${rangLiens ? (rangLiens === 1 ? "1er" : rangLiens + "ᵉ") : "–"}<span style="font-size:15px;color:var(--gris)"> / ${competitors?.rows?.length ?? "–"}</span></div><div class="n">sur le nombre de sites référents</div></div>
-  </div>
-  <div class="card"><canvas id="blChart"></canvas></div>
-  ${refDomains.length ? `<table style="margin-top:16px">
-    <thead><tr><th>Principaux domaines référents</th><th class="num">Liens</th><th class="num">Autorité</th></tr></thead>
-    <tbody>${refDomains.slice(0, 10).map((r) => `<tr><td><a href="https://${esc(r.domain)}" target="_blank" rel="noopener nofollow">${esc(r.domain)}</a></td><td class="num">${fr(r.backlinks)}</td><td class="num">${r.rank}</td></tr>`).join("")}</tbody>
-  </table>
-  <p class="note">« Autorité » = score de popularité du domaine (0 à 1000) estimé par DataForSEO. Plus il est élevé, plus le lien pèse.</p>` : ""}
-
   <footer>
     ${archivesHtml}
     Rapport généré automatiquement pour le Château de la Huberdière, ${esc(monthLabel)}.<br>
-    Sources : Google (positions, aperçus IA et trafic estimé), profil Google Business, moteurs IA (ChatGPT, Gemini, Perplexity, Claude), DataForSEO pour le netlinking et la comparaison avec les châteaux voisins, et le blog du château.
+    Sources : Google (positions, aperçus IA et trafic estimé), profil Google Business, moteurs IA (ChatGPT, Gemini, Perplexity, Claude), DataForSEO pour la comparaison avec les châteaux voisins, et le blog du château.
   </footer>
 </div>
 
 <script>
 const HISTORY = ${JSON.stringify(history)};
-const KW = ${JSON.stringify(KEYWORDS.filter((k) => !k.blog).map((k) => k.keyword))};
-const BL = ${JSON.stringify(blSorted.slice(-8))};
-const palette = ["#8B0000","#B08D57","#5C4B3C","#2E7D32","#3b6ea5","#8B7355","#a0508b","#417d7a","#c06014","#6a7b53","#9c4f2f","#4a6b8a","#7d5a3c"];
-// Graphe 0 : recherches sur le nom du château. Barres plutôt que courbe : c'est un
-// volume mensuel, pas une mesure continue.
+// Seul graphe du rapport : les recherches sur le nom du château. Barres plutôt
+// que courbe, c'est un volume mensuel et non une mesure continue. Les autres
+// (positions, paliers de visibilité, netlinking) demandaient une lecture de
+// métier : axe inversé, paliers empilés, courbe qui monte toute seule.
 (function(){
   const B = ${JSON.stringify(brand?.serie ?? [])};
   if (!B.length) return;
@@ -1195,70 +1128,6 @@ const palette = ["#8B0000","#B08D57","#5C4B3C","#2E7D32","#3b6ea5","#8B7355","#a
       responsive: true,
       scales: { y: { beginAtZero: true, title: { display: true, text: "Recherches par mois" }, ticks: { precision: 0 } } },
       plugins: { legend: { display: false } }
-    }
-  });
-})();
-// Graphe 1 : position par mot-clé (mois avec données de position).
-(function(){
-  const POS = HISTORY.filter(h => h.positions);
-  const labels = POS.map(h => h.monthLabel || h.month);
-  const datasets = KW.map((kw, i) => ({
-    label: kw,
-    data: POS.map(h => (h.positions[kw] != null) ? h.positions[kw] : null),
-    borderColor: palette[i % palette.length], backgroundColor: palette[i % palette.length],
-    spanGaps: true, tension: .3, borderWidth: 2, pointRadius: 3,
-  }));
-  new Chart(document.getElementById("posChart"), {
-    type: "line", data: { labels, datasets },
-    options: {
-      responsive: true, interaction: { mode: "nearest", intersect: false },
-      scales: { y: { reverse: true, min: 1, suggestedMax: 100, title: { display: true, text: "Position Google (1 = en haut)" }, ticks: { precision: 0 } } },
-      plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { family: "Montserrat" } } } }
-    }
-  });
-})();
-// Graphe 2 : visibilité globale, barres empilées par palier + trafic estimé.
-(function(){
-  const DOM = HISTORY.filter(h => h.domain);
-  if (!DOM.length) { document.getElementById("domChart").closest(".card").style.display = "none"; return; }
-  const labels = DOM.map(h => h.monthLabel || h.month);
-  const t3 = DOM.map(h => h.domain.top3);
-  const t410 = DOM.map(h => Math.max(0, h.domain.top10 - h.domain.top3));
-  const t1120 = DOM.map(h => Math.max(0, h.domain.top20 - h.domain.top10));
-  new Chart(document.getElementById("domChart"), {
-    data: { labels, datasets: [
-      { type: "bar", label: "Top 3", data: t3, backgroundColor: "#8B0000", stack: "kw", yAxisID: "y", order: 3 },
-      { type: "bar", label: "Positions 4 à 10", data: t410, backgroundColor: "#c0714e", stack: "kw", yAxisID: "y", order: 3 },
-      { type: "bar", label: "Positions 11 à 20", data: t1120, backgroundColor: "#e2b48c", stack: "kw", yAxisID: "y", order: 3 },
-      { type: "line", label: "Visiteurs/mois estimés", data: DOM.map(h => h.domain.etv), borderColor: "#B08D57", backgroundColor: "#B08D57", yAxisID: "y1", tension: .3, borderWidth: 2, pointRadius: 3, order: 1 },
-    ] },
-    options: {
-      responsive: true,
-      scales: {
-        y: { stacked: true, position: "left", beginAtZero: true, title: { display: true, text: "Mots-clés bien placés" }, ticks: { precision: 0 } },
-        y1: { position: "right", beginAtZero: true, grid: { drawOnChartArea: false }, title: { display: true, text: "Visiteurs/mois estimés" } },
-      },
-      plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { family: "Montserrat" } } } }
-    }
-  });
-})();
-// Graphe 3 : tendance du netlinking.
-(function(){
-  const el = document.getElementById("blChart");
-  if (!BL.length) { el.closest(".card").style.display = "none"; return; }
-  const labels = BL.map(h => { const [y,m] = h.ym.split("-"); return new Date(Date.UTC(+y, +m-1, 15)).toLocaleDateString("fr-FR",{month:"short",year:"2-digit",timeZone:"UTC"}); });
-  new Chart(el, {
-    data: { labels, datasets: [
-      { type: "bar", label: "Backlinks", data: BL.map(h => h.backlinks), backgroundColor: "#8B0000", yAxisID: "y" },
-      { type: "line", label: "Domaines référents", data: BL.map(h => h.referringDomains), borderColor: "#B08D57", backgroundColor: "#B08D57", yAxisID: "y1", tension: .3, borderWidth: 2, pointRadius: 3 },
-    ] },
-    options: {
-      responsive: true,
-      scales: {
-        y: { position: "left", beginAtZero: true, title: { display: true, text: "Backlinks" } },
-        y1: { position: "right", beginAtZero: true, grid: { drawOnChartArea: false }, title: { display: true, text: "Domaines référents" } },
-      },
-      plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { family: "Montserrat" } } } }
     }
   });
 })();
@@ -1275,16 +1144,18 @@ function bestKeyword(serp) {
 }
 
 // Phrase de synthèse « faits marquants », construite à partir des données.
-function buildExec({ month, serp, articles, blNow, deltaBl, citedTotal, answeredTotal, gbp }) {
+function buildExec({ month, serp, articlesNew, citedTotal, answeredTotal, gbp, leads }) {
   const bits = []
   const best = bestKeyword(serp)
   if (best) bits.push(`meilleure position <strong>#${best.position}</strong> sur « ${esc(best.keyword)} »`)
-  bits.push(`<strong>${articles.length}</strong> article${articles.length > 1 ? "s" : ""} en ligne`)
-  if (deltaBl != null && deltaBl !== 0) bits.push(`<strong>${deltaBl > 0 ? "+" : ""}${fr(deltaBl)}</strong> backlink${Math.abs(deltaBl) > 1 ? "s" : ""} sur le dernier mois`)
-  else bits.push(`<strong>${fr(blNow.backlinks)}</strong> backlinks`)
+  bits.push(`<strong>${articlesNew}</strong> article${articlesNew > 1 ? "s" : ""} publié${articlesNew > 1 ? "s" : ""}`)
+  if (leads?.total) bits.push(`<strong>${leads.total}</strong> demande${leads.total > 1 ? "s" : ""} reçue${leads.total > 1 ? "s" : ""}`)
   bits.push(`cité <strong>${citedTotal}/${answeredTotal}</strong> fois par les IA`)
   const aioN = serp.filter((s) => s.aio).length
-  if (aioN) bits.push(`aperçu IA de Google sur <strong>${aioN}</strong> mot${aioN > 1 ? "s" : ""}-clé${aioN > 1 ? "s" : ""} suivi${aioN > 1 ? "s" : ""}, château cité dans <strong>${serp.filter((s) => s.aioCited).length}</strong>`)
+  if (aioN) {
+    const cites = serp.filter((s) => s.aioCited).length
+    bits.push(`aperçu IA de Google sur <strong>${aioN}</strong> mot${aioN > 1 ? "s" : ""}-clé${aioN > 1 ? "s" : ""} suivi${aioN > 1 ? "s" : ""}, ${cites > 0 ? `château cité dans <strong>${cites}</strong> d'entre eux` : "château pas encore cité comme source"}`)
+  }
   if (gbp?.note != null) bits.push(`note Google <strong>${String(gbp.note).replace(".", ",")}</strong>`)
   return `Ce mois-ci : ${bits.join(", ")}.`
 }
@@ -1301,8 +1172,11 @@ export async function generateReport(prevHistory = [], month = null) {
   const ym = month || `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`
   const monthLabelShort = monthShort(ym)
 
-  const [serp, backlinks, refDomains, blHistory, gbp, llm, domainHistory, leads, traffic, brand, competitors] = await Promise.all([
-    pullSerp(), pullBacklinks(), pullReferringDomains(), pullBacklinksHistory(), pullGbp(), pullLlm(), pullDomainHistory(), pullLeads(ym), pullUmami(ym), pullBrandVolume(), pullCompetitors(),
+  // `pullBacklinks` reste appelé sans rien afficher : il entretient la série
+  // backlinks/domaines de l'historique, seul moyen de rouvrir le sujet plus tard
+  // si une vraie acquisition de liens démarre. Un appel, aucun rendu.
+  const [serp, backlinks, gbp, llm, domainHistory, leads, traffic, brand, competitors] = await Promise.all([
+    pullSerp(), pullBacklinks(), pullGbp(), pullLlm(), pullDomainHistory(), pullLeads(ym), pullUmami(ym), pullBrandVolume(), pullCompetitors(),
   ])
   // Borne de publication : aujourd'hui pour le mois courant, fin de mois pour un
   // rapport rétroactif. Évite de lister un article encore à venir (lien 404).
@@ -1340,13 +1214,8 @@ export async function generateReport(prevHistory = [], month = null) {
   byMonth.set(ym, cur)
   const history = [...byMonth.values()].sort((a, b) => a.month.localeCompare(b.month))
 
-  const blSorted = [...blHistory].sort((a, b) => a.ym.localeCompare(b.ym))
-  const blNow = blSorted[blSorted.length - 1] ?? { backlinks: backlinks.backlinks, referringDomains: backlinks.referringDomains }
-  const blPrev = blSorted[blSorted.length - 2]
-  const deltaBl = blPrev ? blNow.backlinks - blPrev.backlinks : null
-
-  const exec = buildExec({ month: ym, serp, articles, blNow, deltaBl, citedTotal, answeredTotal, gbp })
-  const html = renderHtml({ month: ym, serp, backlinks, refDomains, blHistory, gbp, llm, articles, history, exec, leads, traffic, brand, competitors })
+  const exec = buildExec({ month: ym, serp, articlesNew, citedTotal, answeredTotal, gbp, leads })
+  const html = renderHtml({ month: ym, serp, gbp, llm, articles, history, exec, leads, traffic, brand, competitors })
 
   const summary = {
     month: ym,
@@ -1360,7 +1229,7 @@ export async function generateReport(prevHistory = [], month = null) {
     aioCited: serp.filter((s) => s.aioCited).length,
     marque: brand?.serie[brand.serie.length - 1]?.volume ?? null,
     marqueAnPasse: brand && brand.serie.length >= 12 ? brand.serie[0].volume : null,
-    backlinks: blNow.backlinks,
+    backlinks: backlinks.backlinks,
     gbpNote: gbp?.note ?? null,
     demandes: leads?.total ?? null,
     demandesChatgpt: leads?.chatgpt ?? 0,
