@@ -270,12 +270,19 @@ export async function gscToken() {
  * Agrège en mois les lignes journalières de la Search Console. Exporté pour être
  * testable hors ligne : c'est ici que se joue la complétude d'un mois, donc la
  * différence entre une barre pleine et une barre en clair.
+ *
+ * Un mois est amputé des DEUX côtés. À la fin, parce que Google consolide avec
+ * deux ou trois jours de retard. Au début, parce que la mesure n'existe pas avant
+ * la vérification de la propriété (25/06/2026 ici) : juin ne porte que six jours
+ * et vaudrait le quart de juillet, ce qui se lirait comme une explosion.
  */
 export function aggregateGscMonths(rows, cutoff) {
   const parMois = new Map()
+  let premierJour = null
   for (const row of rows ?? []) {
     const jour = row?.keys?.[0]
     if (!jour) continue
+    if (!premierJour || jour < premierJour) premierJour = jour
     const ym = jour.slice(0, 7)
     const e = parMois.get(ym) ?? { impressions: 0, clics: 0 }
     e.impressions += row.impressions ?? 0
@@ -284,9 +291,7 @@ export function aggregateGscMonths(rows, cutoff) {
   }
   return [...parMois.entries()].sort((a, b) => a[0].localeCompare(b[0])).map(([ym, e]) => ({
     ym, label: monthShort(ym), volume: Math.round(e.impressions), clics: e.clics,
-    // Un mois n'est complet que si Google a consolidé jusqu'à son dernier jour.
-    // Sinon la barre est tronquée et ferait croire à une chute.
-    complet: monthEndYMD(ym) <= cutoff,
+    complet: monthEndYMD(ym) <= cutoff && `${ym}-01` >= premierJour,
   }))
 }
 
