@@ -13,6 +13,9 @@ const HTML_PATH = "rapport/index.html"
 // rapport déjà envoyé obligeait à retirer les données : le rapport d'août se serait
 // rempli de positions de septembre. Un mois = un instantané, figé le jour de l'envoi.
 const snapshotPath = (ym) => `rapport/m/${ym}.data.json`
+// Ces chemins sont RÉÉCRITS (index.html chaque mois, un mois donné lors d'un rejeu).
+// Le CDN de Vercel Blob garde un objet écrasé 30 jours par défaut : sans ce plafond
+// court, une correction publiée reste invisible pendant des semaines.
 // Domaine basculé sur Vercel (6/07) : le rapport est servi sur le domaine final,
 // protégé par mot de passe (cf. src/pages/rapport.js).
 const REPORT_URL = "https://www.chateaudelahuberdiere.com/rapport"
@@ -101,13 +104,13 @@ export async function GET({ request, url }) {
         try {
           const html = renderFromSnapshot(await loadBlobJson(snapshotPath(ym)))
           await put(`rapport/m/${ym}.html`, html, {
-            access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "text/html; charset=utf-8",
+            access: "public", addRandomSuffix: false, allowOverwrite: true, cacheControlMaxAge: 300, contentType: "text/html; charset=utf-8",
           })
           // `rapport/index.html` est la copie « dernier rapport » : seul le mois le
           // plus récent a le droit de l'écraser.
           if (ym === dernier) {
             await put(HTML_PATH, html, {
-              access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "text/html; charset=utf-8",
+              access: "public", addRandomSuffix: false, allowOverwrite: true, cacheControlMaxAge: 300, contentType: "text/html; charset=utf-8",
             })
           }
           faits.push(ym)
@@ -177,19 +180,19 @@ export async function GET({ request, url }) {
     }
 
     await put(HISTORY_PATH, JSON.stringify(history, null, 2), {
-      access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json",
+      access: "public", addRandomSuffix: false, allowOverwrite: true, cacheControlMaxAge: 300, contentType: "application/json",
     })
     // Données brutes du mois, figées : permettent de rejouer la mise en page plus
     // tard sans redemander les chiffres, donc sans réécrire l'histoire.
     await put(snapshotPath(ym), JSON.stringify(snapshot), {
-      access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json",
+      access: "public", addRandomSuffix: false, allowOverwrite: true, cacheControlMaxAge: 300, contentType: "application/json",
     })
     // Instantané mensuel permanent (archives) + copie « dernier rapport ».
     await put(`rapport/m/${ym}.html`, html, {
-      access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "text/html; charset=utf-8",
+      access: "public", addRandomSuffix: false, allowOverwrite: true, cacheControlMaxAge: 300, contentType: "text/html; charset=utf-8",
     })
     const blob = await put(HTML_PATH, html, {
-      access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "text/html; charset=utf-8",
+      access: "public", addRandomSuffix: false, allowOverwrite: true, cacheControlMaxAge: 300, contentType: "text/html; charset=utf-8",
     })
 
     return new Response(JSON.stringify({ ok: true, summary, blob: blob.url, emailed }), {
