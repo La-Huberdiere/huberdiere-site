@@ -221,6 +221,102 @@ async function pullSerp() {
  * accentuée sont deux entrées distinctes chez Google Ads, mais un seul et même
  * geste chez l'internaute.
  */
+// ── Notoriété : Search Console d'abord, Keyword Planner en repli ──────────
+// Keyword Planner est un modèle arrondi par paliers fixes ; la Search Console
+// compte des impressions RÉELLES. Sur une requête de marque où le château sort
+// premier, une impression vaut une recherche : c'est le même indicateur, mesuré
+// au lieu d'être estimé. D'où la bascule dès que la clé est posée.
+const GSC_SITE = process.env.GSC_SITE || "sc-domain:chateaudelahuberdiere.com"
+// Toutes les variantes de marque en une seule regex. « huberdi » s'arrête avant
+// l'accent, donc attrape « huberdière » comme « huberdiere », seul ou accompagné.
+const GSC_BRAND_REGEX = process.env.GSC_BRAND_REGEX || "huberdi"
+// Les deux ou trois derniers jours ne sont pas encore consolidés côté Google.
+const GSC_LAG_DAYS = 3
+
+const b64url = (b) => Buffer.from(b).toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "")
+
+/**
+ * Jeton d'accès depuis la clé du compte de service. JWT RS256 signé à la main
+ * plutôt que le paquet `googleapis` : une dépendance de 50 Mo dans une fonction
+ * serverless pour un seul appel, ça ne se justifie pas.
+ * `GSC_SERVICE_ACCOUNT_KEY` accepte le JSON brut ou sa version base64.
+ */
+export async function gscToken() {
+  const raw = process.env.GSC_SERVICE_ACCOUNT_KEY
+  if (!raw) return null
+  const txt = raw.trim().startsWith("{") ? raw : Buffer.from(raw, "base64").toString("utf-8")
+  const key = JSON.parse(txt)
+  if (!key.client_email || !key.private_key) throw new Error("GSC_SERVICE_ACCOUNT_KEY sans client_email/private_key")
+  const now = Math.floor(Date.now() / 1000)
+  const head = b64url(JSON.stringify({ alg: "RS256", typ: "JWT" }))
+  const body = b64url(JSON.stringify({
+    iss: key.client_email, scope: "https://www.googleapis.com/auth/webmasters.readonly",
+    aud: "https://oauth2.googleapis.com/token", iat: now, exp: now + 3600,
+  }))
+  const { createSign } = await import("node:crypto")
+  const sig = createSign("RSA-SHA256").update(`${head}.${body}`).sign(key.private_key)
+  const r = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST", headers: { "content-type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
+      assertion: `${head}.${body}.${b64url(sig)}`,
+    }),
+  })
+  if (!r.ok) throw new Error(`OAuth GSC ${r.status} : ${(await r.text()).slice(0, 200)}`)
+  return (await r.json()).access_token
+}
+
+/**
+ * Agrège en mois les lignes journalières de la Search Console. Exporté pour être
+ * testable hors ligne : c'est ici que se joue la complétude d'un mois, donc la
+ * différence entre une barre pleine et une barre en clair.
+ */
+export function aggregateGscMonths(rows, cutoff) {
+  const parMois = new Map()
+  for (const row of rows ?? []) {
+    const jour = row?.keys?.[0]
+    if (!jour) continue
+    const ym = jour.slice(0, 7)
+    const e = parMois.get(ym) ?? { impressions: 0, clics: 0 }
+    e.impressions += row.impressions ?? 0
+    e.clics += row.clicks ?? 0
+    parMois.set(ym, e)
+  }
+  return [...parMois.entries()].sort((a, b) => a[0].localeCompare(b[0])).map(([ym, e]) => ({
+    ym, label: monthShort(ym), volume: Math.round(e.impressions), clics: e.clics,
+    // Un mois n'est complet que si Google a consolidé jusqu'à son dernier jour.
+    // Sinon la barre est tronquée et ferait croire à une chute.
+    complet: monthEndYMD(ym) <= cutoff,
+  }))
+}
+
+async function pullBrandGsc(ym) {
+  const token = await gscToken()
+  if (!token) return null
+  const lag = new Date(Date.now() - GSC_LAG_DAYS * 86400000).toISOString().slice(0, 10)
+  const finMois = monthEndYMD(ym)
+  const cutoff = finMois < lag ? finMois : lag
+  // 13 mois de recul : GSC ne remonte de toute façon pas avant la vérification de
+  // la propriété (25/06/2026), la fenêtre se remplira d'elle-même.
+  const [y, m] = ym.split("-").map(Number)
+  const debut = new Date(Date.UTC(y, m - 13, 1)).toISOString().slice(0, 10)
+  const url = `https://searchconsole.googleapis.com/webmasters/v3/sites/${encodeURIComponent(GSC_SITE)}/searchAnalytics/query`
+  const r = await fetch(url, {
+    method: "POST",
+    headers: { authorization: `Bearer ${token}`, "content-type": "application/json" },
+    body: JSON.stringify({
+      startDate: debut, endDate: cutoff, dimensions: ["date"], rowLimit: 1000, type: "web",
+      dimensionFilterGroups: [{ filters: [{ dimension: "query", operator: "includingRegex", expression: GSC_BRAND_REGEX }] }],
+    }),
+  })
+  if (!r.ok) throw new Error(`GSC ${r.status} : ${(await r.text()).slice(0, 200)}`)
+  const serie = aggregateGscMonths((await r.json()).rows, cutoff).slice(-13)
+  if (!serie.length) return null
+  const complets = serie.filter((p) => p.complet)
+  const moyenne = complets.length ? Math.round(complets.reduce((s, p) => s + p.volume, 0) / complets.length) : 0
+  return { source: "gsc", moyenne, serie }
+}
+
 async function pullBrandVolume() {
   try {
     const result = await dfs("/keywords_data/google_ads/search_volume/live", {
@@ -243,11 +339,33 @@ async function pullBrandVolume() {
       }
     }
     const serie = [...parMois.entries()].sort((a, b) => a[0].localeCompare(b[0])).slice(-12)
-    return { moyenne, serie: serie.map(([ym, v]) => ({ ym, label: monthShort(ym), volume: v })) }
+    return {
+      source: "ads", moyenne,
+      // Le point le plus récent de Keyword Planner est la sortie de modèle la plus
+      // fraîche : il saute parfois plusieurs paliers sans qu'il se soit rien passé.
+      // Il est donc tracé mais jamais annoncé, au même titre qu'un mois inachevé.
+      serie: serie.map(([ym, v], i) => ({ ym, label: monthShort(ym), volume: v, complet: i < serie.length - 1 })),
+    }
   } catch (e) {
     console.error("[rapport] pullBrandVolume KO:", e.message)
     return null
   }
+}
+
+/**
+ * Notoriété : la Search Console si sa clé est posée, Keyword Planner sinon. Le
+ * repli n'est pas décoratif — le cron tourne tous les mois et ne doit pas perdre
+ * un bloc du rapport parce qu'une clé a expiré ou n'est pas encore en place.
+ */
+async function pullBrand(ym) {
+  try {
+    const gsc = await pullBrandGsc(ym)
+    if (gsc) return gsc
+    console.log("[rapport] GSC non configurée, notoriété via Keyword Planner.")
+  } catch (e) {
+    console.error("[rapport] GSC KO, repli Keyword Planner :", e.message)
+  }
+  return pullBrandVolume()
 }
 
 async function pullBacklinks() {
@@ -952,6 +1070,12 @@ function renderHtml(data) {
   const articlesMois = articles.filter((a) => (a.publishedAt || "").slice(0, 7) === month)
   // Le tableau des positions ne détaille que les recherches où le château apparaît.
   // Les autres disaient toutes la même chose sur onze lignes : « non classé ».
+  // Notoriété. `complet` n'existe pas dans les instantanés d'avant la Search
+  // Console : on y retombe sur l'ancienne règle, le dernier point n'est pas annoncé.
+  const brandPts = (brand?.serie ?? []).map((p, i, a) => ({ ...p, complet: p.complet ?? i < a.length - 1 }))
+  const brandGsc = (brand?.source ?? "ads") === "gsc"
+  const brandConfirme = [...brandPts].reverse().find((p) => p.complet) ?? null
+  const brandAnPasse = brandPts.length >= 12 ? brandPts[0] : null
   const serpClasses = serp.filter((s) => s.position != null).sort((a, b) => a.position - b.position)
   const serpAbsents = serp.filter((s) => s.position == null)
   const aioKw = serp.filter((s) => s.aio)
@@ -1041,15 +1165,19 @@ function renderHtml(data) {
 
   ${renderTraffic(traffic, monthLabel)}
 
-  ${brand && brand.serie.length ? `<h2>Notoriété : on cherche le château par son nom</h2>
-  <p class="lead">Nombre de recherches Google portant sur « Château de la Huberdière » et ses variantes, mois par mois. C'est la trace la plus directe de votre notoriété, et voici pourquoi elle compte plus qu'avant.</p>
+  ${brandPts.length ? `<h2>Notoriété : on cherche le château par son nom</h2>
+  <p class="lead">${brandGsc
+    ? "Nombre de fois où quelqu'un a cherché le nom du château sur Google et vu votre site dans les résultats, mois par mois. Relevé dans votre Search Console."
+    : "Nombre de recherches Google portant sur « Château de la Huberdière » et ses variantes, mois par mois."} C'est la trace la plus directe de votre notoriété, et voici pourquoi elle compte plus qu'avant.</p>
   <div class="card"><canvas id="brandChart"></canvas></div>
-  ${brand.serie.length >= 2 ? `<div class="kpis" style="grid-template-columns:repeat(2,1fr)">
-    <div class="kpi"><div class="l">Dernier mois confirmé</div><div class="v">${fr(brand.serie[brand.serie.length - 2].volume)}</div><div class="n">${esc(brand.serie[brand.serie.length - 2].label)}, sur le nom du château</div></div>
-    <div class="kpi"><div class="l">Il y a un an</div><div class="v">${brand.serie.length >= 12 ? fr(brand.serie[0].volume) : "–"}</div><div class="n">${brand.serie.length >= 12 ? esc(brand.serie[0].label) : "historique incomplet"}</div></div>
+  ${brandConfirme ? `<div class="kpis" style="grid-template-columns:repeat(2,1fr)">
+    <div class="kpi"><div class="l">Dernier mois complet</div><div class="v">${fr(brandConfirme.volume)}</div><div class="n">${esc(brandConfirme.label)}, sur le nom du château</div></div>
+    <div class="kpi"><div class="l">Il y a un an</div><div class="v">${brandAnPasse ? fr(brandAnPasse.volume) : "–"}</div><div class="n">${brandAnPasse ? esc(brandAnPasse.label) : "historique encore court"}</div></div>
   </div>` : ""}
   <p class="note">Depuis que Google répond directement dans son aperçu IA, une partie des internautes ne clique plus le lien : ils lisent la réponse, retiennent le nom du château, et reviennent quelques jours plus tard en le tapant dans Google ou en allant droit sur le site. Ce trajet-là n'apparaît nulle part dans les statistiques de trafic. En revanche il se voit ici : plus le nom est cherché, plus le château a été vu et retenu, quel que soit l'endroit où il a été vu. Une courbe qui monte pendant que le trafic depuis les résultats de recherche stagne n'est pas une contradiction, c'est la signature de ce nouveau fonctionnement.</p>
-  <p class="note">Ces volumes sont des estimations de l'outil publicitaire de Google, arrondies par paliers fixes (320, 390, 480, 590, 720, 880, 1 000…), et publiées avec un mois de décalage : le dernier mois du graphique précède déjà ce rapport. Sa dernière barre est tracée en clair parce qu'un mois tout juste publié saute parfois plusieurs paliers d'un coup, sans que rien ne l'ait justifié ; nous ne l'annonçons donc qu'une fois le mois suivant arrivé. Les chiffres ci-dessus s'arrêtent au dernier mois confirmé, et c'est la pente sur plusieurs mois qui raconte l'essentiel.</p>` : ""}
+  <p class="note">${brandGsc
+    ? "Ces chiffres sont comptés par Google dans votre Search Console, pas estimés. Google consolide ses données avec deux à trois jours de retard : la dernière barre du graphique est donc tracée en clair tant que son mois n'est pas terminé, et les chiffres ci-dessus s'arrêtent au dernier mois complet."
+    : "Ces volumes sont des estimations de l'outil publicitaire de Google, arrondies par paliers fixes (320, 390, 480, 590, 720, 880, 1 000…) et publiées avec un mois de décalage. La dernière barre est tracée en clair parce qu'un mois tout juste publié saute parfois plusieurs paliers d'un coup, sans que rien ne l'ait justifié : nous ne l'annonçons qu'une fois le mois suivant arrivé."} C'est la pente sur plusieurs mois qui raconte l'essentiel, jamais le dernier point pris seul.</p>` : ""}
 
   <h2>Où vous sortez dans Google</h2>
   <p class="lead">Les recherches suivies sur lesquelles le château apparaît, et son mouvement depuis le rapport précédent. Position 1 = tout en haut : plus le chiffre est petit, mieux c'est.</p>
@@ -1120,7 +1248,7 @@ const HISTORY = ${JSON.stringify(history)};
 // (positions, paliers de visibilité, netlinking) demandaient une lecture de
 // métier : axe inversé, paliers empilés, courbe qui monte toute seule.
 (function(){
-  const B = ${JSON.stringify(brand?.serie ?? [])};
+  const B = ${JSON.stringify(brandPts)};
   if (!B.length) return;
   new Chart(document.getElementById("brandChart"), {
     type: "bar",
@@ -1128,7 +1256,7 @@ const HISTORY = ${JSON.stringify(history)};
       label: "Recherches sur le nom du château",
       data: B.map(p => p.volume),
       // Dernière barre en clair : mois publié à l'instant, pas encore confirmé.
-      backgroundColor: B.map((p, i) => i === B.length - 1 ? "#d9b3b3" : "#8B0000"),
+      backgroundColor: B.map(p => p.complet ? "#8B0000" : "#d9b3b3"),
       borderRadius: 0,
     }] },
     options: {
@@ -1136,7 +1264,7 @@ const HISTORY = ${JSON.stringify(history)};
       scales: { y: { beginAtZero: true, title: { display: true, text: "Recherches par mois" }, ticks: { precision: 0 } } },
       plugins: {
         legend: { display: false },
-        tooltip: { callbacks: { afterLabel: (c) => c.dataIndex === B.length - 1 ? "mois non confirmé" : "" } },
+        tooltip: { callbacks: { afterLabel: (c) => B[c.dataIndex].complet ? "" : "mois incomplet, non annoncé" } },
       }
     }
   });
@@ -1186,7 +1314,7 @@ export async function generateReport(prevHistory = [], month = null) {
   // backlinks/domaines de l'historique, seul moyen de rouvrir le sujet plus tard
   // si une vraie acquisition de liens démarre. Un appel, aucun rendu.
   const [serp, backlinks, gbp, llm, domainHistory, leads, traffic, brand, competitors] = await Promise.all([
-    pullSerp(), pullBacklinks(), pullGbp(), pullLlm(), pullDomainHistory(), pullLeads(ym), pullUmami(ym), pullBrandVolume(), pullCompetitors(),
+    pullSerp(), pullBacklinks(), pullGbp(), pullLlm(), pullDomainHistory(), pullLeads(ym), pullUmami(ym), pullBrand(ym), pullCompetitors(),
   ])
   // Borne de publication : aujourd'hui pour le mois courant, fin de mois pour un
   // rapport rétroactif. Évite de lister un article encore à venir (lien 404).
