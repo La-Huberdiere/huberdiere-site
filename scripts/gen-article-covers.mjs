@@ -35,6 +35,7 @@ const COVERS = [
   { slug: "seminaire-direction-chateau-privatise", dir: PUBLIC, photo: "images/bibliotheque/seminaire/seminaire-01.jpg" },
   { slug: "week-end-romantique-pres-amboise", dir: PUBLIC, photo: "images/bibliotheque/chambres/chambre-bouquet-01.jpg" },
   { slug: "week-end-entre-amis-chateau", dir: PUBLIC, photo: "images/bibliotheque/restauration/restauration-03.jpg" },
+  { slug: "chateau-pour-mariage-val-de-loire", dir: PUBLIC, photo: "images/bibliotheque/mariage/mariage-03.jpg" },
 ];
 
 // Dégradé très doux, sans aucun texte (rien à rogner quel que soit le recadrage).
