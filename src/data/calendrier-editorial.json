@@ -13,7 +13,7 @@
   "piliers": [
     { "slug": "organiser-mariage-au-chateau", "titre": "Organiser un mariage au château", "cluster": "Mariage" },
     { "slug": "organiser-seminaire-au-chateau", "titre": "Organiser un séminaire au château", "cluster": "Séminaire" },
-    { "slug": "chambres-hotes-amboise-chateau", "titre": "L'esprit chambres d'hôtes près d'Amboise", "cluster": "Séjour" },
+    { "slug": "chambres-hotes-amboise-chateau", "titre": "L'esprit maison d'hôtes près d'Amboise", "cluster": "Séjour" },
     { "slug": "louer-chateau-entre-amis-famille", "titre": "Louer le château entre amis et en famille", "cluster": "Famille" },
     { "slug": "organiser-retraite-yoga-chateau", "titre": "Organiser une retraite de yoga au château", "cluster": "Retraite" },
     { "slug": "visiter-chateaux-de-la-loire", "titre": "Visiter les châteaux de la Loire", "cluster": "Tourisme" }
