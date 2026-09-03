@@ -13,6 +13,24 @@
   ],
   "redirects": [
     {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "fr.chateaudelahuberdiere.com" }],
+      "destination": "https://www.chateaudelahuberdiere.com/",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "en.chateaudelahuberdiere.com" }],
+      "destination": "https://www.chateaudelahuberdiere.com/en",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "it.chateaudelahuberdiere.com" }],
+      "destination": "https://www.chateaudelahuberdiere.com/it",
+      "permanent": true
+    },
+    {
       "source": "/contact-9",
       "destination": "/contact",
       "permanent": true
