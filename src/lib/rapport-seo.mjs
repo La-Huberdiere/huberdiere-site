@@ -87,7 +87,7 @@ const LLM_COMPETITORS = [
   "Château de Noizay", "Château de la Bourdaisière", "Domaine de la Tortinière",
   "Château de Jallanges", "Château de Rochecotte", "Château de Nazelles",
   "Château des Ormeaux", "Château de Scalibert", "Le Clos d'Amboise",
-  "Le Relais d'Amboise",
+  "Le Relais d'Amboise", "Le Pavillon des Lys",
 ]
 // Une question par offre, pour couvrir toute l'activité (pas seulement le mariage).
 const LLM_PROMPTS = [
@@ -104,11 +104,14 @@ const COMPETITORS = [
   { domain: "chateaudepray.fr", label: "Château de Pray" },
   { domain: "chateaudeperreux.fr", label: "Château de Perreux" },
   { domain: "chateaudenoizay.com", label: "Château de Noizay" },
-  // Deux hôtels d'Amboise ajoutés à la demande du client (04/09). Choisis sur données :
-  // ce sont les seuls comparables de la liste, les Arpentis (4 mots-clés) et le Pavillon
-  // des Lys (14) ne pèsent rien en organique.
+  // Les cinq établissements d'Amboise cités par le client le 04/09. Poids organique très
+  // inégal (France, fr, mesuré le 04/09) : Le Clos 145 mots-clés, Le Relais 57, le
+  // Pavillon des Lys 14, Nazelles 5, les Arpentis 4. Le château est à 11.
   { domain: "leclosdamboise.com", label: "Le Clos d'Amboise" },
   { domain: "relaisdamboise.com", label: "Le Relais d'Amboise" },
+  { domain: "pavillondeslys.com", label: "Le Pavillon des Lys" },
+  { domain: "chateau-nazelles.com", label: "Château de Nazelles" },
+  { domain: "chateaudesarpentis.com", label: "Château des Arpentis" },
 ]
 
 // Écartés du tableau des recherches captées par les voisins : leur propre nom, et
@@ -1050,8 +1053,9 @@ export function renderCompetitors(cp) {
     const nom = r.isBrand ? `<strong>${esc(r.label)}</strong> <span class="badge">vous</span>` : esc(r.label)
     return `<tr><td>${nom}</td><td class="num">${fr(r.referringDomains)}</td><td class="num pos">${fr(r.top3)}</td><td class="num">${fr(r.top10)}</td><td class="num">${fr(r.top20)}</td><td class="num">${fr(r.etv)}</td></tr>`
   }
-  return `<h2>Face aux châteaux voisins</h2>
-  <p class="lead">Les trois châteaux-hôtels qui visent la même clientèle que vous autour d'Amboise, mesurés le même jour avec les mêmes outils.</p>
+  const voisins = cp.rows.length - 1
+  return `<h2>Face aux voisins</h2>
+  <p class="lead">Les ${fr(voisins)} châteaux et hôtels qui visent la même clientèle que vous autour d'Amboise, mesurés le même jour avec les mêmes outils.</p>
   <table>
     <thead><tr><th>Établissement</th><th class="num">Sites qui font un lien</th><th class="num">Mots-clés top 3</th><th class="num">Top 10</th><th class="num">Top 20</th><th class="num">Visiteurs Google / mois</th></tr></thead>
     <tbody>${ordre.map(ligne).join("")}</tbody>
