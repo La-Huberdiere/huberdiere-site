@@ -1,8 +1,11 @@
 /**
- * HORS SERVICE depuis la refonte du rapport (août 2026). Le rapport client est
- * généré par le cron Vercel `0 6 28-31 * *` → src/pages/api/cron/rapport.js →
- * src/lib/rapport-seo.mjs. C'est LÀ que vivent la liste des concurrents et tout le
- * reste. Ce fichier est figé à juillet 2026, ne rien y corriger : il ne sort nulle part.
+ * HORS SERVICE. Le rapport client est généré par le cron Vercel `0 6 28-31 * *` →
+ * src/pages/api/cron/rapport.js → src/lib/rapport-seo.mjs. C'est LÀ que vivent la liste
+ * des concurrents et tout le reste. Ce fichier est figé à juillet 2026, ne rien y corriger.
+ *
+ * Il était encore exécuté par .github/workflows/rapport-seo.yml, déclenché par tout push
+ * touchant reporting/ : il brûlait des crédits DataForSEO et publiait le rapport client sur
+ * GitHub Pages, en accès libre. Workflow supprimé le 04/09. Ne pas le recréer.
  *
  * Château de la Huberdière — Rapport SEO/GEO client, généré en HTML interactif.
  *
