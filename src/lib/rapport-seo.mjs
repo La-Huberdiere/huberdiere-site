@@ -87,6 +87,7 @@ const LLM_COMPETITORS = [
   "Château de Noizay", "Château de la Bourdaisière", "Domaine de la Tortinière",
   "Château de Jallanges", "Château de Rochecotte", "Château de Nazelles",
   "Château des Ormeaux", "Château de Scalibert", "Le Clos d'Amboise",
+  "Le Relais d'Amboise",
 ]
 // Une question par offre, pour couvrir toute l'activité (pas seulement le mariage).
 const LLM_PROMPTS = [
@@ -103,6 +104,11 @@ const COMPETITORS = [
   { domain: "chateaudepray.fr", label: "Château de Pray" },
   { domain: "chateaudeperreux.fr", label: "Château de Perreux" },
   { domain: "chateaudenoizay.com", label: "Château de Noizay" },
+  // Deux hôtels d'Amboise ajoutés à la demande du client (04/09). Choisis sur données :
+  // ce sont les seuls comparables de la liste, les Arpentis (4 mots-clés) et le Pavillon
+  // des Lys (14) ne pèsent rien en organique.
+  { domain: "leclosdamboise.com", label: "Le Clos d'Amboise" },
+  { domain: "relaisdamboise.com", label: "Le Relais d'Amboise" },
 ]
 
 // Écartés du tableau des recherches captées par les voisins : leur propre nom, et

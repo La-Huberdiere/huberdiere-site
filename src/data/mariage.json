@@ -65,6 +65,10 @@
         "value": "Week-end du vendredi au dimanche, de 4 000 € à 8 000 € selon la saison."
       },
       {
+        "label": "Coordination",
+        "value": "Forfait coordination du jour J : 2 500 €, en option."
+      },
+      {
         "label": "Boissons",
         "value": "Aucun droit de bouchon : vous apportez vos vins et champagnes."
       },
@@ -89,6 +93,25 @@
       {
         "title": "Un interlocuteur dédié",
         "text": "Lodovica apporte la chaleur de ses racines italiennes, Patrick veille à chaque détail logistique, du premier rendez-vous au lendemain de la fête."
+      }
+    ],
+    "activitiesHead": {
+      "eyebrow": "Coordination",
+      "title": "Le forfait coordination mariage",
+      "intro": "Prise en charge complète de l'organisation, du premier échange au lendemain de la fête. Forfait de 2 500 €, en option. Le travail d'un wedding planner, assuré par ceux qui vivent sur le domaine et en connaissent chaque recoin."
+    },
+    "activities": [
+      {
+        "title": "Conception et suivi",
+        "text": "Cinq visioconférences pour faire le point sur l'avancement, un groupe WhatsApp ouvert pour les échanges courants, et un planning écrit avec vous : celui du séjour, celui de la journée."
+      },
+      {
+        "title": "Les prestataires",
+        "text": "Nous vous proposons des professionnels que nous connaissons, prenons contact avec ceux que vous retenez, vérifions leurs contrats et assurons le suivi après l'événement."
+      },
+      {
+        "title": "Le jour J",
+        "text": "Réception et installation du matériel, petite décoration de table, timing, coordination des prestataires, transports et parking. La logistique de la journée ne vous revient pas."
       }
     ],
     "faqHead": {
@@ -118,7 +141,7 @@
       },
       {
         "q": "Proposez-vous un accompagnement pour l'organisation ?",
-        "a": "Un interlocuteur dédié vous suit du premier rendez-vous au lendemain de la fête, pour coordonner prestataires, traiteur et logistique."
+        "a": "Oui, à deux niveaux. Un interlocuteur dédié vous suit du premier rendez-vous au lendemain de la fête, compris dans la privatisation. Et si vous préférez déléguer l'organisation entière, notre forfait coordination mariage à 2 500 € prend le rôle du wedding planner : cinq visioconférences de suivi, la gestion des prestataires et la coordination complète du jour J."
       },
       {
         "q": "Le château est-il disponible toute l'année ?",
@@ -208,6 +231,10 @@
         "value": "Weekend from Friday to Sunday, from 4,000 € to 8,000 € depending on the season."
       },
       {
+        "label": "Coordination",
+        "value": "Day-of coordination package: 2,500 €, optional."
+      },
+      {
         "label": "Drinks",
         "value": "No corkage: you bring your own wines and champagnes."
       },
@@ -232,6 +259,25 @@
       {
         "title": "A dedicated contact",
         "text": "Lodovica brings the warmth of her Italian roots, Patrick sees to every logistical detail, from the first meeting to the day after the celebration."
+      }
+    ],
+    "activitiesHead": {
+      "eyebrow": "Coordination",
+      "title": "The wedding coordination package",
+      "intro": "Full charge of the planning, from the first exchange to the day after the celebration. A 2,500 € package, optional. The work of a wedding planner, done by the people who live on the estate and know every corner of it."
+    },
+    "activities": [
+      {
+        "title": "Planning and check-ins",
+        "text": "Five video calls to review where the project stands, a WhatsApp group kept open for day-to-day questions, and a schedule written with you: one for the stay, one for the day itself."
+      },
+      {
+        "title": "The suppliers",
+        "text": "We suggest professionals we know, contact the ones you choose, check their contracts and handle the follow-up after the event."
+      },
+      {
+        "title": "The day itself",
+        "text": "Deliveries and setup, table decoration, timing, supplier coordination, transport and parking. The logistics of the day are not yours to carry."
       }
     ],
     "faqHead": {
@@ -261,7 +307,7 @@
       },
       {
         "q": "Do you offer support with the planning?",
-        "a": "A dedicated contact follows you from the first meeting to the day after the celebration, coordinating suppliers, caterer and logistics."
+        "a": "Yes, on two levels. A dedicated contact follows you from the first meeting to the day after the celebration, included in the exclusive booking. And if you would rather hand over the whole organisation, our 2,500 € wedding coordination package takes on the wedding planner's role: five video calls, supplier management and full coordination on the day."
       },
       {
         "q": "Is the château available all year round?",
@@ -351,6 +397,10 @@
         "value": "Weekend dal venerdì alla domenica, da 4.000 € a 8.000 € a seconda della stagione."
       },
       {
+        "label": "Coordinamento",
+        "value": "Forfait coordinamento del giorno: 2.500 €, in opzione."
+      },
+      {
         "label": "Bevande",
         "value": "Nessun diritto di tappo: portate i vostri vini e champagne."
       },
@@ -375,6 +425,25 @@
       {
         "title": "Un referente dedicato",
         "text": "Lodovica porta il calore delle sue radici italiane, Patrick cura ogni dettaglio logistico, dal primo incontro al giorno dopo la festa."
+      }
+    ],
+    "activitiesHead": {
+      "eyebrow": "Coordinamento",
+      "title": "Il forfait coordinamento matrimonio",
+      "intro": "Presa in carico completa dell'organizzazione, dal primo scambio al giorno dopo la festa. Forfait di 2.500 €, in opzione. Il lavoro di un wedding planner, svolto da chi vive nella tenuta e ne conosce ogni angolo."
+    },
+    "activities": [
+      {
+        "title": "Progettazione e aggiornamenti",
+        "text": "Cinque videoconferenze per fare il punto sull'avanzamento, un gruppo WhatsApp aperto per gli scambi quotidiani, e un programma scritto insieme: quello del soggiorno e quello della giornata."
+      },
+      {
+        "title": "I fornitori",
+        "text": "Vi proponiamo professionisti che conosciamo, contattiamo quelli che scegliete, verifichiamo i contratti e seguiamo il dopo evento."
+      },
+      {
+        "title": "Il giorno del matrimonio",
+        "text": "Ricezione e allestimento del materiale, piccola decorazione della tavola, tempi, coordinamento dei fornitori, trasporti e parcheggio. La logistica della giornata non ricade su di voi."
       }
     ],
     "faqHead": {
@@ -404,7 +473,7 @@
       },
       {
         "q": "Offrite assistenza per l'organizzazione?",
-        "a": "Un referente dedicato vi segue dal primo incontro al giorno dopo la festa, per coordinare fornitori, catering e logistica."
+        "a": "Sì, su due livelli. Un referente dedicato vi segue dal primo incontro al giorno dopo la festa, incluso nell'affitto esclusivo. E se preferite delegare l'intera organizzazione, il nostro forfait coordinamento matrimonio da 2.500 € assume il ruolo del wedding planner: cinque videoconferenze, gestione dei fornitori e coordinamento completo del giorno."
       },
       {
         "q": "Il castello è disponibile tutto l'anno?",

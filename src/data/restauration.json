@@ -1,7 +1,7 @@
 {
   "fr": {
     "title": "Table d'hôtes et dîners au château en Touraine, Château de la Huberdière",
-    "description": "Le soir, une cuisine maison aux saveurs italiennes et tourangelles : planches à partager tous les soirs sauf le dimanche, et un dîner 100% italien le jeudi, sur réservation. Produits du potager et des producteurs de Touraine.",
+    "description": "Cuisine maison aux saveurs italiennes et tourangelles, servie le soir : planches à partager du 1er mai au 30 septembre, dîner italien le jeudi. Hors saison, sur réservation.",
     "hero": {
       "eyebrow": "Restauration · Table d'hôtes",
       "titleLine1": "À table",
@@ -9,14 +9,14 @@
       "lead": "Le soir venu, une cuisine maison préparée sur place avec les produits du potager et des producteurs de Touraine, servie en intérieur ou en extérieur, dans un cadre bucolique."
     },
     "intro": [
-      "La table de la Huberdière se vit le soir. Tous les soirs de la semaine sauf le dimanche, des planches à partager mettent à l'honneur fromages, charcuteries et légumes de la région, dans une ambiance simple et conviviale. Le service de restauration n'est pas proposé le midi.",
+      "La table de la Huberdière se vit le soir. Du 1er mai au 30 septembre, tous les soirs de la semaine sauf le dimanche, des planches à partager mettent à l'honneur fromages, charcuteries et légumes de la région, dans une ambiance simple et conviviale. Hors de cette période, la table ouvre sur réservation, à partir de six personnes. Le service de restauration n'est pas proposé le midi.",
       "Le jeudi, place à un dîner 100% italien : un menu fixe, dans l'esprit d'un repas de famille, à réserver à l'avance. Rien de gastronomique ni de guindé, juste la cuisine que Lodovica prépare comme à la maison."
     ],
     "cards": [
       {
         "num": "I",
         "title": "Les planches à partager",
-        "text": "Tous les soirs sauf le dimanche : fromages, charcuteries fines et légumes de la région, à partager en toute simplicité."
+        "text": "Du 1er mai au 30 septembre, tous les soirs sauf le dimanche : fromages, charcuteries fines et légumes de la région, à partager en toute simplicité."
       },
       {
         "num": "II",
@@ -40,7 +40,7 @@
     "stats": [
       {
         "big": "6 soirs / 7",
-        "lbl": "planches à partager"
+        "lbl": "planches à partager, de mai à septembre"
       },
       {
         "big": "Le jeudi",
@@ -53,12 +53,16 @@
     ],
     "brief": [
       {
+        "label": "Saison",
+        "value": "Table assurée tous les soirs du 1er mai au 30 septembre. Le reste de l'année, sur réservation, à partir de 6 personnes."
+      },
+      {
         "label": "Service",
         "value": "Le soir uniquement, sur réservation, réservé aux résidents du château."
       },
       {
         "label": "Planches",
-        "value": "Planches à partager tous les soirs, sauf le dimanche."
+        "value": "Fromages, charcuteries et légumes de la région à partager, tous les soirs sauf le dimanche."
       },
       {
         "label": "Dîner italien",
@@ -132,8 +136,12 @@
         "a": "Non, le service de restauration est proposé le soir uniquement. Le midi, vous profitez librement du parc et de ses espaces, en intérieur comme en extérieur."
       },
       {
+        "q": "La table est-elle ouverte toute l'année ?",
+        "a": "Du 1er mai au 30 septembre, oui, tous les soirs sauf le dimanche. Le reste de l'année, la table ouvre sur réservation à partir de six personnes : dites-le-nous au moment de réserver votre séjour, nous confirmons la date."
+      },
+      {
         "q": "Quels soirs propose-t-on les planches à partager ?",
-        "a": "Tous les soirs de la semaine sauf le dimanche."
+        "a": "Du 1er mai au 30 septembre, tous les soirs de la semaine sauf le dimanche. Le reste de l'année, sur réservation à partir de six personnes."
       },
       {
         "q": "Faut-il réserver le dîner italien du jeudi ?",
@@ -147,7 +155,7 @@
   },
   "en": {
     "title": "Table d'hôtes and dinners at the château in Touraine, Château de la Huberdière",
-    "description": "In the evening, home cooking with Italian and Touraine flavours: sharing boards every evening except Sunday, and an all-Italian dinner on Thursdays, by reservation. Produce from the kitchen garden and Touraine growers.",
+    "description": "Home cooking with Italian and Touraine flavours, served in the evening: sharing boards from 1 May to 30 September, an Italian dinner on Thursdays. Off season, by reservation.",
     "hero": {
       "eyebrow": "Dining · Table d'hôtes",
       "titleLine1": "At the table",
@@ -155,14 +163,14 @@
       "lead": "As evening falls, home cooking prepared on site with produce from the kitchen garden and Touraine growers, served indoors or out, in a bucolic setting."
     },
     "intro": [
-      "The table at la Huberdière comes alive in the evening. Every evening of the week except Sunday, sharing boards celebrate the region's cheeses, charcuterie and vegetables, in a simple and convivial atmosphere. The dining service is not offered at midday.",
+      "The table at la Huberdière comes alive in the evening. From 1 May to 30 September, every evening of the week except Sunday, sharing boards celebrate the region's cheeses, charcuterie and vegetables, in a simple and convivial atmosphere. Outside that season, the table opens by reservation, from six people. The dining service is not offered at midday.",
       "On Thursdays, it's time for an all-Italian dinner: a set menu, in the spirit of a family meal, to be booked in advance. Nothing gastronomic or stiff, just the cooking Lodovica prepares as if at home."
     ],
     "cards": [
       {
         "num": "I",
         "title": "Sharing boards",
-        "text": "Every evening except Sunday: cheeses, fine charcuterie and regional vegetables, to share with ease."
+        "text": "From 1 May to 30 September, every evening except Sunday: cheeses, fine charcuterie and regional vegetables, to share with ease."
       },
       {
         "num": "II",
@@ -186,7 +194,7 @@
     "stats": [
       {
         "big": "6 nights / 7",
-        "lbl": "sharing boards"
+        "lbl": "sharing boards, May to September"
       },
       {
         "big": "On Thursdays",
@@ -199,12 +207,16 @@
     ],
     "brief": [
       {
+        "label": "Season",
+        "value": "The table is open every evening from 1 May to 30 September. The rest of the year, by reservation, from 6 people."
+      },
+      {
         "label": "Service",
         "value": "Evenings only, by reservation, reserved for château residents."
       },
       {
         "label": "Boards",
-        "value": "Sharing boards every evening, except Sunday."
+        "value": "Regional cheeses, charcuterie and vegetables to share, every evening except Sunday."
       },
       {
         "label": "Italian dinner",
@@ -278,8 +290,12 @@
         "a": "No, the dining service is offered in the evening only. At midday, you are free to enjoy the grounds and its spaces, both indoors and out."
       },
       {
+        "q": "Is the table open all year round?",
+        "a": "From 1 May to 30 September, yes, every evening except Sunday. The rest of the year the table opens by reservation from six people: tell us when you book your stay and we will confirm the date."
+      },
+      {
         "q": "Which evenings are the sharing boards offered?",
-        "a": "Every evening of the week except Sunday."
+        "a": "From 1 May to 30 September, every evening of the week except Sunday. The rest of the year, by reservation from six people."
       },
       {
         "q": "Do we need to book the Thursday Italian dinner?",
@@ -293,7 +309,7 @@
   },
   "it": {
     "title": "Tavola dell'ospite e cene al castello in Turenna, Château de la Huberdière",
-    "description": "La sera, una cucina fatta in casa dai sapori italiani e della Turenna: taglieri da condividere ogni sera tranne la domenica, e una cena tutta italiana il giovedì, su prenotazione. Prodotti dell'orto e dei produttori della Turenna.",
+    "description": "Cucina fatta in casa dai sapori italiani e della Turenna, servita la sera: taglieri dal 1° maggio al 30 settembre, cena italiana il giovedì. Fuori stagione, su prenotazione.",
     "hero": {
       "eyebrow": "Ristorazione · Tavola dell'ospite",
       "titleLine1": "A tavola",
@@ -301,14 +317,14 @@
       "lead": "Al calar della sera, una cucina fatta in casa preparata in loco con i prodotti dell'orto e dei produttori della Turenna, servita al coperto o all'aperto, in una cornice bucolica."
     },
     "intro": [
-      "La tavola della Huberdière si vive di sera. Ogni sera della settimana tranne la domenica, i taglieri da condividere valorizzano formaggi, salumi e verdure della regione, in un'atmosfera semplice e conviviale. Il servizio di ristorazione non è disponibile a pranzo.",
+      "La tavola della Huberdière si vive di sera. Dal 1° maggio al 30 settembre, ogni sera della settimana tranne la domenica, i taglieri da condividere valorizzano formaggi, salumi e verdure della regione, in un'atmosfera semplice e conviviale. Fuori da questo periodo, la tavola apre su prenotazione, a partire da sei persone. Il servizio di ristorazione non è disponibile a pranzo.",
       "Il giovedì spazio a una cena tutta italiana: un menù fisso, nello spirito di un pasto di famiglia, da prenotare in anticipo. Niente di gastronomico o ingessato, solo la cucina che Lodovica prepara come a casa."
     ],
     "cards": [
       {
         "num": "I",
         "title": "I taglieri da condividere",
-        "text": "Ogni sera tranne la domenica: formaggi, salumi pregiati e verdure della regione, da condividere in tutta semplicità."
+        "text": "Dal 1° maggio al 30 settembre, ogni sera tranne la domenica: formaggi, salumi pregiati e verdure della regione, da condividere in tutta semplicità."
       },
       {
         "num": "II",
@@ -332,7 +348,7 @@
     "stats": [
       {
         "big": "6 sere / 7",
-        "lbl": "taglieri da condividere"
+        "lbl": "taglieri da condividere, da maggio a settembre"
       },
       {
         "big": "Il giovedì",
@@ -345,12 +361,16 @@
     ],
     "brief": [
       {
+        "label": "Stagione",
+        "value": "Tavola assicurata tutte le sere dal 1° maggio al 30 settembre. Il resto dell'anno, su prenotazione, a partire da 6 persone."
+      },
+      {
         "label": "Servizio",
         "value": "Solo la sera, su prenotazione, riservato agli ospiti del castello."
       },
       {
         "label": "Taglieri",
-        "value": "Taglieri da condividere ogni sera, tranne la domenica."
+        "value": "Formaggi, salumi e verdure della regione da condividere, ogni sera tranne la domenica."
       },
       {
         "label": "Cena italiana",
@@ -424,8 +444,12 @@
         "a": "No, il servizio di ristorazione è disponibile solo la sera. A pranzo, potete godervi liberamente il parco e i suoi spazi, sia al coperto sia all'aperto."
       },
       {
+        "q": "La tavola è aperta tutto l'anno?",
+        "a": "Dal 1° maggio al 30 settembre sì, ogni sera tranne la domenica. Il resto dell'anno la tavola apre su prenotazione a partire da sei persone: segnalatecelo al momento di prenotare il soggiorno, vi confermiamo la data."
+      },
+      {
         "q": "In quali sere vengono proposti i taglieri da condividere?",
-        "a": "Ogni sera della settimana tranne la domenica."
+        "a": "Dal 1° maggio al 30 settembre, ogni sera della settimana tranne la domenica. Il resto dell'anno, su prenotazione a partire da sei persone."
       },
       {
         "q": "Bisogna prenotare la cena italiana del giovedì?",
