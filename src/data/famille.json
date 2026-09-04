@@ -71,6 +71,10 @@
       {
         "label": "Situation",
         "value": "Près d'Amboise, à 2 h 20 de Paris."
+      },
+      {
+        "label": "Tarif",
+        "value": "À partir de 2 600 € le week-end privatisé pour vingt, hors restauration."
       }
     ],
     "extrasHead": {
@@ -101,6 +105,29 @@
       {
         "title": "Vignobles & nature",
         "text": "Balades dans les vignes et les forêts, visites et dégustations dans les caves locales."
+      }
+    ],
+    "activitiesHead": {
+      "eyebrow": "Le week-end privatisé",
+      "title": "Un week-end de groupe, du vendredi soir au dimanche midi",
+      "intro": "Le domaine entier est à vous du vendredi 16 heures au dimanche 12 heures. La privatisation pour vingt personnes se chiffre à 2 600 € en basse saison et 5 200 € en haute saison, soit 130 à 260 € la nuit pour deux. La table de Lodovica se réserve à part."
+    },
+    "activities": [
+      {
+        "title": "Ce qui est compris",
+        "text": "Les dix chambres et leurs vingt et un couchages, quatre salons, les terrasses, le parc de quatorze hectares et le parking. Le couloir de nage de seize mètres, chauffé à 27 degrés d'avril à octobre, et sa pool house. Les petits déjeuners du samedi et du dimanche, les tables et les chaises, le linge de maison, la sonorisation et la projection, le ménage, et le chauffage en hiver."
+      },
+      {
+        "title": "La table de Lodovica",
+        "text": "La cuisine italienne se réserve à part, à partir de 90 € par personne sur une base de vingt convives : le plateau de gourmandises du vendredi soir, l'apéritif et le dîner du samedi, le brunch du dimanche. Hors boissons, et sans droit de bouchon, vous apportez vos vins."
+      },
+      {
+        "title": "Le samedi soir",
+        "text": "La bibliothèque devient la piste de danse et le salon rouge le lounge. La sonorisation et la projection sont sur place, les musiciens du groupe sont les bienvenus, et rien ne vient fermer la soirée à une heure imposée."
+      },
+      {
+        "title": "Le dimanche, sans se presser",
+        "text": "Le départ se fait à midi. Pour rester au-delà, il faut compter une troisième nuit : elle est offerte en basse saison, et à moitié prix en haute saison."
       }
     ],
     "faqHead": {
@@ -218,6 +245,10 @@
       {
         "label": "Location",
         "value": "Near Amboise, 2 hrs 20 from Paris."
+      },
+      {
+        "label": "Rates",
+        "value": "From 2,600 € for the weekend on an exclusive basis for twenty, catering not included."
       }
     ],
     "extrasHead": {
@@ -248,6 +279,29 @@
       {
         "title": "Vineyards & nature",
         "text": "Walks through the vineyards and forests, tours and tastings in the local cellars."
+      }
+    ],
+    "activitiesHead": {
+      "eyebrow": "The private hire weekend",
+      "title": "A group weekend, from Friday evening to Sunday midday",
+      "intro": "The whole estate is yours from 4 pm on Friday to 12 noon on Sunday. Exclusive use for twenty comes to 2,600 € in low season and 5,200 € in high season, or 130 to 260 € a night for two. Lodovica's table is booked separately."
+    },
+    "activities": [
+      {
+        "title": "What is included",
+        "text": "The ten bedrooms and their twenty-one beds, four drawing rooms, the terraces, the fourteen hectares of grounds and the parking. The sixteen-metre lap pool, heated to 27 degrees from April to October, and its pool house. Breakfast on Saturday and Sunday, tables and chairs, household linen, sound and projection equipment, cleaning, and heating in winter."
+      },
+      {
+        "title": "Lodovica's table",
+        "text": "Italian cooking is booked separately, from 90 € per person based on twenty guests: the platter of Italian treats on Friday evening, aperitif and dinner on Saturday, brunch on Sunday. Drinks are not included, and there is no corkage, so bring your own wine."
+      },
+      {
+        "title": "Saturday night",
+        "text": "The library becomes the dance floor and the red drawing room the lounge. Sound and projection equipment is on site, musicians in the group are welcome, and nothing closes the evening at a set hour."
+      },
+      {
+        "title": "Sunday, at your own pace",
+        "text": "Departure is at midday. To stay on you will need a third night: it is free in low season, and half price in high season."
       }
     ],
     "faqHead": {
@@ -365,6 +419,10 @@
       {
         "label": "Posizione",
         "value": "Vicino ad Amboise, a 2 ore e 20 da Parigi."
+      },
+      {
+        "label": "Tariffe",
+        "value": "Da 2.600 € il weekend in affitto esclusivo per venti persone, ristorazione esclusa."
       }
     ],
     "extrasHead": {
@@ -395,6 +453,29 @@
       {
         "title": "Vigneti e natura",
         "text": "Passeggiate tra le vigne e i boschi, visite e degustazioni nelle cantine locali."
+      }
+    ],
+    "activitiesHead": {
+      "eyebrow": "Il weekend in esclusiva",
+      "title": "Un weekend di gruppo, dal venerdì sera alla domenica a mezzogiorno",
+      "intro": "L'intera tenuta è vostra dal venerdì alle 16 alla domenica alle 12. L'affitto in esclusiva per venti persone è di 2.600 € in bassa stagione e 5.200 € in alta stagione, ovvero da 130 a 260 € a notte per due. La tavola di Lodovica si prenota a parte."
+    },
+    "activities": [
+      {
+        "title": "Che cosa è compreso",
+        "text": "Le dieci camere con i loro ventuno posti letto, quattro salotti, le terrazze, il parco di quattordici ettari e il parcheggio. La corsia di nuoto di sedici metri, riscaldata a 27 gradi da aprile a ottobre, e la sua pool house. Le colazioni del sabato e della domenica, tavoli e sedie, la biancheria di casa, l'impianto audio e di proiezione, le pulizie e il riscaldamento in inverno."
+      },
+      {
+        "title": "La tavola di Lodovica",
+        "text": "La cucina italiana si prenota a parte, a partire da 90 € a persona su una base di venti commensali: il tagliere di specialità del venerdì sera, l'aperitivo e la cena del sabato, il brunch della domenica. Bevande escluse, e senza diritto di tappo, portate i vostri vini."
+      },
+      {
+        "title": "Il sabato sera",
+        "text": "La biblioteca diventa la pista da ballo e il salotto rosso il lounge. L'impianto audio e di proiezione è sul posto, i musicisti del gruppo sono i benvenuti, e nulla obbliga a chiudere la serata a un'ora stabilita."
+      },
+      {
+        "title": "La domenica, con calma",
+        "text": "La partenza è a mezzogiorno. Per restare oltre serve una terza notte: è offerta in bassa stagione e a metà prezzo in alta stagione."
       }
     ],
     "faqHead": {
