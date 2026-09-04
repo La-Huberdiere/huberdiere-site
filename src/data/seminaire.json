@@ -147,7 +147,7 @@
       },
       {
         "q": "Quel type de cuisine proposez-vous ?",
-        "a": "Une cuisine italienne maison qui exalte les saveurs des légumes du potager et de producteurs locaux sélectionnés."
+        "a": "Une cuisine italienne maison qui exalte les saveurs des légumes du potager et de producteurs locaux sélectionnés. Une cuisine professionnelle est par ailleurs disponible, pour un traiteur extérieur ou un format qui le demande."
       }
     ]
   },
@@ -299,7 +299,7 @@
       },
       {
         "q": "What kind of cuisine do you offer?",
-        "a": "Home-made Italian cooking that brings out the flavours of vegetables from the kitchen garden and selected local producers."
+        "a": "Home-made Italian cooking that brings out the flavours of vegetables from the kitchen garden and selected local producers. A professional kitchen is also available, for an outside caterer or a format that calls for one."
       }
     ]
   },
@@ -451,7 +451,7 @@
       },
       {
         "q": "Che tipo di cucina proponete?",
-        "a": "Una cucina italiana della casa che esalta i sapori delle verdure dell'orto e di produttori locali selezionati."
+        "a": "Una cucina italiana della casa che esalta i sapori delle verdure dell'orto e di produttori locali selezionati. È inoltre disponibile una cucina professionale, per un catering esterno o per un formato che lo richieda."
       }
     ]
   }

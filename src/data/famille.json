@@ -58,7 +58,7 @@
       },
       {
         "label": "Espaces",
-        "value": "4 salons pour un grand dîner jusqu'à 22 convives, cuisine à disposition."
+        "value": "4 salons pour un grand dîner jusqu'à 22 convives, table assurée par la maison."
       },
       {
         "label": "Cadre",
@@ -152,8 +152,8 @@
         "a": "Oui. Nos 4 salons raffinés et notre Orangerie permettent de dresser de grandes tablées conviviales, quelle que soit la météo. La salle à manger accueille jusqu'à 22 convives."
       },
       {
-        "q": "Devons-nous cuisiner ou proposez-vous un service de restauration ?",
-        "a": "C'est selon vos envies. Vous utilisez la cuisine équipée ou vous confiez vos repas à Lodovica, qui prépare une cuisine maison généreuse aux accents italiens, idéale pour les grandes tablées."
+        "q": "Proposez-vous un service de restauration ?",
+        "a": "Oui, et c'est la seule formule : la cuisine du château est le poste de travail de Lodovica, elle n'est pas ouverte aux groupes. Elle prépare une cuisine maison généreuse aux accents italiens, idéale pour les grandes tablées, à partir de 90 € par personne. Les petits déjeuners du samedi et du dimanche sont compris dans la privatisation."
       },
       {
         "q": "Est-ce sécurisé pour les jeunes enfants et accessible aux seniors ?",
@@ -232,7 +232,7 @@
       },
       {
         "label": "Spaces",
-        "value": "4 drawing rooms for a large dinner of up to 22 guests, kitchen available."
+        "value": "4 drawing rooms for a large dinner of up to 22 guests, table looked after by the house."
       },
       {
         "label": "Setting",
@@ -326,8 +326,8 @@
         "a": "Yes. Our 4 refined drawing rooms and our Orangery let you set large, convivial tables whatever the weather. The dining room seats up to 22 guests."
       },
       {
-        "q": "Do we cook ourselves or do you offer a catering service?",
-        "a": "It's up to you. You can use the fully equipped kitchen or entrust your meals to Lodovica, who prepares generous home cooking with Italian accents, ideal for large tables."
+        "q": "Do you offer a catering service?",
+        "a": "Yes, and it is the only arrangement: the château kitchen is Lodovica's workplace and is not open to groups. She prepares generous home cooking with Italian accents, ideal for large tables, from 90 € per person. Breakfast on Saturday and Sunday is included in the exclusive hire."
       },
       {
         "q": "Is it safe for young children and accessible for older guests?",
@@ -406,7 +406,7 @@
       },
       {
         "label": "Spazi",
-        "value": "4 salotti per una grande cena fino a 22 ospiti, cucina a disposizione."
+        "value": "4 salotti per una grande cena fino a 22 ospiti, tavola a cura della casa."
       },
       {
         "label": "Cornice",
@@ -500,8 +500,8 @@
         "a": "Sì. I nostri 4 eleganti salotti e la nostra Orangerie permettono di apparecchiare grandi tavolate conviviali, con qualsiasi tempo. La sala da pranzo accoglie fino a 22 ospiti."
       },
       {
-        "q": "Cuciniamo noi o offrite un servizio di ristorazione?",
-        "a": "Come preferite. Potete usare la cucina attrezzata oppure affidare i vostri pasti a Lodovica, che prepara una generosa cucina fatta in casa dagli accenti italiani, ideale per le grandi tavolate."
+        "q": "Offrite un servizio di ristorazione?",
+        "a": "Sì, ed è l'unica formula: la cucina del castello è il posto di lavoro di Lodovica e non è aperta ai gruppi. Prepara una generosa cucina fatta in casa dagli accenti italiani, ideale per le grandi tavolate, a partire da 90 € a persona. Le colazioni del sabato e della domenica sono comprese nell'affitto esclusivo."
       },
       {
         "q": "È sicuro per i bambini piccoli e accessibile agli anziani?",
