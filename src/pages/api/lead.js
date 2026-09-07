@@ -16,6 +16,24 @@ const TAGS = {
   contact: "Contact_Form",
 };
 
+// Liste « contact_form » du compte château. Elle existait depuis mars et n'a
+// jamais rien reçu : les demandes arrivaient dans le CRM sans appartenir à
+// aucune liste, donc invisibles de tout envoi, qui se fait par liste. 44 des
+// 114 leads du site étaient dans ce cas au 07/09, dont 24 des 29 d'août.
+const LEAD_LIST_ID = 18;
+
+// `LANGUE` est l'attribut CATÉGORIE qui sert à segmenter un envoi. Il n'a rien
+// à voir avec `LANGUE_SITE`, texte libre posé plus bas à titre documentaire :
+// une catégorie se filtre dans Brevo, pas une chaîne. Brevo accepte le libellé
+// et stocke l'identifiant (FR → « 2 »).
+const LANGUE_BREVO = { fr: "FR", en: "EN", it: "IT" };
+
+// `TAG` est volontairement absent d'ici. Ce n'est pas une étiquette libre mais
+// la cohorte client (« Client 2022 » à « Client 2026 »), et Brevo IGNORE EN
+// SILENCE toute valeur hors de cette liste : le contact est bien créé, la
+// valeur disparaît, sans erreur ni journal. Vérifié le 07/09 sur un contact
+// jetable. La provenance vit dans `FORM`, la qualification dans `STATUS`.
+
 // Libellés lisibles de la cible (titre du mail + ligne « Activité »).
 const CIBLE_LABEL = {
   mariage: "Mariage",
@@ -110,6 +128,16 @@ export async function POST({ request }) {
   // le contact CRM et le mail. Comble les leads sans UTM (le SEO n'en pose pas).
   const origin = classifyChannel(data);
 
+  // Ce que Brevo sait déjà de cette adresse. `updateEnabled: true` ÉCRASE les
+  // valeurs existantes : sans ce contrôle, un client direct de la liste 25 qui
+  // écrit par le formulaire repasse de CLIENT à PROSPECT, et un contact importé
+  // en IT bascule en FR parce qu'il a lu une page française. On ne renseigne
+  // donc `LANGUE` et `STATUS` que là où ils sont vides.
+  const connu = await getContact(headers, data.email);
+  const qualif = {};
+  if (!connu.attributes?.LANGUE && LANGUE_BREVO[lang]) qualif.LANGUE = LANGUE_BREVO[lang];
+  if (!connu.attributes?.STATUS) qualif.STATUS = "PROSPECT";
+
   // 1) Contact dans le CRM. On y range un maximum de contexte : attribution
   // (canal + UTM), parcours (pages, referrer), technique (navigateur, appareil,
   // localisation, langues).
@@ -124,6 +152,9 @@ export async function POST({ request }) {
   const contact = postContact(headers, {
     email: data.email,
     updateEnabled: true,
+    // Brevo AJOUTE aux listes, il n'en retire pas : un client déjà en liste 25
+    // y reste et gagne la 18.
+    listIds: [LEAD_LIST_ID],
     attributes: {
       PRENOM: data.prenom || "",
       NOM: data.nom || "",
@@ -131,6 +162,8 @@ export async function POST({ request }) {
       MESSAGE: data.message || "",
       FORM: [tag],
       CANAL: origin,
+      // Qualification, posée seulement si Brevo ne sait rien (voir plus haut).
+      ...qualif,
       // Déclaratif du prospect, seul rattrapage des leads en accès direct.
       ATTRIBUTION: attributionLabel(data.attribution),
       UTM_SOURCE: data.utm_source || "",
@@ -237,6 +270,19 @@ export function normalizePhone(raw, country) {
 // seul champ que l'API valide, puis en ne gardant que le noyau. Un contact
 // incomplet se répare, un contact absent ne se remarque même pas.
 const NOYAU_CONTACT = ["PRENOM", "NOM", "MESSAGE", "FORM"];
+
+// Lecture non bloquante du contact existant. Une adresse inconnue rend 404,
+// ce n'est pas une erreur. En cas de panne réseau on rend un objet vide, ce qui
+// fait renseigner LANGUE et STATUS : au pire on écrase une valeur par une autre
+// valeur plausible, jamais par du vide.
+async function getContact(headers, email) {
+  try {
+    const r = await fetch(`https://api.brevo.com/v3/contacts/${encodeURIComponent(email)}`, { headers });
+    return r.ok ? await r.json() : {};
+  } catch {
+    return {};
+  }
+}
 
 async function postContact(headers, payload) {
   const post = (body) =>
