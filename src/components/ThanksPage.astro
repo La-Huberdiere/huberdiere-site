@@ -53,10 +53,14 @@ const T = ((siteTexts as any)[lang] ?? (siteTexts as any).fr).thanks;
         sha256_phone_number: p.get("ph") || "",
       },
     });
-    // Événement de conversion côté Umami (funnels + segments).
-    try {
-      if (window.umami) window.umami.track("lead", { type: cible, value: VALUE[cible] != null ? VALUE[cible] : 5 });
-    } catch (e) {}
+    // Événement de conversion côté Umami (funnels + segments). On passe par la
+    // file de `huberUmami` : ce script s'exécute au parse du body, quand le script
+    // Umami chargé en `async` n'est pas encore arrivé. L'ancien `if (window.umami)`
+    // échouait donc en silence à chaque conversion, sur la seule page du site où
+    // l'événement compte vraiment.
+    if (window.huberUmami) {
+      window.huberUmami("lead", { type: cible, value: VALUE[cible] != null ? VALUE[cible] : 5 });
+    }
   })();
 </script>
 

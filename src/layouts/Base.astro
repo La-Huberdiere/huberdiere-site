@@ -148,9 +148,40 @@ const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
     {/* Helper de tracking unifié : envoie chaque événement à Umami ET au dataLayer (GTM/Ads).
         Défini tôt pour être dispo dans tous les scripts inline. + écouteurs délégués. */}
     <script is:inline>
+      // Umami est chargé en `async` plus bas : `window.umami` n'existe pas encore
+      // quand un script inline du body s'exécute. Un simple `if (window.umami)`
+      // perd donc EN SILENCE tout événement émis au chargement, sans en perdre un
+      // seul de ceux qui suivent une interaction, l'utilisateur laissant au script
+      // le temps d'arriver. C'est cette asymétrie qui a tué l'événement `lead` de
+      // la page /merci, à zéro sur tout août pour une vingtaine de demandes reçues,
+      // pendant que `form_start` et `reserve_click` continuaient de compter.
+      // Le dataLayer, lui, n'a jamais eu le problème : GTM rejoue sa file.
+      // On donne donc la même file à Umami.
+      window.huberUmamiQueue = window.huberUmamiQueue || [];
+      window.huberUmami = function (name, data) {
+        try {
+          if (window.umami && typeof window.umami.track === "function") { window.umami.track(name, data || {}); return; }
+        } catch (e) {}
+        window.huberUmamiQueue.push([name, data || {}]);
+      };
+      (function () {
+        // 60 tentatives à 250 ms : quinze secondes, puis on abandonne. Mieux vaut
+        // un événement perdu qu'une minuterie qui tourne pour rien sur un visiteur
+        // qui bloque le domaine de mesure.
+        var essais = 0;
+        var t = setInterval(function () {
+          if (window.umami && typeof window.umami.track === "function") {
+            clearInterval(t);
+            var f = window.huberUmamiQueue.splice(0, window.huberUmamiQueue.length);
+            for (var i = 0; i < f.length; i++) { try { window.umami.track(f[i][0], f[i][1]); } catch (e) {} }
+          } else if (++essais > 60) {
+            clearInterval(t);
+          }
+        }, 250);
+      })();
       window.huberTrack = function (name, data) {
         try { (window.dataLayer = window.dataLayer || []).push(Object.assign({ event: name }, data || {})); } catch (e) {}
-        try { if (window.umami) window.umami.track(name, data || {}); } catch (e) {}
+        window.huberUmami(name, data);
       };
       document.addEventListener(
         "click",
