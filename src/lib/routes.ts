@@ -36,6 +36,7 @@ export const ARTICLE_SLUGS: Record<string, { en: string; it: string }> = {
   "chateau-pour-mariage-val-de-loire": { en: "chateau-wedding-venue-loire", it: "castello-per-matrimonio-loira" },
   "dormir-dans-un-chateau-loire": { en: "sleep-in-a-loire-chateau", it: "dormire-castello-della-loira" },
   "louer-chateau-entre-amis-famille": { en: "rent-chateau-group-weekend", it: "affittare-castello-weekend" },
+  "mariage-intimiste-30-60-invites": { en: "intimate-wedding-chateau-loire", it: "matrimonio-intimo-castello" },
   "organiser-mariage-au-chateau": { en: "chateau-wedding-planning", it: "organizzare-matrimonio-castello" },
   "organiser-retraite-yoga-chateau": { en: "yoga-retreat-chateau", it: "ritiro-yoga-castello-loira" },
   "organiser-seminaire-au-chateau": { en: "chateau-seminar-guide", it: "organizzare-seminario-castello" },
