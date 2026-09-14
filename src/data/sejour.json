@@ -58,7 +58,7 @@
       },
       {
         "label": "Table",
-        "value": "Petit-déjeuner maison inclus ; table d'hôtes le soir sur réservation."
+        "value": "Petit-déjeuner maison à 15 € par personne ; table d'hôtes le soir sur réservation."
       },
       {
         "label": "Cadre",
@@ -325,7 +325,7 @@
       },
       {
         "q": "Le petit-déjeuner est-il inclus ?",
-        "a": "Oui, un petit-déjeuner gourmand fait maison est servi chaque matin, avec des produits frais et locaux."
+        "a": "Non, il est facturé 15 € par personne. Un petit-déjeuner gourmand fait maison est servi chaque matin, avec des produits frais et locaux."
       },
       {
         "q": "Y a-t-il une piscine ?",
@@ -400,7 +400,7 @@
       },
       {
         "label": "Table",
-        "value": "Homemade breakfast included; table d'hôtes in the evening on reservation."
+        "value": "Homemade breakfast at 15 € per person; table d'hôtes in the evening on reservation."
       },
       {
         "label": "Setting",
@@ -667,7 +667,7 @@
       },
       {
         "q": "Is breakfast included?",
-        "a": "Yes, a generous homemade breakfast is served every morning, with fresh, local produce."
+        "a": "No, it is charged at 15 € per person. A generous homemade breakfast is served every morning, with fresh, local produce."
       },
       {
         "q": "Is there a pool?",
@@ -742,7 +742,7 @@
       },
       {
         "label": "Tavola",
-        "value": "Colazione fatta in casa inclusa; tavola dell'ospite la sera su prenotazione."
+        "value": "Colazione fatta in casa a 15 € a persona; tavola dell'ospite la sera su prenotazione."
       },
       {
         "label": "Cornice",
@@ -1009,7 +1009,7 @@
       },
       {
         "q": "La colazione è inclusa?",
-        "a": "Sì, ogni mattina viene servita una ricca colazione fatta in casa, con prodotti freschi e locali."
+        "a": "No, ha un costo di 15 € a persona. Ogni mattina viene servita una ricca colazione fatta in casa, con prodotti freschi e locali."
       },
       {
         "q": "C'è una piscina?",

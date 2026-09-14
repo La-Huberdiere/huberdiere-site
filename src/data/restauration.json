@@ -25,8 +25,8 @@
       },
       {
         "num": "III",
-        "title": "Petit-déjeuner inclus",
-        "text": "Servi chaque matin pour les personnes qui séjournent au château. Inclus dans la chambre."
+        "title": "Le petit-déjeuner maison",
+        "text": "Servi chaque matin pour les personnes qui séjournent au château. 15 € par personne."
       }
     ],
     "final": {
@@ -70,7 +70,7 @@
       },
       {
         "label": "Petit-déjeuner",
-        "value": "Maison, servi de 8 h 30 à 10 h 30."
+        "value": "Maison, servi de 8 h 30 à 10 h 30, 15 € par personne."
       },
       {
         "label": "Cadre",
@@ -103,7 +103,7 @@
     "activities": [
       {
         "title": "Le petit-déjeuner",
-        "text": "Inclus dans le prix de la chambre, servi de 8 h 30 à 10 h 30 : boissons chaudes, oranges pressées, jus de fruits Manse, fruits frais coupés, pain et viennoiseries, avocado-toast, fromage, yaourt et granola fait maison. Œufs sur demande (supplément de 3 €)."
+        "text": "Servi de 8 h 30 à 10 h 30, 15 € par personne : boissons chaudes, oranges pressées, jus de fruits Manse, fruits frais coupés, pain et viennoiseries, avocado-toast, fromage, yaourt et granola fait maison. Œufs sur demande (supplément de 3 €)."
       },
       {
         "title": "Les assiettes à partager",
@@ -129,7 +129,7 @@
       },
       {
         "q": "À quelle heure est servi le petit-déjeuner ?",
-        "a": "De 8 h 30 à 10 h 30, inclus dans le prix de la chambre. Les œufs sont proposés sur demande, avec un supplément de 3 €."
+        "a": "De 8 h 30 à 10 h 30, 15 € par personne. Les œufs sont proposés sur demande, avec un supplément de 3 €."
       },
       {
         "q": "Servez-vous le midi ?",
@@ -179,8 +179,8 @@
       },
       {
         "num": "III",
-        "title": "Breakfast included",
-        "text": "Served every morning for those staying at the château. Included with the room."
+        "title": "The homemade breakfast",
+        "text": "Served every morning for those staying at the château. 15 € per person."
       }
     ],
     "final": {
@@ -224,7 +224,7 @@
       },
       {
         "label": "Breakfast",
-        "value": "Homemade, served from 8.30 to 10.30."
+        "value": "Homemade, served from 8.30 to 10.30, 15 € per person."
       },
       {
         "label": "Setting",
@@ -257,7 +257,7 @@
     "activities": [
       {
         "title": "Breakfast",
-        "text": "Included in the room price, served from 8.30 to 10.30: hot drinks, freshly squeezed oranges, Manse fruit juices, fresh cut fruit, bread and pastries, avocado toast, cheese, yoghurt and homemade granola. Eggs on request (3 € supplement)."
+        "text": "Served from 8.30 to 10.30, 15 € per person: hot drinks, freshly squeezed oranges, Manse fruit juices, fresh cut fruit, bread and pastries, avocado toast, cheese, yoghurt and homemade granola. Eggs on request (3 € supplement)."
       },
       {
         "title": "Sharing plates",
@@ -283,7 +283,7 @@
       },
       {
         "q": "What time is breakfast served?",
-        "a": "From 8.30 to 10.30, included in the room price. Eggs are offered on request, with a 3 € supplement."
+        "a": "From 8.30 to 10.30, 15 € per person. Eggs are offered on request, with a 3 € supplement."
       },
       {
         "q": "Do you serve at midday?",
@@ -333,8 +333,8 @@
       },
       {
         "num": "III",
-        "title": "Colazione inclusa",
-        "text": "Servita ogni mattina per chi soggiorna al castello. Inclusa nella camera."
+        "title": "La colazione fatta in casa",
+        "text": "Servita ogni mattina per chi soggiorna al castello. 15 € a persona."
       }
     ],
     "final": {
@@ -378,7 +378,7 @@
       },
       {
         "label": "Colazione",
-        "value": "Fatta in casa, servita dalle 8.30 alle 10.30."
+        "value": "Fatta in casa, servita dalle 8.30 alle 10.30, 15 € a persona."
       },
       {
         "label": "Cornice",
@@ -411,7 +411,7 @@
     "activities": [
       {
         "title": "La colazione",
-        "text": "Inclusa nel prezzo della camera, servita dalle 8.30 alle 10.30: bevande calde, spremute d'arancia, succhi di frutta Manse, frutta fresca tagliata, pane e viennoiserie, avocado toast, formaggio, yogurt e granola fatta in casa. Uova su richiesta (supplemento di 3 €)."
+        "text": "Servita dalle 8.30 alle 10.30, 15 € a persona: bevande calde, spremute d'arancia, succhi di frutta Manse, frutta fresca tagliata, pane e viennoiserie, avocado toast, formaggio, yogurt e granola fatta in casa. Uova su richiesta (supplemento di 3 €)."
       },
       {
         "title": "I piatti da condividere",
@@ -437,7 +437,7 @@
       },
       {
         "q": "A che ora viene servita la colazione?",
-        "a": "Dalle 8.30 alle 10.30, inclusa nel prezzo della camera. Le uova sono proposte su richiesta, con un supplemento di 3 €."
+        "a": "Dalle 8.30 alle 10.30, 15 € a persona. Le uova sono proposte su richiesta, con un supplemento di 3 €."
       },
       {
         "q": "Servite a pranzo?",
