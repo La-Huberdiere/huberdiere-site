@@ -44,6 +44,7 @@ export const ARTICLE_SLUGS: Record<string, { en: string; it: string }> = {
   "se-marier-en-hiver-chateau": { en: "winter-wedding-chateau-loire", it: "matrimonio-inverno-castello" },
   "seminaire-au-vert-pres-de-paris": { en: "corporate-retreat-near-paris", it: "seminario-nel-verde-parigi" },
   "seminaire-direction-chateau-privatise": { en: "executive-retreat-chateau-loire", it: "seminario-direzione-castello" },
+  "table-hotes-touraine-chateau": { en: "table-dhotes-loire-chateau", it: "cena-italiana-castello-loira" },
   "team-building-touraine-activites": { en: "outdoor-team-building-loire", it: "attivita-team-building-castello" },
   "visiter-chateaux-de-la-loire": { en: "visiting-loire-chateaux", it: "visitare-castelli-loira" },
   "week-end-romantique-pres-amboise": { en: "romantic-weekend-loire-chateau", it: "weekend-romantico-castello-loira" },
