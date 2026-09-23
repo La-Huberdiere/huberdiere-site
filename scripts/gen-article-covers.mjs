@@ -38,6 +38,7 @@ const COVERS = [
   { slug: "chateau-pour-mariage-val-de-loire", dir: PUBLIC, photo: "images/bibliotheque/mariage/mariage-03.jpg" },
   { slug: "mariage-intimiste-30-60-invites", dir: PUBLIC, photo: "images/bibliotheque/mariage/mariage-05.jpg" },
   { slug: "table-hotes-touraine-chateau", dir: PUBLIC, photo: "images/bibliotheque/restauration/restauration-06.jpg" },
+  { slug: "loire-a-velo-depuis-amboise", dir: PUBLIC, photo: "images/bibliotheque/chateau-exterieur/chateau-exterieur-24.jpg" },
 ];
 
 // Dégradé très doux, sans aucun texte (rien à rogner quel que soit le recadrage).

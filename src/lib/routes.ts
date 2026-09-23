@@ -35,6 +35,7 @@ export const ARTICLE_SLUGS: Record<string, { en: string; it: string }> = {
   "chambres-hotes-amboise-chateau": { en: "bed-and-breakfast-amboise", it: "bed-breakfast-castello-loira" },
   "chateau-pour-mariage-val-de-loire": { en: "chateau-wedding-venue-loire", it: "castello-per-matrimonio-loira" },
   "dormir-dans-un-chateau-loire": { en: "sleep-in-a-loire-chateau", it: "dormire-castello-della-loira" },
+  "loire-a-velo-depuis-amboise": { en: "loire-valley-cycling-amboise", it: "loira-in-bicicletta-amboise" },
   "louer-chateau-entre-amis-famille": { en: "rent-chateau-group-weekend", it: "affittare-castello-weekend" },
   "mariage-intimiste-30-60-invites": { en: "intimate-wedding-chateau-loire", it: "matrimonio-intimo-castello" },
   "organiser-mariage-au-chateau": { en: "chateau-wedding-planning", it: "organizzare-matrimonio-castello" },
