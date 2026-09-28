@@ -4,7 +4,7 @@
  * Version serverless : tire DataForSEO (positions locales, netlinking + détail et
  * historique, fiche Google, visibilité IA sur 4 moteurs et 6 thèmes), lit les
  * articles du repo via import.meta.glob, fusionne l'historique passé en argument et
- * rend le HTML interactif (Chart.js, charte Huberdière). L'I/O historique + HTML est
+ * rend le HTML (graphique SVG sans script, charte Huberdière, imprimable en noir et blanc). L'I/O historique + HTML est
  * gérée par l'appelant (Vercel Blob).
  *
  * Env requis : DATAFORSEO_LOGIN, DATAFORSEO_PASSWORD.
@@ -17,6 +17,7 @@ import TRAVAUX from "../data/rapport-travaux.json"
 // l'encart travaux : un rejeu depuis l'instantané en profite.
 import NEWSLETTERS from "../data/rapport-newsletters.json"
 import { renderNewsletters } from "./rapport-newsletter.mjs"
+import { renderBrandChart } from "./rapport-graphique.mjs"
 import { positionsVoisins, renderVoisins, aDesVoisins, pageLaPlusComplete } from "./rapport-voisins.mjs"
 
 const DFS = "https://api.dataforseo.com/v3"
@@ -1185,7 +1186,6 @@ function renderHtml(data) {
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <style>
   :root{--bordeaux:#8B0000;--creme:#F4F2EC;--encre:#212121;--gris:#646464;--or:#B08D57;--vert:#2E7D32;--rouge:#B23A3A}
   *{box-sizing:border-box}
@@ -1216,14 +1216,44 @@ function renderHtml(data) {
   .card{background:#fff;border:1px solid #e6e1d6;border-radius:4px;padding:20px 22px;margin-top:14px}
   .note{font-size:13px;color:var(--gris);margin:10px 2px 0}
   a{color:var(--bordeaux)}
-  canvas{max-height:340px}
   footer{color:var(--gris);font-size:12px;padding:40px 0 60px}
   footer .arch{margin-bottom:14px}
   footer .arch a{margin-right:12px;white-space:nowrap}
   .pos{font-weight:600}
   .sub-h{font-family:"Playfair Display",serif;color:var(--encre);font-size:17px;margin:26px 0 2px;font-weight:600}
   @media(max-width:720px){.voisins th,.voisins td{padding:9px 6px}.voisins th{font-size:11px}.kpis{grid-template-columns:repeat(2,1fr)}h1{font-size:24px}.leadsgrid{grid-template-columns:1fr!important}}
-  @media print{body{background:#fff}header{background:#fff;color:var(--encre);border-bottom:2px solid var(--bordeaux);padding:20px 0}header .sub{opacity:1;color:var(--gris)}h1{color:var(--bordeaux)}.card,.kpi,.summary,table{break-inside:avoid}script{display:none}}
+  /* Impression : le client imprime en noir et blanc, fonds désactivés comme par
+     défaut dans les navigateurs. Tout ce qui passait par un fond ou une couleur
+     (pastilles de mots-clés, badges, vert et rouge des évolutions) passe par un
+     contour, un gras ou un symbole ; un titre ne reste jamais seul en bas de page. */
+  @page{size:A4;margin:14mm 12mm 16mm}
+  @media print{
+    body{background:#fff;color:#000;font-size:10.5pt}
+    .wrap{max-width:none;padding:0}
+    header{background:#fff;color:#000;border-bottom:2px solid #000;padding:0 0 14px}
+    header .sub{opacity:1;color:#333}
+    h1,h2,.sub-h{color:#000}
+    h2{margin-top:28px}
+    h2,.sub-h,h2 + .lead,.lead{break-after:avoid;page-break-after:avoid}
+    /* Les blocs longs (encadré des travaux, tableaux) se coupent entre deux lignes,
+       jamais au milieu d'une : les garder entiers poussait chaque section à la page
+       suivante et laissait des demi-pages blanches (12 pages au lieu de 8). */
+    .kpi,.kpis,.summary,tr,li,figure{break-inside:avoid;page-break-inside:avoid}
+    thead{display:table-header-group}
+    .card,.kpi,.summary,table{background:#fff;border:1px solid #888}
+    .summary{border-left:3px solid #000}
+    .summary strong{color:#000}
+    th{background:#fff;color:#000;border-bottom:1px solid #000}
+    td{border-bottom-color:#bbb}
+    .kpi .l,.kpi .n,.note,h2 + .lead,.flat{color:#333}
+    .kpi .v{color:#000}
+    .tag{background:#fff;border:1px solid #888;color:#000}
+    .badge{background:#fff;border:1px solid #000;color:#000}
+    .yes,.up,.down{color:#000;font-weight:700}.no{color:#000}
+    a{color:#000}
+    footer{padding:20px 0 0}
+    footer .arch{display:none}
+  }
 </style></head>
 <body>
 <header><div class="wrap">
@@ -1256,17 +1286,17 @@ function renderHtml(data) {
     : brandGsc
     ? "Nombre de fois où quelqu'un a cherché le nom du château sur Google et vu votre site dans les résultats, mois par mois. Relevé dans votre Search Console."
     : "Nombre de recherches Google portant sur « Château de la Huberdière » et ses variantes, mois par mois."} C'est la trace la plus directe de votre notoriété, et voici pourquoi elle compte plus qu'avant.</p>
-  <div class="card"><canvas id="brandChart"></canvas></div>
+  <div class="card">${renderBrandChart(brandPts)}</div>
   ${brandConfirme ? `<div class="kpis" style="grid-template-columns:repeat(2,1fr)">
     <div class="kpi"><div class="l">${brandConfirme.mesure ? "Dernier mois mesuré" : "Dernier mois complet"}</div><div class="v">${fr(brandConfirme.volume)}</div><div class="n">${esc(brandConfirme.label)}, sur le nom du château</div></div>
     <div class="kpi"><div class="l">Il y a un an</div><div class="v">${brandAnPasse ? fr(brandAnPasse.volume) : "–"}</div><div class="n">${brandAnPasse ? `${esc(brandAnPasse.label)}${brandAnPasse.mesure ? "" : ", estimation"}` : "historique encore court"}</div></div>
   </div>` : ""}
   <p class="note">Depuis que Google répond directement dans son aperçu IA, une partie des internautes ne clique plus le lien : ils lisent la réponse, retiennent le nom du château, et reviennent quelques jours plus tard en le tapant dans Google ou en allant droit sur le site. Ce trajet-là n'apparaît nulle part dans les statistiques de trafic. En revanche il se voit ici : plus le nom est cherché, plus le château a été vu et retenu, quel que soit l'endroit où il a été vu. Une courbe qui monte pendant que le trafic depuis les résultats de recherche stagne n'est pas une contradiction, c'est la signature de ce nouveau fonctionnement.</p>
   <p class="note">${brandMixte
-    ? `<span style="color:var(--or);font-weight:600">Les barres dorées</span> sont l'estimation de l'outil publicitaire de Google, seule source qui remonte aussi loin, arrondie par paliers fixes. <span style="color:var(--bordeaux);font-weight:600">Les barres bordeaux</span> sont le comptage réel de votre Search Console, disponible depuis ${esc(monthLong(brand.charniere))}. Les deux mesurent la même chose, la première l'estime et la seconde la compte : le changement d'outil se voit à la couleur, il n'est jamais fondu dans la courbe. Une barre pâle est un mois encore inachevé, que nous n'annonçons pas.`
+    ? `Les barres hachurées sont l'estimation de l'outil publicitaire de Google, seule source qui remonte aussi loin, arrondie par paliers fixes. Les barres pleines sont le comptage réel de votre Search Console, disponible depuis ${esc(monthLong(brand.charniere))}. Les deux mesurent la même chose, la première l'estime et la seconde la compte : le changement d'outil se voit au motif des barres, il n'est jamais fondu dans la courbe. Une barre en pointillé est un mois encore inachevé, que nous n'annonçons pas.`
     : brandGsc
-    ? "Ces chiffres sont comptés par Google dans votre Search Console, pas estimés. Google consolide ses données avec deux à trois jours de retard : la dernière barre du graphique est donc tracée en clair tant que son mois n'est pas terminé, et les chiffres ci-dessus s'arrêtent au dernier mois complet."
-    : "Ces volumes sont des estimations de l'outil publicitaire de Google, arrondies par paliers fixes (320, 390, 480, 590, 720, 880, 1 000…) et publiées avec un mois de décalage. La dernière barre est tracée en clair parce qu'un mois tout juste publié saute parfois plusieurs paliers d'un coup, sans que rien ne l'ait justifié : nous ne l'annonçons qu'une fois le mois suivant arrivé."} C'est la pente sur plusieurs mois qui raconte l'essentiel, jamais le dernier point pris seul.</p>` : ""}
+    ? "Ces chiffres sont comptés par Google dans votre Search Console, pas estimés. Google consolide ses données avec deux à trois jours de retard : la dernière barre du graphique est donc tracée en pointillé tant que son mois n'est pas terminé, et les chiffres ci-dessus s'arrêtent au dernier mois complet."
+    : "Ces volumes sont des estimations de l'outil publicitaire de Google, arrondies par paliers fixes (320, 390, 480, 590, 720, 880, 1 000…) et publiées avec un mois de décalage. La dernière barre est tracée en pointillé parce qu'un mois tout juste publié saute parfois plusieurs paliers d'un coup, sans que rien ne l'ait justifié : nous ne l'annonçons qu'une fois le mois suivant arrivé."} C'est la pente sur plusieurs mois qui raconte l'essentiel, jamais le dernier point pris seul.</p>` : ""}
 
   <h2>Où vous sortez dans Google</h2>
   <p class="lead">Les recherches suivies sur lesquelles le château apparaît, et son mouvement depuis le rapport précédent. Position 1 = tout en haut : plus le chiffre est petit, mieux c'est.</p>
@@ -1335,40 +1365,6 @@ function renderHtml(data) {
   </footer>
 </div>
 
-<script>
-const HISTORY = ${JSON.stringify(history)};
-// Seul graphe du rapport : les recherches sur le nom du château. Barres plutôt
-// que courbe, c'est un volume mensuel et non une mesure continue. Les autres
-// (positions, paliers de visibilité, netlinking) demandaient une lecture de
-// métier : axe inversé, paliers empilés, courbe qui monte toute seule.
-(function(){
-  const B = ${JSON.stringify(brandPts)};
-  if (!B.length) return;
-  new Chart(document.getElementById("brandChart"), {
-    type: "bar",
-    data: { labels: B.map(p => p.label), datasets: [{
-      label: "Recherches sur le nom du château",
-      data: B.map(p => p.volume),
-      // Dernière barre en clair : mois publié à l'instant, pas encore confirmé.
-      // Trois états, une seule courbe : estimé (doré), mesuré (bordeaux), inachevé (pâle).
-      backgroundColor: B.map(p => !p.complet ? "#d9b3b3" : p.mesure === false ? "#B08D57" : "#8B0000"),
-      borderRadius: 0,
-    }] },
-    options: {
-      responsive: true,
-      scales: { y: { beginAtZero: true, title: { display: true, text: "Recherches par mois" }, ticks: { precision: 0 } } },
-      plugins: {
-        legend: { display: false },
-        tooltip: { callbacks: { afterLabel: (c) => {
-          const p = B[c.dataIndex]
-          if (!p.complet) return "mois incomplet, non annoncé"
-          return p.mesure === false ? "estimation Google" : "mesuré en Search Console"
-        } } },
-      }
-    }
-  });
-})();
-</script>
 </body></html>`
 }
 

@@ -273,9 +273,13 @@ function navBar(m, months) {
     `<span style="opacity:.85;white-space:nowrap">${isMonth(m) ? monthLong(m) : ""}</span>`,
     newer ? link(newer, `${monthLong(newer)} ▶`) : `<span style="opacity:.4;white-space:nowrap">▶</span>`,
   ].join('<span style="opacity:.4">·</span>')
-  return `<div style="background:#8B0000;color:#fff;font-family:'Montserrat',system-ui,sans-serif;font-size:13px;padding:10px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap">
+  // Le client imprime le rapport : la barre ne sort pas sur papier, et le bouton lui
+  // évite de chercher la commande dans le menu du navigateur. Injectée à l'affichage,
+  // elle vaut pour tous les mois sans régénérer les rapports déjà envoyés.
+  return `<style>@media print{.rapport-nav{display:none!important}}</style>
+  <div class="rapport-nav" style="background:#8B0000;color:#fff;font-family:'Montserrat',system-ui,sans-serif;font-size:13px;padding:10px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap">
     <a href="/rapport" style="color:#fff;text-decoration:none;font-weight:600;white-space:nowrap">← Tous les rapports</a>
-    <span style="display:flex;align-items:center;gap:10px">${right}</span>
+    <span style="display:flex;align-items:center;gap:10px">${right}<button type="button" onclick="window.print()" style="margin-left:8px;background:transparent;color:#fff;border:1px solid rgba(255,255,255,.7);border-radius:3px;padding:4px 12px;font:inherit;cursor:pointer;white-space:nowrap">Imprimer</button></span>
   </div>`
 }
 
