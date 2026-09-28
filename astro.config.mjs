@@ -15,7 +15,9 @@ export default defineConfig({
   // émet /mariage/ alors que la page se déclare canonique en /mariage → signal
   // contradictoire et budget de crawl gaspillé).
   trailingSlash: "never",
-  adapter: vercel({ maxDuration: 60 }),
+  // 300 s : plafond du projet (fluid compute). Le rapport relance les relevés
+  // Google que DataForSEO rend vides ou tronqués, 60 s ne suffisaient plus.
+  adapter: vercel({ maxDuration: 300 }),
   integrations: [
     react(),
     keystatic(),

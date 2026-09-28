@@ -17,6 +17,7 @@ import TRAVAUX from "../data/rapport-travaux.json"
 // l'encart travaux : un rejeu depuis l'instantané en profite.
 import NEWSLETTERS from "../data/rapport-newsletters.json"
 import { renderNewsletters } from "./rapport-newsletter.mjs"
+import { positionsVoisins, renderVoisins, aDesVoisins, pageLaPlusComplete } from "./rapport-voisins.mjs"
 
 const DFS = "https://api.dataforseo.com/v3"
 const LOCATION = 2250 // France
@@ -193,17 +194,38 @@ function aioReferences(aio) {
   })
 }
 
+// DataForSEO répond « Ok » avec une page vide ou tronquée sur environ un appel sur
+// deux (mesuré le 28/09 : même requête, 97 résultats, puis 42, puis 0, facturé à
+// chaque fois). Lue telle quelle, une page vide faisait passer le château pour
+// « non classé » et chaque voisin pour absent. Chaque tour relève DEUX fois en
+// parallèle (aucune seconde de plus), on garde la page la plus longue, et on relance
+// tant qu'elle est incomplète et qu'il reste de la marge sur les 300 s de la
+// fonction (un relevé prend 10 à 30 s). Toujours vide au bout : non relevée.
+const SERP_TOURS = 3
+const SERP_PAR_TOUR = 2
+const SERP_RELANCE_JUSQUA_MS = 150000
+
 async function pullSerp() {
+  const debut = Date.now()
   return Promise.all(
     KEYWORDS.map(async (k) => {
       try {
         // load_async_ai_overview : ramène l'aperçu IA même quand Google le charge
         // en différé. Surcoût DataForSEO de 0,0006 $ par mot-clé, négligeable.
-        const result = await dfs("/serp/google/organic/live/advanced", {
-          keyword: k.keyword, location_code: LOCATION, language_code: LANGUAGE, device: "desktop", depth: 100,
-          load_async_ai_overview: true,
-        })
-        const all = result[0]?.items ?? []
+        const releves = []
+        let page = pageLaPlusComplete([])
+        for (let tour = 0; tour < SERP_TOURS; tour++) {
+          releves.push(...await Promise.all(Array.from({ length: SERP_PAR_TOUR }, () =>
+            dfs("/serp/google/organic/live/advanced", {
+              keyword: k.keyword, location_code: LOCATION, language_code: LANGUAGE, device: "desktop", depth: 100,
+              load_async_ai_overview: true,
+            }).catch((e) => { console.error("SERP essai KO", k.keyword, e.message); return [] }))))
+          page = pageLaPlusComplete(releves)
+          if (page.complete || Date.now() - debut > SERP_RELANCE_JUSQUA_MS) break
+        }
+        if (!page.items.length) throw new Error(`page de résultats vide après ${releves.length} relevés`)
+        if (!page.complete) console.warn("SERP page incomplète", k.keyword, page.organiques)
+        const all = page.items
         const items = all.filter((i) => i.type === "organic")
         const own = items.find((i) => domMatch(i.domain, DOMAIN))
         const leader = items.find((i) => i.rank_absolute === 1) ?? items[0]
@@ -217,10 +239,14 @@ async function pullSerp() {
           aio: !!aio,
           aioCited: aioRefs.some((r) => domMatch(r.domain, DOMAIN)),
           aioRefs: aioRefs.slice(0, 6),
+          // Place des voisins dans la même page : c'est elle qui alimente « Face aux
+          // voisins », pour que ce tableau et celui des positions se recoupent.
+          voisins: positionsVoisins(all, COMPETITORS),
         }
       } catch (e) {
         console.error("SERP KO", k.keyword, e.message)
-        return { ...k, position: null, url: null, leader: null, aio: false, aioCited: false, aioRefs: [] }
+        // `releve: false` : ni classé ni absent, pas vu. Le rendu l'écarte des comptes.
+        return { ...k, position: null, url: null, leader: null, aio: false, aioCited: false, aioRefs: [], releve: false }
       }
     })
   )
@@ -1049,8 +1075,9 @@ function movement(cur, prev, hasPrev) {
 }
 
 /**
- * Le château face à ses voisins. Sans ce repère une progression ne se lit pas :
- * gagner deux places pendant que le voisin en gagne dix n'est pas un gain.
+ * ANCIEN tableau des voisins, gardé pour les instantanés d'avant le 28/09 (août) :
+ * un rejeu doit rendre ce que le client a reçu. Les rapports suivants passent par
+ * renderVoisins (rapport-voisins.mjs), qui ne mélange plus estimations et relevés.
  */
 export function renderCompetitors(cp) {
   if (!cp || !cp.rows?.length) return ""
@@ -1097,6 +1124,9 @@ function renderHtml(data) {
   const { month, serp, gbp, llm, articles, history, exec, leads, traffic, brand, competitors } = data
   const monthLabel = monthLong(month)
   const rankedCount = serp.filter((s) => s.position !== null).length
+  // Recherches réellement relevées ce mois-ci : les autres ne sont ni gagnées ni perdues.
+  const serpMesure = serp.filter((s) => s.releve !== false)
+  const serpNonReleves = serp.length - serpMesure.length
   const bestPos = bestKeyword(serp)
 
   // Rapport précédent (pour les mouvements de position).
@@ -1129,7 +1159,7 @@ function renderHtml(data) {
     ?? [...brandPts].reverse().find((p) => p.complet) ?? null
   const brandAnPasse = brandPts.length >= 12 ? brandPts[0] : null
   const serpClasses = serp.filter((s) => s.position != null).sort((a, b) => a.position - b.position)
-  const serpAbsents = serp.filter((s) => s.position == null)
+  const serpAbsents = serpMesure.filter((s) => s.position == null)
   const aioKw = serp.filter((s) => s.aio)
   const aioCitedKw = serp.filter((s) => s.aioCited)
 
@@ -1192,7 +1222,7 @@ function renderHtml(data) {
   footer .arch a{margin-right:12px;white-space:nowrap}
   .pos{font-weight:600}
   .sub-h{font-family:"Playfair Display",serif;color:var(--encre);font-size:17px;margin:26px 0 2px;font-weight:600}
-  @media(max-width:720px){.kpis{grid-template-columns:repeat(2,1fr)}h1{font-size:24px}.leadsgrid{grid-template-columns:1fr!important}}
+  @media(max-width:720px){.voisins th,.voisins td{padding:9px 6px}.voisins th{font-size:11px}.kpis{grid-template-columns:repeat(2,1fr)}h1{font-size:24px}.leadsgrid{grid-template-columns:1fr!important}}
   @media print{body{background:#fff}header{background:#fff;color:var(--encre);border-bottom:2px solid var(--bordeaux);padding:20px 0}header .sub{opacity:1;color:var(--gris)}h1{color:var(--bordeaux)}.card,.kpi,.summary,table{break-inside:avoid}script{display:none}}
 </style></head>
 <body>
@@ -1206,7 +1236,7 @@ function renderHtml(data) {
   <div class="summary">${exec}</div>
 
   <div class="kpis">
-    <div class="kpi"><div class="l">Mots-clés classés</div><div class="v">${rankedCount}<span style="font-size:15px;color:var(--gris)"> / ${serp.length}</span></div><div class="n">dans le top 100 Google</div></div>
+    <div class="kpi"><div class="l">Mots-clés classés</div><div class="v">${rankedCount}<span style="font-size:15px;color:var(--gris)"> / ${serpMesure.length}</span></div><div class="n">dans le top 100 Google</div></div>
     <div class="kpi"><div class="l">Meilleure position</div><div class="v">${bestPos ? "#" + bestPos.position : "–"}</div><div class="n">${bestPos ? esc(bestPos.keyword) : "à conquérir"}</div></div>
     <div class="kpi"><div class="l">Demandes reçues</div><div class="v">${leads?.total ?? "–"}</div><div class="n">via les formulaires du site</div></div>
     <div class="kpi"><div class="l">Cité par les IA</div><div class="v">${citedTotal}<span style="font-size:15px;color:var(--gris)"> / ${answeredTotal}</span></div><div class="n">réponses testées</div></div>
@@ -1250,9 +1280,14 @@ function renderHtml(data) {
     }).join("")}</tbody>
   </table>` : `<div class="card">Aucune des recherches suivies ne place encore le château dans les 100 premiers résultats.</div>`}
   ${serpAbsents.length ? `<p class="note"><strong>${serpAbsents.length} autres recherches suivies</strong> ne placent pas encore le château : ${serpAbsents.map((s) => `<span class="tag">${esc(s.keyword)}</span>`).join("")}</p>` : ""}
+  ${serpNonReleves ? `<p class="note">${serpNonReleves} recherche${serpNonReleves > 1 ? "s n'ont" : " n'a"} pas pu être relevée${serpNonReleves > 1 ? "s" : ""} ce mois-ci, faute de réponse de l'outil de mesure : ${serp.filter((s) => s.releve === false).map((s) => `<span class="tag">${esc(s.keyword)}</span>`).join("")} ${serpNonReleves > 1 ? "Elles reprendront leur place au prochain rapport, sans être comptées comme perdues" : "Elle reprendra sa place au prochain rapport, sans être comptée comme perdue"}.</p>` : ""}
   <p class="note">« Évolution » compare au rapport du mois dernier ; une case vide signale une recherche entrée dans le suivi ce mois-ci.</p>
 
-  ${renderCompetitors(competitors)}
+  ${aDesVoisins(serp)
+    // Voisins lus dans l'instantané quand il les porte : un rejeu ne doit pas
+    // afficher « absent » pour un voisin ajouté à COMPETITORS après coup.
+    ? renderVoisins(serp, competitors?.rows?.some((r) => !r.isBrand) ? competitors.rows.filter((r) => !r.isBrand).map((r) => ({ domain: r.domain, label: r.label })) : COMPETITORS, "Château de la Huberdière")
+    : renderCompetitors(competitors)}
 
   ${renderGains(opportunities, competitors)}
 
@@ -1267,7 +1302,7 @@ function renderHtml(data) {
   <h2>Aperçus IA de Google</h2>
   <p class="lead">Depuis le 22 juillet 2026, Google affiche en France un résumé rédigé par son IA au-dessus des résultats classiques. Il répond directement à la question de l'internaute et cite quelques sites en source. Être cité dans cet encart, c'est occuper la place la plus visible de la page.</p>
   <div class="kpis" style="grid-template-columns:repeat(2,1fr)">
-    <div class="kpi"><div class="l">Mots-clés avec aperçu IA</div><div class="v">${aioKw.length}<span style="font-size:15px;color:var(--gris)"> / ${serp.length}</span></div><div class="n">sur vos mots-clés suivis</div></div>
+    <div class="kpi"><div class="l">Mots-clés avec aperçu IA</div><div class="v">${aioKw.length}<span style="font-size:15px;color:var(--gris)"> / ${serpMesure.length}</span></div><div class="n">sur vos mots-clés suivis</div></div>
     <div class="kpi"><div class="l">Château cité en source</div><div class="v">${aioCitedKw.length}</div><div class="n">${aioKw.length ? `sur ${aioKw.length} aperçu${aioKw.length > 1 ? "s" : ""} affiché${aioKw.length > 1 ? "s" : ""}` : "aucun aperçu ce mois-ci"}</div></div>
   </div>
   ${aioKw.length ? `<table style="margin-top:16px">
@@ -1396,7 +1431,9 @@ export async function generateReport(prevHistory = [], month = null) {
     byMonth.set(d.ym, e)
   }
   const positions = {}
-  serp.forEach((s) => { positions[s.keyword] = s.position })
+  // Une recherche non relevée n'écrit rien : un null ferait lire « sorti » puis
+  // « entrée » d'un mois sur l'autre, pour une simple panne de mesure.
+  serp.forEach((s) => { if (s.releve !== false) positions[s.keyword] = s.position })
   const cur = byMonth.get(ym) ?? { month: ym, monthLabel: monthLabelShort }
   cur.monthLabel = monthLabelShort
   cur.positions = positions
@@ -1408,7 +1445,7 @@ export async function generateReport(prevHistory = [], month = null) {
   const answeredTotal = llm.reduce((s, e) => s + e.rows.filter((r) => !r.error).length, 0)
   cur.llmCited = citedTotal
   cur.llmAnswered = answeredTotal
-  cur.aio = { present: serp.filter((s) => s.aio).length, cited: serp.filter((s) => s.aioCited).length, keywords: serp.length }
+  cur.aio = { present: serp.filter((s) => s.aio).length, cited: serp.filter((s) => s.aioCited).length, keywords: serp.filter((s) => s.releve !== false).length }
   if (brand) cur.brandVolume = brand.serie[brand.serie.length - 1]?.volume ?? null
   if (leads) cur.leads = { total: leads.total, newsletter: leads.newsletter, chatgpt: leads.chatgpt }
   if (traffic) cur.traffic = { pageviews: traffic.pageviews, visitors: traffic.visitors, visits: traffic.visits }
@@ -1428,7 +1465,7 @@ export async function generateReport(prevHistory = [], month = null) {
     articles: articles.length,
     articlesNew,
     ranked: serp.filter((s) => s.position != null).length,
-    keywords: serp.length,
+    keywords: serp.filter((s) => s.releve !== false).length,
     llmCited: citedTotal,
     llmAnswered: answeredTotal,
     aioPresent: serp.filter((s) => s.aio).length,
