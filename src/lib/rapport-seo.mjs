@@ -1085,13 +1085,13 @@ export function renderCompetitors(cp) {
   const ordre = [...cp.rows].sort((a, b) => b.top10 - a.top10 || b.top3 - a.top3 || b.etv - a.etv)
   const ligne = (r) => {
     const nom = r.isBrand ? `<strong>${esc(r.label)}</strong> <span class="badge">vous</span>` : esc(r.label)
-    return `<tr><td>${nom}</td><td class="num">${fr(r.referringDomains)}</td><td class="num pos">${fr(r.top3)}</td><td class="num">${fr(r.top10)}</td><td class="num">${fr(r.top20)}</td><td class="num">${fr(r.etv)}</td></tr>`
+    return `<tr><td>${nom}<span class="sur-mobile">${fr(r.referringDomains)} sites font un lien</span></td><td class="num hors-mobile">${fr(r.referringDomains)}</td><td class="num pos">${fr(r.top3)}</td><td class="num">${fr(r.top10)}</td><td class="num">${fr(r.top20)}</td><td class="num">${fr(r.etv)}</td></tr>`
   }
   const voisins = cp.rows.length - 1
   return `<h2>Face aux voisins</h2>
   <p class="lead">Les ${fr(voisins)} châteaux et hôtels qui visent la même clientèle que vous autour d'Amboise, mesurés le même jour avec les mêmes outils.</p>
-  <table>
-    <thead><tr><th>Établissement</th><th class="num">Sites qui font un lien</th><th class="num">Mots-clés top 3</th><th class="num">Top 10</th><th class="num">Top 20</th><th class="num">Visiteurs Google / mois</th></tr></thead>
+  <table class="voisins">
+    <thead><tr><th>Établissement</th><th class="num hors-mobile">Sites qui font un lien</th><th class="num">Mots-clés top 3</th><th class="num">Top 10</th><th class="num">Top 20</th><th class="num">Visiteurs Google / mois</th></tr></thead>
     <tbody>${ordre.map(ligne).join("")}</tbody>
   </table>
   <p class="note">« Mots-clés top 3 » compte toutes les recherches Google sur lesquelles l'établissement sort dans les trois premiers résultats, pas seulement celles que nous suivons pour vous. « Sites qui font un lien » est le nombre de domaines qui pointent vers lui : ce capital de confiance se construit sur des années et explique une bonne part de l'écart. La dernière colonne est l'estimation Google du trafic mensuel que ces positions rapportent.</p>`
@@ -1112,8 +1112,8 @@ export function renderGains(opportunities, cp) {
   const captees = cp?.gap?.length ? `<h3 class="sub-h">Ce que les voisins captent et pas vous</h3>
   <p class="lead">Recherches sur lesquelles un château voisin sort dans les vingt premiers résultats, alors que le vôtre n'apparaît pas du tout.</p>
   <table>
-    <thead><tr><th>Recherche</th><th class="num">Recherches / mois</th><th>Qui la capte</th><th class="num">Sa position</th></tr></thead>
-    <tbody>${cp.gap.map((g) => `<tr><td>${esc(g.keyword)}</td><td class="num">${fr(g.volume)}</td><td style="color:var(--gris)">${esc(g.competitor)}</td><td class="num pos">${g.position}</td></tr>`).join("")}</tbody>
+    <thead><tr><th>Recherche</th><th class="num">Recherches / mois</th><th class="hors-mobile">Qui la capte</th><th class="num">Sa position</th></tr></thead>
+    <tbody>${cp.gap.map((g) => `<tr><td>${esc(g.keyword)}<span class="sur-mobile">captée par ${esc(g.competitor)}</span></td><td class="num">${fr(g.volume)}</td><td class="hors-mobile" style="color:var(--gris)">${esc(g.competitor)}</td><td class="num pos">${g.position}</td></tr>`).join("")}</tbody>
   </table>
   <p class="note">Toutes ne sont pas à viser : une recherche « restaurant » suppose une table ouverte au public, ce que la table d'hôtes n'est pas. Celles qui parlent de séjour, de château ou de la région alimentent directement le calendrier éditorial. ${cp.ecartes ? `${fr(cp.ecartes)} recherches ont été écartées de ce tableau : le nom des voisins eux-mêmes, sur lequel personne ne peut se positionner, et des requêtes sans rapport avec votre région ni vos prestations.` : ""}</p>` : ""
 
@@ -1221,6 +1221,21 @@ function renderHtml(data) {
   footer .arch a{margin-right:12px;white-space:nowrap}
   .pos{font-weight:600}
   .sub-h{font-family:"Playfair Display",serif;color:var(--encre);font-size:17px;margin:26px 0 2px;font-weight:600}
+  /* Téléphone : une colonne secondaire (.hors-mobile) disparaît et revient en
+     ligne grise sous la première cellule (.sur-mobile), comme dans « Face aux
+     voisins ». Limité à l'écran : la zone utile d'une page A4 fait environ 700 px,
+     sous ce seuil, et l'impression garde toutes ses colonnes. */
+  .sur-mobile{display:none}
+  @media screen and (max-width:720px){
+    .wrap{padding:0 16px}
+    th,td{padding:9px 8px}
+    th{font-size:11px}
+    .sur-mobile{display:block;color:var(--gris);font-size:12px;font-weight:400;margin-top:3px;overflow-wrap:anywhere}
+    .hors-mobile{display:none}
+    .kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px}
+    .kpis .kpi:last-child:nth-child(odd){grid-column:1/-1}
+    .kpi{padding:14px;overflow-wrap:anywhere}
+  }
   @media(max-width:720px){.voisins th,.voisins td{padding:9px 6px}.voisins th{font-size:11px}.kpis{grid-template-columns:repeat(2,1fr)}h1{font-size:24px}.leadsgrid{grid-template-columns:1fr!important}}
   /* Impression : le client imprime en noir et blanc, fonds désactivés comme par
      défaut dans les navigateurs. Tout ce qui passait par un fond ou une couleur
@@ -1301,12 +1316,13 @@ function renderHtml(data) {
   <h2>Où vous sortez dans Google</h2>
   <p class="lead">Les recherches suivies sur lesquelles le château apparaît, et son mouvement depuis le rapport précédent. Position 1 = tout en haut : plus le chiffre est petit, mieux c'est.</p>
   ${serpClasses.length ? `<table>
-    <thead><tr><th>Recherche</th><th class="num">Position</th><th class="num">Évolution</th><th>Qui est devant vous</th></tr></thead>
+    <thead><tr><th>Recherche</th><th class="num">Position</th><th class="num">Évolution</th><th class="hors-mobile">Qui est devant vous</th></tr></thead>
     <tbody>${serpClasses.map((s) => {
       const mv = movement(s.position, prevPos[s.keyword], hasPrev)
       const posCell = s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${s.position}</a>` : String(s.position)
       const tete = s.position === 1 ? '<span class="badge">vous</span>' : esc(s.leader || "")
-      return `<tr><td>${esc(s.keyword)}</td><td class="num pos">${posCell}</td><td class="num ${mv.cls}">${mv.txt}</td><td style="color:var(--gris)">${tete}</td></tr>`
+      const teteMobile = s.position === 1 ? "vous êtes en tête" : s.leader ? `devant vous : ${esc(s.leader)}` : ""
+      return `<tr><td>${esc(s.keyword)}${teteMobile ? `<span class="sur-mobile">${teteMobile}</span>` : ""}</td><td class="num pos">${posCell}</td><td class="num ${mv.cls}">${mv.txt}</td><td class="hors-mobile" style="color:var(--gris)">${tete}</td></tr>`
     }).join("")}</tbody>
   </table>` : `<div class="card">Aucune des recherches suivies ne place encore le château dans les 100 premiers résultats.</div>`}
   ${serpAbsents.length ? `<p class="note"><strong>${serpAbsents.length} autres recherches suivies</strong> ne placent pas encore le château : ${serpAbsents.map((s) => `<span class="tag">${esc(s.keyword)}</span>`).join("")}</p>` : ""}
@@ -1324,8 +1340,8 @@ function renderHtml(data) {
   <h2>Articles publiés ce mois-ci</h2>
   <p class="lead">Le contenu mis en ligne pour le château en ${esc(monthLabel)}, avec les mots-clés visés. Cliquez le titre pour lire l'article.</p>
   ${articlesMois.length ? `<table>
-    <thead><tr><th>Article</th><th>Publié le</th><th>Thème</th><th>Mots-clés visés</th></tr></thead>
-    <tbody>${articlesMois.map((a) => `<tr><td><a href="${esc(a.url)}" target="_blank" rel="noopener"><strong>${esc(a.title)}</strong></a></td><td style="white-space:nowrap">${esc(a.publishedAt)}</td><td>${esc(a.category)}</td><td>${a.keywords.map((k) => `<span class="tag">${esc(k)}</span>`).join("")}</td></tr>`).join("")}</tbody>
+    <thead><tr><th>Article</th><th class="hors-mobile">Publié le</th><th class="hors-mobile">Thème</th><th>Mots-clés visés</th></tr></thead>
+    <tbody>${articlesMois.map((a) => `<tr><td><a href="${esc(a.url)}" target="_blank" rel="noopener"><strong>${esc(a.title)}</strong></a><span class="sur-mobile">publié le ${esc(a.publishedAt)}, ${esc(a.category)}</span></td><td class="hors-mobile" style="white-space:nowrap">${esc(a.publishedAt)}</td><td class="hors-mobile">${esc(a.category)}</td><td>${a.keywords.map((k) => `<span class="tag">${esc(k)}</span>`).join("")}</td></tr>`).join("")}</tbody>
   </table>` : `<div class="card"><p style="margin:0;color:var(--gris)">Aucun article publié sur cette période.</p></div>`}
   <p class="note">Votre blog compte désormais ${articles.length} article${articles.length > 1 ? "s" : ""} en ligne. Les prochains sont planifiés dans votre <a href="/rapport?doc=calendrier">calendrier éditorial SEO &rarr;</a> : quatre articles par mois, chacun visant une recherche précise de vos futurs clients.</p>
 
@@ -1336,16 +1352,19 @@ function renderHtml(data) {
     <div class="kpi"><div class="l">Château cité en source</div><div class="v">${aioCitedKw.length}</div><div class="n">${aioKw.length ? `sur ${aioKw.length} aperçu${aioKw.length > 1 ? "s" : ""} affiché${aioKw.length > 1 ? "s" : ""}` : "aucun aperçu ce mois-ci"}</div></div>
   </div>
   ${aioKw.length ? `<table style="margin-top:16px">
-    <thead><tr><th>Mot-clé déclenchant un aperçu</th><th class="num">Votre position</th><th class="num">Château cité</th><th>Sites cités dans l'aperçu</th></tr></thead>
-    <tbody>${aioKw.map((s) => `<tr><td>${esc(s.keyword)}</td><td class="num pos">${s.position != null ? s.position : '<span style="color:var(--gris)">non classé</span>'}</td><td class="num">${s.aioCited ? '<span class="yes">oui</span>' : '<span class="no">non</span>'}</td><td style="color:var(--gris)">${s.aioRefs.length ? s.aioRefs.map((r) => esc(r.domain)).filter(Boolean).slice(0, 4).join(", ") : "sources non communiquées"}</td></tr>`).join("")}</tbody>
+    <thead><tr><th>Mot-clé déclenchant un aperçu</th><th class="num">Votre position</th><th class="num">Château cité</th><th class="hors-mobile">Sites cités dans l'aperçu</th></tr></thead>
+    <tbody>${aioKw.map((s) => {
+      const sources = s.aioRefs.length ? s.aioRefs.map((r) => esc(r.domain)).filter(Boolean).slice(0, 4).join(", ") : "sources non communiquées"
+      return `<tr><td>${esc(s.keyword)}<span class="sur-mobile">${s.aioRefs.length ? `cités : ${sources}` : sources}</span></td><td class="num pos">${s.position != null ? s.position : '<span style="color:var(--gris)">non classé</span>'}</td><td class="num">${s.aioCited ? '<span class="yes">oui</span>' : '<span class="no">non</span>'}</td><td class="hors-mobile" style="color:var(--gris)">${sources}</td></tr>`
+    }).join("")}</tbody>
   </table>` : `<div class="card">Aucun aperçu IA relevé ce mois-ci sur vos mots-clés suivis. C'est cohérent : Google en affiche peu sur les recherches locales et commerciales, qui sont justement les vôtres. Le déploiement français se poursuit jusqu'au 23 septembre 2026, on surveille mois par mois.</div>`}
   <p class="note">Sur les recherches où un aperçu s'affiche, le nombre de clics vers les sites baisse nettement, y compris pour la première position. La parade n'est pas de monter d'un rang, c'est d'être la source que l'IA cite. C'est ce qui guide la façon dont vos articles sont désormais écrits : une question par titre, une réponse nette dessous, des chiffres et des détails que personne d'autre ne peut donner sur le château.</p>
 
   <h2>Visibilité dans les réponses IA</h2>
   <p class="lead">De plus en plus de clients posent leur question à ChatGPT, Gemini, Perplexity ou Claude. On teste 6 questions réelles, une par activité, sur les 4 moteurs, et on regarde si le château est cité.</p>
   <table>
-    <thead><tr><th>Activité</th><th>Question posée</th><th class="num">Cité par</th></tr></thead>
-    <tbody>${perQuestion.map((q) => `<tr><td>${esc(q.theme)}</td><td style="color:var(--gris)">${esc(q.prompt)}</td><td class="num">${q.citedBy.length ? q.citedBy.map((e) => `<span class="badge">${esc(e)}</span>`).join("") : '<span class="no">non cité</span>'}</td></tr>`).join("")}</tbody>
+    <thead><tr><th>Activité</th><th class="hors-mobile">Question posée</th><th class="num">Cité par</th></tr></thead>
+    <tbody>${perQuestion.map((q) => `<tr><td>${esc(q.theme)}<span class="sur-mobile">${esc(q.prompt)}</span></td><td class="hors-mobile" style="color:var(--gris)">${esc(q.prompt)}</td><td class="num">${q.citedBy.length ? q.citedBy.map((e) => `<span class="badge">${esc(e)}</span>`).join("") : '<span class="no">non cité</span>'}</td></tr>`).join("")}</tbody>
   </table>
   <table style="margin-top:18px">
     <thead><tr><th>Moteur</th><th class="num">Château cité</th><th>Concurrents cités à sa place</th></tr></thead>
