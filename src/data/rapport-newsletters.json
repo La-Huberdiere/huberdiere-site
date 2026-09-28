@@ -1,0 +1,94 @@
+{
+  "2026-09": [
+    {
+      "nom": "La newsletter d'automne",
+      "envoi": "2026-09-21",
+      "releve": "2026-09-28",
+      "objet": "L'automne s'installe au Château de la Huberdière 🍂",
+      "envoyes": 1318,
+      "recus": 1236,
+      "ouvertures": 731,
+      "cliqueurs": 104,
+      "desinscrits": 20,
+      "plaintes": 0,
+      "rebonds": {
+        "definitifs": 41,
+        "temporaires": 44
+      },
+      "segments": [
+        {
+          "nom": "Vos clients 2026",
+          "envoyes": 152,
+          "recus": 152,
+          "ouvertures": 106,
+          "cliqueurs": 13
+        },
+        {
+          "nom": "Vos clients des années précédentes",
+          "envoyes": 162,
+          "recus": 162,
+          "ouvertures": 107,
+          "cliqueurs": 19
+        },
+        {
+          "nom": "Demandes reçues par le site",
+          "envoyes": 82,
+          "recus": 81,
+          "ouvertures": 42,
+          "cliqueurs": 6
+        },
+        {
+          "nom": "Autres contacts vérifiés",
+          "envoyes": 606,
+          "recus": 595,
+          "ouvertures": 326,
+          "cliqueurs": 50
+        },
+        {
+          "nom": "Adresses non vérifiables",
+          "envoyes": 316,
+          "recus": 270,
+          "ouvertures": 131,
+          "cliqueurs": 16
+        }
+      ],
+      "liens": [
+        {
+          "nom": "Le film du château",
+          "visites": 63
+        },
+        {
+          "nom": "Le week-end en groupe",
+          "visites": 13
+        },
+        {
+          "nom": "Le séjour au château",
+          "visites": 13
+        },
+        {
+          "nom": "La photo d'ouverture",
+          "visites": 11
+        },
+        {
+          "nom": "L'article sur le mariage en hiver",
+          "visites": 9
+        },
+        {
+          "nom": "Les dates 2027 (formulaire de contact)",
+          "visites": 3
+        },
+        {
+          "nom": "Le nom du château en tête du mail",
+          "visites": 3
+        }
+      ],
+      "robotsEcartes": 110,
+      "visiteursReels": 115,
+      "surLeSite": {
+        "film": 33,
+        "disponibilites": 6,
+        "demandes": 0
+      }
+    }
+  ]
+}

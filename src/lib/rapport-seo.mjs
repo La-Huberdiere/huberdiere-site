@@ -13,6 +13,10 @@ import yaml from "js-yaml"
 // Travaux réalisés par mois (saisie manuelle d'Alexis avant l'envoi). Clé = AAAA-MM,
 // valeur = liste de phrases côté client. Absent = encart masqué, jamais de crash.
 import TRAVAUX from "../data/rapport-travaux.json"
+// Campagnes Brevo du mois (scripts/stats-newsletter.mjs), relues au rendu comme
+// l'encart travaux : un rejeu depuis l'instantané en profite.
+import NEWSLETTERS from "../data/rapport-newsletters.json"
+import { renderNewsletters } from "./rapport-newsletter.mjs"
 
 const DFS = "https://api.dataforseo.com/v3"
 const LOCATION = 2250 // France
@@ -592,7 +596,9 @@ function readArticles(cutoff) {
 
 // ── Rendu HTML ────────────────────────────────────────────────────────────
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
-const fr = (n) => Number(n || 0).toLocaleString("fr-FR")
+// fr-FR sépare les milliers par une espace fine (U+202F) que Montserrat ne dessine
+// pas : « 1318 » à l'écran. Espace insécable ordinaire à la place.
+const fr = (n) => Number(n || 0).toLocaleString("fr-FR").replace(/\u202f/g, "\u00a0")
 
 // ── Demandes entrantes (Brevo) ────────────────────────────────────────────
 // Le rapport referme la boucle business : pas seulement des positions Google, mais
@@ -1172,6 +1178,7 @@ function renderHtml(data) {
   th,td{text-align:left;padding:10px 12px;font-size:14px;border-bottom:1px solid #efeada;vertical-align:top}
   th{background:#faf8f2;color:var(--gris);font-size:12px;text-transform:uppercase;letter-spacing:.03em;font-weight:600}
   td.num{text-align:right;font-variant-numeric:tabular-nums}
+  th.num{text-align:right}
   .tag{display:inline-block;background:#efeada;color:#5c4b3c;border-radius:3px;padding:2px 8px;margin:2px 4px 2px 0;font-size:12px}
   .yes{color:var(--vert);font-weight:600}.no{color:var(--rouge)}
   .up{color:var(--vert);font-weight:600}.down{color:var(--rouge);font-weight:600}.flat{color:var(--gris)}
@@ -1210,6 +1217,8 @@ function renderHtml(data) {
   ${renderLeads(leads, monthLabel)}
 
   ${renderTraffic(traffic, monthLabel)}
+
+  ${renderNewsletters(NEWSLETTERS[month])}
 
   ${brandPts.length ? `<h2>Notoriété : on cherche le château par son nom</h2>
   <p class="lead">${brandMixte
