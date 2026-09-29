@@ -1,7 +1,8 @@
 ---
-// Carte interactive OpenStreetMap (Leaflet) de la localisation du château.
-// Basemap sombre CartoDB pour s'accorder au fond navy de la section, pin bordeaux
-// maison (SVG inline, aucune image d'icône Leaflet à charger), cadre filet bordeaux.
+// Carte interactive (Leaflet) de la localisation du château.
+// Fond Plan IGN v2 de la Géoplateforme, sans clé ni quota (CARTO exige une clé
+// depuis septembre 2026 et servait « API KEY REQUIRED »), désaturé en CSS pour
+// laisser au pin bordeaux maison (SVG inline) la seule couleur, cadre filet bordeaux.
 import "leaflet/dist/leaflet.css";
 
 const {
@@ -56,11 +57,12 @@ const directions = `https://www.google.com/maps/dir/?api=1&destination=${encodeU
       map.attributionControl.setPrefix(false);
 
       L.tileLayer(
-        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+        "https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0" +
+          "&LAYER=GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2&STYLE=normal&TILEMATRIXSET=PM" +
+          "&FORMAT=image/png&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}",
         {
           attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-          subdomains: "abcd",
+            '&copy; <a href="https://www.ign.fr/">IGN</a>-F / <a href="https://geoservices.ign.fr/">Géoplateforme</a>',
           maxZoom: 19,
         }
       ).addTo(map);
@@ -175,6 +177,8 @@ const directions = `https://www.google.com/maps/dir/?api=1&destination=${encodeU
   }
 
   /* Leaflet accordé à la DA */
+  /* Plan IGN désaturé : proche de l'ancien fond neutre, le pin garde la couleur. */
+  .hub-map :global(.leaflet-tile-pane) { filter: grayscale(0.9) contrast(0.95) brightness(1.04); }
   .hub-map :global(.leaflet-control-zoom a) {
     background: rgba(20, 28, 38, 0.9);
     color: #fff;
