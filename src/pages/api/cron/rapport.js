@@ -5,7 +5,7 @@
 export const prerender = false
 
 import { put, head } from "@vercel/blob"
-import { generateReport, renderFromSnapshot, completerInstantane } from "../../../lib/rapport-seo.mjs"
+import { generateReport, renderFromSnapshot, completerInstantane, detailMarqueGsc } from "../../../lib/rapport-seo.mjs"
 
 const HISTORY_PATH = "rapport/history.json"
 const HTML_PATH = "rapport/index.html"
@@ -73,6 +73,20 @@ export async function GET({ request, url }) {
   const auth = request.headers.get("authorization")
   const ok = secret && (auth === `Bearer ${secret}` || url.searchParams.get("key") === secret)
   if (!ok) return new Response("unauthorized", { status: 401 })
+
+  // Diagnostic notoriété (?marque=1&month=AAAA-MM) : recherches comptées par la
+  // Search Console, une par ligne. Lecture seule, rien n'est écrit ni envoyé.
+  if (url.searchParams.get("marque") === "1") {
+    const ym = url.searchParams.get("month")
+    if (!/^\d{4}-\d{2}$/.test(ym || "")) {
+      return new Response(JSON.stringify({ ok: false, error: "month=AAAA-MM requis" }), { status: 400, headers: { "content-type": "application/json" } })
+    }
+    try {
+      return new Response(JSON.stringify({ ok: true, ...(await detailMarqueGsc(ym)) }), { status: 200, headers: { "content-type": "application/json" } })
+    } catch (e) {
+      return new Response(JSON.stringify({ ok: false, error: String(e?.message || e) }), { status: 500, headers: { "content-type": "application/json" } })
+    }
+  }
 
   // Complément d'un mois terminé (?refresh=1&month=AAAA-MM) : relit demandes et
   // trafic sur le mois entier, réécrit instantané, historique et HTML. Aucun appel

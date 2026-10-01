@@ -351,6 +351,31 @@ async function pullBrandGsc(ym) {
   return { source: "gsc", moyenne, serie }
 }
 
+/**
+ * Détail par recherche de ce que compte la courbe de notoriété sur un mois, en
+ * lecture seule (diagnostic, jamais montré au client). Sert à vérifier ce que
+ * la regex attrape : « huberdi » couvre aussi des homonymes (chèvrerie et gîte de
+ * la Huberdière dans la Manche, salle de Corps-Nuds…).
+ */
+export async function detailMarqueGsc(ym) {
+  const token = await gscToken()
+  if (!token) throw new Error("GSC_SERVICE_ACCOUNT_KEY absente")
+  const url = `https://searchconsole.googleapis.com/webmasters/v3/sites/${encodeURIComponent(GSC_SITE)}/searchAnalytics/query`
+  const r = await fetch(url, {
+    method: "POST",
+    headers: { authorization: `Bearer ${token}`, "content-type": "application/json" },
+    body: JSON.stringify({
+      startDate: `${ym}-01`, endDate: monthEndYMD(ym), dimensions: ["query"], rowLimit: 1000, type: "web",
+      dimensionFilterGroups: [{ filters: [{ dimension: "query", operator: "includingRegex", expression: GSC_BRAND_REGEX }] }],
+    }),
+  })
+  if (!r.ok) throw new Error(`GSC ${r.status} : ${(await r.text()).slice(0, 200)}`)
+  const rows = ((await r.json()).rows ?? []).map((x) => ({
+    requete: x.keys[0], impressions: x.impressions, clics: x.clicks, position: Math.round(x.position * 10) / 10,
+  })).sort((a, b) => b.impressions - a.impressions)
+  return { mois: ym, regex: GSC_BRAND_REGEX, total: rows.reduce((s, x) => s + x.impressions, 0), requetes: rows }
+}
+
 async function pullBrandVolume() {
   try {
     const result = await dfs("/keywords_data/google_ads/search_volume/live", {
