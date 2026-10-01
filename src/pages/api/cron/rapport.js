@@ -97,7 +97,7 @@ export async function GET({ request, url }) {
       return new Response(JSON.stringify({ ok: false, error: "month=AAAA-MM requis" }), { status: 400, headers: { "content-type": "application/json" } })
     }
     try {
-      const { snap, maj } = await completerInstantane(await loadBlobJson(snapshotPath(ym)))
+      const { snap, maj } = await completerInstantane(await loadBlobJson(snapshotPath(ym)), { serp: url.searchParams.get("serp") === "1" })
       const opts = { access: "public", addRandomSuffix: false, allowOverwrite: true, cacheControlMaxAge: 300 }
       // loadHistory() rend [] sur toute erreur de lecture : écrire ce vide effacerait l'historique.
       const hist = await loadHistory()
@@ -105,7 +105,7 @@ export async function GET({ request, url }) {
       await put(snapshotPath(ym), JSON.stringify(snap), { ...opts, contentType: "application/json" })
       // L'historique vivant porte aussi les totaux du mois, relus par les mois suivants.
       const e = snap.history.find((h) => h.month === ym)
-      const histMaj = hist.map((h) => (h.month === ym && e ? { ...h, leads: e.leads ?? h.leads, traffic: e.traffic ?? h.traffic } : h))
+      const histMaj = hist.map((h) => (h.month === ym && e ? { ...h, leads: e.leads ?? h.leads, traffic: e.traffic ?? h.traffic, positions: e.positions ?? h.positions, aio: e.aio ?? h.aio } : h))
       await put(HISTORY_PATH, JSON.stringify(histMaj, null, 2), { ...opts, contentType: "application/json" })
       const html = renderFromSnapshot(snap)
       await put(`rapport/m/${ym}.html`, html, { ...opts, contentType: "text/html; charset=utf-8" })

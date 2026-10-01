@@ -65,15 +65,14 @@ const releve = (s) => s.releve !== false
 const rang = (p) => `${p}<sup>${p === 1 ? "er" : "e"}</sup>`
 
 function bilan(recherches, positionDe) {
-  let premierePage = 0, top3 = 0, meilleure = null
+  let premierePage = 0, meilleure = null
   for (const s of recherches) {
     const p = positionDe(s)
     if (p == null) continue
     if (p <= 10) premierePage++
-    if (p <= 3) top3++
     if (!meilleure || p < meilleure.position) meilleure = { position: p, keyword: s.keyword }
   }
-  return { premierePage, top3, meilleure }
+  return { premierePage, meilleure }
 }
 
 // ── « Ce que les voisins captent et pas vous » ──────────────────────────────
@@ -153,33 +152,29 @@ export function renderVoisins(serp, voisins, nomChateau) {
   const n = recherches.length
   const manquees = clients.length - n
 
-  const lignes = [
-    { label: nomChateau, vous: true, ...bilan(recherches, (s) => s.position), devant: null },
-    ...voisins.map((v) => ({
-      label: v.label,
-      ...bilan(recherches, (s) => s.voisins?.[v.domain] ?? null),
-      // Devant le château : mieux classé que lui, ou classé là où il ne l'est pas.
-      devant: recherches.filter((s) => {
-        const p = s.voisins?.[v.domain]
-        return p != null && (s.position == null || p < s.position)
-      }).length,
-    })),
-  ].sort((a, b) => b.premierePage - a.premierePage || b.top3 - a.top3
-    || (a.meilleure?.position ?? 999) - (b.meilleure?.position ?? 999))
+  // Trois colonnes, le château d'abord : le tableau de septembre 2026, avec « 3
+  // premiers » et « Devant vous », a été jugé flou par le client. Les voisins
+  // absents partout tiennent en une ligne sous le tableau.
+  const chateau = { label: nomChateau, vous: true, ...bilan(recherches, (s) => s.position) }
+  const lesVoisins = voisins.map((v) => ({ label: v.label, ...bilan(recherches, (s) => s.voisins?.[v.domain] ?? null) }))
+  const presents = lesVoisins.filter((l) => l.meilleure)
+    .sort((a, b) => b.premierePage - a.premierePage || a.meilleure.position - b.meilleure.position)
+  const absents = lesVoisins.filter((l) => !l.meilleure).map((l) => l.label)
 
   const ligne = (l) => {
     const nom = l.vous ? `<strong>${esc(l.label)}</strong> <span class="badge">vous</span>` : esc(l.label)
     const mieux = l.meilleure
-      ? `au mieux ${rang(l.meilleure.position)} sur «\u00a0${esc(l.meilleure.keyword)}\u00a0»`
-      : `absent des ${n} recherches`
-    return `<tr><td>${nom}<br><span style="color:var(--gris);font-size:12px">${mieux}</span></td><td class="num">${l.premierePage}</td><td class="num">${l.top3}</td><td class="num">${l.devant == null ? "–" : l.devant}</td></tr>`
+      ? `${rang(l.meilleure.position)} <span style="color:var(--gris);font-size:12px">${esc(l.meilleure.keyword)}</span>`
+      : `<span style="color:var(--gris)">absent</span>`
+    return `<tr><td>${nom}</td><td class="num">${l.premierePage}</td><td>${mieux}</td></tr>`
   }
 
   return `<h2>Face aux voisins</h2>
-  <p class="lead">Sur les ${n} recherches de futurs clients que nous suivons pour vous (${esc(themesDesRecherches(serp))}), où sortent le château et ses ${voisins.length} voisins autour d'Amboise. Même relevé Google, le même jour, que le tableau des positions ci-dessus : les deux se recoupent.</p>
+  <p class="lead">Sur les ${n} recherches de futurs clients que nous suivons pour vous (${esc(themesDesRecherches(serp))}), combien placent chaque établissement en première page de Google, et sa meilleure place.</p>
   <table class="voisins">
-    <thead><tr><th>Établissement</th><th class="num">1<sup>re</sup> page</th><th class="num">3 premiers</th><th class="num">Devant vous</th></tr></thead>
-    <tbody>${lignes.map(ligne).join("")}</tbody>
+    <thead><tr><th>Établissement</th><th class="num">En 1<sup>re</sup> page</th><th>Meilleure place</th></tr></thead>
+    <tbody>${[chateau, ...presents].map(ligne).join("")}</tbody>
   </table>
-  <p class="note">Chaque chiffre est un nombre de recherches, sur ${n}. « 1<sup>re</sup> page » : parmi les dix premiers résultats Google. « 3 premiers » : sur le podium. « Devant vous » : recherches où l'établissement est mieux classé que le château, ou classé alors que le château n'apparaît pas. Les recherches sur votre nom et celles visées par les articles du blog sont laissées de côté : elles ne disent pas chez qui un client choisit de réserver.${manquees ? ` ${manquees} recherche${manquees > 1 ? "s n'ont" : " n'a"} pas pu être relevée${manquees > 1 ? "s" : ""} ce mois-ci et ${manquees > 1 ? "sont laissées" : "est laissée"} de côté plutôt que comptée${manquees > 1 ? "s" : ""} comme perdue${manquees > 1 ? "s" : ""}.` : ""}</p>`
+  ${absents.length ? `<p class="note">Absents des ${n} recherches : ${absents.map(esc).join(", ")}.</p>` : ""}
+  <p class="note">Même relevé Google que les positions ci-dessus. Les recherches sur votre nom et celles des articles du blog ne sont pas comptées.${manquees ? ` ${manquees} recherche${manquees > 1 ? "s n'ont" : " n'a"} pas pu être relevée${manquees > 1 ? "s" : ""} ce mois-ci et ${manquees > 1 ? "sont laissées" : "est laissée"} de côté.` : ""}</p>`
 }

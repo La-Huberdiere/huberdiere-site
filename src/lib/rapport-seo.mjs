@@ -1245,20 +1245,25 @@ function renderHtml(data) {
 
   <h2>Où vous sortez dans Google</h2>
   <p class="lead">Les recherches suivies sur lesquelles le château apparaît, et son mouvement depuis le rapport précédent. Position 1 = tout en haut : plus le chiffre est petit, mieux c'est.</p>
-  ${serpClasses.length ? `<table>
-    <thead><tr><th>Recherche</th><th class="num">Position</th><th class="num">Évolution</th><th class="hors-mobile">Qui est devant vous</th></tr></thead>
+  ${serpClasses.length || absents.perdues.length ? `<table>
+    <thead><tr><th>Recherche</th><th class="num">Position</th><th class="num">Évolution</th><th class="hors-mobile">En tête de Google</th></tr></thead>
     <tbody>${serpClasses.map((s) => {
       const mv = movement(s.position, prevPos[s.keyword], hasPrev)
       const posCell = s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${s.position}</a>` : String(s.position)
       const tete = s.position === 1 ? '<span class="badge">vous</span>' : esc(s.leader || "")
-      const teteMobile = s.position === 1 ? "vous êtes en tête" : s.leader ? `devant vous : ${esc(s.leader)}` : ""
+      const teteMobile = s.position === 1 ? "vous êtes en tête" : s.leader ? `en tête : ${esc(s.leader)}` : ""
       return `<tr><td>${esc(s.keyword)}${teteMobile ? `<span class="sur-mobile">${teteMobile}</span>` : ""}</td><td class="num pos">${posCell}</td><td class="num ${mv.cls}">${mv.txt}</td><td class="hors-mobile" style="color:var(--gris)">${tete}</td></tr>`
+    }).join("")}${absents.perdues.map((p) => {
+      // Classée le mois dernier, absente des 100 premiers résultats ce mois-ci : dans
+      // le tableau, pas noyée parmi les « pas encore classées ».
+      const avant = `${p.avant}<sup>${p.avant === 1 ? "er" : "e"}</sup> le mois dernier`
+      return `<tr><td>${esc(p.keyword)}<span class="sur-mobile">${avant}</span></td><td class="num pos" style="color:var(--gris)">–</td><td class="num down">sortie</td><td class="hors-mobile" style="color:var(--gris)">${avant}</td></tr>`
     }).join("")}</tbody>
   </table>` : `<div class="card">Aucune des recherches suivies ne place encore le château dans les 100 premiers résultats.</div>`}
-  ${absents.perdues.length ? `<p class="note"><strong>${absents.perdues.length} recherche${absents.perdues.length > 1 ? "s" : ""} ${absents.perdues.length > 1 ? "classées" : "classée"} au rapport précédent ${absents.perdues.length > 1 ? "n'apparaissent" : "n'apparaît"} pas dans le relevé de ce mois</strong> : ${absents.perdues.map((p) => `<span class="tag">${esc(p.keyword)}, ${p.avant}<sup>${p.avant === 1 ? "er" : "e"}</sup> le mois dernier</span>`).join("")}${serp.some((s) => s.organiques != null) ? "" : " L'outil de mesure a rendu ce mois-ci des pages de résultats souvent incomplètes : une absence n'y prouve pas une perte, le prochain relevé tranchera."}</p>` : ""}
-  ${absents.jamais.length ? `<p class="note"><strong>${absents.jamais.length} autre${absents.jamais.length > 1 ? "s" : ""} recherche${absents.jamais.length > 1 ? "s" : ""} suivie${absents.jamais.length > 1 ? "s" : ""}</strong> ne ${absents.jamais.length > 1 ? "placent" : "place"} pas encore le château : ${absents.jamais.map((s) => `<span class="tag">${esc(s.keyword)}</span>`).join("")}</p>` : ""}
-  ${serpNonReleves ? `<p class="note">${serpNonReleves} recherche${serpNonReleves > 1 ? "s n'ont" : " n'a"} pas pu être relevée${serpNonReleves > 1 ? "s" : ""} ce mois-ci, faute de réponse de l'outil de mesure : ${serp.filter((s) => s.releve === false).map((s) => `<span class="tag">${esc(s.keyword)}</span>`).join("")} ${serpNonReleves > 1 ? "Elles reprendront leur place au prochain rapport, sans être comptées comme perdues" : "Elle reprendra sa place au prochain rapport, sans être comptée comme perdue"}.</p>` : ""}
-  <p class="note">« Évolution » compare au rapport du mois dernier ; une case vide signale une recherche entrée dans le suivi ce mois-ci.</p>
+  ${absents.perdues.length && !serp.some((s) => s.organiques != null) ? `<p class="note">« Sortie » : absente du relevé de ce mois alors que classée le mois dernier. L'outil de mesure a rendu ce mois-là des pages de résultats souvent incomplètes : une sortie n'y prouve pas une perte.</p>` : ""}
+  ${absents.jamais.length ? `<p class="note"><strong>Pas encore classées (${absents.jamais.length})</strong> : ${absents.jamais.map((s) => esc(s.keyword)).join(", ")}.</p>` : ""}
+  ${serpNonReleves ? `<p class="note"><strong>Non relevées ce mois-ci (${serpNonReleves})</strong>, faute de réponse de l'outil de mesure : ${serp.filter((s) => s.releve === false).map((s) => esc(s.keyword)).join(", ")}. Elles ne comptent ni comme gagnées ni comme perdues.</p>` : ""}
+  <p class="note">« Évolution » compare au rapport du mois dernier : « entrée » quand le château n'y était pas classé.</p>
 
   ${aDesVoisins(serp)
     // Voisins lus dans l'instantané quand il les porte : un rejeu ne doit pas
@@ -1282,7 +1287,7 @@ function renderHtml(data) {
   <h2>Aperçus IA de Google</h2>
   <p class="lead">Depuis le 22 juillet 2026, Google affiche en France un résumé rédigé par son IA au-dessus des résultats classiques. Il répond directement à la question de l'internaute et cite quelques sites en source. Être cité dans cet encart, c'est occuper la place la plus visible de la page.</p>
   <div class="kpis" style="grid-template-columns:repeat(2,1fr)">
-    <div class="kpi"><div class="l">Mots-clés avec aperçu IA</div><div class="v">${aioKw.length}<span style="font-size:15px;color:var(--gris)"> / ${serpMesure.length}</span></div><div class="n">sur vos mots-clés suivis</div></div>
+    <div class="kpi"><div class="l">Mots-clés avec aperçu IA</div><div class="v">${aioKw.length}<span style="font-size:15px;color:var(--gris)"> / ${serpMesure.length}</span></div><div class="n">${aioKw.length && aioKw.length <= 3 ? aioKw.map((x) => `«\u00a0${esc(x.keyword)}\u00a0»`).join(", ") : "sur vos mots-clés suivis"}</div></div>
     <div class="kpi"><div class="l">Château cité en source</div><div class="v">${aioCitedKw.length}</div><div class="n">${aioKw.length ? `sur ${aioKw.length} aperçu${aioKw.length > 1 ? "s" : ""} affiché${aioKw.length > 1 ? "s" : ""}` : "aucun aperçu ce mois-ci"}</div></div>
   </div>
   ${aioKw.length ? `<table style="margin-top:16px">
@@ -1344,7 +1349,9 @@ function buildExec({ month, serp, articlesNew, citedTotal, answeredTotal, gbp, l
   const aioN = serp.filter((s) => s.aio).length
   if (aioN) {
     const cites = serp.filter((s) => s.aioCited).length
-    bits.push(`aperçu IA de Google sur <strong>${aioN}</strong> mot${aioN > 1 ? "s" : ""}-clé${aioN > 1 ? "s" : ""} suivi${aioN > 1 ? "s" : ""}, ${cites > 0 ? `château cité dans <strong>${cites}</strong> d'entre eux` : "château pas encore cité comme source"}`)
+    // Nommés tant qu'ils tiennent dans la phrase : « sur 1 mot-clé » ne disait pas lequel.
+    const noms = aioN <= 3 ? ` (${serp.filter((s) => s.aio).map((s) => `«\u00a0${esc(s.keyword)}\u00a0»`).join(", ")})` : ""
+    bits.push(`aperçu IA de Google sur <strong>${aioN}</strong> mot${aioN > 1 ? "s" : ""}-clé${aioN > 1 ? "s" : ""} suivi${aioN > 1 ? "s" : ""}${noms}, ${cites > 0 ? `château cité dans <strong>${cites}</strong> d'entre eux` : "château pas encore cité comme source"}`)
   }
   if (gbp?.note != null) bits.push(`note Google <strong>${String(gbp.note).replace(".", ",")}</strong>`)
   return `Ce mois-ci : ${bits.join(", ")}.`
@@ -1454,7 +1461,7 @@ export async function generateReport(prevHistory = [], month = null) {
  * le 1er que le 30 au soir. Positions, IA et voisins restent ceux du jour d'envoi,
  * un nouveau relevé les daterait d'un autre mois.
  */
-export async function completerInstantane(snap) {
+export async function completerInstantane(snap, { serp: relever = false } = {}) {
   const ym = snap?.month
   if (!/^\d{4}-\d{2}$/.test(ym || "")) throw new Error("instantané sans mois")
   const now = new Date()
@@ -1462,14 +1469,23 @@ export async function completerInstantane(snap) {
   if (ym >= courant) throw new Error(`${ym} n'est pas terminé`)
   // La notoriété aussi : l'estimation a été élargie le 01/10 à toutes les formulations
   // du château, et ses mois passés sont fixes, la relire ne date rien d'un autre mois.
-  const [leads, traffic, brand] = await Promise.all([pullLeads(ym), pullUmami(ym), pullBrand(ym)])
+  // Les positions, seulement sur demande (`serp`) et le 1er ou presque : le rapport
+  // part désormais le 1er avec des relevés du 1er, un relevé plus tardif daterait
+  // le mois d'un autre. Utilisé le 01/10/2026 pour septembre, dont les pages de
+  // résultats du 30/09 étaient tronquées. Coût : 0,3 à 0,6 $ de DataForSEO.
+  const [leads, traffic, brand, serp] = await Promise.all([pullLeads(ym), pullUmami(ym), pullBrand(ym), relever ? pullSerp() : null])
   const out = { ...snap, leads: leads ?? snap.leads, traffic: traffic ?? snap.traffic, brand: brand ?? snap.brand, complete: now.toISOString() }
+  if (serp) out.serp = serp
   out.history = (snap.history ?? []).map((h) => h.month !== ym ? h : {
     ...h,
     ...(leads ? { leads: { total: leads.total, newsletter: leads.newsletter, chatgpt: leads.chatgpt, ia: leads.ia?.total ?? null } } : {}),
     ...(traffic ? { traffic: { pageviews: traffic.pageviews, visitors: traffic.visitors, visits: traffic.visits } } : {}),
+    ...(serp ? {
+      positions: Object.fromEntries(serp.filter((x) => x.releve !== false).map((x) => [x.keyword, x.position])),
+      aio: { present: serp.filter((x) => x.aio).length, cited: serp.filter((x) => x.aioCited).length, keywords: serp.filter((x) => x.releve !== false).length },
+    } : {}),
   })
-  return { snap: out, maj: { leads: !!leads, traffic: !!traffic, brand: brand?.source ?? null } }
+  return { snap: out, maj: { leads: !!leads, traffic: !!traffic, brand: brand?.source ?? null, serp: serp ? serp.filter((x) => x.releve !== false).length : null } }
 }
 
 /**

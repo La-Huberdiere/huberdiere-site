@@ -39,30 +39,30 @@ test("compte sur les seules recherches clients, ni marque ni blog", () => {
   const html = renderVoisins(SERP, VOISINS, "Château de la Huberdière")
   assert.match(html, /3 recherches/)
   const pray = lignes(html).find((l) => l.includes("Château de Pray"))
-  // 1re page : mariage (2) et séminaire (8) → 2 ; top 3 : 1 ; devant vous : mariage (2<5) et séminaire (8<14) → 2
-  assert.match(pray, /\|2\|1\|2\|$/)
+  // 1re page : mariage (2) et séminaire (8) → 2 ; meilleure place 2e sur mariage
+  assert.match(pray, /\|2\|2\|e\|/)
 })
 
-test("un voisin présent là où le château est absent sort devant lui", () => {
-  const clos = lignes(renderVoisins(SERP, VOISINS, "Château de la Huberdière")).find((l) => l.includes("Le Clos"))
-  // 1re page : mariage (9) et chambres (4) → 2 ; top 3 : 0 ; devant : chambres (château absent) → 1
-  assert.match(clos, /\|2\|0\|1\|$/)
+test("trois colonnes seulement : établissement, 1re page, meilleure place", () => {
+  // Rapport de septembre 2026 jugé flou : « 3 premiers » et « Devant vous » retirés.
+  const html = renderVoisins(SERP, VOISINS, "Château de la Huberdière")
+  assert.equal((html.match(/<th[ >]/g) || []).length, 3)
+  assert.doesNotMatch(html, /Devant vous|3 premiers/)
 })
 
-test("le château en tête de sa propre ligne, voisins triés, absent signalé en toutes lettres", () => {
+test("le château en première ligne, les voisins absents partout regroupés sous le tableau", () => {
   const html = renderVoisins(SERP, VOISINS, "Château de la Huberdière")
   const l = lignes(html).slice(1) // sans l'en-tête
-  assert.match(l[0], /Château de Pray/) // 2 en 1re page, 1 dans le top 3
-  assert.ok(l.findIndex((x) => x.includes("Huberdière")) >= 0)
-  const naz = l.find((x) => x.includes("Nazelles"))
-  assert.match(naz, /absent/)
-  assert.match(naz, /\|0\|0\|0\|$/)
+  assert.match(l[0], /Huberdière/)
+  assert.match(l[1], /Château de Pray/) // 2 en 1re page, devant le Clos à 2 mais au mieux 4e
+  assert.ok(!l.some((x) => x.includes("Nazelles")))
+  assert.match(html, /Absents des 3 recherches\s?: Château de Nazelles/)
 })
 
 test("meilleure place écrite en clair, sans couleur pour la porter", () => {
   const html = renderVoisins(SERP, VOISINS, "Château de la Huberdière")
-  assert.match(html, /2<sup>e<\/sup> sur «\s?mariage château touraine\s?»/)
-  assert.match(html, /5<sup>e<\/sup> sur «\s?mariage château touraine\s?»/) // le château
+  assert.match(html, /2<sup>e<\/sup>[^<]*<span[^>]*>mariage château touraine/)
+  assert.match(html, /5<sup>e<\/sup>[^<]*<span[^>]*>mariage château touraine/) // le château
   assert.doesNotMatch(html, /class="(up|down|yes|no)"/)
 })
 
@@ -71,7 +71,7 @@ test("une recherche non relevée ne compte pour personne, et le dit", () => {
   const html = renderVoisins(serp, VOISINS, "Château de la Huberdière")
   assert.match(html, /3 recherches/) // pas 4
   assert.match(html, /1 recherche n'a pas pu être relevée/)
-  assert.match(lignes(html).find((l) => l.includes("Le Clos")), /\|2\|0\|1\|$/)
+  assert.match(lignes(html).find((l) => l.includes("Le Clos")), /\|2\|4\|e\|/)
 })
 
 test("entre plusieurs relevés d'une même recherche, garde la page la plus complète", () => {
