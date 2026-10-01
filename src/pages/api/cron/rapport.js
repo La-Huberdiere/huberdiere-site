@@ -5,7 +5,7 @@
 export const prerender = false
 
 import { put, head } from "@vercel/blob"
-import { generateReport, renderFromSnapshot } from "../../../lib/rapport-seo.mjs"
+import { generateReport, renderFromSnapshot, completerInstantane } from "../../../lib/rapport-seo.mjs"
 
 const HISTORY_PATH = "rapport/history.json"
 const HTML_PATH = "rapport/index.html"
@@ -64,7 +64,7 @@ async function sendEmail(summary, monthLabel) {
     : s.marqueAnPasse == null ? ` Sur le nom du château, ${s.marque} recherches Google en ${s.marqueMois}.`
     : ` Sur le nom du château, ${s.marque} recherches Google en ${s.marqueMois} contre ${s.marqueAnPasse} un an plus tôt${s.marque > s.marqueAnPasse ? ", c'est la courbe qui compte le plus aujourd'hui" : ""}.`
   const dem = s.demandes == null || s.demandes === 0 ? ""
-    : ` Côté demandes, vous avez reçu ${s.demandes} contact${s.demandes > 1 ? "s" : ""} via le site${s.demandesChatgpt > 0 ? `, dont ${s.demandesChatgpt} en provenance de ChatGPT` : ""}.`
+    : ` Côté demandes, vous avez reçu ${s.demandes} contact${s.demandes > 1 ? "s" : ""} via le site${s.demandesIa > 0 ? `, dont ${s.demandesIa} ${s.demandesIa > 1 ? "venues" : "venue"} d'une IA comme ChatGPT` : ""}.`
   const html = `
     <div style="font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;color:#212121;line-height:1.65;font-size:15px;max-width:520px">
       <p>Bonjour à tous les deux,</p>
@@ -73,7 +73,7 @@ async function sendEmail(summary, monthLabel) {
         <a href="${REPORT_URL}?m=${s.month}" style="color:#8B0000;font-weight:600;font-size:16px">Ouvrir le rapport →</a><br>
         <span style="color:#646464;font-size:13px">mot de passe <strong>SEOHUBERDIERE</strong>, à saisir une seule fois sur votre navigateur</span>
       </p>
-      <p>En deux mots ce mois-ci : ${art}, et ${kw}. Côté intelligences artificielles, le château a été cité ${s.llmCited} fois sur ${s.llmAnswered} questions testées${gbp}.${marque}${aio}${dem}</p>
+      <p>En deux mots ce mois-ci : ${art}, et ${kw}. Côté intelligences artificielles, le château a été cité dans ${s.llmCited} des ${s.llmAnswered} réponses obtenues${gbp}.${marque}${aio}${dem}</p>
       <p>Le rapport reprend l'évolution mois par mois et ce sur quoi je travaille pour la suite. Une question, un doute ? Répondez simplement à ce message.</p>
       <p style="margin-top:24px">Bonne lecture,<br>Alexis</p>
     </div>`
@@ -91,6 +91,37 @@ export async function GET({ request, url }) {
   const auth = request.headers.get("authorization")
   const ok = secret && (auth === `Bearer ${secret}` || url.searchParams.get("key") === secret)
   if (!ok) return new Response("unauthorized", { status: 401 })
+
+  // Complément d'un mois terminé (?refresh=1&month=AAAA-MM) : relit demandes et
+  // trafic sur le mois entier, réécrit instantané, historique et HTML. Aucun appel
+  // DataForSEO, aucun mail. Lancé seul le 1er du mois par le cron `rebuild`.
+  if (url.searchParams.get("refresh") === "1") {
+    const ym = url.searchParams.get("month")
+    if (!/^\d{4}-\d{2}$/.test(ym || "")) {
+      return new Response(JSON.stringify({ ok: false, error: "month=AAAA-MM requis" }), { status: 400, headers: { "content-type": "application/json" } })
+    }
+    try {
+      const { snap, maj } = await completerInstantane(await loadBlobJson(snapshotPath(ym)))
+      const opts = { access: "public", addRandomSuffix: false, allowOverwrite: true, cacheControlMaxAge: 300 }
+      // loadHistory() rend [] sur toute erreur de lecture : écrire ce vide effacerait l'historique.
+      const hist = await loadHistory()
+      if (!hist.length) throw new Error("historique illisible, rien n'a été réécrit")
+      await put(snapshotPath(ym), JSON.stringify(snap), { ...opts, contentType: "application/json" })
+      // L'historique vivant porte aussi les totaux du mois, relus par les mois suivants.
+      const e = snap.history.find((h) => h.month === ym)
+      const histMaj = hist.map((h) => (h.month === ym && e ? { ...h, leads: e.leads ?? h.leads, traffic: e.traffic ?? h.traffic } : h))
+      await put(HISTORY_PATH, JSON.stringify(histMaj, null, 2), { ...opts, contentType: "application/json" })
+      const html = renderFromSnapshot(snap)
+      await put(`rapport/m/${ym}.html`, html, { ...opts, contentType: "text/html; charset=utf-8" })
+      const dernier = histMaj.filter((h) => h.hasReport).map((h) => h.month).sort().pop()
+      if (ym === dernier) await put(HTML_PATH, html, { ...opts, contentType: "text/html; charset=utf-8" })
+      return new Response(JSON.stringify({ ok: true, month: ym, maj, leads: snap.leads?.total ?? null, visiteurs: snap.traffic?.visitors ?? null }), {
+        status: 200, headers: { "content-type": "application/json" },
+      })
+    } catch (e) {
+      return new Response(JSON.stringify({ ok: false, error: String(e?.message || e) }), { status: 500, headers: { "content-type": "application/json" } })
+    }
+  }
 
   // Rejeu de mise en page : reconstruit le HTML d'un mois (ou de tous) depuis son
   // instantané. Aucun appel DataForSEO, aucun mail, l'historique n'est pas touché.

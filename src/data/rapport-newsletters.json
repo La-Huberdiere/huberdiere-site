@@ -3,31 +3,31 @@
     {
       "nom": "La newsletter d'automne",
       "envoi": "2026-09-21",
-      "releve": "2026-09-28",
+      "releve": "2026-10-01",
       "objet": "L'automne s'installe au Château de la Huberdière 🍂",
       "envoyes": 1318,
       "recus": 1236,
-      "ouvertures": 731,
-      "cliqueurs": 104,
+      "ouvertures": 735,
+      "cliqueurs": 105,
       "desinscrits": 20,
       "plaintes": 0,
       "rebonds": {
         "definitifs": 41,
-        "temporaires": 44
+        "temporaires": 45
       },
       "segments": [
         {
           "nom": "Vos clients 2026",
           "envoyes": 152,
           "recus": 152,
-          "ouvertures": 106,
-          "cliqueurs": 13
+          "ouvertures": 107,
+          "cliqueurs": 14
         },
         {
           "nom": "Vos clients des années précédentes",
           "envoyes": 162,
           "recus": 162,
-          "ouvertures": 107,
+          "ouvertures": 108,
           "cliqueurs": 19
         },
         {
@@ -41,7 +41,7 @@
           "nom": "Autres contacts vérifiés",
           "envoyes": 606,
           "recus": 595,
-          "ouvertures": 326,
+          "ouvertures": 328,
           "cliqueurs": 50
         },
         {
@@ -55,7 +55,7 @@
       "liens": [
         {
           "nom": "Le film du château",
-          "visites": 63
+          "visites": 65
         },
         {
           "nom": "Le week-end en groupe",
@@ -83,9 +83,9 @@
         }
       ],
       "robotsEcartes": 110,
-      "visiteursReels": 115,
+      "visiteursReels": 117,
       "surLeSite": {
-        "film": 33,
+        "film": 34,
         "disponibilites": 6,
         "demandes": 0
       }

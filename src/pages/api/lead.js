@@ -402,6 +402,10 @@ function classifyChannel(data) {
   if (data.utm_source) return labelFromUtm(data);
   const r = (data.referrer || "").toLowerCase();
   if (!r) return "Accès direct";
+  // Sans trace de la première visite, le formulaire renvoie la page interne
+  // précédente : le site n'est pas un canal. Cas typique, un lien ouvert depuis
+  // l'application ChatGPT, qui n'envoie ni référent ni UTM.
+  if (/^https?:\/\/([a-z0-9-]+\.)*chateaudelahuberdiere\.com(\/|$)/.test(r)) return "Accès direct";
   if (/(google|bing|yahoo|duckduckgo|qwant|ecosia|search\.brave)\./.test(r)) return "Recherche organique (SEO)";
   if (/(instagram|facebook|fb\.com|fb\.me|l\.facebook|lm\.facebook|t\.co|twitter|x\.com|linkedin|lnkd\.in|pinterest|youtube|youtu\.be|tiktok|snapchat)\./.test(r))
     return "Réseaux sociaux";

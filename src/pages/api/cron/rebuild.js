@@ -107,12 +107,29 @@ export async function GET({ request, url }) {
     const res = await fetch(hook, { method: "POST" })
     const body = await res.json().catch(() => ({}))
 
+    // Le 1er du mois, le rapport de la veille est complété de sa dernière journée
+    // (demandes et trafic), sans mail. Il était parti le dernier jour à 8 h.
+    let complementRes = null
+    if (jour === 1) {
+      const [y, m] = ym.split("-").map(Number)
+      const veille = m === 1 ? `${y - 1}-12` : `${y}-${String(m - 1).padStart(2, "0")}`
+      // Domaine canonique en dur : une redirection apex → www perdrait l'en-tête d'autorisation.
+      complementRes = await fetch(`https://www.chateaudelahuberdiere.com/api/cron/rapport?refresh=1&month=${veille}`, {
+        headers: { authorization: `Bearer ${secret}` }, signal: AbortSignal.timeout(120000),
+      }).then((r) => r.json()).catch((e) => ({ ok: false, error: String(e?.message || e) }))
+      if (!complementRes?.ok) {
+        await alerter(`Rapport ${veille} : complément du 1er en échec`,
+          `<p>Le rapport de ${esc(veille)} n'a pas été complété de sa dernière journée (demandes et trafic) : ${esc(complementRes?.error ?? "réponse inattendue")}.</p>` +
+          `<p>À relancer à la main : <code>/api/cron/rapport?refresh=1&amp;month=${esc(veille)}&amp;key=…</code></p>`)
+      }
+    }
+
     let preflightRes = null
     if (forcer || JOURS_PREFLIGHT.includes(jour)) {
       preflightRes = await preflight(moisPreflight).catch((e) => ({ ok: false, error: String(e?.message || e) }))
     }
 
-    return new Response(JSON.stringify({ ok: res.ok, job: body?.job ?? null, preflight: preflightRes }), {
+    return new Response(JSON.stringify({ ok: res.ok, job: body?.job ?? null, preflight: preflightRes, complement: complementRes }), {
       status: res.ok ? 200 : 502, headers: { "content-type": "application/json" },
     })
   } catch (e) {

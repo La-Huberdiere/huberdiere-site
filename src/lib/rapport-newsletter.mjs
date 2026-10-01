@@ -18,7 +18,8 @@ function pct(n, sur) {
 
 function dateLongue(iso) {
   const d = new Date(`${iso}T12:00:00Z`)
-  return Number.isNaN(d.getTime()) ? String(iso) : d.toLocaleDateString("fr-FR", { day: "numeric", month: "long", timeZone: "UTC" })
+  // « 1er octobre », pas « 1 octobre ».
+  return Number.isNaN(d.getTime()) ? String(iso) : d.toLocaleDateString("fr-FR", { day: "numeric", month: "long", timeZone: "UTC" }).replace(/^1 /, "1er ")
 }
 
 function renderCampagne(c) {
@@ -36,7 +37,7 @@ function renderCampagne(c) {
   <div class="kpis">
     <div class="kpi"><div class="l">Bien reçue</div><div class="v">${fr(c.recus)}</div><div class="n">${pct(c.recus, c.envoyes)} des adresses</div></div>
     <div class="kpi"><div class="l">Ouverte</div><div class="v">${pct(c.ouvertures, c.recus)}</div><div class="n">${fr(c.ouvertures)} personnes</div></div>
-    <div class="kpi"><div class="l">Venus sur le site</div><div class="v">${fr(c.cliqueurs)}</div><div class="n">${pct(c.cliqueurs, c.recus)} des lecteurs</div></div>
+    <div class="kpi"><div class="l">Venus sur le site</div><div class="v">${fr(c.cliqueurs)}</div><div class="n">${pct(c.cliqueurs, c.recus)} des mails reçus</div></div>
     <div class="kpi"><div class="l">Désinscriptions</div><div class="v">${fr(c.desinscrits)}</div><div class="n">${pct(c.desinscrits, c.recus)}, ${c.plaintes ? `${fr(c.plaintes)} signalement${c.plaintes > 1 ? "s" : ""} en indésirable` : "aucun signalement en indésirable"}</div></div>
   </div>
   ${segments.length ? `<p class="sub-h">Qui a lu</p>

@@ -18,7 +18,11 @@ import TRAVAUX from "../data/rapport-travaux.json"
 import NEWSLETTERS from "../data/rapport-newsletters.json"
 import { renderNewsletters } from "./rapport-newsletter.mjs"
 import { renderBrandChart } from "./rapport-graphique.mjs"
-import { positionsVoisins, renderVoisins, aDesVoisins, pageLaPlusComplete } from "./rapport-voisins.mjs"
+import { positionsVoisins, renderVoisins, aDesVoisins, pageLaPlusComplete, rechercheCaptable, filtrerCaptees } from "./rapport-voisins.mjs"
+import { fenetresDeJours, pointDeComparaison } from "./rapport-periodes.mjs"
+import { repartirAbsents, absenceProuvee } from "./rapport-positions.mjs"
+import { buildLeadsData } from "./rapport-demandes.mjs"
+export { buildLeadsData }
 
 const DFS = "https://api.dataforseo.com/v3"
 const LOCATION = 2250 // France
@@ -120,26 +124,6 @@ const COMPETITORS = [
   { domain: "chateaudesarpentis.com", label: "Château des Arpentis" },
 ]
 
-// Écartés du tableau des recherches captées par les voisins : leur propre nom, et
-// celui de leur commune quand l'établissement le porte. Personne ne se positionne
-// sur le nom d'un concurrent, ces lignes ne sont pas des opportunités. Sans ce
-// filtre les trois quarts du tableau se résument aux noms des voisins.
-const GAP_STOPWORDS = ["pray", "perreux", "noizay", "huberdi"]
-
-// Un voisin sort sur quantité de recherches sans rapport avec le château : d'autres
-// domaines du même nom, des communes lointaines, des établissements tiers. Une
-// recherche doit toucher au territoire ou à une prestation du château pour valoir
-// d'être montrée au client. Le mot « château » seul est volontairement absent :
-// il laisserait passer « château de pezay » et tous les homonymes.
-const MARCHE = [
-  "amboise", "loire", "touraine", "tours", "indre-et-loire", "vouvray", "nazelles",
-  "chenonceau", "chambord", "villandry", "chaumont", "montlouis", "blois",
-  "mariage", "seminaire", "reception", "privatis", "chambre d'hote", "chambres d'hote",
-  "hotel", "gite", "sejour", "week-end", "weekend", "yoga", "retraite", "piscine",
-  "spa", "table d'hote", "bien-etre", "anniversaire",
-]
-const sansAccent = (x) => String(x).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
-
 const GBP = { cid: "5728274181919890705", title: "Château de la Huberdière", coord: "47.447,0.935,15" }
 
 const ARTICLE_FILES = import.meta.glob("../content/articles/*.mdoc", { query: "?raw", import: "default", eager: true })
@@ -229,6 +213,8 @@ async function pullSerp() {
         const all = page.items
         const items = all.filter((i) => i.type === "organic")
         const own = items.find((i) => domMatch(i.domain, DOMAIN))
+        // Absent d'une page tronquée : rien n'est prouvé, la recherche n'est pas relevée.
+        if (!own && !absenceProuvee(page)) throw new Error(`page tronquée à ${page.organiques} résultats, château absent`)
         const leader = items.find((i) => i.rank_absolute === 1) ?? items[0]
         const aio = all.find((i) => i.type === "ai_overview")
         const aioRefs = aio ? aioReferences(aio) : []
@@ -243,6 +229,9 @@ async function pullSerp() {
           // Place des voisins dans la même page : c'est elle qui alimente « Face aux
           // voisins », pour que ce tableau et celui des positions se recoupent.
           voisins: positionsVoisins(all, COMPETITORS),
+          // Profondeur de la page lue : un instantané qui la porte a vu ses absences
+          // prouvées sur une page complète (cf. absenceProuvee).
+          organiques: page.organiques,
         }
       } catch (e) {
         console.error("SERP KO", k.keyword, e.message)
@@ -533,11 +522,7 @@ async function pullCompetitors() {
   }))
 
   const tout = parVoisin.flat().filter((k) => k.keyword && k.position != null)
-  const utiles = tout.filter((k) => {
-    const kw = sansAccent(k.keyword)
-    if (GAP_STOPWORDS.some((w) => kw.includes(sansAccent(w)))) return false
-    return MARCHE.some((m) => kw.includes(sansAccent(m)))
-  })
+  const utiles = tout.filter((k) => rechercheCaptable(k.keyword))
 
   // Google regroupe les variantes d'une même recherche : « restaurant amboise » et
   // « restaurants in amboise » sortent avec le même volume, le même site et la même
@@ -622,6 +607,17 @@ function readArticles(cutoff) {
 }
 
 // ── Rendu HTML ────────────────────────────────────────────────────────────
+// Le rapport affichait l'identifiant technique de la catégorie (« sejour »,
+// « seminaire ») et la date ISO (« 2026-09-16 »).
+const THEMES_ARTICLE = {
+  mariage: "Mariage", sejour: "Séjour", seminaire: "Séminaire", famille: "Famille",
+  retraite: "Retraite", "art-de-vivre": "Art de vivre",
+}
+const themeArticle = (c) => THEMES_ARTICLE[c] ?? c
+const dateCourte = (iso) => {
+  const d = new Date(`${iso}T12:00:00Z`)
+  return Number.isNaN(d.getTime()) ? String(iso) : d.toLocaleDateString("fr-FR", { day: "numeric", month: "long", timeZone: "UTC" }).replace(/^1 /, "1er ")
+}
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
 // fr-FR sépare les milliers par une espace fine (U+202F) que Montserrat ne dessine
 // pas : « 1318 » à l'écran. Espace insécable ordinaire à la place.
@@ -631,85 +627,6 @@ const fr = (n) => Number(n || 0).toLocaleString("fr-FR").replace(/\u202f/g, "\u0
 // Le rapport referme la boucle business : pas seulement des positions Google, mais
 // les demandes de contact réellement reçues via les formulaires du site, ventilées
 // par activité et par canal d'origine (dont la visibilité IA).
-const CIBLE_LABEL_RAPPORT = {
-  LP_Mariage: "Mariage",
-  LP_Seminaire: "Séminaire",
-  LP_Stage: "Retraite / stage",
-  LP_Reunion_Famille: "Réunion de famille",
-  Grands_Gites: "Grand gîte / famille",
-  LP_Sejour: "Séjour",
-  LP_Restauration: "Restauration",
-  Contact_Form: "Contact (autre)",
-  Autre: "Autre",
-}
-
-// Canal lisible depuis la source figée au premier contact (utm_source ou referrer
-// d'entrée, cf. attribution first-touch du site).
-function leadChannel(src) {
-  const r = String(src || "").toLowerCase().trim()
-  if (!r) return "Accès direct / source non identifiée"
-  if (/chatgpt|openai/.test(r)) return "ChatGPT"
-  if (/perplexity|gemini|claude|copilot/.test(r)) return "Autres IA"
-  if (/google|bing|yahoo|duckduckgo|qwant|ecosia|brave/.test(r)) return "Recherche Google"
-  if (/instagram|facebook|linkedin|pinterest|tiktok|youtube|twitter|x\.com/.test(r)) return "Réseaux sociaux"
-  if (/bouche/.test(r)) return "Bouche à oreille"
-  // Domaine référent nommé : on l'affiche proprement. Un token non reconnu qui n'est
-  // pas un domaine (utm cassé, saisie parasite) retombe en non identifié, jamais brut.
-  if (r.includes(".")) return `Référent : ${r.replace(/^https?:\/\//, "").replace(/^www\./, "").split("/")[0]}`
-  return "Accès direct / source non identifiée"
-}
-
-// Emails internes / tests exclus du décompte client.
-const isTestEmail = (e) => {
-  const s = String(e || "").toLowerCase()
-  return !s || s.includes("+") || /@morain\.fr$/.test(s) || s === "alexmorain@yahoo.fr"
-}
-
-// Segmentation pure (testable hors ligne) : contacts Brevo bruts + mois AAAA-MM →
-// totaux, ventilation par activité et par canal.
-// `moisSoumission` (Map email -> AAAA-MM) rattache chaque demande au mois où le
-// prospect a RÉELLEMENT écrit, lu dans les mails de confirmation. Sans lui, le
-// mois vient de `createdAt`, c'est-à-dire de la date à laquelle Brevo a bien
-// voulu stocker la ligne : une demande de juillet ressaisie en août comptait pour
-// août. Les contacts sans confirmation (imports Octorate, saisies manuelles)
-// retombent sur `createdAt`, faute de mieux.
-export function buildLeadsData(contacts, ym, moisSoumission = null) {
-  const A = (x, k) => (x.attributes || {})[k]
-  const first = (v) => (Array.isArray(v) ? v[0] : v)
-  const moisDe = (x) => moisSoumission?.get(String(x.email || "").toLowerCase()) || (x.createdAt || "").slice(0, 7)
-  const rows = (Array.isArray(contacts) ? contacts : []).filter((x) => moisDe(x) === ym)
-
-  let newsletter = 0
-  const demandes = []
-  for (const x of rows) {
-    const form = String(first(A(x, "FORM")) || "")
-    if (!form) continue
-    if (isTestEmail(x.email)) continue
-    if (form === "Newsletter_Form") { newsletter++; continue }
-    demandes.push({
-      cible: CIBLE_LABEL_RAPPORT[form] || form,
-      canal: leadChannel(A(x, "UTM_SOURCE")),
-      // Déclaratif du prospect (champ « Comment nous avez-vous connus ? »).
-      declare: String(A(x, "ATTRIBUTION") || "").trim(),
-    })
-  }
-
-  const tally = (arr, key) => {
-    const m = new Map()
-    for (const d of arr) m.set(d[key], (m.get(d[key]) || 0) + 1)
-    return [...m.entries()].sort((a, b) => b[1] - a[1])
-  }
-  const chatgpt = demandes.filter((d) => d.canal === "ChatGPT").length
-  const identifies = demandes.filter((d) => d.canal !== "Accès direct / source non identifiée").length
-  const declares = demandes.filter((d) => d.declare)
-  return {
-    total: demandes.length, newsletter,
-    parCible: tally(demandes, "cible"), parCanal: tally(demandes, "canal"),
-    parDeclare: tally(declares, "declare"), declares: declares.length,
-    chatgpt, identifies,
-  }
-}
-
 // ── Contrôle mensuel : le CRM a-t-il bien tout enregistré ? ────────────────
 // Le bloc « Demandes reçues » compte des CONTACTS Brevo. Or Brevo peut refuser
 // un contact en silence et la demande disparaît du CRM alors que le prospect a
@@ -739,18 +656,20 @@ export async function pullConfirmations(depuisYm = PREMIER_MOIS, jusquaYm = null
   const fin = jour(Math.min(jusquaYm ? monthRangeMs(jusquaYm).end : Date.now(), Date.now()))
 
   const premiere = new Map()
-  for (let offset = 0; offset < 20000; offset += 1000) {
-    const u = `https://api.brevo.com/v3/smtp/statistics/events?limit=1000&offset=${offset}&startDate=${debut}&endDate=${fin}`
-    const res = await fetch(u, { headers, signal: AbortSignal.timeout(20000) })
-    if (!res.ok) throw new Error(`Brevo events ${res.status}`)
-    const events = (await res.json()).events || []
-    for (const e of events) {
-      if (!CONFIRM_SUBJECTS.some((x) => (e.subject || "").startsWith(x))) continue
-      const email = (e.email || "").toLowerCase()
-      const d = (e.date || "").slice(0, 16)
-      if (email && (!premiere.has(email) || d < premiere.get(email))) premiere.set(email, d)
+  for (const [du, au] of fenetresDeJours(debut, fin)) {
+    for (let offset = 0; offset < 20000; offset += 1000) {
+      const u = `https://api.brevo.com/v3/smtp/statistics/events?limit=1000&offset=${offset}&startDate=${du}&endDate=${au}`
+      const res = await fetch(u, { headers, signal: AbortSignal.timeout(20000) })
+      if (!res.ok) throw new Error(`Brevo events ${res.status} (${du} → ${au})`)
+      const events = (await res.json()).events || []
+      for (const e of events) {
+        if (!CONFIRM_SUBJECTS.some((x) => (e.subject || "").startsWith(x))) continue
+        const email = (e.email || "").toLowerCase()
+        const d = (e.date || "").slice(0, 16)
+        if (email && (!premiere.has(email) || d < premiere.get(email))) premiere.set(email, d)
+      }
+      if (events.length < 1000) break
     }
-    if (events.length < 1000) break
   }
   return premiere
 }
@@ -834,7 +753,15 @@ export function renderLeads(ld, monthLabel) {
     const strong = /IA$|ChatGPT/.test(c)
     return `<tr><td>${strong ? `<strong style="color:var(--bordeaux)">${esc(c)}</strong>` : esc(c)}</td><td class="num">${n}</td></tr>`
   }).join("")
-  const chatgptNote = ld.chatgpt > 0
+  // `ia` n'existe pas dans les instantanés d'avant octobre 2026 : on y garde
+  // l'ancien encart, qui ne comptait que les clics tracés depuis ChatGPT.
+  const ia = ld.ia
+  const pl = (n, un, plusieurs) => (n > 1 ? plusieurs : un)
+  const chatgptNote = ia && ia.total > 0
+    ? `<div class="summary" style="border-left-color:var(--bordeaux)"><strong>Signal IA :</strong> ${ia.total} demande${pl(ia.total, "", "s")} sur ${ld.total} ${pl(ia.total, "vient", "viennent")} d'une IA ce mois-ci${ia.tracees && ia.declareesSeules
+      ? ` : ${ia.tracees} ${pl(ia.tracees, "tracée", "tracées")} jusqu'au clic, ${ia.declareesSeules} ${pl(ia.declareesSeules, "déclarée", "déclarées")} par le prospect seulement`
+      : ia.declareesSeules ? `, toutes déclarées par le prospect` : ""}.${ia.declareesSeules ? " Un lien ouvert depuis l'application ChatGPT arrive le plus souvent sans laisser de trace : seule la colonne « Ce qu'ils déclarent » le voit, d'où un chiffre plus bas dans la colonne des canaux." : ""}</div>`
+    : !ia && ld.chatgpt > 0
     ? `<div class="summary" style="border-left-color:var(--bordeaux)"><strong>Signal IA :</strong> ${ld.chatgpt} demande${ld.chatgpt > 1 ? "s" : ""} ${ld.chatgpt > 1 ? "sont arrivées" : "est arrivée"} via ChatGPT ce mois-ci. Les visiteurs qui interrogent une IA avant de choisir un lieu commencent à trouver le château : un premier retour du travail de visibilité sur les moteurs de réponse.</div>`
     : ""
   return `<h2>Demandes reçues</h2>
@@ -1045,7 +972,7 @@ export function renderTraffic(td, monthLabel) {
   <div class="leadsgrid" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:14px">
     <div><table><thead><tr><th>Par où les visiteurs entrent</th><th class="num">Visites</th></tr></thead><tbody>${entryRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
     <div><table><thead><tr><th>D'où viennent les visiteurs</th><th class="num">Visites</th></tr></thead><tbody>${refRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
-    <div><table><thead><tr><th>Sur quel appareil</th><th class="num">Visites</th></tr></thead><tbody>${deviceRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
+    <div><table><thead><tr><th>Sur quel appareil</th><th class="num">Visiteurs</th></tr></thead><tbody>${deviceRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
   </div>
   <p class="note">« Visiteurs » compte les personnes uniques, « visites » leurs sessions, « pages vues » le total des pages ouvertes. Le taux « en une page » mesure les visiteurs partis après une seule page. Les canaux regroupent l'origine des visites : recherche Google, réseaux sociaux, publicité, accès direct, sites référents. « Par où les visiteurs entrent » compte la première page de chaque visite : c'est la porte d'entrée réelle du site. L'appareil est déduit de la taille de l'écran.${td.hasBaseline ? "" : " C'est le premier mois de mesure Umami : la comparaison avec le mois précédent apparaîtra au prochain rapport."}</p>`
 }
@@ -1109,6 +1036,10 @@ export function renderGains(opportunities, cp) {
     <tbody>${opportunities.map((s) => `<tr><td>${esc(s.keyword)}</td><td>${esc(s.intent)}</td><td class="num pos">${s.position}</td></tr>`).join("")}</tbody>
   </table>` : ""
 
+  // Refiltré au rendu : un instantané d'avant le 01/10 porte encore le nom des voisins
+  // d'Amboise, que le filtre de l'époque ne connaissait pas.
+  const filtre = filtrerCaptees(cp?.gap ?? [])
+  cp = cp ? { ...cp, gap: filtre.gap, ecartes: (cp.ecartes ?? 0) + filtre.ecartees } : cp
   const captees = cp?.gap?.length ? `<h3 class="sub-h">Ce que les voisins captent et pas vous</h3>
   <p class="lead">Recherches sur lesquelles un château voisin sort dans les vingt premiers résultats, alors que le vôtre n'apparaît pas du tout.</p>
   <table>
@@ -1158,9 +1089,11 @@ function renderHtml(data) {
   // mesure, du dernier mois complet, quitte à ce qu'il soit estimé.
   const brandConfirme = [...brandPts].reverse().find((p) => p.complet && p.mesure)
     ?? [...brandPts].reverse().find((p) => p.complet) ?? null
-  const brandAnPasse = brandPts.length >= 12 ? brandPts[0] : null
+  const comparaison = pointDeComparaison(brandPts, brandConfirme)
+  const brandAnPasse = comparaison?.point ?? null
   const serpClasses = serp.filter((s) => s.position != null).sort((a, b) => a.position - b.position)
   const serpAbsents = serpMesure.filter((s) => s.position == null)
+  const absents = repartirAbsents(serpAbsents, prevPos, hasPrev)
   const aioKw = serp.filter((s) => s.aio)
   const aioCitedKw = serp.filter((s) => s.aioCited)
 
@@ -1172,6 +1105,7 @@ function renderHtml(data) {
   })
   const citedTotal = perQuestion.reduce((s, q) => s + q.citedBy.length, 0)
   const answeredTotal = perQuestion.reduce((s, q) => s + q.answered, 0)
+  const muets = llm.filter((e) => !e.rows.some((r) => !r.error)).map((e) => e.engine)
 
   // Archives : rapports précédents déjà générés (hors mois courant).
   const archiveMonths = history.filter((h) => h.hasReport && h.month < month).map((h) => h.month).sort((a, b) => b.localeCompare(a))
@@ -1304,7 +1238,7 @@ function renderHtml(data) {
   <div class="card">${renderBrandChart(brandPts)}</div>
   ${brandConfirme ? `<div class="kpis" style="grid-template-columns:repeat(2,1fr)">
     <div class="kpi"><div class="l">${brandConfirme.mesure ? "Dernier mois mesuré" : "Dernier mois complet"}</div><div class="v">${fr(brandConfirme.volume)}</div><div class="n">${esc(brandConfirme.label)}, sur le nom du château</div></div>
-    <div class="kpi"><div class="l">Il y a un an</div><div class="v">${brandAnPasse ? fr(brandAnPasse.volume) : "–"}</div><div class="n">${brandAnPasse ? `${esc(brandAnPasse.label)}${brandAnPasse.mesure ? "" : ", estimation"}` : "historique encore court"}</div></div>
+    <div class="kpi"><div class="l">${esc(comparaison?.titre ?? "Il y a un an")}</div><div class="v">${brandAnPasse ? fr(brandAnPasse.volume) : "–"}</div><div class="n">${brandAnPasse ? `${esc(brandAnPasse.label)}${brandAnPasse.mesure ? "" : ", estimation"}` : "historique encore court"}</div></div>
   </div>` : ""}
   <p class="note">Depuis que Google répond directement dans son aperçu IA, une partie des internautes ne clique plus le lien : ils lisent la réponse, retiennent le nom du château, et reviennent quelques jours plus tard en le tapant dans Google ou en allant droit sur le site. Ce trajet-là n'apparaît nulle part dans les statistiques de trafic. En revanche il se voit ici : plus le nom est cherché, plus le château a été vu et retenu, quel que soit l'endroit où il a été vu. Une courbe qui monte pendant que le trafic depuis les résultats de recherche stagne n'est pas une contradiction, c'est la signature de ce nouveau fonctionnement.</p>
   <p class="note">${brandMixte
@@ -1325,7 +1259,8 @@ function renderHtml(data) {
       return `<tr><td>${esc(s.keyword)}${teteMobile ? `<span class="sur-mobile">${teteMobile}</span>` : ""}</td><td class="num pos">${posCell}</td><td class="num ${mv.cls}">${mv.txt}</td><td class="hors-mobile" style="color:var(--gris)">${tete}</td></tr>`
     }).join("")}</tbody>
   </table>` : `<div class="card">Aucune des recherches suivies ne place encore le château dans les 100 premiers résultats.</div>`}
-  ${serpAbsents.length ? `<p class="note"><strong>${serpAbsents.length} autres recherches suivies</strong> ne placent pas encore le château : ${serpAbsents.map((s) => `<span class="tag">${esc(s.keyword)}</span>`).join("")}</p>` : ""}
+  ${absents.perdues.length ? `<p class="note"><strong>${absents.perdues.length} recherche${absents.perdues.length > 1 ? "s" : ""} ${absents.perdues.length > 1 ? "classées" : "classée"} au rapport précédent ${absents.perdues.length > 1 ? "n'apparaissent" : "n'apparaît"} pas dans le relevé de ce mois</strong> : ${absents.perdues.map((p) => `<span class="tag">${esc(p.keyword)}, ${p.avant}<sup>${p.avant === 1 ? "er" : "e"}</sup> le mois dernier</span>`).join("")}${serp.some((s) => s.organiques != null) ? "" : " L'outil de mesure a rendu ce mois-ci des pages de résultats souvent incomplètes : une absence n'y prouve pas une perte, le prochain relevé tranchera."}</p>` : ""}
+  ${absents.jamais.length ? `<p class="note"><strong>${absents.jamais.length} autre${absents.jamais.length > 1 ? "s" : ""} recherche${absents.jamais.length > 1 ? "s" : ""} suivie${absents.jamais.length > 1 ? "s" : ""}</strong> ne ${absents.jamais.length > 1 ? "placent" : "place"} pas encore le château : ${absents.jamais.map((s) => `<span class="tag">${esc(s.keyword)}</span>`).join("")}</p>` : ""}
   ${serpNonReleves ? `<p class="note">${serpNonReleves} recherche${serpNonReleves > 1 ? "s n'ont" : " n'a"} pas pu être relevée${serpNonReleves > 1 ? "s" : ""} ce mois-ci, faute de réponse de l'outil de mesure : ${serp.filter((s) => s.releve === false).map((s) => `<span class="tag">${esc(s.keyword)}</span>`).join("")} ${serpNonReleves > 1 ? "Elles reprendront leur place au prochain rapport, sans être comptées comme perdues" : "Elle reprendra sa place au prochain rapport, sans être comptée comme perdue"}.</p>` : ""}
   <p class="note">« Évolution » compare au rapport du mois dernier ; une case vide signale une recherche entrée dans le suivi ce mois-ci.</p>
 
@@ -1341,7 +1276,7 @@ function renderHtml(data) {
   <p class="lead">Le contenu mis en ligne pour le château en ${esc(monthLabel)}, avec les mots-clés visés. Cliquez le titre pour lire l'article.</p>
   ${articlesMois.length ? `<table>
     <thead><tr><th>Article</th><th class="hors-mobile">Publié le</th><th class="hors-mobile">Thème</th><th>Mots-clés visés</th></tr></thead>
-    <tbody>${articlesMois.map((a) => `<tr><td><a href="${esc(a.url)}" target="_blank" rel="noopener"><strong>${esc(a.title)}</strong></a><span class="sur-mobile">publié le ${esc(a.publishedAt)}, ${esc(a.category)}</span></td><td class="hors-mobile" style="white-space:nowrap">${esc(a.publishedAt)}</td><td class="hors-mobile">${esc(a.category)}</td><td>${a.keywords.map((k) => `<span class="tag">${esc(k)}</span>`).join("")}</td></tr>`).join("")}</tbody>
+    <tbody>${articlesMois.map((a) => `<tr><td><a href="${esc(a.url)}" target="_blank" rel="noopener"><strong>${esc(a.title)}</strong></a><span class="sur-mobile">publié le ${esc(dateCourte(a.publishedAt))}, ${esc(themeArticle(a.category))}</span></td><td class="hors-mobile" style="white-space:nowrap">${esc(dateCourte(a.publishedAt))}</td><td class="hors-mobile">${esc(themeArticle(a.category))}</td><td>${a.keywords.map((k) => `<span class="tag">${esc(k)}</span>`).join("")}</td></tr>`).join("")}</tbody>
   </table>` : `<div class="card"><p style="margin:0;color:var(--gris)">Aucun article publié sur cette période.</p></div>`}
   <p class="note">Votre blog compte désormais ${articles.length} article${articles.length > 1 ? "s" : ""} en ligne. Les prochains sont planifiés dans votre <a href="/rapport?doc=calendrier">calendrier éditorial SEO &rarr;</a> : quatre articles par mois, chacun visant une recherche précise de vos futurs clients.</p>
 
@@ -1372,10 +1307,13 @@ function renderHtml(data) {
       const c = e.rows.filter((r) => r.cited).length
       const n = e.rows.filter((r) => !r.error).length
       const comps = [...new Set(e.rows.flatMap((r) => r.competitors))]
+      // Un moteur muet tout le mois (Gemini en septembre 2026) n'a cité personne :
+      // « 0 / 0, aucun » le faisait passer pour un moteur qui ignore le château.
+      if (!n) return `<tr><td>${esc(e.engine)}</td><td class="num" style="color:var(--gris)">–</td><td style="color:var(--gris)">pas de réponse de ce moteur ce mois-ci</td></tr>`
       return `<tr><td>${esc(e.engine)}</td><td class="num"><span class="${c > 0 ? "yes" : "no"}">${c} / ${n}</span></td><td style="color:var(--gris)">${comps.length ? comps.map(esc).join(", ") : "aucun"}</td></tr>`
     }).join("")}</tbody>
   </table>
-  <p class="note">Les réponses des IA varient d'un jour à l'autre : lisez ce bloc comme une tendance, pas comme une note figée.</p>
+  <p class="note">${muets.length ? `${esc(muets.join(" et "))} n'${muets.length > 1 ? "ont" : "a"} rendu aucune réponse ce mois-ci : le décompte porte sur ${answeredTotal} réponses obtenues. ` : ""}Les réponses des IA varient d'un jour à l'autre : lisez ce bloc comme une tendance, pas comme une note figée.</p>
 
   <footer>
     ${archivesHtml}
@@ -1462,7 +1400,7 @@ export async function generateReport(prevHistory = [], month = null) {
   cur.llmAnswered = answeredTotal
   cur.aio = { present: serp.filter((s) => s.aio).length, cited: serp.filter((s) => s.aioCited).length, keywords: serp.filter((s) => s.releve !== false).length }
   if (brand) cur.brandVolume = brand.serie[brand.serie.length - 1]?.volume ?? null
-  if (leads) cur.leads = { total: leads.total, newsletter: leads.newsletter, chatgpt: leads.chatgpt }
+  if (leads) cur.leads = { total: leads.total, newsletter: leads.newsletter, chatgpt: leads.chatgpt, ia: leads.ia?.total ?? null }
   if (traffic) cur.traffic = { pageviews: traffic.pageviews, visitors: traffic.visitors, visits: traffic.visits }
   cur.hasReport = true
   byMonth.set(ym, cur)
@@ -1475,6 +1413,11 @@ export async function generateReport(prevHistory = [], month = null) {
   const exec = buildExec({ month: ym, serp, articlesNew, citedTotal, answeredTotal, gbp, leads })
   const html = renderHtml({ ...snapshot, exec })
 
+  // Même règle que le rendu : le dernier mois mesuré et complet, sinon le dernier complet.
+  const serieMarque = brand?.serie ?? []
+  const marqueConfirmee = [...serieMarque].reverse().find((p) => p.complet && p.mesure)
+    ?? [...serieMarque].reverse().find((p) => p.complet) ?? null
+  const marqueComparee = pointDeComparaison(serieMarque, marqueConfirmee)
   const summary = {
     month: ym,
     articles: articles.length,
@@ -1487,17 +1430,44 @@ export async function generateReport(prevHistory = [], month = null) {
     aioCited: serp.filter((s) => s.aioCited).length,
     // Dernier mois CONFIRMÉ, pas le plus récent : le point tout juste publié par
     // Keyword Planner est trop instable pour être annoncé au client (cf. renderHtml).
-    marque: brand && brand.serie.length >= 2 ? brand.serie[brand.serie.length - 2].volume : null,
-    marqueMois: brand && brand.serie.length >= 2 ? brand.serie[brand.serie.length - 2].label : null,
-    marqueAnPasse: brand && brand.serie.length >= 12 ? brand.serie[0].volume : null,
+    marque: marqueConfirmee?.volume ?? null,
+    marqueMois: marqueConfirmee?.label ?? null,
+    // Même mois un an plus tôt, ou rien : la phrase du mail dit « un an plus tôt ».
+    marqueAnPasse: marqueComparee?.titre === "Il y a un an" ? marqueComparee.point.volume : null,
     backlinks: backlinks.backlinks,
     gbpNote: gbp?.note ?? null,
     demandes: leads?.total ?? null,
     demandesChatgpt: leads?.chatgpt ?? 0,
+    // Tracées ou déclarées : le clic depuis l'appli ChatGPT ne laisse le plus souvent aucune trace.
+    demandesIa: leads?.ia?.total ?? leads?.chatgpt ?? 0,
     visiteurs: traffic?.visitors ?? null,
     pagesVues: traffic?.pageviews ?? null,
   }
   return { html, history, summary, snapshot, monthLabel: monthLong(ym), month: ym }
+}
+
+/**
+ * Complète un mois terminé. Le rapport part le dernier jour à 8 h : demandes et
+ * trafic s'arrêtent là, et le trafic se comparait à un mois précédent, lui, complet
+ * (septembre 2026 : 1 581 visiteurs annoncés, 1 614 sur le mois entier). Seules les
+ * sources bornées au mois sont relues, Brevo et Umami : elles disent la même chose
+ * le 1er que le 30 au soir. Positions, IA et voisins restent ceux du jour d'envoi,
+ * un nouveau relevé les daterait d'un autre mois.
+ */
+export async function completerInstantane(snap) {
+  const ym = snap?.month
+  if (!/^\d{4}-\d{2}$/.test(ym || "")) throw new Error("instantané sans mois")
+  const now = new Date()
+  const courant = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`
+  if (ym >= courant) throw new Error(`${ym} n'est pas terminé`)
+  const [leads, traffic] = await Promise.all([pullLeads(ym), pullUmami(ym)])
+  const out = { ...snap, leads: leads ?? snap.leads, traffic: traffic ?? snap.traffic, complete: now.toISOString() }
+  out.history = (snap.history ?? []).map((h) => h.month !== ym ? h : {
+    ...h,
+    ...(leads ? { leads: { total: leads.total, newsletter: leads.newsletter, chatgpt: leads.chatgpt, ia: leads.ia?.total ?? null } } : {}),
+    ...(traffic ? { traffic: { pageviews: traffic.pageviews, visitors: traffic.visitors, visits: traffic.visits } } : {}),
+  })
+  return { snap: out, maj: { leads: !!leads, traffic: !!traffic } }
 }
 
 /**
