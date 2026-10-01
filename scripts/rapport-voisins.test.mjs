@@ -92,6 +92,10 @@ test("le nom d'un voisin, ou de la commune qu'il porte, n'est pas une recherche 
     "château des arpentis", "nazelles", "amboise", "37400 amboise", "amboise france", "chateau de pray"]) {
     assert.equal(rechercheCaptable(k), false, k)
   }
+  // Août 2026 : établissements tiers et homonyme (Nozay n'est pas Noizay).
+  for (const k of ["restaurant le lion d'or amboise", "calypso amboise", "la table du manoir amboise", "l'avant garde amboise", "hotel nozay"]) {
+    assert.equal(rechercheCaptable(k), false, k)
+  }
   for (const k of ["hotel amboise", "restaurant amboise", "hotels à amboise", "mariage château touraine"]) {
     assert.equal(rechercheCaptable(k), true, k)
   }

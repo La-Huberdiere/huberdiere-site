@@ -1,7 +1,7 @@
 // node --test scripts/rapport-positions.test.mjs
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { repartirAbsents, absenceProuvee } from "../src/lib/rapport-positions.mjs"
+import { repartirAbsents, absenceProuvee, domainesCites } from "../src/lib/rapport-positions.mjs"
 
 test("une recherche classée le mois dernier n'est pas « pas encore classée »", () => {
   // Septembre 2026 : « salle de la huberdière » (17e en août) listée parmi les
@@ -22,4 +22,10 @@ test("sans rapport précédent, tout absent est simplement non classé", () => {
 test("une absence ne se prouve que sur une page complète", () => {
   assert.equal(absenceProuvee({ complete: true }), true)
   assert.equal(absenceProuvee({ complete: false }), false)
+})
+
+test("un site cité deux fois dans un aperçu IA n'apparaît qu'une fois", () => {
+  // Août 2026 : « amboise-valdeloire.com » listé deux fois pour « que faire autour d'amboise ».
+  const refs = [{ domain: "amboise-valdeloire.com" }, { domain: "www.valdeloire-france.com" }, { domain: "www.amboise-valdeloire.com" }, { domain: "" }]
+  assert.deepEqual(domainesCites(refs), ["amboise-valdeloire.com", "www.valdeloire-france.com"])
 })

@@ -20,7 +20,7 @@ import { renderNewsletters } from "./rapport-newsletter.mjs"
 import { renderBrandChart } from "./rapport-graphique.mjs"
 import { positionsVoisins, renderVoisins, aDesVoisins, pageLaPlusComplete, rechercheCaptable, filtrerCaptees } from "./rapport-voisins.mjs"
 import { fenetresDeJours, pointDeComparaison } from "./rapport-periodes.mjs"
-import { repartirAbsents, absenceProuvee } from "./rapport-positions.mjs"
+import { repartirAbsents, absenceProuvee, domainesCites } from "./rapport-positions.mjs"
 import { buildLeadsData } from "./rapport-demandes.mjs"
 export { buildLeadsData }
 
@@ -1003,28 +1003,6 @@ function movement(cur, prev, hasPrev) {
 }
 
 /**
- * ANCIEN tableau des voisins, gardé pour les instantanés d'avant le 28/09 (août) :
- * un rejeu doit rendre ce que le client a reçu. Les rapports suivants passent par
- * renderVoisins (rapport-voisins.mjs), qui ne mélange plus estimations et relevés.
- */
-export function renderCompetitors(cp) {
-  if (!cp || !cp.rows?.length) return ""
-  const ordre = [...cp.rows].sort((a, b) => b.top10 - a.top10 || b.top3 - a.top3 || b.etv - a.etv)
-  const ligne = (r) => {
-    const nom = r.isBrand ? `<strong>${esc(r.label)}</strong> <span class="badge">vous</span>` : esc(r.label)
-    return `<tr><td>${nom}<span class="sur-mobile">${fr(r.referringDomains)} sites font un lien</span></td><td class="num hors-mobile">${fr(r.referringDomains)}</td><td class="num pos">${fr(r.top3)}</td><td class="num">${fr(r.top10)}</td><td class="num">${fr(r.top20)}</td><td class="num">${fr(r.etv)}</td></tr>`
-  }
-  const voisins = cp.rows.length - 1
-  return `<h2>Face aux voisins</h2>
-  <p class="lead">Les ${fr(voisins)} châteaux et hôtels qui visent la même clientèle que vous autour d'Amboise, mesurés le même jour avec les mêmes outils.</p>
-  <table class="voisins">
-    <thead><tr><th>Établissement</th><th class="num hors-mobile">Sites qui font un lien</th><th class="num">Mots-clés top 3</th><th class="num">Top 10</th><th class="num">Top 20</th><th class="num">Visiteurs Google / mois</th></tr></thead>
-    <tbody>${ordre.map(ligne).join("")}</tbody>
-  </table>
-  <p class="note">« Mots-clés top 3 » compte toutes les recherches Google sur lesquelles l'établissement sort dans les trois premiers résultats, pas seulement celles que nous suivons pour vous. « Sites qui font un lien » est le nombre de domaines qui pointent vers lui : ce capital de confiance se construit sur des années et explique une bonne part de l'écart. La dernière colonne est l'estimation Google du trafic mensuel que ces positions rapportent.</p>`
-}
-
-/**
  * Deux chemins de gain, du plus rapide au plus lent : remonter là où le château
  * est déjà proche, puis aller chercher ce que les voisins captent seuls.
  */
@@ -1268,7 +1246,10 @@ function renderHtml(data) {
     // Voisins lus dans l'instantané quand il les porte : un rejeu ne doit pas
     // afficher « absent » pour un voisin ajouté à COMPETITORS après coup.
     ? renderVoisins(serp, competitors?.rows?.some((r) => !r.isBrand) ? competitors.rows.filter((r) => !r.isBrand).map((r) => ({ domain: r.domain, label: r.label })) : COMPETITORS, "Château de la Huberdière")
-    : renderCompetitors(competitors)}
+    // Instantané d'avant le 28/09 (août) : l'ancien tableau d'estimations DataForSEO
+    // contredisait les positions relevées juste au-dessus. Retiré au rejeu (01/10),
+    // plutôt que de montrer encore des chiffres faux.
+    : ""}
 
   ${renderGains(opportunities, competitors)}
 
@@ -1289,8 +1270,9 @@ function renderHtml(data) {
   ${aioKw.length ? `<table style="margin-top:16px">
     <thead><tr><th>Mot-clé déclenchant un aperçu</th><th class="num">Votre position</th><th class="num">Château cité</th><th class="hors-mobile">Sites cités dans l'aperçu</th></tr></thead>
     <tbody>${aioKw.map((s) => {
-      const sources = s.aioRefs.length ? s.aioRefs.map((r) => esc(r.domain)).filter(Boolean).slice(0, 4).join(", ") : "sources non communiquées"
-      return `<tr><td>${esc(s.keyword)}<span class="sur-mobile">${s.aioRefs.length ? `cités : ${sources}` : sources}</span></td><td class="num pos">${s.position != null ? s.position : '<span style="color:var(--gris)">non classé</span>'}</td><td class="num">${s.aioCited ? '<span class="yes">oui</span>' : '<span class="no">non</span>'}</td><td class="hors-mobile" style="color:var(--gris)">${sources}</td></tr>`
+      const cites = domainesCites(s.aioRefs)
+      const sources = cites.length ? cites.slice(0, 4).map(esc).join(", ") : "sources non communiquées"
+      return `<tr><td>${esc(s.keyword)}<span class="sur-mobile">${cites.length ? `cités : ${sources}` : sources}</span></td><td class="num pos">${s.position != null ? s.position : '<span style="color:var(--gris)">non classé</span>'}</td><td class="num">${s.aioCited ? '<span class="yes">oui</span>' : '<span class="no">non</span>'}</td><td class="hors-mobile" style="color:var(--gris)">${sources}</td></tr>`
     }).join("")}</tbody>
   </table>` : `<div class="card">Aucun aperçu IA relevé ce mois-ci sur vos mots-clés suivis. C'est cohérent : Google en affiche peu sur les recherches locales et commerciales, qui sont justement les vôtres. Le déploiement français se poursuit jusqu'au 23 septembre 2026, on surveille mois par mois.</div>`}
   <p class="note">Sur les recherches où un aperçu s'affiche, le nombre de clics vers les sites baisse nettement, y compris pour la première position. La parade n'est pas de monter d'un rang, c'est d'être la source que l'IA cite. C'est ce qui guide la façon dont vos articles sont désormais écrits : une question par titre, une réponse nette dessous, des chiffres et des détails que personne d'autre ne peut donner sur le château.</p>

@@ -51,8 +51,8 @@ export function pageLaPlusComplete(resultats) {
   return { ...meilleure, complete: meilleure.organiques >= PAGE_COMPLETE }
 }
 
-// Un instantané d'avant la refonte n'a pas de `voisins` : on lui laisse son ancien
-// tableau plutôt que de réécrire ce que le client a reçu.
+// Un instantané d'avant la refonte (août 2026) n'a pas de `voisins` : la section y
+// est omise, l'ancien tableau d'estimations contredisait les positions relevées.
 export const aDesVoisins = (serp) => Array.isArray(serp) && serp.some((s) => s && typeof s.voisins === "object")
 
 // Les recherches de clients : ni le nom du château (il y est premier par définition)
@@ -85,6 +85,9 @@ function bilan(recherches, positionDe) {
 const GAP_STOPWORDS = [
   "pray", "perreux", "noizay", "huberdi",
   "clos d'amboise", "relais d'amboise", "pavillon des lys", "arpentis", "chateau de nazelles", "chateau-nazelles",
+  // Établissements tiers et homonyme relevés en août 2026 (Nozay n'est pas Noizay) :
+  // le nom d'un autre restaurant n'est pas une recherche à capter.
+  "lion d'or", "calypso", "table du manoir", "avant garde", "nozay",
 ]
 // Une commune seule (« amboise », « 37400 amboise », « amboise france ») cherche une
 // ville, pas un lieu où dormir ou se marier.

@@ -19,3 +19,17 @@ export function repartirAbsents(absents, prevPos, hasPrev) {
   }
   return { jamais, perdues }
 }
+
+// Sites cités par un aperçu IA, une fois chacun : avec ou sans « www. », c'est le
+// même site (août 2026 : « amboise-valdeloire.com » listé deux fois).
+export function domainesCites(refs) {
+  const vus = new Set(), out = []
+  for (const r of Array.isArray(refs) ? refs : []) {
+    const d = String(r?.domain || "").trim()
+    const cle = d.replace(/^www\./i, "").toLowerCase()
+    if (!cle || vus.has(cle)) continue
+    vus.add(cle)
+    out.push(d)
+  }
+  return out
+}
