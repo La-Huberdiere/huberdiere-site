@@ -19,7 +19,8 @@ import NEWSLETTERS from "../data/rapport-newsletters.json"
 import { renderNewsletters } from "./rapport-newsletter.mjs"
 import { renderBrandChart } from "./rapport-graphique.mjs"
 import { positionsVoisins, renderVoisins, aDesVoisins, pageLaPlusComplete, rechercheCaptable, filtrerCaptees } from "./rapport-voisins.mjs"
-import { fenetresDeJours, pointDeComparaison } from "./rapport-periodes.mjs"
+import { fenetresDeJours, pointDeComparaison, moisDecales } from "./rapport-periodes.mjs"
+import { BRAND_KEYWORDS, GSC_BRAND_REGEX } from "./rapport-marque.mjs"
 import { repartirAbsents, absenceProuvee, domainesCites } from "./rapport-positions.mjs"
 import { buildLeadsData } from "./rapport-demandes.mjs"
 export { buildLeadsData }
@@ -70,16 +71,7 @@ const KEYWORDS = [
 // retient le nom, revient trois jours plus tard en le tapant. Cette courbe est le seul
 // indicateur honnête du travail de visibilité maintenant que le clic depuis les
 // résultats n'est plus attribuable.
-// « la huberdière » seule est VOLONTAIREMENT exclue : 590 à 880 recherches par mois
-// pour un indice de concurrence de 2, c'est un toponyme, il existe des lieux-dits de
-// ce nom ailleurs en France. L'inclure triplerait le chiffre sans qu'il parle du
-// château. Un indicateur client se construit sur ce qu'on peut défendre.
-const BRAND_KEYWORDS = [
-  "château de la huberdière",
-  "chateau de la huberdiere",
-  "huberdière amboise",
-  "chateau huberdiere nazelles",
-]
+// Formulations comptées : voir rapport-marque.mjs, commune à l'estimation et à la mesure.
 
 const LLM_ENGINES = [
   { llmType: "chat_gpt", label: "ChatGPT", model: "gpt-4o-mini" },
@@ -256,9 +248,6 @@ async function pullSerp() {
 // premier, une impression vaut une recherche : c'est le même indicateur, mesuré
 // au lieu d'être estimé. D'où la bascule dès que la clé est posée.
 const GSC_SITE = process.env.GSC_SITE || "sc-domain:chateaudelahuberdiere.com"
-// Toutes les variantes de marque en une seule regex. « huberdi » s'arrête avant
-// l'accent, donc attrape « huberdière » comme « huberdiere », seul ou accompagné.
-const GSC_BRAND_REGEX = process.env.GSC_BRAND_REGEX || "huberdi"
 // Les deux ou trois derniers jours ne sont pas encore consolidés côté Google.
 const GSC_LAG_DAYS = 3
 
@@ -376,10 +365,13 @@ export async function detailMarqueGsc(ym) {
   return { mois: ym, regex: GSC_BRAND_REGEX, total: rows.reduce((s, x) => s + x.impressions, 0), requetes: rows }
 }
 
-async function pullBrandVolume() {
+async function pullBrandVolume(ym) {
   try {
+    // Treize mois avant le mois du rapport : le dernier mois annoncé (ym - 1) doit
+    // trouver son homologue de l'année précédente dans la série.
+    const depuis = moisDecales(ym, -13)
     const result = await dfs("/keywords_data/google_ads/search_volume/live", {
-      keywords: BRAND_KEYWORDS, location_code: LOCATION, language_code: LANGUAGE,
+      keywords: BRAND_KEYWORDS, location_code: LOCATION, language_code: LANGUAGE, date_from: `${depuis}-01`,
     })
     const parMois = new Map()
     let moyenne = 0
@@ -397,7 +389,7 @@ async function pullBrandVolume() {
         for (const [ym, v] of Object.entries(ms)) parMois.set(ym, (parMois.get(ym) ?? 0) + (v ?? 0))
       }
     }
-    const serie = [...parMois.entries()].sort((a, b) => a[0].localeCompare(b[0])).slice(-12)
+    const serie = [...parMois.entries()].filter(([m]) => m >= depuis && m <= ym).sort((a, b) => a[0].localeCompare(b[0]))
     return {
       source: "ads", moyenne,
       // Le point le plus récent de Keyword Planner est la sortie de modèle la plus
@@ -424,7 +416,7 @@ async function pullBrand(ym) {
   } catch (e) {
     console.error("[rapport] GSC KO, repli Keyword Planner :", e.message)
   }
-  const ads = await pullBrandVolume()
+  const ads = await pullBrandVolume(ym)
   if (!gsc) return ads
   if (!ads?.serie?.length) return gsc
 
@@ -1248,7 +1240,8 @@ function renderHtml(data) {
     ? `Les barres hachurées sont l'estimation de l'outil publicitaire de Google, seule source qui remonte aussi loin, arrondie par paliers fixes. Les barres pleines sont le comptage réel de votre Search Console, disponible depuis ${esc(monthLong(brand.charniere))}. Les deux mesurent la même chose, la première l'estime et la seconde la compte : le changement d'outil se voit au motif des barres, il n'est jamais fondu dans la courbe. Une barre en pointillé est un mois encore inachevé, que nous n'annonçons pas.`
     : brandGsc
     ? "Ces chiffres sont comptés par Google dans votre Search Console, pas estimés. Google consolide ses données avec deux à trois jours de retard : la dernière barre du graphique est donc tracée en pointillé tant que son mois n'est pas terminé, et les chiffres ci-dessus s'arrêtent au dernier mois complet."
-    : "Ces volumes sont des estimations de l'outil publicitaire de Google, arrondies par paliers fixes (320, 390, 480, 590, 720, 880, 1 000…) et publiées avec un mois de décalage. La dernière barre est tracée en pointillé parce qu'un mois tout juste publié saute parfois plusieurs paliers d'un coup, sans que rien ne l'ait justifié : nous ne l'annonçons qu'une fois le mois suivant arrivé."} C'est la pente sur plusieurs mois qui raconte l'essentiel, jamais le dernier point pris seul.</p>` : ""}
+    : "Ces volumes sont des estimations de l'outil publicitaire de Google, arrondies par paliers fixes (320, 390, 480, 590, 720, 880, 1 000…) et publiées avec un mois de décalage. La dernière barre est tracée en pointillé parce qu'un mois tout juste publié saute parfois plusieurs paliers d'un coup, sans que rien ne l'ait justifié : nous ne l'annonçons qu'une fois le mois suivant arrivé."} C'est la pente sur plusieurs mois qui raconte l'essentiel, jamais le dernier point pris seul.</p>
+  <p class="note">Sont comptées les recherches qui nomment le château (« château de la Huberdière », avec ou sans accents, « … photos », « la Huberdière Nazelles »…). Sont écartés les homonymes, une ferme-auberge, un gîte et une salle de la Huberdière ailleurs en France, ainsi que « la Huberdière » tapée seule, qui désigne aussi ces lieux.</p>` : ""}
 
   <h2>Où vous sortez dans Google</h2>
   <p class="lead">Les recherches suivies sur lesquelles le château apparaît, et son mouvement depuis le rapport précédent. Position 1 = tout en haut : plus le chiffre est petit, mieux c'est.</p>
@@ -1467,14 +1460,16 @@ export async function completerInstantane(snap) {
   const now = new Date()
   const courant = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`
   if (ym >= courant) throw new Error(`${ym} n'est pas terminé`)
-  const [leads, traffic] = await Promise.all([pullLeads(ym), pullUmami(ym)])
-  const out = { ...snap, leads: leads ?? snap.leads, traffic: traffic ?? snap.traffic, complete: now.toISOString() }
+  // La notoriété aussi : sa définition a changé le 01/10 (château seul, homonymes
+  // écartés), et ses mois passés sont fixes, la relire ne date rien d'un autre mois.
+  const [leads, traffic, brand] = await Promise.all([pullLeads(ym), pullUmami(ym), pullBrand(ym)])
+  const out = { ...snap, leads: leads ?? snap.leads, traffic: traffic ?? snap.traffic, brand: brand ?? snap.brand, complete: now.toISOString() }
   out.history = (snap.history ?? []).map((h) => h.month !== ym ? h : {
     ...h,
     ...(leads ? { leads: { total: leads.total, newsletter: leads.newsletter, chatgpt: leads.chatgpt, ia: leads.ia?.total ?? null } } : {}),
     ...(traffic ? { traffic: { pageviews: traffic.pageviews, visitors: traffic.visitors, visits: traffic.visits } } : {}),
   })
-  return { snap: out, maj: { leads: !!leads, traffic: !!traffic } }
+  return { snap: out, maj: { leads: !!leads, traffic: !!traffic, brand: brand?.source ?? null } }
 }
 
 /**
