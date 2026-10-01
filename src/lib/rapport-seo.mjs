@@ -1297,7 +1297,7 @@ function renderHtml(data) {
       const sources = cites.length ? cites.slice(0, 4).map(esc).join(", ") : "sources non communiquées"
       return `<tr><td>${esc(s.keyword)}<span class="sur-mobile">${cites.length ? `cités : ${sources}` : sources}</span></td><td class="num pos">${s.position != null ? s.position : '<span style="color:var(--gris)">non classé</span>'}</td><td class="num">${s.aioCited ? '<span class="yes">oui</span>' : '<span class="no">non</span>'}</td><td class="hors-mobile" style="color:var(--gris)">${sources}</td></tr>`
     }).join("")}</tbody>
-  </table>` : `<div class="card">Aucun aperçu IA relevé ce mois-ci sur vos mots-clés suivis. C'est cohérent : Google en affiche peu sur les recherches locales et commerciales, qui sont justement les vôtres. Le déploiement français se poursuit jusqu'au 23 septembre 2026, on surveille mois par mois.</div>`}
+  </table>` : `<div class="card">Aucun aperçu IA relevé ce mois-ci sur les ${serpMesure.length} recherches mesurées. Google en affiche peu sur les recherches locales et commerciales, qui sont justement les vôtres ; il les réserve surtout aux questions générales, celles que visent les articles du blog.${serpNonReleves ? ` ${serpNonReleves} recherche${serpNonReleves > 1 ? "s n'ont" : " n'a"} pas pu être relevée${serpNonReleves > 1 ? "s" : ""} ce mois-ci, voir plus haut.` : ""}</div>`}
   <p class="note">Sur les recherches où un aperçu s'affiche, le nombre de clics vers les sites baisse nettement, y compris pour la première position. La parade n'est pas de monter d'un rang, c'est d'être la source que l'IA cite. C'est ce qui guide la façon dont vos articles sont désormais écrits : une question par titre, une réponse nette dessous, des chiffres et des détails que personne d'autre ne peut donner sur le château.</p>
 
   <h2>Visibilité dans les réponses IA</h2>
@@ -1473,19 +1473,30 @@ export async function completerInstantane(snap, { serp: relever = false } = {}) 
   // part désormais le 1er avec des relevés du 1er, un relevé plus tardif daterait
   // le mois d'un autre. Utilisé le 01/10/2026 pour septembre, dont les pages de
   // résultats du 30/09 étaient tronquées. Coût : 0,3 à 0,6 $ de DataForSEO.
-  const [leads, traffic, brand, serp] = await Promise.all([pullLeads(ym), pullUmami(ym), pullBrand(ym), relever ? pullSerp() : null])
+  const [leads, traffic, brand, serpBrut] = await Promise.all([pullLeads(ym), pullUmami(ym), pullBrand(ym), relever ? pullSerp() : null])
   const out = { ...snap, leads: leads ?? snap.leads, traffic: traffic ?? snap.traffic, brand: brand ?? snap.brand, complete: now.toISOString() }
-  if (serp) out.serp = serp
+  const serp = serpBrut
+  // Deux relevés du même jour se complètent : une recherche ratée par le second
+  // garde le résultat du premier, s'il avait été lu sur une page complète
+  // (`organiques`, posé par le pullSerp actuel ; les relevés d'avant n'en ont pas).
+  if (serp) {
+    const avant = new Map((snap.serp ?? []).map((x) => [x.keyword, x]))
+    out.serp = serp.map((x) => {
+      const p = avant.get(x.keyword)
+      return x.releve === false && p && p.releve !== false && p.organiques != null ? p : x
+    })
+  }
+  const serpFinal = out.serp
   out.history = (snap.history ?? []).map((h) => h.month !== ym ? h : {
     ...h,
     ...(leads ? { leads: { total: leads.total, newsletter: leads.newsletter, chatgpt: leads.chatgpt, ia: leads.ia?.total ?? null } } : {}),
     ...(traffic ? { traffic: { pageviews: traffic.pageviews, visitors: traffic.visitors, visits: traffic.visits } } : {}),
     ...(serp ? {
-      positions: Object.fromEntries(serp.filter((x) => x.releve !== false).map((x) => [x.keyword, x.position])),
-      aio: { present: serp.filter((x) => x.aio).length, cited: serp.filter((x) => x.aioCited).length, keywords: serp.filter((x) => x.releve !== false).length },
+      positions: Object.fromEntries(serpFinal.filter((x) => x.releve !== false).map((x) => [x.keyword, x.position])),
+      aio: { present: serpFinal.filter((x) => x.aio).length, cited: serpFinal.filter((x) => x.aioCited).length, keywords: serpFinal.filter((x) => x.releve !== false).length },
     } : {}),
   })
-  return { snap: out, maj: { leads: !!leads, traffic: !!traffic, brand: brand?.source ?? null, serp: serp ? serp.filter((x) => x.releve !== false).length : null } }
+  return { snap: out, maj: { leads: !!leads, traffic: !!traffic, brand: brand?.source ?? null, serp: serp ? serpFinal.filter((x) => x.releve !== false).length : null } }
 }
 
 /**
