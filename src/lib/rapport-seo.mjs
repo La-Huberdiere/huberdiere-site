@@ -22,7 +22,8 @@ import { positionsVoisins, renderVoisins, aDesVoisins, pageLaPlusComplete, reche
 import { fenetresDeJours, pointDeComparaison, moisDecales } from "./rapport-periodes.mjs"
 import { BRAND_KEYWORDS, GSC_BRAND_REGEX } from "./rapport-marque.mjs"
 import { repartirAbsents, absenceProuvee, domainesCites } from "./rapport-positions.mjs"
-import { buildLeadsData } from "./rapport-demandes.mjs"
+import { buildLeadsData, libellePage } from "./rapport-demandes.mjs"
+import { localizePath } from "./routes.ts"
 export { buildLeadsData }
 
 const DFS = "https://api.dataforseo.com/v3"
@@ -751,9 +752,47 @@ async function pullLeads(ym) {
   }
 }
 
+// Chemins du site → libellés client, dans les trois langues, pour lire le parcours
+// des demandes : une page argent nommée, un article par son titre.
+const LIBELLES_PAGES = {
+  "/": "Accueil", "/mariage": "Page mariage", "/sejour": "Page séjour", "/seminaire": "Page séminaire",
+  "/famille": "Page famille", "/retraite": "Page retraite", "/restauration": "Page restauration",
+  "/galerie": "Galerie", "/contact": "Page contact", "/blog": "Blog", "/notre-histoire": "Notre histoire",
+  "/activites": "Activités",
+}
+function cartePages(articles) {
+  const m = new Map()
+  const net = (p) => p.replace(/(.)\/$/, "$1")
+  for (const langue of ["fr", "en", "it"]) {
+    for (const [fr, label] of Object.entries(LIBELLES_PAGES)) m.set(net(localizePath(fr, langue)), { label, langue })
+    for (const a of articles ?? []) m.set(net(localizePath(`/blog/${a.slug}`, langue)), { label: a.title, blog: true, langue })
+  }
+  return m
+}
+
+// Parcours de chaque demande : les articles du blog qui mènent à une prise de
+// contact sont la preuve la plus directe de leur utilité (demande d'Alexis, 01/10).
+function renderParcours(ld, pages) {
+  const parcours = ld.parcours ?? []
+  if (!parcours.length) return ""
+  const lignes = parcours.map((p) => ({ ...p, arr: libellePage(p.entree, pages), avant: libellePage(p.provenance, pages) }))
+  const parBlog = lignes.filter((l) => l.arr?.blog || l.avant?.blog)
+  const cellule = (lib, vide) => !lib ? `<span style="color:var(--gris)">${vide}</span>`
+    : lib.blog ? `<strong style="color:var(--bordeaux)">${esc(lib.texte)}</strong>` : esc(lib.texte)
+  const rows = lignes.map((l) => `<tr><td>${esc(l.cible)}<br><span style="color:var(--gris);font-size:12px">${esc(dateCourte(l.date))}</span><span class="sur-mobile">arrivée : ${l.arr ? esc(l.arr.texte) : "non tracée"}</span></td><td class="hors-mobile">${cellule(l.arr, "non tracée")}</td><td>${cellule(l.avant, "–")}</td></tr>`).join("")
+  const articles = [...new Set(parBlog.flatMap((l) => [l.arr, l.avant].filter((x) => x?.blog).map((x) => x.texte.replace(/^Article /, ""))))]
+  return `<p class="sub-h">Le parcours avant chaque demande</p>
+  ${parBlog.length ? `<div class="summary" style="border-left-color:var(--bordeaux)"><strong>Le blog amène des demandes :</strong> ${parBlog.length} demande${parBlog.length > 1 ? "s" : ""} sur ${ld.total} ${parBlog.length > 1 ? "sont passées" : "est passée"} par un article avant d'écrire, ${articles.join(", ")}.</div>` : ""}
+  <table>
+    <thead><tr><th>Demande</th><th class="hors-mobile">Arrivée sur le site</th><th>Page juste avant le formulaire</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>
+  <p class="note">« Arrivée sur le site » est la première page vue en venant d'un moteur de recherche ou d'un lien ; « non tracée » quand cette visite n'a laissé aucune trace (lien ouvert depuis une application, adresse tapée à la main). La page juste avant le formulaire est celle que le visiteur lisait au moment de décider d'écrire.</p>`
+}
+
 // Bloc "Demandes reçues" — placé haut dans le rapport, c'est le résultat business
 // que le client regarde en premier.
-export function renderLeads(ld, monthLabel) {
+export function renderLeads(ld, monthLabel, pages = new Map()) {
   if (!ld) return ""
   if (ld.total === 0 && ld.newsletter === 0) {
     return `<h2>Demandes reçues</h2>
@@ -796,7 +835,8 @@ export function renderLeads(ld, monthLabel) {
   </div>
   <p class="note">Le canal est déduit de la première visite (recherche Google, IA, réseaux, lien direct). ${declareRows
     ? `La troisième colonne vient du champ « Comment nous avez-vous connus &#63; » du formulaire, renseigné par ${ld.declares} personne${ld.declares > 1 ? "s" : ""} ce mois-ci. C'est la seule mesure qui rattrape le bouche à oreille et les réponses d'IA, invisibles pour les outils de suivi.`
-    : `Une part des demandes reste en « source non identifiée » : le champ « Comment nous avez-vous connus &#63; » vient d'être ajouté aux formulaires, ses premiers résultats apparaîtront le mois prochain.`}</p>`
+    : `Une part des demandes reste en « source non identifiée » : le champ « Comment nous avez-vous connus &#63; » vient d'être ajouté aux formulaires, ses premiers résultats apparaîtront le mois prochain.`}</p>
+  ${renderParcours(ld, pages)}`
 }
 
 // ── Fréquentation du site (Umami, analytics cookieless) ────────────────────
@@ -1218,7 +1258,7 @@ function renderHtml(data) {
 
   ${renderTravaux(TRAVAUX[month])}
 
-  ${renderLeads(leads, monthLabel)}
+  ${renderLeads(leads, monthLabel, cartePages(articles))}
 
   ${renderTraffic(traffic, monthLabel)}
 

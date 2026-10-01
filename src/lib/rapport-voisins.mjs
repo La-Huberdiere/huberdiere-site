@@ -160,6 +160,11 @@ export function renderVoisins(serp, voisins, nomChateau) {
   const presents = lesVoisins.filter((l) => l.meilleure)
     .sort((a, b) => b.premierePage - a.premierePage || a.meilleure.position - b.meilleure.position)
   const absents = lesVoisins.filter((l) => !l.meilleure).map((l) => l.label)
+  // Écartées du tableau, mais le client les voit 1re page juste au-dessus : sans les
+  // nommer ici, « 0 en 1re page » se lisait comme une contradiction (septembre 2026).
+  const horsTableau = (Array.isArray(serp) ? serp : [])
+    .filter((s) => s.blog && releve(s) && s.position != null && s.position <= 10)
+    .sort((a, b) => a.position - b.position)
 
   const ligne = (l) => {
     const nom = l.vous ? `<strong>${esc(l.label)}</strong> <span class="badge">vous</span>` : esc(l.label)
@@ -170,11 +175,13 @@ export function renderVoisins(serp, voisins, nomChateau) {
   }
 
   return `<h2>Face aux voisins</h2>
-  <p class="lead">Sur les ${n} recherches de futurs clients que nous suivons pour vous (${esc(themesDesRecherches(serp))}), combien placent chaque établissement en première page de Google, et sa meilleure place.</p>
+  <p class="lead">Sur les ${n} recherches de futurs clients que nous suivons pour vous (${esc(themesDesRecherches(serp))}), combien placent chaque établissement en première page de Google, et sa meilleure place. Les recherches sur votre nom et les sujets du blog n'y entrent pas : elles ne disent pas chez qui l'on réserve${horsTableau.length
+    ? `. Le château y sort pourtant en 1<sup>re</sup> page : ${horsTableau.map((s) => `«\u00a0${esc(s.keyword)}\u00a0» (${rang(s.position)})`).join(", ")}, en plus de son propre nom.`
+    : "."}</p>
   <table class="voisins">
     <thead><tr><th>Établissement</th><th class="num">En 1<sup>re</sup> page</th><th>Meilleure place</th></tr></thead>
     <tbody>${[chateau, ...presents].map(ligne).join("")}</tbody>
   </table>
   ${absents.length ? `<p class="note">Absents des ${n} recherches : ${absents.map(esc).join(", ")}.</p>` : ""}
-  <p class="note">Même relevé Google que les positions ci-dessus. Les recherches sur votre nom et celles des articles du blog ne sont pas comptées.${manquees ? ` ${manquees} recherche${manquees > 1 ? "s n'ont" : " n'a"} pas pu être relevée${manquees > 1 ? "s" : ""} ce mois-ci et ${manquees > 1 ? "sont laissées" : "est laissée"} de côté.` : ""}</p>`
+  <p class="note">Même relevé Google que les positions ci-dessus.${manquees ? ` ${manquees} recherche${manquees > 1 ? "s n'ont" : " n'a"} pas pu être relevée${manquees > 1 ? "s" : ""} ce mois-ci et ${manquees > 1 ? "sont laissées" : "est laissée"} de côté.` : ""}</p>`
 }

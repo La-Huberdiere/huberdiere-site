@@ -89,6 +89,13 @@ export function buildLeadsData(contacts, ym, moisSoumission = null) {
       canal: leadChannel(sourceDe(A(x, "UTM_SOURCE"), A(x, "REFERRER"))),
       // Déclaratif du prospect (champ « Comment nous avez-vous connus ? »).
       declare: String(A(x, "ATTRIBUTION") || "").trim(),
+      // Parcours : première page de la visite venue d'un moteur ou d'un lien
+      // (vide si elle n'a laissé aucune trace), page consultée juste avant celle
+      // du formulaire, et page du formulaire. Sert à montrer le rôle des articles.
+      date: (x.createdAt || "").slice(0, 10),
+      entree: String(A(x, "PAGE_ENTREE") || "").trim(),
+      provenance: String(A(x, "PAGE_PROVENANCE") || "").trim(),
+      formulaire: String(A(x, "PAGE_FORMULAIRE") || "").trim(),
     })
   }
 
@@ -111,5 +118,22 @@ export function buildLeadsData(contacts, ym, moisSoumission = null) {
     parDeclare: tally(declares, "declare"), declares: declares.length,
     chatgpt, identifies,
     ia: { total: tracees + declareesSeules, tracees, declareesSeules },
+    parcours: demandes
+      .map(({ date, cible, entree, provenance, formulaire }) => ({ date, cible, entree, provenance, formulaire }))
+      .sort((a, b) => a.date.localeCompare(b.date)),
   }
+}
+
+const LANGUES = { en: "anglais", it: "italien" }
+
+// Libellé client d'un chemin du site. `pages` : Map chemin → { label, blog, langue },
+// construite au rendu depuis les articles et les slugs localisés (routes.ts).
+export function libellePage(chemin, pages) {
+  const brut = String(chemin || "").trim()
+  if (!brut) return null
+  const p = brut.split(/[?#]/)[0].replace(/(.)\/$/, "$1") || "/"
+  const page = pages?.get(p)
+  if (!page) return { texte: p, blog: false }
+  const langue = LANGUES[page.langue] ? ` (${LANGUES[page.langue]})` : ""
+  return { texte: page.blog ? `Article « ${page.label} »${langue}` : `${page.label}${langue}`, blog: !!page.blog }
 }

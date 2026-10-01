@@ -120,3 +120,17 @@ test("les thèmes annoncés sont ceux des recherches réellement relevées", () 
   ]
   assert.equal(themesDesRecherches(serp), "mariage, table")
 })
+
+test("l'introduction dit ce qui est écarté, et où le château sort quand même en 1re page", () => {
+  // Septembre 2026 : « 0 en 1re page » lu comme une contradiction avec le tableau
+  // des positions (1er sur son nom, 6e et 8e sur des sujets du blog).
+  const serp = [
+    ...SERP,
+    { intent: "Blog", blog: true, keyword: "prix mariage château loire", position: 6, voisins: {} },
+    { intent: "Blog", blog: true, keyword: "dormir dans un château de la loire", position: 25, voisins: {} },
+  ]
+  const html = renderVoisins(serp, VOISINS, "Château de la Huberdière")
+  assert.match(html, /recherches sur votre nom et les sujets du blog/)
+  assert.match(html, /«\s?prix mariage château loire\s?» \(6<sup>e<\/sup>\)/)
+  assert.doesNotMatch(html, /dormir dans un château/) // 25e : pas en 1re page
+})

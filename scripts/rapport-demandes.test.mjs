@@ -1,7 +1,7 @@
 // node --test scripts/rapport-demandes.test.mjs
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { buildLeadsData } from "../src/lib/rapport-demandes.mjs"
+import { buildLeadsData, libellePage } from "../src/lib/rapport-demandes.mjs"
 
 const contact = (email, form, createdAt, attrs = {}) => ({ email, createdAt, attributes: { FORM: [form], ...attrs } })
 
@@ -84,4 +84,32 @@ test("demandes liées à une IA : tracées ou déclarées, chaque personne compt
 test("un clic depuis l'appli Gmail Android n'est pas une recherche Google", () => {
   const ld = buildLeadsData([contact("a@ex.fr", "LP_Mariage", "2026-09-11T10:00:00Z", { REFERRER: "android-app://com.google.android.gm/" })], "2026-09")
   assert.equal(ld.identifies, 0)
+})
+
+test("chaque demande garde son parcours : page d'arrivée et page juste avant le formulaire", () => {
+  // Septembre 2026 : la demande séminaire du 29/09 sortait de l'article « séminaire
+  // de direction », celle du 27/09 était arrivée de Google sur un article anglais.
+  const contacts = [
+    contact("a@ex.fr", "LP_Seminaire", "2026-09-29T08:55:00Z", { PAGE_PROVENANCE: "/blog/seminaire-direction-chateau-privatise", PAGE_FORMULAIRE: "/seminaire" }),
+    contact("b@ex.fr", "Contact_Form", "2026-09-27T13:31:00Z", { PAGE_ENTREE: "/en/blog/chateau-wedding-cost", PAGE_PROVENANCE: "/en/gallery", PAGE_FORMULAIRE: "/en/contact" }),
+  ]
+  const ld = buildLeadsData(contacts, "2026-09")
+  assert.deepEqual(ld.parcours, [
+    { date: "2026-09-27", cible: "Contact (autre)", entree: "/en/blog/chateau-wedding-cost", provenance: "/en/gallery", formulaire: "/en/contact" },
+    { date: "2026-09-29", cible: "Séminaire", entree: "", provenance: "/blog/seminaire-direction-chateau-privatise", formulaire: "/seminaire" },
+  ])
+})
+
+test("une page se lit en clair : article nommé, page du site nommée, langue précisée", () => {
+  const pages = new Map([
+    ["/blog/prix-mariage-chateau-loire", { label: "Prix d'un mariage au château", blog: true }],
+    ["/en/blog/chateau-wedding-cost", { label: "Prix d'un mariage au château", blog: true, langue: "en" }],
+    ["/", { label: "Accueil" }],
+    ["/en", { label: "Accueil", langue: "en" }],
+  ])
+  assert.deepEqual(libellePage("/en/blog/chateau-wedding-cost", pages), { texte: "Article « Prix d'un mariage au château » (anglais)", blog: true })
+  assert.deepEqual(libellePage("/", pages), { texte: "Accueil", blog: false })
+  assert.deepEqual(libellePage("/en", pages), { texte: "Accueil (anglais)", blog: false })
+  assert.deepEqual(libellePage("/inconnue?x=1#a", pages), { texte: "/inconnue", blog: false })
+  assert.equal(libellePage("", pages), null)
 })
