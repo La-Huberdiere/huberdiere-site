@@ -772,21 +772,23 @@ function cartePages(articles) {
 // Parcours de chaque demande : les articles du blog qui mènent à une prise de
 // contact sont la preuve la plus directe de leur utilité (demande d'Alexis, 01/10).
 function renderParcours(ld, pages) {
-  const parcours = ld.parcours ?? []
-  if (!parcours.length) return ""
-  const lignes = parcours.map((p) => ({ ...p, arr: libellePage(p.entree, pages), avant: libellePage(p.provenance, pages) }))
-  const parBlog = lignes.filter((l) => l.arr?.blog || l.avant?.blog)
+  // Seules les demandes passées par un article sont montrées : le parcours complet
+  // de chaque demande faisait trop d'information pour le client (consigne du 01/10).
+  const lignes = (ld.parcours ?? [])
+    .map((p) => ({ ...p, arr: libellePage(p.entree, pages), avant: libellePage(p.provenance, pages) }))
+    .filter((l) => l.arr?.blog || l.avant?.blog)
+  if (!lignes.length) return ""
   const cellule = (lib, vide) => !lib ? `<span style="color:var(--gris)">${vide}</span>`
     : lib.blog ? `<strong style="color:var(--bordeaux)">${esc(lib.texte)}</strong>` : esc(lib.texte)
   const rows = lignes.map((l) => `<tr><td>${esc(l.cible)}<br><span style="color:var(--gris);font-size:12px">${esc(dateCourte(l.date))}</span><span class="sur-mobile">arrivée : ${l.arr ? esc(l.arr.texte) : "non tracée"}</span></td><td class="hors-mobile">${cellule(l.arr, "non tracée")}</td><td>${cellule(l.avant, "–")}</td></tr>`).join("")
-  const articles = [...new Set(parBlog.flatMap((l) => [l.arr, l.avant].filter((x) => x?.blog).map((x) => x.texte.replace(/^Article /, ""))))]
-  return `<p class="sub-h">Le parcours avant chaque demande</p>
-  ${parBlog.length ? `<div class="summary" style="border-left-color:var(--bordeaux)"><strong>Le blog amène des demandes :</strong> ${parBlog.length} demande${parBlog.length > 1 ? "s" : ""} sur ${ld.total} ${parBlog.length > 1 ? "sont passées" : "est passée"} par un article avant d'écrire, ${articles.join(", ")}.</div>` : ""}
+  const n = lignes.length
+  return `<p class="sub-h">Les demandes venues par le blog</p>
+  <div class="summary" style="border-left-color:var(--bordeaux)"><strong>${n} demande${n > 1 ? "s" : ""} sur ${ld.total}</strong> ${n > 1 ? "sont passées" : "est passée"} par un article du blog avant d'écrire : la preuve que les articles amènent des clients, pas seulement des lecteurs.</div>
   <table>
     <thead><tr><th>Demande</th><th class="hors-mobile">Arrivée sur le site</th><th>Page juste avant le formulaire</th></tr></thead>
     <tbody>${rows}</tbody>
   </table>
-  <p class="note">« Arrivée sur le site » est la première page vue en venant d'un moteur de recherche ou d'un lien ; « non tracée » quand cette visite n'a laissé aucune trace (lien ouvert depuis une application, adresse tapée à la main). La page juste avant le formulaire est celle que le visiteur lisait au moment de décider d'écrire.</p>`
+  <p class="note">« Arrivée sur le site » est la première page vue en venant d'un moteur de recherche ou d'un lien. Seules la page d'arrivée et celle qui précède le formulaire sont connues : un article lu entre les deux ne se voit pas, ce chiffre est donc un minimum.</p>`
 }
 
 // Bloc "Demandes reçues" — placé haut dans le rapport, c'est le résultat business
