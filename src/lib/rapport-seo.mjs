@@ -692,11 +692,10 @@ export async function pullConfirmations(depuisYm = PREMIER_MOIS, jusquaYm = null
   return premiere
 }
 
-// Mois de soumission par adresse, prêt à être passé à buildLeadsData().
+// Date de soumission par adresse (AAAA-MM-JJTHH:MM), prête à être passée à
+// buildLeadsData(), qui en tire le mois et la date affichée.
 export async function pullMoisSoumission() {
-  const premiere = await pullConfirmations()
-  if (!premiere) return null
-  return new Map([...premiere].map(([email, d]) => [email, d.slice(0, 7)]))
+  return pullConfirmations()
 }
 
 export async function reconcileLeads(ym) {

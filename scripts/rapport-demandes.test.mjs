@@ -30,6 +30,14 @@ test("le mois de la confirmation l'emporte sur la date de création du contact",
   assert.equal(buildLeadsData(contacts, "2026-07", mois).total, 1)
 })
 
+test("la date affichée est celle de la confirmation, pas de la fiche recréée", () => {
+  // Août 2026 : neuf fiches recréées le 27/08 après le correctif Brevo affichaient
+  // toutes « 27 août ».
+  const contacts = [contact("a@ex.fr", "LP_Mariage", "2026-08-27T10:00:00Z")]
+  const quand = new Map([["a@ex.fr", "2026-08-12T18:40"]])
+  assert.equal(buildLeadsData(contacts, "2026-08", quand).parcours[0].date, "2026-08-12")
+})
+
 test("adresses internes et de test écartées", () => {
   const contacts = [
     contact("alexis@morain.fr", "LP_Mariage", "2026-09-01T10:00:00Z"),

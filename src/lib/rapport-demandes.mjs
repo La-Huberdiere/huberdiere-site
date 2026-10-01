@@ -74,7 +74,9 @@ const isTestEmail = (e) => {
 export function buildLeadsData(contacts, ym, moisSoumission = null) {
   const A = (x, k) => (x.attributes || {})[k]
   const first = (v) => (Array.isArray(v) ? v[0] : v)
-  const moisDe = (x) => moisSoumission?.get(String(x.email || "").toLowerCase()) || (x.createdAt || "").slice(0, 7)
+  // Valeurs AAAA-MM ou date complète de la confirmation (AAAA-MM-JJTHH:MM).
+  const soumis = (x) => moisSoumission?.get(String(x.email || "").toLowerCase()) || ""
+  const moisDe = (x) => (soumis(x) || x.createdAt || "").slice(0, 7)
   const rows = (Array.isArray(contacts) ? contacts : []).filter((x) => moisDe(x) === ym)
 
   let newsletter = 0
@@ -92,7 +94,7 @@ export function buildLeadsData(contacts, ym, moisSoumission = null) {
       // Parcours : première page de la visite venue d'un moteur ou d'un lien
       // (vide si elle n'a laissé aucune trace), page consultée juste avant celle
       // du formulaire, et page du formulaire. Sert à montrer le rôle des articles.
-      date: (x.createdAt || "").slice(0, 10),
+      date: (soumis(x).length >= 10 ? soumis(x) : x.createdAt || "").slice(0, 10),
       entree: String(A(x, "PAGE_ENTREE") || "").trim(),
       provenance: String(A(x, "PAGE_PROVENANCE") || "").trim(),
       formulaire: String(A(x, "PAGE_FORMULAIRE") || "").trim(),
