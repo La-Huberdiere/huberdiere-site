@@ -1,7 +1,7 @@
 // node --test scripts/rapport-voisins.test.mjs
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { positionsVoisins, renderVoisins, aDesVoisins, pageLaPlusComplete, PAGE_COMPLETE, themesDesRecherches } from "../src/lib/rapport-voisins.mjs"
+import { positionsVoisins, renderVoisins, aDesVoisins, pageLaPlusComplete, PAGE_COMPLETE, rechercheClient } from "../src/lib/rapport-voisins.mjs"
 
 const VOISINS = [
   { domain: "chateaudepray.fr", label: "Château de Pray" },
@@ -70,7 +70,7 @@ test("une recherche non relevée ne compte pour personne, et le dit", () => {
   const serp = [...SERP, { intent: "Famille", keyword: "location château touraine", position: null, voisins: {}, releve: false }]
   const html = renderVoisins(serp, VOISINS, "Château de la Huberdière")
   assert.match(html, /3 recherches/) // pas 4
-  assert.match(html, /1 recherche n'a pas pu être relevée/)
+  assert.match(html.replace(/<[^>]+>/g, ""), /Non relevées ce mois-ci\s?: location château touraine/)
   assert.match(lignes(html).find((l) => l.includes("Le Clos")), /\|2\|4\|e\|/)
 })
 
@@ -84,24 +84,37 @@ test("entre plusieurs relevés d'une même recherche, garde la page la plus comp
   assert.ok(!pageLaPlusComplete([page(42)]).complete)
 })
 
-test("les thèmes annoncés sont ceux des recherches réellement relevées", () => {
-  const serp = [
-    { intent: "Mariage", keyword: "a" }, { intent: "Séminaire", keyword: "b", releve: false },
-    { intent: "Restauration", keyword: "c" }, { intent: "Notoriété", keyword: "d" }, { intent: "Blog", keyword: "e", blog: true },
-  ]
-  assert.equal(themesDesRecherches(serp), "mariage, table")
+test("une recherche de blog où l'on cherche un lieu à réserver compte comme recherche client", () => {
+  // Décision d'Alexis du 01/10 : prix, location entre amis, nuit au château, week-end
+  // à deux disent où l'on réserve. Les recherches touristiques restent dehors.
+  for (const k of ["prix mariage château loire", "louer un château entre amis", "dormir dans un château de la loire", "week-end romantique val de loire"]) {
+    assert.equal(rechercheClient({ intent: "Blog", blog: true, keyword: k }), true, k)
+  }
+  for (const k of ["visiter les châteaux de la loire", "que faire autour d'amboise"]) {
+    assert.equal(rechercheClient({ intent: "Blog", blog: true, keyword: k }), false, k)
+  }
+  assert.equal(rechercheClient({ intent: "Notoriété", keyword: "château de la huberdière" }), false)
+  assert.equal(rechercheClient({ intent: "Mariage", keyword: "mariage château touraine" }), true)
 })
 
-test("l'introduction dit ce qui est écarté, et où le château sort quand même en 1re page", () => {
-  // Septembre 2026 : « 0 en 1re page » lu comme une contradiction avec le tableau
-  // des positions (1er sur son nom, 6e et 8e sur des sujets du blog).
+test("la liste des recherches comptées s'affiche sous le tableau, non relevées à part", () => {
   const serp = [
     ...SERP,
     { intent: "Blog", blog: true, keyword: "prix mariage château loire", position: 6, voisins: {} },
-    { intent: "Blog", blog: true, keyword: "dormir dans un château de la loire", position: 25, voisins: {} },
+    { intent: "Famille", keyword: "location château touraine", position: null, voisins: {}, releve: false },
   ]
   const html = renderVoisins(serp, VOISINS, "Château de la Huberdière")
-  assert.match(html, /recherches sur votre nom et les sujets du blog/)
-  assert.match(html, /«\s?prix mariage château loire\s?» \(6<sup>e<\/sup>\)/)
-  assert.doesNotMatch(html, /dormir dans un château/) // 25e : pas en 1re page
+  assert.match(html, /4 recherches/)
+  const texte = html.replace(/<[^>]+>/g, "")
+  assert.match(texte, /Recherches comptées \(4\)\s?: mariage château touraine, séminaire château touraine, chambres d'hôtes amboise, prix mariage château loire/)
+  assert.match(texte, /Non relevées ce mois-ci\s?: location château touraine/)
+  // 1re page : mariage (5e) et prix mariage (6e), ce dernier compté désormais
+  assert.match(lignes(html).find((l) => l.includes("Huberdière")), /\|2\|5\|e\|/)
+})
+
+test("les recherches touristiques du blog où le château est en 1re page sont citées à part", () => {
+  const serp = [...SERP, { intent: "Blog", blog: true, keyword: "que faire autour d'amboise", position: 4, voisins: {} }]
+  const html = renderVoisins(serp, VOISINS, "Château de la Huberdière")
+  assert.match(html, /«\s?que faire autour d'amboise\s?» \(4<sup>e<\/sup>\)/)
+  assert.doesNotMatch(html, /visiter les châteaux/) // 40e : pas en 1re page
 })

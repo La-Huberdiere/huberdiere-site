@@ -57,7 +57,18 @@ export const aDesVoisins = (serp) => Array.isArray(serp) && serp.some((s) => s &
 
 // Les recherches de clients : ni le nom du château (il y est premier par définition)
 // ni les requêtes d'articles, qui ne disent pas qui on choisit pour un séjour.
-const rechercheClient = (s) => s.intent !== "Notoriété" && !s.blog
+// Recherches de blog où l'on cherche un lieu à réserver : elles comptent comme
+// recherches clients (décision d'Alexis du 01/10/2026). Les recherches purement
+// touristiques (« visiter les châteaux de la loire », « que faire autour
+// d'amboise ») restent dehors. Liste par mot-clé, pas par drapeau : les
+// instantanés déjà figés en profitent au rejeu.
+export const BLOG_COMMERCIALES = [
+  "prix mariage château loire",
+  "louer un château entre amis",
+  "dormir dans un château de la loire",
+  "week-end romantique val de loire",
+]
+export const rechercheClient = (s) => s.intent !== "Notoriété" && (!s.blog || BLOG_COMMERCIALES.includes(s.keyword))
 // `releve: false` : DataForSEO a rendu une page vide, même après relance. Personne
 // n'y est « absent », la recherche n'a simplement pas été vue ce mois-ci.
 const releve = (s) => s.releve !== false
@@ -73,21 +84,6 @@ function bilan(recherches, positionDe) {
     if (!meilleure || p < meilleure.position) meilleure = { position: p, keyword: s.keyword }
   }
   return { premierePage, meilleure }
-}
-
-const THEME_DE = {
-  "Mariage": "mariage", "Séminaire": "séminaire", "Séjour / chambres d'hôtes": "séjour",
-  "Retraite / bien-être": "retraite", "Famille / groupe": "famille", "Restauration": "table",
-}
-// Thèmes des recherches clients réellement relevées : le texte annonçait
-// « séminaire » un mois où aucune recherche séminaire n'avait pu être relevée.
-export function themesDesRecherches(serp) {
-  const vus = []
-  for (const s of (Array.isArray(serp) ? serp : []).filter(rechercheClient).filter(releve)) {
-    const t = THEME_DE[s.intent] ?? String(s.intent).toLowerCase()
-    if (!vus.includes(t)) vus.push(t)
-  }
-  return vus.join(", ")
 }
 
 export function renderVoisins(serp, voisins, nomChateau) {
@@ -108,7 +104,7 @@ export function renderVoisins(serp, voisins, nomChateau) {
   // Écartées du tableau, mais le client les voit 1re page juste au-dessus : sans les
   // nommer ici, « 0 en 1re page » se lisait comme une contradiction (septembre 2026).
   const horsTableau = (Array.isArray(serp) ? serp : [])
-    .filter((s) => s.blog && releve(s) && s.position != null && s.position <= 10)
+    .filter((s) => s.blog && !rechercheClient(s) && releve(s) && s.position != null && s.position <= 10)
     .sort((a, b) => a.position - b.position)
 
   const ligne = (l) => {
@@ -120,7 +116,7 @@ export function renderVoisins(serp, voisins, nomChateau) {
   }
 
   return `<h2>Face aux voisins</h2>
-  <p class="lead">Sur les ${n} recherches de futurs clients que nous suivons pour vous (${esc(themesDesRecherches(serp))}), combien placent chaque établissement en première page de Google, et sa meilleure place. Les recherches sur votre nom et les sujets du blog n'y entrent pas : elles ne disent pas chez qui l'on réserve${horsTableau.length
+  <p class="lead">Sur les ${n} recherches de futurs clients que nous suivons pour vous (liste sous le tableau), combien placent chaque établissement en première page de Google, et sa meilleure place. Les recherches sur votre nom et les sujets purement touristiques du blog n'y entrent pas : elles ne disent pas chez qui l'on réserve${horsTableau.length
     ? `. Le château y sort pourtant en 1<sup>re</sup> page : ${horsTableau.map((s) => `«\u00a0${esc(s.keyword)}\u00a0» (${rang(s.position)})`).join(", ")}, en plus de son propre nom.`
     : "."}</p>
   <table class="voisins">
@@ -128,5 +124,5 @@ export function renderVoisins(serp, voisins, nomChateau) {
     <tbody>${[chateau, ...presents].map(ligne).join("")}</tbody>
   </table>
   ${absents.length ? `<p class="note">Absents des ${n} recherches : ${absents.map(esc).join(", ")}.</p>` : ""}
-  <p class="note">Même relevé Google que les positions ci-dessus.${manquees ? ` ${manquees} recherche${manquees > 1 ? "s n'ont" : " n'a"} pas pu être relevée${manquees > 1 ? "s" : ""} ce mois-ci et ${manquees > 1 ? "sont laissées" : "est laissée"} de côté.` : ""}</p>`
+  <p class="note"><strong>Recherches comptées (${n})</strong> : ${recherches.map((s) => esc(s.keyword)).join(", ")}.${manquees ? ` <strong>Non relevées ce mois-ci</strong> : ${clients.filter((s) => !releve(s)).map((s) => esc(s.keyword)).join(", ")}, laissées de côté.` : ""} Même relevé Google que les positions ci-dessus.</p>`
 }
