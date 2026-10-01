@@ -1,7 +1,7 @@
 // node --test scripts/rapport-voisins.test.mjs
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { positionsVoisins, renderVoisins, aDesVoisins, pageLaPlusComplete, PAGE_COMPLETE, rechercheCaptable, filtrerCaptees, themesDesRecherches } from "../src/lib/rapport-voisins.mjs"
+import { positionsVoisins, renderVoisins, aDesVoisins, pageLaPlusComplete, PAGE_COMPLETE, themesDesRecherches } from "../src/lib/rapport-voisins.mjs"
 
 const VOISINS = [
   { domain: "chateaudepray.fr", label: "Château de Pray" },
@@ -82,35 +82,6 @@ test("entre plusieurs relevés d'une même recherche, garde la page la plus comp
   assert.equal(pageLaPlusComplete([vide, []]).items.length, 0)
   assert.ok(pageLaPlusComplete([page(PAGE_COMPLETE)]).complete)
   assert.ok(!pageLaPlusComplete([page(42)]).complete)
-})
-
-test("le nom d'un voisin, ou de la commune qu'il porte, n'est pas une recherche à capter", () => {
-  // Rapport de septembre 2026 : « le clos d'amboise », « hôtel restaurant le clos
-  // d'amboise », « nazelles », « amboise » et « 37400 amboise » sous une note qui
-  // disait le nom des voisins écarté.
-  for (const k of ["le clos d'amboise", "hôtel restaurant le clos d'amboise", "relais d'amboise", "pavillon des lys amboise",
-    "château des arpentis", "nazelles", "amboise", "37400 amboise", "amboise france", "chateau de pray"]) {
-    assert.equal(rechercheCaptable(k), false, k)
-  }
-  // Août 2026 : établissements tiers et homonyme (Nozay n'est pas Noizay).
-  for (const k of ["restaurant le lion d'or amboise", "calypso amboise", "la table du manoir amboise", "l'avant garde amboise", "hotel nozay"]) {
-    assert.equal(rechercheCaptable(k), false, k)
-  }
-  for (const k of ["hotel amboise", "restaurant amboise", "hotels à amboise", "mariage château touraine"]) {
-    assert.equal(rechercheCaptable(k), true, k)
-  }
-})
-
-test("une recherche captée par deux voisins tient sur une ligne, au mieux placé", () => {
-  const gap = [
-    { keyword: "hotel amboise", volume: 4400, competitor: "Le Clos d'Amboise", position: 1 },
-    { keyword: "hotel amboise", volume: 4400, competitor: "Le Relais d'Amboise", position: 9 },
-    { keyword: "le clos d'amboise", volume: 1300, competitor: "Le Clos d'Amboise", position: 1 },
-  ]
-  const r = filtrerCaptees(gap)
-  assert.deepEqual(r.gap, [{ keyword: "hotel amboise", volume: 4400, competitor: "Le Clos d'Amboise", position: 1 }])
-  assert.equal(r.retirees, 2)
-  assert.equal(r.ecartees, 1)
 })
 
 test("les thèmes annoncés sont ceux des recherches réellement relevées", () => {

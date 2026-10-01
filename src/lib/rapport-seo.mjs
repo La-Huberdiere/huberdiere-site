@@ -18,7 +18,7 @@ import TRAVAUX from "../data/rapport-travaux.json"
 import NEWSLETTERS from "../data/rapport-newsletters.json"
 import { renderNewsletters } from "./rapport-newsletter.mjs"
 import { renderBrandChart } from "./rapport-graphique.mjs"
-import { positionsVoisins, renderVoisins, aDesVoisins, pageLaPlusComplete, rechercheCaptable, filtrerCaptees } from "./rapport-voisins.mjs"
+import { positionsVoisins, renderVoisins, aDesVoisins, pageLaPlusComplete } from "./rapport-voisins.mjs"
 import { fenetresDeJours, pointDeComparaison, moisDecales } from "./rapport-periodes.mjs"
 import { BRAND_KEYWORDS, GSC_BRAND_REGEX } from "./rapport-marque.mjs"
 import { repartirAbsents, absenceProuvee, domainesCites } from "./rapport-positions.mjs"
@@ -486,75 +486,15 @@ async function pullLlm() {
 }
 
 /**
- * Photo des voisins le même jour que le reste du rapport : force du profil de liens,
- * présence dans Google, et recherches qu'ils captent alors que le château est absent.
- * Coût : 2 appels groupés, puis 2 par voisin. Chaque bloc échoue seul, un voisin
- * injoignable ne fait pas tomber le rapport.
+ * Voisins du mois, figés dans l'instantané : un rejeu ne doit pas afficher
+ * « absent » pour un voisin ajouté à COMPETITORS après coup. Leur place se lit
+ * dans les pages déjà relevées par pullSerp. Les 19 appels DataForSEO d'avant
+ * (estimations, liens, recherches captées) ne servaient plus qu'à la section
+ * « Ce que les voisins captent et pas vous », supprimée le 01/10/2026 à la
+ * demande d'Alexis : trop d'information, pas utile au client.
  */
-async function pullCompetitors() {
-  const domains = [DOMAIN, ...COMPETITORS.map((c) => c.domain)]
-  const safe = async (pr, fallback) => {
-    try { return await pr } catch (e) { console.error("Concurrents KO", e.message); return fallback }
-  }
-
-  const [ranks, refs] = await Promise.all([
-    safe(dfs("/backlinks/bulk_ranks/live", { targets: domains }), []),
-    safe(dfs("/backlinks/bulk_referring_domains/live", { targets: domains }), []),
-  ])
-  const rankOf = new Map((ranks[0]?.items ?? []).map((i) => [i.target, i.rank ?? 0]))
-  const rdOf = new Map((refs[0]?.items ?? []).map((i) => [i.target, i.referring_domains ?? 0]))
-
-  const rows = await Promise.all(domains.map(async (d) => {
-    const r = await safe(dfs("/dataforseo_labs/google/domain_rank_overview/live", {
-      target: d, location_name: "France", language_code: "fr", ignore_synonyms: true,
-    }), [])
-    const o = r[0]?.items?.[0]?.metrics?.organic ?? {}
-    const top3 = (o.pos_1 || 0) + (o.pos_2_3 || 0)
-    const top10 = top3 + (o.pos_4_10 || 0)
-    return {
-      domain: d,
-      label: d === DOMAIN ? "Château de la Huberdière" : (COMPETITORS.find((c) => c.domain === d)?.label ?? d),
-      isBrand: d === DOMAIN,
-      rank: rankOf.get(d) ?? 0,
-      referringDomains: rdOf.get(d) ?? 0,
-      top3, top10, top20: top10 + (o.pos_11_20 || 0),
-      etv: Math.round(o.etv || 0),
-    }
-  }))
-
-  // `intersections: false` renvoie les recherches où target1 sort et target2 non :
-  // c'est le vrai écart, sans avoir à soustraire deux listes tronquées.
-  const parVoisin = await Promise.all(COMPETITORS.map(async (c) => {
-    const r = await safe(dfs("/dataforseo_labs/google/domain_intersection/live", {
-      target1: c.domain, target2: DOMAIN, intersections: false,
-      location_name: "France", language_code: "fr", limit: 30,
-      filters: [["first_domain_serp_element.rank_group", "<=", 20], "and", ["keyword_data.keyword_info.search_volume", ">", 0]],
-      order_by: ["keyword_data.keyword_info.search_volume,desc"],
-    }), [])
-    return (r[0]?.items ?? []).map((i) => ({
-      keyword: i.keyword_data?.keyword ?? "",
-      volume: i.keyword_data?.keyword_info?.search_volume ?? 0,
-      competitor: c.label,
-      position: i.first_domain_serp_element?.rank_group ?? null,
-    }))
-  }))
-
-  const tout = parVoisin.flat().filter((k) => k.keyword && k.position != null)
-  const utiles = tout.filter((k) => rechercheCaptable(k.keyword))
-
-  // Google regroupe les variantes d'une même recherche : « restaurant amboise » et
-  // « restaurants in amboise » sortent avec le même volume, le même site et la même
-  // position. Trois lignes pour une seule idée font désordre dans un rapport client,
-  // on ne garde que la formulation la plus courte de chaque groupe.
-  const parMot = new Map()
-  for (const k of utiles) {
-    const cle = `${k.volume}|${k.competitor}|${k.position}`
-    const prec = parMot.get(cle)
-    if (!prec || k.keyword.length < prec.keyword.length) parMot.set(cle, k)
-  }
-  const gap = [...parMot.values()].sort((a, b) => b.volume - a.volume).slice(0, 12)
-
-  return { rows, gap, ecartes: tout.length - gap.length }
+function pullCompetitors() {
+  return { rows: COMPETITORS.map((c) => ({ domain: c.domain, label: c.label, isBrand: false })) }
 }
 
 async function pullDomainHistory() {
@@ -1061,31 +1001,17 @@ function movement(cur, prev, hasPrev) {
 }
 
 /**
- * Deux chemins de gain, du plus rapide au plus lent : remonter là où le château
- * est déjà proche, puis aller chercher ce que les voisins captent seuls.
+ * Le gain le plus rapide : les recherches où le château est déjà en page 2 ou 3.
  */
-export function renderGains(opportunities, cp) {
-  const proches = opportunities.length ? `<h3 class="sub-h">Vous y êtes presque</h3>
+export function renderGains(opportunities) {
+  if (!opportunities.length) return ""
+  return `<h2>Où aller chercher les prochains gains</h2>
+  <h3 class="sub-h">Vous y êtes presque</h3>
   <p class="lead">Ces recherches vous placent en page 2 ou 3. Quelques positions à reprendre, c'est le gain le plus rapide.</p>
   <table>
     <thead><tr><th>Recherche</th><th>Intention</th><th class="num">Position</th></tr></thead>
     <tbody>${opportunities.map((s) => `<tr><td>${esc(s.keyword)}</td><td>${esc(s.intent)}</td><td class="num pos">${s.position}</td></tr>`).join("")}</tbody>
-  </table>` : ""
-
-  // Refiltré au rendu : un instantané d'avant le 01/10 porte encore le nom des voisins
-  // d'Amboise, que le filtre de l'époque ne connaissait pas.
-  const filtre = filtrerCaptees(cp?.gap ?? [])
-  cp = cp ? { ...cp, gap: filtre.gap, ecartes: (cp.ecartes ?? 0) + filtre.ecartees } : cp
-  const captees = cp?.gap?.length ? `<h3 class="sub-h">Ce que les voisins captent et pas vous</h3>
-  <p class="lead">Recherches sur lesquelles un château voisin sort dans les vingt premiers résultats, alors que le vôtre n'apparaît pas du tout.</p>
-  <table>
-    <thead><tr><th>Recherche</th><th class="num">Recherches / mois</th><th class="hors-mobile">Qui la capte</th><th class="num">Sa position</th></tr></thead>
-    <tbody>${cp.gap.map((g) => `<tr><td>${esc(g.keyword)}<span class="sur-mobile">captée par ${esc(g.competitor)}</span></td><td class="num">${fr(g.volume)}</td><td class="hors-mobile" style="color:var(--gris)">${esc(g.competitor)}</td><td class="num pos">${g.position}</td></tr>`).join("")}</tbody>
-  </table>
-  <p class="note">Toutes ne sont pas à viser : une recherche « restaurant » suppose une table ouverte au public, ce que la table d'hôtes n'est pas. Celles qui parlent de séjour, de château ou de la région alimentent directement le calendrier éditorial. ${cp.ecartes ? `${fr(cp.ecartes)} recherches ont été écartées de ce tableau : le nom des voisins eux-mêmes, sur lequel personne ne peut se positionner, et des requêtes sans rapport avec votre région ni vos prestations.` : ""}</p>` : ""
-
-  if (!proches && !captees) return ""
-  return `<h2>Où aller chercher les prochains gains</h2>${proches}${captees}`
+  </table>`
 }
 
 function renderHtml(data) {
@@ -1315,7 +1241,7 @@ function renderHtml(data) {
     // plutôt que de montrer encore des chiffres faux.
     : ""}
 
-  ${renderGains(opportunities, competitors)}
+  ${renderGains(opportunities)}
 
   <h2>Articles publiés ce mois-ci</h2>
   <p class="lead">Le contenu mis en ligne pour le château en ${esc(monthLabel)}, avec les mots-clés visés. Cliquez le titre pour lire l'article.</p>
@@ -1414,7 +1340,7 @@ export async function generateReport(prevHistory = [], month = null) {
   // backlinks/domaines de l'historique, seul moyen de rouvrir le sujet plus tard
   // si une vraie acquisition de liens démarre. Un appel, aucun rendu.
   const [serp, backlinks, gbp, llm, domainHistory, leads, traffic, brand, competitors] = await Promise.all([
-    pullSerp(), pullBacklinks(), pullGbp(), pullLlm(), pullDomainHistory(), pullLeads(ym), pullUmami(ym), pullBrand(ym), pullCompetitors(),
+    pullSerp(), pullBacklinks(), pullGbp(), pullLlm(), pullDomainHistory(), pullLeads(ym), pullUmami(ym), pullBrand(ym), Promise.resolve(pullCompetitors()),
   ])
   // Borne de publication : aujourd'hui pour le mois courant, fin de mois pour un
   // rapport rétroactif. Évite de lister un article encore à venir (lien 404).

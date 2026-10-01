@@ -75,61 +75,6 @@ function bilan(recherches, positionDe) {
   return { premierePage, meilleure }
 }
 
-// ── « Ce que les voisins captent et pas vous » ──────────────────────────────
-// Écartés : le nom des voisins, et celui de leur commune quand l'établissement le
-// porte. Personne ne se positionne sur le nom d'un concurrent, ces lignes ne sont
-// pas des opportunités. La liste n'avait pas suivi l'arrivée des cinq voisins
-// d'Amboise le 04/09 : le rapport de septembre montrait « le clos d'amboise »,
-// « nazelles » ou « 37400 amboise » sous une note qui les disait écartés.
-const GAP_STOPWORDS = [
-  "pray", "perreux", "noizay", "huberdi",
-  "clos d'amboise", "relais d'amboise", "pavillon des lys", "arpentis", "chateau de nazelles", "chateau-nazelles",
-  // Établissements tiers et homonyme relevés en août 2026 (Nozay n'est pas Noizay) :
-  // le nom d'un autre restaurant n'est pas une recherche à capter.
-  "lion d'or", "calypso", "table du manoir", "avant garde", "nozay",
-]
-// Une commune seule (« amboise », « 37400 amboise », « amboise france ») cherche une
-// ville, pas un lieu où dormir ou se marier.
-const TOPONYMES = ["amboise", "nazelles", "nazelles-negron", "nazelles negron"]
-
-// Un voisin sort sur quantité de recherches sans rapport avec le château : d'autres
-// domaines du même nom, des communes lointaines, des établissements tiers. Une
-// recherche doit toucher au territoire ou à une prestation du château pour valoir
-// d'être montrée au client. Le mot « château » seul est volontairement absent :
-// il laisserait passer « château de pezay » et tous les homonymes.
-const MARCHE = [
-  "amboise", "loire", "touraine", "tours", "indre-et-loire", "vouvray", "nazelles",
-  "chenonceau", "chambord", "villandry", "chaumont", "montlouis", "blois",
-  "mariage", "seminaire", "reception", "privatis", "chambre d'hote", "chambres d'hote",
-  "hotel", "gite", "sejour", "week-end", "weekend", "yoga", "retraite", "piscine",
-  "spa", "table d'hote", "bien-etre", "anniversaire",
-]
-const sansAccent = (x) => String(x).normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\u2019/g, "'").toLowerCase()
-
-export function rechercheCaptable(keyword) {
-  const kw = sansAccent(keyword).trim()
-  if (GAP_STOPWORDS.some((w) => kw.includes(w))) return false
-  const ville = kw.replace(/\b\d{5}\b/g, " ").replace(/\bfrance\b/g, " ").replace(/\s+/g, " ").trim()
-  if (TOPONYMES.includes(ville)) return false
-  return MARCHE.some((m) => kw.includes(m))
-}
-
-// Filtre rejoué au rendu, et une ligne par recherche : « hotel amboise » sortait
-// deux fois, une par voisin. On garde le mieux placé.
-export function filtrerCaptees(gap) {
-  const parRecherche = new Map()
-  let ecartees = 0
-  for (const g of Array.isArray(gap) ? gap : []) {
-    if (!rechercheCaptable(g.keyword)) { ecartees++; continue }
-    const cle = sansAccent(g.keyword)
-    const prec = parRecherche.get(cle)
-    if (!prec || g.position < prec.position) parRecherche.set(cle, g)
-  }
-  const out = [...parRecherche.values()].sort((a, b) => b.volume - a.volume)
-  // `ecartees` : hors sujet ou nom de voisin, ce que dit la note. Les doublons fusionnés n'y entrent pas.
-  return { gap: out, retirees: (Array.isArray(gap) ? gap.length : 0) - out.length, ecartees }
-}
-
 const THEME_DE = {
   "Mariage": "mariage", "Séminaire": "séminaire", "Séjour / chambres d'hôtes": "séjour",
   "Retraite / bien-être": "retraite", "Famille / groupe": "famille", "Restauration": "table",
@@ -139,7 +84,7 @@ const THEME_DE = {
 export function themesDesRecherches(serp) {
   const vus = []
   for (const s of (Array.isArray(serp) ? serp : []).filter(rechercheClient).filter(releve)) {
-    const t = THEME_DE[s.intent] ?? sansAccent(s.intent)
+    const t = THEME_DE[s.intent] ?? String(s.intent).toLowerCase()
     if (!vus.includes(t)) vus.push(t)
   }
   return vus.join(", ")
