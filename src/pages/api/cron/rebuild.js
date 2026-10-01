@@ -13,10 +13,10 @@ export const prerender = false
 
 const SENDER = { name: "Reporting Huberdière", email: "hello@chateaudelahuberdiere.com" }
 const ALEXIS = [{ email: "alexis@morain.fr", name: "Alexis Morain" }]
-// Le rapport part au client entre le 28 et le 31. On contrôle le 25 puis le 27 :
-// une première alerte qui laisse trois jours pour agir, une piqûre de rappel la
-// veille. Deux mails par mois au maximum, et zéro quand tout va bien.
-const JOURS_PREFLIGHT = [25, 27]
+// Le rapport part au client le 1er du mois suivant. On contrôle le 25 puis le 28 :
+// une première alerte qui laisse une semaine pour agir, une piqûre de rappel trois
+// jours avant. Deux mails par mois au maximum, et zéro quand tout va bien.
+const JOURS_PREFLIGHT = [25, 28]
 
 const esc = (v) => String(v ?? "").replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c])
 
@@ -49,7 +49,7 @@ async function preflight(ym) {
   if (travauxManquants(ym)) {
     soucis.push(
       `<p><strong>L'encart « Ce qui a été réalisé » est vide pour ${esc(ym)}.</strong><br>` +
-        `À remplir dans <code>src/data/rapport-travaux.json</code> avant le 28, sinon le client reçoit un rapport muet sur le travail du mois.</p>`,
+        `À remplir dans <code>src/data/rapport-travaux.json</code> avant le 1er, sinon le client reçoit un rapport muet sur le travail du mois.</p>`,
     )
   }
 
@@ -70,7 +70,7 @@ async function preflight(ym) {
   } catch (e) {
     // Un contrôle qui tombe en panne doit se signaler, pas se taire : c'est
     // exactement le silence qu'on cherche à supprimer.
-    soucis.push(`<p><strong>La réconciliation des demandes a échoué :</strong> ${esc(e.message)}.<br>À vérifier à la main avant le 28.</p>`)
+    soucis.push(`<p><strong>La réconciliation des demandes a échoué :</strong> ${esc(e.message)}.<br>À vérifier à la main avant le 1er.</p>`)
   }
 
   if (!soucis.length) return { ok: true, alerte: false }
@@ -79,7 +79,7 @@ async function preflight(ym) {
     `<div style="font-family:Helvetica,Arial,sans-serif;color:#2e3a48;font-size:15px;line-height:1.6">` +
     `<h1 style="font-family:Georgia,serif;color:#8B0000;font-size:20px;font-weight:normal">Préflight du rapport ${esc(ym)}</h1>` +
     soucis.join("") +
-    `<p style="color:#646464;font-size:13px">Message automatique du cron quotidien, envoyé à toi seul. Le rapport client part entre le 28 et le 31.</p></div>`
+    `<p style="color:#646464;font-size:13px">Message automatique du cron quotidien, envoyé à toi seul. Le rapport client part le 1er du mois suivant.</p></div>`
   const alerte = await alerter(`Préflight rapport ${ym} : ${soucis.length} point${soucis.length > 1 ? "s" : ""} à traiter`, html)
   return { ok: true, alerte, soucis: soucis.length }
 }
@@ -107,29 +107,12 @@ export async function GET({ request, url }) {
     const res = await fetch(hook, { method: "POST" })
     const body = await res.json().catch(() => ({}))
 
-    // Le 1er du mois, le rapport de la veille est complété de sa dernière journée
-    // (demandes et trafic), sans mail. Il était parti le dernier jour à 8 h.
-    let complementRes = null
-    if (jour === 1) {
-      const [y, m] = ym.split("-").map(Number)
-      const veille = m === 1 ? `${y - 1}-12` : `${y}-${String(m - 1).padStart(2, "0")}`
-      // Domaine canonique en dur : une redirection apex → www perdrait l'en-tête d'autorisation.
-      complementRes = await fetch(`https://www.chateaudelahuberdiere.com/api/cron/rapport?refresh=1&month=${veille}`, {
-        headers: { authorization: `Bearer ${secret}` }, signal: AbortSignal.timeout(120000),
-      }).then((r) => r.json()).catch((e) => ({ ok: false, error: String(e?.message || e) }))
-      if (!complementRes?.ok) {
-        await alerter(`Rapport ${veille} : complément du 1er en échec`,
-          `<p>Le rapport de ${esc(veille)} n'a pas été complété de sa dernière journée (demandes et trafic) : ${esc(complementRes?.error ?? "réponse inattendue")}.</p>` +
-          `<p>À relancer à la main : <code>/api/cron/rapport?refresh=1&amp;month=${esc(veille)}&amp;key=…</code></p>`)
-      }
-    }
-
     let preflightRes = null
     if (forcer || JOURS_PREFLIGHT.includes(jour)) {
       preflightRes = await preflight(moisPreflight).catch((e) => ({ ok: false, error: String(e?.message || e) }))
     }
 
-    return new Response(JSON.stringify({ ok: res.ok, job: body?.job ?? null, preflight: preflightRes, complement: complementRes }), {
+    return new Response(JSON.stringify({ ok: res.ok, job: body?.job ?? null, preflight: preflightRes }), {
       status: res.ok ? 200 : 502, headers: { "content-type": "application/json" },
     })
   } catch (e) {

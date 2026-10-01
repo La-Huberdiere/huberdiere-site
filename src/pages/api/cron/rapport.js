@@ -1,4 +1,4 @@
-// Cron mensuel du rapport SEO/GEO client (remplace la GitHub Action, l'org GitHub
+// Cron mensuel du rapport SEO/GEO client, le 1er du mois pour le mois précédent (remplace la GitHub Action, l'org GitHub
 // étant flaggée). Génère le rapport, stocke HTML + historique dans Vercel Blob et
 // notifie le lien par email (Brevo). Déclenché par Vercel Cron (vercel.json) avec
 // l'en-tête Authorization: Bearer <CRON_SECRET>. Test manuel possible via ?key=<secret>.
@@ -46,35 +46,17 @@ async function sendEmail(summary, monthLabel) {
   const cc = (process.env.REPORT_EMAIL_CC || "alexis@morain.fr")
     .split(",").map((e) => ({ email: e.trim() })).filter((e) => e.email)
   const s = summary
-  const nbArt = s.articlesNew ?? s.articles
-  const art = nbArt === 0 ? "pas de nouvel article ce mois-ci"
-    : nbArt === 1 ? "un nouvel article publié sur le blog"
-    : `${nbArt} nouveaux articles publiés sur le blog`
-  const kw = s.ranked === 0
-    ? `aucun de vos ${s.keywords} mots-clés suivis n'est encore positionné sur Google`
-    : `${s.ranked} de vos ${s.keywords} mots-clés suivis ${s.ranked > 1 ? "sont positionnés" : "est positionné"} sur Google`
-  const gbp = s.gbpNote != null ? `, et votre note Google se maintient à ${String(s.gbpNote).replace(".", ",")}/5` : ""
-  const aio = !s.aioPresent ? ""
-    : ` Google affiche désormais son résumé IA sur ${s.aioPresent} de vos mots-clés suivis${s.aioCited > 0 ? `, et le château y figure comme source sur ${s.aioCited} d'entre eux` : ", le château n'y figure pas encore comme source"}.`
-  // Notoriété : le chiffre à regarder maintenant que le clic depuis Google n'est
-  // plus attribuable. On ne le commente que si l'historique permet la comparaison.
-  // Google publie ses volumes avec un mois de retard et révise le plus récent : on
-  // annonce le dernier mois CONFIRMÉ, en le nommant, plutôt qu'un « ce mois-ci » faux.
-  const marque = s.marque == null ? ""
-    : s.marqueAnPasse == null ? ` Sur le nom du château, ${s.marque} recherches Google en ${s.marqueMois}.`
-    : ` Sur le nom du château, ${s.marque} recherches Google en ${s.marqueMois} contre ${s.marqueAnPasse} un an plus tôt${s.marque > s.marqueAnPasse ? ", c'est la courbe qui compte le plus aujourd'hui" : ""}.`
-  const dem = s.demandes == null || s.demandes === 0 ? ""
-    : ` Côté demandes, vous avez reçu ${s.demandes} contact${s.demandes > 1 ? "s" : ""} via le site${s.demandesIa > 0 ? `, dont ${s.demandesIa} ${s.demandesIa > 1 ? "venues" : "venue"} d'une IA comme ChatGPT` : ""}.`
+  // Le lien seul, sans résumé chiffré (consigne du 01/10) : un chiffre écrit dans un
+  // mail ne se corrige plus une fois parti, le rapport en ligne si.
   const html = `
     <div style="font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;color:#212121;line-height:1.65;font-size:15px;max-width:520px">
       <p>Bonjour à tous les deux,</p>
-      <p>Voici votre point référencement pour <strong>${monthLabel}</strong>. J'ai tout mis au propre dans le rapport en ligne :</p>
+      <p>Votre point référencement de <strong>${monthLabel}</strong> est en ligne :</p>
       <p style="margin:22px 0">
         <a href="${REPORT_URL}?m=${s.month}" style="color:#8B0000;font-weight:600;font-size:16px">Ouvrir le rapport →</a><br>
         <span style="color:#646464;font-size:13px">mot de passe <strong>SEOHUBERDIERE</strong>, à saisir une seule fois sur votre navigateur</span>
       </p>
-      <p>En deux mots ce mois-ci : ${art}, et ${kw}. Côté intelligences artificielles, le château a été cité dans ${s.llmCited} des ${s.llmAnswered} réponses obtenues${gbp}.${marque}${aio}${dem}</p>
-      <p>Le rapport reprend l'évolution mois par mois et ce sur quoi je travaille pour la suite. Une question, un doute ? Répondez simplement à ce message.</p>
+      <p>Une question, un doute ? Répondez simplement à ce message.</p>
       <p style="margin-top:24px">Bonne lecture,<br>Alexis</p>
     </div>`
   const res = await fetch("https://api.brevo.com/v3/smtp/email", {
@@ -163,39 +145,33 @@ export async function GET({ request, url }) {
 
   try {
     const override = url.searchParams.get("month") // override optionnel YYYY-MM
-    // Envoi anticipé ponctuel : le rapport doit partir un jour donné (call client) sans
-    // attendre la fin du mois. Le cron `0 6 28-31` passe déjà ce jour-là ; on lève juste
-    // la garde. L'idempotence (drapeau emailed) empêche le doublon avec le run du dernier
-    // jour. Date UTC fixe, à retirer une fois passée (envoi juillet fait avant le call du 30).
-    const EARLY_SEND = "2026-07-30"
-    const todayUtc = new Date().toISOString().slice(0, 10)
-    // Le cron tourne les 28-31 (cf. vercel.json). On ne génère qu'au VRAI dernier jour du
-    // mois (le mois courant EST le mois à rapporter), sauf jour d'envoi anticipé. Un override
-    // manuel (?month=YYYY-MM) court-circuite aussi cette garde.
-    if (!override && todayUtc !== EARLY_SEND) {
-      const now = new Date()
-      const t = new Date(now); t.setUTCDate(now.getUTCDate() + 1)
-      if (t.getUTCMonth() === now.getUTCMonth()) {
-        return new Response(JSON.stringify({ ok: true, skipped: "pas le dernier jour du mois" }), {
-          status: 200, headers: { "content-type": "application/json" },
-        })
-      }
+    // Le rapport part le 1er du mois (cron `0 6 1 * *`) et porte sur le mois PRÉCÉDENT,
+    // désormais complet : envoyé le dernier jour à 8 h, il perdait cette journée de
+    // demandes et de trafic. Hors du 1er, rien ne part sans ?month=AAAA-MM explicite.
+    const now = new Date()
+    if (!override && now.getUTCDate() !== 1) {
+      return new Response(JSON.stringify({ ok: true, skipped: "le rapport part le 1er du mois" }), {
+        status: 200, headers: { "content-type": "application/json" },
+      })
     }
+    const moisPrecedent = (() => {
+      const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 1, 1))
+      return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}`
+    })()
+    const ymTarget = override || moisPrecedent
     const prev = await loadHistory()
 
     // Idempotence : un mois déjà envoyé n'est ni régénéré ni renvoyé. Évite le doublon
     // quand un envoi anticipé (ex. veille de call) précède le run automatique de fin de
     // mois. Contournable avec ?force=1 pour un renvoi volontaire.
     const force = url.searchParams.get("force") === "1"
-    const now2 = new Date()
-    const ymTarget = override || `${now2.getUTCFullYear()}-${String(now2.getUTCMonth() + 1).padStart(2, "0")}`
     if (!force && Array.isArray(prev) && prev.some((h) => h.month === ymTarget && h.emailed)) {
       return new Response(JSON.stringify({ ok: true, skipped: "rapport déjà envoyé ce mois", month: ymTarget }), {
         status: 200, headers: { "content-type": "application/json" },
       })
     }
 
-    const { html, history, summary, snapshot, monthLabel, month: ym } = await generateReport(prev, override)
+    const { html, history, summary, snapshot, monthLabel, month: ym } = await generateReport(prev, ymTarget)
 
     // Régénération silencieuse : reconstruit le rapport en ligne (blob + archive) sans
     // réexpédier de mail. Sert à corriger un rapport déjà envoyé. Le drapeau `emailed`
