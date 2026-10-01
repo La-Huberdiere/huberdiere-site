@@ -1,22 +1,19 @@
-// Définition de la notoriété du rapport client : quelles recherches veulent dire
-// « je cherche le château ». Une seule règle pour les deux sources de la courbe,
-// l'estimation Google Ads (avant juillet 2026) et la Search Console (depuis).
-// Module pur, testé sous `node --test`.
+// Définition de la notoriété du rapport client. Module pur, testé sous `node --test`.
 //
-// « huberdi » seul ne suffit pas : il existe une chèvrerie-ferme auberge et un gîte
-// de la Huberdière dans la Manche, une Huberdière à Fondettes, une salle à
-// Corps-Nuds. Google Ads les estime à plus de 1 000 recherches par mois. « La
-// huberdière » ou « huberdiere » seuls sont ambigus : le château y sort 2e à 4e,
-// une partie seulement de ces gens le cherchent. Décision du 01/10/2026 : on ne
-// compte que les recherches qui nomment le château, ou la Huberdière avec sa commune.
-export const GSC_BRAND_REGEX = "ch[aâ]teau.*huberdi|huberdi.*(nazelles|amboise)"
+// Mesure (Search Console, depuis juillet 2026) : toute recherche contenant
+// « huberdi », ce qui attrape « huberdière » comme « huberdiere ». Décision
+// d'Alexis du 01/10/2026 : on garde tout, « la huberdière » seule et les quelques
+// homonymes compris (ferme, domaine, salle de la Huberdière : 15 impressions sur
+// 928 en août). Ils pèsent peu ici parce que la Search Console ne compte une
+// recherche que si le site du château s'y affiche.
+export const GSC_BRAND_REGEX = "huberdi"
 
-const RE = new RegExp(GSC_BRAND_REGEX, "i")
-export const estRechercheChateau = (q) => RE.test(String(q || ""))
-
-// Les formulations vues en Search Console, côté estimation. Google Ads garde
-// accentuée et non accentuée comme deux entrées distinctes (390 et 70 en août
-// 2026) : on les additionne. Une formulation sans volume connu rend 0.
+// Estimation (Google Ads, avant juillet 2026) : les formulations qui nomment le
+// château, vues en Search Console. Pas « la huberdière » seule : Google Ads
+// l'estime à ~800 recherches/mois, surtout pour la chèvrerie-ferme auberge et le
+// gîte de la Huberdière dans la Manche, qui n'ont rien à voir avec le château.
+// Accentuée et non accentuée sont deux entrées distinctes chez Google Ads (390 et
+// 70 en août 2026) : on les additionne.
 export const BRAND_KEYWORDS = [
   "château de la huberdière",
   "chateau de la huberdiere",

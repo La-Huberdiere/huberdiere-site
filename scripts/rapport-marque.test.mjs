@@ -1,31 +1,24 @@
 // node --test scripts/rapport-marque.test.mjs
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { BRAND_KEYWORDS, GSC_BRAND_REGEX, estRechercheChateau } from "../src/lib/rapport-marque.mjs"
+import { BRAND_KEYWORDS, GSC_BRAND_REGEX } from "../src/lib/rapport-marque.mjs"
 
-// Recherches réellement comptées par la Search Console de juillet à septembre 2026.
-const CHATEAU = [
-  "château de la huberdière", "chateau de la huberdiere", "chateau de la huberdière", "château de la huberdière photos",
-  "chateau huberdiere", "chateau de huberdiere", "la huberdière nazelles", "chateau de la huberdiere nazelles",
-  "chateau de la huberdiere in nazelles negron",
-]
-// Homonymes (Manche, Fondettes, Corps-Nuds) et toponyme seul : ils ne disent pas qu'on cherche le château.
-const AUTRES = [
-  "la huberdière", "la huberdiere", "huberdiere", "salle de la huberdière", "domaine de la huberdiere",
-  "domaine de la huberdière", "au domaine de la huberdière photos", "ferme de la huberdiere",
-  "chèvrerie de la huberdière ferme auberge", "gîte de la huberdière", "la huberdière fondettes",
-]
+const mesure = new RegExp(GSC_BRAND_REGEX, "i")
 
-test("la notoriété compte le château, pas ses homonymes", () => {
-  for (const q of CHATEAU) assert.equal(estRechercheChateau(q), true, q)
-  for (const q of AUTRES) assert.equal(estRechercheChateau(q), false, q)
+test("la Search Console compte tout ce qui contient « huberdi », toponyme seul et homonymes compris", () => {
+  // Décision d'Alexis du 01/10 : août 2026, 928 et non 816.
+  for (const q of ["château de la huberdière", "chateau de la huberdiere", "la huberdière", "huberdiere", "la huberdiere",
+    "ferme de la huberdiere", "domaine de la huberdiere", "salle de la huberdière", "la huberdière nazelles"]) {
+    assert.ok(mesure.test(q), q)
+  }
 })
 
-test("l'estimation et la mesure suivent la même définition", () => {
-  for (const k of BRAND_KEYWORDS) assert.equal(estRechercheChateau(k), true, k)
-})
-
-test("la regex envoyée à la Search Console est celle qu'on teste", () => {
-  assert.equal(typeof GSC_BRAND_REGEX, "string")
-  assert.ok(new RegExp(GSC_BRAND_REGEX, "i").test("château de la huberdière"))
+test("l'estimation ne porte que sur des formulations qui nomment le château", () => {
+  // « la huberdière » seule vaut ~800 recherches/mois chez Google Ads, surtout la
+  // ferme-auberge et le gîte de la Manche : l'estimation exploserait.
+  const chateau = /ch[aâ]teau.*huberdi|huberdi.*(nazelles|amboise)/i
+  for (const k of BRAND_KEYWORDS) {
+    assert.ok(mesure.test(k), k)
+    assert.ok(chateau.test(k), k)
+  }
 })

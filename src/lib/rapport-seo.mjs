@@ -1241,7 +1241,7 @@ function renderHtml(data) {
     : brandGsc
     ? "Ces chiffres sont comptés par Google dans votre Search Console, pas estimés. Google consolide ses données avec deux à trois jours de retard : la dernière barre du graphique est donc tracée en pointillé tant que son mois n'est pas terminé, et les chiffres ci-dessus s'arrêtent au dernier mois complet."
     : "Ces volumes sont des estimations de l'outil publicitaire de Google, arrondies par paliers fixes (320, 390, 480, 590, 720, 880, 1 000…) et publiées avec un mois de décalage. La dernière barre est tracée en pointillé parce qu'un mois tout juste publié saute parfois plusieurs paliers d'un coup, sans que rien ne l'ait justifié : nous ne l'annonçons qu'une fois le mois suivant arrivé."} C'est la pente sur plusieurs mois qui raconte l'essentiel, jamais le dernier point pris seul.</p>
-  <p class="note">Sont comptées les recherches qui nomment le château (« château de la Huberdière », avec ou sans accents, « … photos », « la Huberdière Nazelles »…). Sont écartés les homonymes, une ferme-auberge, un gîte et une salle de la Huberdière ailleurs en France, ainsi que « la Huberdière » tapée seule, qui désigne aussi ces lieux.</p>` : ""}
+  <p class="note">Les barres pleines comptent toutes les recherches contenant « Huberdière », avec ou sans accent, pour lesquelles votre site s'est affiché : « château de la Huberdière », « … photos », « la Huberdière Nazelles », « la Huberdière » tapée seule. Les barres hachurées ne portent que sur les formulations qui nomment le château : « la Huberdière » seule y désignerait surtout d'autres lieux du même nom, une ferme-auberge et un gîte dans la Manche.</p>` : ""}
 
   <h2>Où vous sortez dans Google</h2>
   <p class="lead">Les recherches suivies sur lesquelles le château apparaît, et son mouvement depuis le rapport précédent. Position 1 = tout en haut : plus le chiffre est petit, mieux c'est.</p>
@@ -1460,8 +1460,8 @@ export async function completerInstantane(snap) {
   const now = new Date()
   const courant = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`
   if (ym >= courant) throw new Error(`${ym} n'est pas terminé`)
-  // La notoriété aussi : sa définition a changé le 01/10 (château seul, homonymes
-  // écartés), et ses mois passés sont fixes, la relire ne date rien d'un autre mois.
+  // La notoriété aussi : l'estimation a été élargie le 01/10 à toutes les formulations
+  // du château, et ses mois passés sont fixes, la relire ne date rien d'un autre mois.
   const [leads, traffic, brand] = await Promise.all([pullLeads(ym), pullUmami(ym), pullBrand(ym)])
   const out = { ...snap, leads: leads ?? snap.leads, traffic: traffic ?? snap.traffic, brand: brand ?? snap.brand, complete: now.toISOString() }
   out.history = (snap.history ?? []).map((h) => h.month !== ym ? h : {
