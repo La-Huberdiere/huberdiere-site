@@ -33,6 +33,7 @@ export const FREE_PAGE_SLUGS: Record<string, { en: string; it: string }> = {
 // Articles de blog (fichier .mdoc = id canonique, identique dans les 3 langues).
 export const ARTICLE_SLUGS: Record<string, { en: string; it: string }> = {
   "chambres-hotes-amboise-chateau": { en: "bed-and-breakfast-amboise", it: "bed-breakfast-castello-loira" },
+  "ceremonie-laique-parc-chateau": { en: "humanist-wedding-ceremony-chateau", it: "cerimonia-simbolica-castello" },
   "chateau-pour-mariage-val-de-loire": { en: "chateau-wedding-venue-loire", it: "castello-per-matrimonio-loira" },
   "dormir-dans-un-chateau-loire": { en: "sleep-in-a-loire-chateau", it: "dormire-castello-della-loira" },
   "loire-a-velo-depuis-amboise": { en: "loire-valley-cycling-amboise", it: "loira-in-bicicletta-amboise" },
