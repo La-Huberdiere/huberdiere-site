@@ -7,7 +7,7 @@
 //
 // Il porte aussi le PRÉFLIGHT du rapport client (voir plus bas) : le plan Vercel est
 // limité à deux crons, et celui-ci tourne déjà tous les jours.
-import { reconcileLeads, travauxManquants } from "../../../lib/rapport-seo.mjs"
+import { reconcileLeads, travauxManquants, propositionsManquantes } from "../../../lib/rapport-seo.mjs"
 
 export const prerender = false
 
@@ -50,6 +50,12 @@ async function preflight(ym) {
     soucis.push(
       `<p><strong>L'encart « Ce qui a été réalisé » est vide pour ${esc(ym)}.</strong><br>` +
         `À remplir dans <code>src/data/rapport-travaux.json</code> avant le 1er, sinon le client reçoit un rapport muet sur le travail du mois.</p>`,
+    )
+  }
+  if (propositionsManquantes(ym)) {
+    soucis.push(
+      `<p><strong>La section « Pour le mois prochain » est vide ou incomplète pour ${esc(ym)}.</strong><br>` +
+        `À remplir dans <code>src/data/rapport-propositions.json</code> (clé ${esc(ym)}, <code>alexis</code> et <code>client</code>) avant le 1er, sinon le rapport se termine sans vos propositions ni les leurs.</p>`,
     )
   }
 

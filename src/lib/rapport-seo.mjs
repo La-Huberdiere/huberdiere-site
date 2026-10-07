@@ -16,12 +16,15 @@ import TRAVAUX from "../data/rapport-travaux.json"
 // Campagnes Brevo du mois (scripts/stats-newsletter.mjs), relues au rendu comme
 // l'encart travaux : un rejeu depuis l'instantané en profite.
 import NEWSLETTERS from "../data/rapport-newsletters.json"
+// Section finale « Pour le mois prochain », même mécanique : lue au rendu.
+import PROPOSITIONS from "../data/rapport-propositions.json"
+import { renderPropositions, propositionsManquantes as propositionsVides } from "./rapport-propositions.mjs"
 import { renderNewsletters } from "./rapport-newsletter.mjs"
 import { renderBrandChart } from "./rapport-graphique.mjs"
 import { positionsVoisins, renderVoisins, aDesVoisins, pageLaPlusComplete } from "./rapport-voisins.mjs"
 import { fenetresDeJours, pointDeComparaison, moisDecales } from "./rapport-periodes.mjs"
 import { BRAND_KEYWORDS, GSC_BRAND_REGEX } from "./rapport-marque.mjs"
-import { repartirAbsents, absenceProuvee, domainesCites } from "./rapport-positions.mjs"
+import { repartirAbsents, absenceProuvee, domainesCites, kpiBaseFixe } from "./rapport-positions.mjs"
 import { buildLeadsData, libellePage } from "./rapport-demandes.mjs"
 import { localizePath } from "./routes.ts"
 export { buildLeadsData }
@@ -662,6 +665,9 @@ export function travauxManquants(ym) {
   return !Array.isArray(items) || items.length === 0
 }
 
+// La section « Pour le mois prochain » est-elle remplie pour le mois ?
+export const propositionsManquantes = (ym) => propositionsVides(PROPOSITIONS[ym])
+
 async function pullLeads(ym) {
   const key = process.env.BREVO_API_KEY
   if (!key) { console.log("[rapport] BREVO_API_KEY absente, bloc demandes ignoré."); return null }
@@ -1017,10 +1023,10 @@ export function renderGains(opportunities) {
 function renderHtml(data) {
   const { month, serp, gbp, llm, articles, history, exec, leads, traffic, brand, competitors } = data
   const monthLabel = monthLong(month)
-  const rankedCount = serp.filter((s) => s.position !== null).length
   // Recherches réellement relevées ce mois-ci : les autres ne sont ni gagnées ni perdues.
   const serpMesure = serp.filter((s) => s.releve !== false)
   const serpNonReleves = serp.length - serpMesure.length
+  const kpiClasses = kpiBaseFixe(serp, (s) => s.position != null, "dans le top 100 Google")
   const bestPos = bestKeyword(serp)
 
   // Rapport précédent (pour les mouvements de position).
@@ -1058,6 +1064,7 @@ function renderHtml(data) {
   const absents = repartirAbsents(serpAbsents, prevPos, hasPrev)
   const aioKw = serp.filter((s) => s.aio)
   const aioCitedKw = serp.filter((s) => s.aioCited)
+  const kpiAio = kpiBaseFixe(serp, (s) => s.aio, aioKw.length && aioKw.length <= 3 ? aioKw.map((x) => `«\u00a0${x.keyword}\u00a0»`).join(", ") : "sur vos mots-clés suivis")
 
   // Visibilité IA : pivot par question (thème × moteurs).
   const perQuestion = LLM_PROMPTS.map((p, idx) => {
@@ -1116,6 +1123,7 @@ function renderHtml(data) {
   footer .arch{margin-bottom:14px}
   footer .arch a{margin-right:12px;white-space:nowrap}
   .pos{font-weight:600}
+  .propositions p{margin:0 0 10px}.propositions p:last-child{margin-bottom:0}
   .sub-h{font-family:"Playfair Display",serif;color:var(--encre);font-size:17px;margin:26px 0 2px;font-weight:600}
   /* Téléphone : une colonne secondaire (.hors-mobile) disparaît et revient en
      ligne grise sous la première cellule (.sur-mobile), comme dans « Face aux
@@ -1177,7 +1185,7 @@ function renderHtml(data) {
   <div class="summary">${exec}</div>
 
   <div class="kpis">
-    <div class="kpi"><div class="l">Mots-clés classés</div><div class="v">${rankedCount}<span style="font-size:15px;color:var(--gris)"> / ${serpMesure.length}</span></div><div class="n">dans le top 100 Google</div></div>
+    <div class="kpi"><div class="l">Mots-clés classés</div><div class="v">${kpiClasses.valeur}<span style="font-size:15px;color:var(--gris)"> / ${kpiClasses.base}</span></div><div class="n">${esc(kpiClasses.note)}</div></div>
     <div class="kpi"><div class="l">Meilleure position</div><div class="v">${bestPos ? "#" + bestPos.position : "–"}</div><div class="n">${bestPos ? esc(bestPos.keyword) : "à conquérir"}</div></div>
     <div class="kpi"><div class="l">Demandes reçues</div><div class="v">${leads?.total ?? "–"}</div><div class="n">via les formulaires du site</div></div>
     <div class="kpi"><div class="l">Cité par les IA</div><div class="v">${citedTotal}<span style="font-size:15px;color:var(--gris)"> / ${answeredTotal}</span></div><div class="n">réponses testées</div></div>
@@ -1254,7 +1262,7 @@ function renderHtml(data) {
   <h2>Aperçus IA de Google</h2>
   <p class="lead">Depuis le 22 juillet 2026, Google affiche en France un résumé rédigé par son IA au-dessus des résultats classiques. Il répond directement à la question de l'internaute et cite quelques sites en source. Être cité dans cet encart, c'est occuper la place la plus visible de la page.</p>
   <div class="kpis" style="grid-template-columns:repeat(2,1fr)">
-    <div class="kpi"><div class="l">Mots-clés avec aperçu IA</div><div class="v">${aioKw.length}<span style="font-size:15px;color:var(--gris)"> / ${serpMesure.length}</span></div><div class="n">${aioKw.length && aioKw.length <= 3 ? aioKw.map((x) => `«\u00a0${esc(x.keyword)}\u00a0»`).join(", ") : "sur vos mots-clés suivis"}</div></div>
+    <div class="kpi"><div class="l">Mots-clés avec aperçu IA</div><div class="v">${kpiAio.valeur}<span style="font-size:15px;color:var(--gris)"> / ${kpiAio.base}</span></div><div class="n">${esc(kpiAio.note)}</div></div>
     <div class="kpi"><div class="l">Château cité en source</div><div class="v">${aioCitedKw.length}</div><div class="n">${aioKw.length ? `sur ${aioKw.length} aperçu${aioKw.length > 1 ? "s" : ""} affiché${aioKw.length > 1 ? "s" : ""}` : "aucun aperçu ce mois-ci"}</div></div>
   </div>
   ${aioKw.length ? `<table style="margin-top:16px">
@@ -1286,6 +1294,8 @@ function renderHtml(data) {
     }).join("")}</tbody>
   </table>
   <p class="note">${muets.length ? `${esc(muets.join(" et "))} n'${muets.length > 1 ? "ont" : "a"} rendu aucune réponse ce mois-ci : le décompte porte sur ${answeredTotal} réponses obtenues. ` : ""}Les réponses des IA varient d'un jour à l'autre : lisez ce bloc comme une tendance, pas comme une note figée.</p>
+
+  ${renderPropositions(PROPOSITIONS[month])}
 
   <footer>
     ${archivesHtml}

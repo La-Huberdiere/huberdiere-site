@@ -33,3 +33,17 @@ export function domainesCites(refs) {
   }
   return out
 }
+
+// KPI de positions sur la base FIXE des recherches suivies. Septembre 2026 affichait
+// « 7 / 17 » après « 8 / 19 » en août : les 2 recherches non relevées sortaient du
+// dénominateur et le client a cru que la base changeait. La base reste toujours la
+// liste complète, et les recherches non relevées se disent dans la note.
+export function kpiBaseFixe(serp, compte, note) {
+  const liste = Array.isArray(serp) ? serp : []
+  const nonReleves = liste.filter((s) => s.releve === false).length
+  return {
+    valeur: liste.filter((s) => s.releve !== false && compte(s)).length,
+    base: liste.length,
+    note: nonReleves ? `${note} · ${nonReleves} non relevée${nonReleves > 1 ? "s" : ""} ce mois-ci` : note,
+  }
+}
