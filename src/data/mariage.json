@@ -70,7 +70,7 @@
       },
       {
         "label": "Boissons",
-        "value": "Aucun droit de bouchon : vous apportez vos vins et champagnes."
+        "value": "Vos vins et champagnes sont les bienvenus : droit de bouchon selon votre traiteur, 8 € par bouteille quand nous assurons le repas."
       },
       {
         "label": "Situation",
@@ -153,7 +153,7 @@
       },
       {
         "q": "Appliquez-vous un droit de bouchon sur les boissons ?",
-        "a": "Non. Vous apportez vos propres vins, champagnes et spiritueux sans aucun frais supplémentaire. Vous maîtrisez votre budget et servez les crus qui vous tiennent à cœur."
+        "a": "Cela dépend de qui assure le repas. Avec votre traiteur, c'est lui qui fixe ses conditions sur les vins, champagnes et spiritueux que vous apportez : faites-les préciser au devis. Quand c'est nous qui assurons le repas, le droit de bouchon est de 8 € par bouteille."
       },
       {
         "q": "Le mobilier et les charges sont-ils inclus dans le prix ?",
@@ -236,7 +236,7 @@
       },
       {
         "label": "Drinks",
-        "value": "No corkage: you bring your own wines and champagnes."
+        "value": "Your own wines and champagnes are welcome: corkage set by your caterer, or 8 € per bottle when we provide the meal."
       },
       {
         "label": "Location",
@@ -319,7 +319,7 @@
       },
       {
         "q": "Do you charge corkage on drinks?",
-        "a": "No. You bring your own wines, champagnes and spirits at no extra charge. You keep control of your budget and serve the vintages closest to your heart."
+        "a": "It depends on who provides the meal. With your own caterer, they set their terms on any wines, champagnes and spirits you bring: have them stated in the quote. When we provide the meal ourselves, corkage is 8 € per bottle."
       },
       {
         "q": "Are furniture and utilities included in the price?",
@@ -402,7 +402,7 @@
       },
       {
         "label": "Bevande",
-        "value": "Nessun diritto di tappo: portate i vostri vini e champagne."
+        "value": "I vostri vini e champagne sono i benvenuti: diritto di tappo secondo il vostro catering, 8 € a bottiglia quando ci occupiamo noi del pasto."
       },
       {
         "label": "Posizione",
@@ -485,7 +485,7 @@
       },
       {
         "q": "Applicate un diritto di tappo sulle bevande?",
-        "a": "No. Portate i vostri vini, champagne e liquori senza alcun costo aggiuntivo. Gestite il vostro budget e servite le etichette a cui tenete."
+        "a": "Dipende da chi si occupa del pasto. Con il vostro catering valgono le sue condizioni sui vini, champagne e liquori che portate: fatele precisare nel preventivo. Quando ci occupiamo noi del pasto, il diritto di tappo è di 8 € a bottiglia."
       },
       {
         "q": "L'arredo e le utenze sono inclusi nel prezzo?",
