@@ -40,6 +40,7 @@ const COVERS = [
   { slug: "table-hotes-touraine-chateau", dir: PUBLIC, photo: "images/bibliotheque/restauration/restauration-06.jpg" },
   { slug: "loire-a-velo-depuis-amboise", dir: PUBLIC, photo: "images/bibliotheque/chateau-exterieur/chateau-exterieur-24.jpg" },
   { slug: "ceremonie-laique-parc-chateau", dir: PUBLIC, photo: "images/bibliotheque/mariage/mariage-07.jpg" },
+  { slug: "checklist-mariage-retroplanning", dir: PUBLIC, photo: "images/bibliotheque/mariage/mariage-04.jpg" },
 ];
 
 // Dégradé très doux, sans aucun texte (rien à rogner quel que soit le recadrage).
