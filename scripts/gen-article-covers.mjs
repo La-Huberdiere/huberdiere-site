@@ -41,6 +41,7 @@ const COVERS = [
   { slug: "loire-a-velo-depuis-amboise", dir: PUBLIC, photo: "images/bibliotheque/chateau-exterieur/chateau-exterieur-24.jpg" },
   { slug: "ceremonie-laique-parc-chateau", dir: PUBLIC, photo: "images/bibliotheque/mariage/mariage-07.jpg" },
   { slug: "checklist-mariage-retroplanning", dir: PUBLIC, photo: "images/bibliotheque/mariage/mariage-04.jpg" },
+  { slug: "que-faire-a-amboise", dir: PUBLIC, photo: "images/bibliotheque/chateau-exterieur/chateau-exterieur-21.jpg" },
 ];
 
 // Dégradé très doux, sans aucun texte (rien à rogner quel que soit le recadrage).

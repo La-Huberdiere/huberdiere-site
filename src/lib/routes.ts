@@ -43,6 +43,7 @@ export const ARTICLE_SLUGS: Record<string, { en: string; it: string }> = {
   "organiser-mariage-au-chateau": { en: "chateau-wedding-planning", it: "organizzare-matrimonio-castello" },
   "organiser-retraite-yoga-chateau": { en: "yoga-retreat-chateau", it: "ritiro-yoga-castello-loira" },
   "organiser-seminaire-au-chateau": { en: "chateau-seminar-guide", it: "organizzare-seminario-castello" },
+  "que-faire-a-amboise": { en: "things-to-do-amboise", it: "cosa-fare-amboise" },
   "prix-mariage-chateau-loire": { en: "chateau-wedding-cost", it: "prezzo-matrimonio-castello" },
   "se-marier-en-hiver-chateau": { en: "winter-wedding-chateau-loire", it: "matrimonio-inverno-castello" },
   "seminaire-au-vert-pres-de-paris": { en: "corporate-retreat-near-paris", it: "seminario-nel-verde-parigi" },
