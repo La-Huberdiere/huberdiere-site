@@ -6,6 +6,9 @@
 // (elles vivent sur /notre-histoire).
 import manifestRaw from "../../public/images/bibliotheque/manifest.json";
 import galerieData from "../data/galerie.json";
+// Un texte alternatif par photo (FR/EN/IT), clé = chemin du manifeste. Hors de
+// src/data : non éditable dans Keystatic, comme les alt de chapitre.
+import photoAltsRaw from "./galerie-alts.json";
 
 export type Lang = "fr" | "en" | "it";
 
@@ -16,6 +19,7 @@ type ManifestItem = {
   h: number;
 };
 const manifest = manifestRaw as { items: ManifestItem[] };
+const photoAlts = photoAltsRaw as Record<string, Record<Lang, string>>;
 
 export type Photo = {
   full: string; // original 2560px (visionneuse plein écran)
@@ -35,8 +39,8 @@ export type Chapter = {
 };
 
 // Chapitres par défaut : ordre, thèmes regroupés, textes et alt SEO FR/EN/IT.
-// Sert de repli si le fichier CMS src/data/galerie.json est vide, et de source
-// des textes « alt » (non exposés dans le CMS) via le thème principal.
+// Sert de repli si le fichier CMS src/data/galerie.json est vide, et d'alt de
+// secours pour une photo absente de galerie-alts.json (photo ajoutée au manifeste).
 const DEFAULT_CHAPTERS: {
   id: string;
   numeral: string;
@@ -179,7 +183,7 @@ export function galleryChapters(lang: Lang): Chapter[] {
         w: it.w,
         h: it.h,
         orient: orientOf(it.w, it.h),
-        alt: c.alt[lang],
+        alt: photoAlts[it.file]?.[lang] || c.alt[lang],
       }));
       return { config: c, photos: withLeadFirst(photos) };
     })

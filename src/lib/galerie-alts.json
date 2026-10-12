@@ -1,0 +1,567 @@
+{
+  "bibliotheque/chambres/chambre-01.jpg": {
+    "fr": "Chambre du château près d'Amboise, grandes fenêtres ouvertes sur le parc, lit double et boiseries",
+    "en": "Bedroom at the château near Amboise, tall windows onto the grounds, double bed and panelling",
+    "it": "Camera del castello vicino ad Amboise, grandi finestre sul parco, letto matrimoniale e boiserie"
+  },
+  "bibliotheque/chambres/chambre-02.jpg": {
+    "fr": "Chambre mansardée aux murs bleus sous un velux, lit en bois à couvre-lit crème, radiateur en fonte et sol en tomettes",
+    "en": "Blue-walled attic bedroom under a skylight, wooden bed with a cream throw, cast-iron radiator and terracotta tiled floor",
+    "it": "Camera mansardata dalle pareti azzurre sotto un lucernario, letto in legno con copriletto crema, termosifone in ghisa e cotto"
+  },
+  "bibliotheque/chambres/chambre-03.jpg": {
+    "fr": "Salle de bain carrelée de bleu profond, lavabo blanc et miroir ovale, fenêtre ouverte sur un conifère du parc",
+    "en": "Bathroom tiled in deep blue, white washbasin and oval mirror, open window onto a conifer in the grounds",
+    "it": "Bagno rivestito di piastrelle blu intenso, lavabo bianco e specchio ovale, finestra aperta su una conifera del parco"
+  },
+  "bibliotheque/chambres/chambre-04.jpg": {
+    "fr": "Coin salon sous les poutres d'une chambre mauve, canapé en velours fuchsia, bureau ancien avec lampe allumée près de la lucarne",
+    "en": "Sitting corner under the beams of a mauve bedroom, fuchsia velvet sofa, antique desk with a lit lamp by the dormer window",
+    "it": "Angolo salotto sotto le travi di una camera color malva, divano in velluto fucsia, scrittoio antico con lampada accesa"
+  },
+  "bibliotheque/chambres/chambre-05.jpg": {
+    "fr": "Lit simple en bois marqueté dans une chambre mansardée, papier peint à motifs rouges, poutre bleue et radiateur en fonte",
+    "en": "Single bed in inlaid wood in an attic bedroom, red-patterned wallpaper, blue-painted beam and cast-iron radiator",
+    "it": "Letto singolo in legno intarsiato in una camera mansardata, carta da parati a motivi rossi, trave azzurra e termosifone"
+  },
+  "bibliotheque/chambres/chambre-06.jpg": {
+    "fr": "Chevet sculpté et lampe dorée en forme de serpent près d'un lit à colonnes, murs vieux rose et papier peint au zèbre",
+    "en": "Carved bedside table and gold snake-shaped lamp beside a four-poster bed, dusky pink walls and zebra-print wallpaper",
+    "it": "Comodino intagliato e lampada dorata a forma di serpente accanto a un letto a baldacchino, pareti rosa antico e carta con zebra"
+  },
+  "bibliotheque/chambres/chambre-07.jpg": {
+    "fr": "Chambre tapissée d'un papier peint vert à motifs, lit double et lampe de chevet",
+    "en": "Bedroom lined with patterned green wallpaper, double bed and bedside lamp",
+    "it": "Camera rivestita di carta da parati verde a motivi, letto matrimoniale e lampada da comodino"
+  },
+  "bibliotheque/chambres/chambre-08.jpg": {
+    "fr": "Mur bleu d'une chambre mansardée, armoire peinte entre deux chaises en rotin, petite table à livres et tomettes",
+    "en": "Blue wall of an attic bedroom, painted wardrobe between two rattan chairs, small table with books and terracotta tiles",
+    "it": "Parete azzurra di una camera mansardata, armadio dipinto tra due sedie in rattan, tavolino con libri e pavimento in cotto"
+  },
+  "bibliotheque/chambres/chambre-09.jpg": {
+    "fr": "Oreillers et coussin à chevrons devant une fenêtre à petits carreaux ouverte sur les arbres, lampe à abat-jour corail",
+    "en": "Pillows and a herringbone cushion before a small-paned window open onto the trees, coral-shaded lamp on the nightstand",
+    "it": "Cuscini e cuscino a spina di pesce davanti a una finestra a quadrotti aperta sugli alberi, lampada con paralume corallo"
+  },
+  "bibliotheque/chambres/chambre-10.jpg": {
+    "fr": "Grande chambre sous charpente apparente, deux lits et fauteuils sous les fenêtres",
+    "en": "Large room under exposed roof timbers, two beds and armchairs beneath the windows",
+    "it": "Ampia camera sotto le travi a vista, due letti e poltrone sotto le finestre"
+  },
+  "bibliotheque/chambres/chambre-11.jpg": {
+    "fr": "Chambre familiale sous charpente, deux lits doubles et tapis au sol",
+    "en": "Family room under roof timbers, two double beds and a rug on the floor",
+    "it": "Camera familiare sotto le travi, due letti matrimoniali e tappeto a terra"
+  },
+  "bibliotheque/chambres/chambre-12.jpg": {
+    "fr": "Grand lit au couvre-lit gris-vert dans une chambre tapissée d'un papier peint vert à cactus, plancher peint en vert",
+    "en": "Large bed with a grey-green bedspread in a room papered in green cactus wallpaper, green-painted wooden floor",
+    "it": "Letto grande con copriletto grigioverde in una camera tappezzata di carta verde con cactus, pavimento dipinto di verde"
+  },
+  "bibliotheque/chambres/chambre-13.jpg": {
+    "fr": "Chambre mauve sous de grosses poutres, grand lit et lit de repos à couvre-lits vert d'eau, rocking-chair jaune près de la fenêtre",
+    "en": "Mauve bedroom under heavy beams, double bed and daybed in sea-green covers, yellow rocking chair by the window",
+    "it": "Camera color malva sotto grosse travi, letto matrimoniale e dormeuse con copriletti verde acqua, sedia a dondolo gialla"
+  },
+  "bibliotheque/chambres/chambre-14.jpg": {
+    "fr": "Lit simple en bois au couvre-lit et coussins vert canard, chaise cannée et papier peint à petits motifs sous une poutre bleue",
+    "en": "Wooden single bed with a teal bedspread and cushions, cane-backed chair and small-patterned wallpaper under a blue beam",
+    "it": "Letto singolo in legno con copriletto e cuscini verde petrolio, sedia impagliata e carta a piccoli motivi sotto una trave azzurra"
+  },
+  "bibliotheque/chambres/chambre-15.jpg": {
+    "fr": "Fauteuil canné à coussin fleuri face à un lit au couvre-lit vert canard, papier peint à motifs rouges et sol en tomettes",
+    "en": "Cane armchair with a floral seat facing a bed with a teal bedspread, red-patterned wallpaper and terracotta tiled floor",
+    "it": "Poltrona impagliata con seduta a fiori accanto a un letto con copriletto verde petrolio, carta a motivi rossi e cotto"
+  },
+  "bibliotheque/chambres/chambre-16.jpg": {
+    "fr": "Pièce mansardée rose sous la charpente, canapé fuchsia, tapis clair, étagère à livres et rocking-chair, fenêtre sur les arbres",
+    "en": "Pink attic room under the roof timbers, fuchsia sofa, pale rug, bookshelf and rocking chair, window onto the trees",
+    "it": "Stanza mansardata rosa sotto le capriate, divano fucsia, tappeto chiaro, libreria e sedia a dondolo, finestra sugli alberi"
+  },
+  "bibliotheque/chambres/chambre-17.jpg": {
+    "fr": "Salon aux murs corail et boiseries blanches, cheminée en marbre et bouquet de roses rouges, fauteuil orange devant la fenêtre",
+    "en": "Sitting room with coral walls and white panelling, marble fireplace with red roses, orange armchair by the tall window",
+    "it": "Salotto con pareti corallo e boiserie bianche, camino in marmo e rose rosse, poltrona arancione davanti alla finestra"
+  },
+  "bibliotheque/chambres/chambre-18.jpg": {
+    "fr": "Salle de bain ancienne, baignoire sur pieds et carrelage à frise bleue",
+    "en": "Period bathroom with a claw-foot bath and blue-bordered tiling",
+    "it": "Bagno d'epoca, vasca con piedini e piastrelle con fregio blu"
+  },
+  "bibliotheque/chambres/chambre-19.jpg": {
+    "fr": "Chambre aux murs clairs sous poutres, lit double et lustre ancien",
+    "en": "Light-walled bedroom under beams, double bed and antique chandelier",
+    "it": "Camera dalle pareti chiare sotto le travi, letto matrimoniale e lampadario antico"
+  },
+  "bibliotheque/chambres/chambre-20.jpg": {
+    "fr": "Grande pièce rose sous les poutres, deux lucarnes, canapé fuchsia, rocking-chair, bureau en bois et chaise bistrot",
+    "en": "Large pink room under the beams, two dormer windows, fuchsia sofa, rocking chair, wooden desk and bentwood chair",
+    "it": "Ampia stanza rosa sotto le travi, due abbaini, divano fucsia, sedia a dondolo, scrittoio in legno e sedia in legno curvato"
+  },
+  "bibliotheque/chambres/chambre-21.jpg": {
+    "fr": "Chambre bleu pâle à plinthes bleu marine, cheminée en marbre blanc, hélice en bois au mur et lit sous un jeté bleu",
+    "en": "Pale blue bedroom with navy skirting, white marble fireplace, a wooden propeller on the wall and a bed under a blue throw",
+    "it": "Camera azzurra con zoccolo blu scuro, camino in marmo bianco, elica di legno alla parete e letto con copriletto blu"
+  },
+  "bibliotheque/chambres/chambre-22.jpg": {
+    "fr": "Chambre sous les combles tapissée de fleurs multicolores, lit au plaid turquoise et fauteuil à bascule en cannage",
+    "en": "Attic bedroom papered in multicoloured flowers, a bed with a turquoise throw and a cane rocking chair",
+    "it": "Camera mansardata con carta da parati a fiori multicolori, letto con plaid turchese e sedia a dondolo in paglia di Vienna"
+  },
+  "bibliotheque/chambres/chambre-23.jpg": {
+    "fr": "Cheminée en marbre blanc sous un miroir en bois sculpté, murs bleu pâle, porte soulignée de bleu et parquet clair",
+    "en": "White marble fireplace below a carved wooden mirror, pale blue walls, a door outlined in blue and light wooden floor",
+    "it": "Camino in marmo bianco sotto uno specchio in legno intagliato, pareti azzurre, porta bordata di blu e parquet chiaro"
+  },
+  "bibliotheque/chambres/chambre-24.jpg": {
+    "fr": "Grande pièce sous charpente apparente aux murs roses, canapé fuchsia, fauteuil à bascule et bureau entre deux lucarnes",
+    "en": "Large room under exposed roof timbers with pink walls, a fuchsia sofa, a rocking chair and a desk between two dormers",
+    "it": "Ampia stanza sotto le travi a vista con pareti rosa, divano fucsia, sedia a dondolo e scrittoio tra due abbaini"
+  },
+  "bibliotheque/chambres/chambre-25.jpg": {
+    "fr": "Salle d'eau sous les combles avec lavabo sur colonne, miroir à cadre en bois, fenêtre de toit et sol en terre cuite",
+    "en": "Attic washroom with a pedestal basin, a wood-framed mirror, a roof window and a terracotta floor",
+    "it": "Bagno mansardato con lavabo a colonna, specchio con cornice in legno, finestra da tetto e pavimento in cotto"
+  },
+  "bibliotheque/chambres/chambre-allium-01.jpg": {
+    "fr": "Chambre mauve, lit double sous un jeté façon fourrure, papier peint à grosses fleurs et haute fenêtre à petits carreaux",
+    "en": "Mauve bedroom, a double bed under a fur-effect throw, large-flower wallpaper and a tall window with small panes",
+    "it": "Camera color malva, letto matrimoniale con plaid effetto pelliccia, carta da parati a grandi fiori e alta finestra a piccoli vetri"
+  },
+  "bibliotheque/chambres/chambre-allium-02.jpg": {
+    "fr": "Bureau en bois clair et chaise en rotin devant un papier peint fleuri, placards roses à filets verts et lit simple au plaid vert",
+    "en": "Light wood desk and rattan chair against floral wallpaper, pink cupboards with green trim and a single bed with a green throw",
+    "it": "Scrivania in legno chiaro e sedia in rattan, carta da parati a fiori, armadi rosa bordati di verde e letto singolo con plaid verde"
+  },
+  "bibliotheque/chambres/chambre-bouquet-01.jpg": {
+    "fr": "Fauteuil à bascule en bois courbé noir, dossier en cannage et assise bleu clair, devant un papier peint à fleurs multicolores",
+    "en": "Black bentwood rocking chair with a cane back and pale blue seat, set against multicoloured floral wallpaper",
+    "it": "Sedia a dondolo in legno curvato nero, schienale in paglia di Vienna e seduta azzurra, davanti a carta da parati a fiori"
+  },
+  "bibliotheque/chambres/chambre-giboulee-01.jpg": {
+    "fr": "Chambre bleu pâle à plinthes bleu roi, lit à tête cannée sous un jeté façon fourrure, tapis rouge et alcôve à rayures",
+    "en": "Pale blue bedroom with royal blue skirting, a cane-headboard bed under a fur-effect throw, a red rug and a striped alcove",
+    "it": "Camera azzurra con zoccolo blu reale, letto con testiera in canna e plaid effetto pelliccia, tappeto rosso e alcova a righe"
+  },
+  "bibliotheque/chambres/chambre-mirage-01.jpg": {
+    "fr": "Pièce mansardée aux poutres apparentes et murs lilas, canapé violet, voilier miniature et bureau sous une lucarne",
+    "en": "Attic room with exposed beams and lilac walls, a purple sofa, a model sailing boat and a desk beneath a dormer window",
+    "it": "Stanza mansardata con travi a vista e pareti lilla, divano viola, modellino di barca a vela e scrittoio sotto un abbaino"
+  },
+  "bibliotheque/chambres/chambre-paradis-sauvage-01.jpg": {
+    "fr": "Coin salon aux murs orangés et moulures blanches, cheminée en marbre sous un trumeau peint et fauteuil en cuir fauve",
+    "en": "Sitting area with orange walls and white mouldings, a marble fireplace under a painted overmantel mirror and tan leather armchair",
+    "it": "Angolo salotto con pareti arancio e modanature bianche, camino in marmo sotto una specchiera dipinta e poltrona in cuoio fulvo"
+  },
+  "bibliotheque/chambres/chambre-peche-01.jpg": {
+    "fr": "Baignoire blanche sur pieds dans une salle de bain au carrelage à motifs étoilés, posée sur un parquet clair",
+    "en": "White claw-foot bathtub in a bathroom with star-patterned tiles, standing on a light wooden floor",
+    "it": "Vasca bianca con piedini in un bagno con piastrelle a motivi stellati, appoggiata su un parquet chiaro"
+  },
+  "bibliotheque/chambres/chambre-ponceau-01.jpg": {
+    "fr": "Sculpture dorée d'une tête d'angelot aux ailes déployées, accrochée sur un mur peint en bleu dans une chambre du château",
+    "en": "Gilded carving of a cherub's head with outspread wings, hung on a blue-painted wall in a château bedroom",
+    "it": "Scultura dorata di una testa di angioletto con le ali spiegate, appesa a una parete blu in una camera del castello"
+  },
+  "bibliotheque/chambres/chambre-the-01.jpg": {
+    "fr": "Coin lecture près d'une fenêtre ouverte sur les arbres, commode marquetée, deux vases rouges et fauteuil au coussin rayé",
+    "en": "Reading corner by a window open onto trees, an inlaid chest of drawers, two red vases and an armchair with a striped cushion",
+    "it": "Angolo lettura accanto a una finestra aperta sugli alberi, cassettone intarsiato, due vasi rossi e poltrona con cuscino a righe"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-01.jpg": {
+    "fr": "Terrasse en pierre du château surplombant un étang, escalier à balustres et parc boisé en fond sous un ciel d'été",
+    "en": "The château's stone terrace overlooking a pond, a balustraded staircase and wooded grounds behind under a summer sky",
+    "it": "La terrazza in pietra del castello che domina uno stagno, una scalinata con balaustra e il parco boscoso sullo sfondo sotto un cielo d'estate"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-02.jpg": {
+    "fr": "Escalier de pierre et pelouse du parc, grands arbres en arrière-plan",
+    "en": "Stone steps and lawn in the grounds, tall trees behind",
+    "it": "Scalinata in pietra e prato del parco, alberi alti sullo sfondo"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-03.jpg": {
+    "fr": "Une porte rouge dans la façade de tuffeau, encadrée de lierre, avec des sauges violettes et des cosmos roses au premier plan",
+    "en": "A red door in the tufa façade, framed by ivy, with purple salvias and pink cosmos in the foreground",
+    "it": "Una porta rossa nella facciata di tufo, incorniciata dall'edera, con salvie viola e cosmos rosa in primo piano"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-04.jpg": {
+    "fr": "L'étang du parc bordé de grands arbres, reflets sur l'eau",
+    "en": "The estate pond ringed by tall trees, reflections on the water",
+    "it": "Lo stagno del parco circondato da alberi alti, riflessi sull'acqua"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-05.jpg": {
+    "fr": "Couple trinquant à une table dressée sur la terrasse à balustres, étang et arbres éclairés par le soleil du soir",
+    "en": "A couple raising a toast at a laid table on the balustraded terrace, the pond and trees lit by the evening sun",
+    "it": "Una coppia brinda a un tavolo apparecchiato sulla terrazza con balaustra, stagno e alberi illuminati dal sole della sera"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-06.jpg": {
+    "fr": "Une table dressée dehors le long de la façade du château, nappe blanche, roses dans des vases ronds et corbeille de pain",
+    "en": "A table laid outdoors along the château façade, white cloth, roses in round vases and a basket of bread",
+    "it": "Una tavola apparecchiata all'aperto lungo la facciata del castello, tovaglia bianca, rose in vasi rotondi e cesto del pane"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-07.jpg": {
+    "fr": "Repas d'un groupe attablé sur la cour en gravier au pied de la façade du château, feuillage au premier plan",
+    "en": "A group sharing a meal at a table on the gravel courtyard below the château's façade, leaves in the foreground",
+    "it": "Un gruppo a tavola nel cortile di ghiaia ai piedi della facciata del castello, fogliame in primo piano"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-08.jpg": {
+    "fr": "Allée du parc sous le givre, arbres blanchis dans la brume du matin",
+    "en": "A frosted avenue in the grounds, trees whitened by morning mist",
+    "it": "Viale del parco sotto la brina, alberi imbiancati nella foschia del mattino"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-09.jpg": {
+    "fr": "Les peupliers du val, dénudés en fin de saison, avec des boules de gui, sur un ciel de fin de journée orangé",
+    "en": "The valley poplars, bare at the end of the season, carrying clumps of mistletoe against an orange evening sky",
+    "it": "I pioppi della valle, spogli a fine stagione, con cespi di vischio su un cielo serale arancione"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-10.jpg": {
+    "fr": "Les arbres du parc en couleurs d'automne, devant un mur de pierre",
+    "en": "The estate's trees in autumn colour, in front of a stone wall",
+    "it": "Gli alberi del parco nei colori dell'autunno, davanti a un muro di pietra"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-11.jpg": {
+    "fr": "Le parc du château en automne, feuillages jaunes et rouges, cyprès et herbes hautes sous un ciel gris",
+    "en": "The château grounds in autumn, yellow and red foliage, cypress trees and tall grasses under a grey sky",
+    "it": "Il parco del castello in autunno, fogliame giallo e rosso, cipressi ed erbe alte sotto un cielo grigio"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-12.jpg": {
+    "fr": "Pont de pierre et balustrade franchissant le jardin en contrebas",
+    "en": "Stone bridge and balustrade crossing the garden below",
+    "it": "Ponte in pietra e balaustra che attraversano il giardino sottostante"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-13.jpg": {
+    "fr": "Le château de la Huberdière, près d'Amboise, se reflète dans l'étang du parc, en automne, sous un ciel pommelé",
+    "en": "The Château de la Huberdière, near Amboise, reflected in the lake in its grounds, in autumn, under a dappled sky",
+    "it": "Il castello della Huberdière, vicino ad Amboise, si riflette nello stagno del parco, in autunno, sotto un cielo a pecorelle"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-14.jpg": {
+    "fr": "Le château vu depuis l'autre rive de l'étang, ciel d'été",
+    "en": "The château seen from the far side of the pond, summer sky",
+    "it": "Il castello visto dall'altra riva dello stagno, cielo d'estate"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-15.jpg": {
+    "fr": "Aubriètes violettes sur une rocaille près d'un sapin au printemps, pavillon en pierre au toit d'ardoise à l'arrière",
+    "en": "Purple aubrieta on a rockery beside a fir tree in spring, a stone outbuilding with a slate roof behind",
+    "it": "Aubrezie viola su un giardino roccioso accanto a un abete in primavera, padiglione in pietra con tetto d'ardesia sullo sfondo"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-16.jpg": {
+    "fr": "Grappes de glycine mauve en fleur contre un mur enduit, ombres des branches au soleil",
+    "en": "Mauve wisteria clusters in bloom against a rendered wall, with branch shadows in the sunlight",
+    "it": "Grappoli di glicine lilla in fiore contro un muro intonacato, ombre dei rami al sole"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-17.jpg": {
+    "fr": "Rose jaune orangé et feuillage d'un rosier contre un mur de pierre, avec un bouton fermé et un cynorrhodon",
+    "en": "A yellow-orange rose and foliage against a stone wall, with a closed bud and a rosehip",
+    "it": "Rosa giallo arancio e fogliame di un rosaio contro un muro di pietra, con un bocciolo chiuso e un cinorrodo"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-18.jpg": {
+    "fr": "Chat roux et blanc dans les herbes, au pied d'un vieux tronc grimpant tortueux sous une fenêtre à appui de pierre",
+    "en": "A ginger and white cat in the grass at the foot of a gnarled old climbing trunk, below a window with a stone sill",
+    "it": "Gatto rosso e bianco nell'erba ai piedi di un vecchio tronco rampicante contorto, sotto una finestra con davanzale in pietra"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-19.jpg": {
+    "fr": "Le château au crépuscule, fenêtres éclairées et allée de gravier",
+    "en": "The château at dusk, lit windows and a gravel drive",
+    "it": "Il castello al crepuscolo, finestre illuminate e viale di ghiaia"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-20.jpg": {
+    "fr": "Rosier en fleurs roses au premier plan, façade floue d'un pavillon en pierre au toit d'ardoise à l'arrière",
+    "en": "A pink rose bush in the foreground, the blurred façade of a stone pavilion with a slate roof behind",
+    "it": "Rosaio con fiori rosa in primo piano, facciata sfocata di un padiglione in pietra con tetto d'ardesia sullo sfondo"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-21.jpg": {
+    "fr": "Façade du château près d'Amboise et ses cheminées en brique au-dessus d'un talus herbeux, magnolia en fleur et ciel bleu",
+    "en": "The château's façade near Amboise and its brick chimneys above a grassy bank, a magnolia in bloom and blue sky",
+    "it": "Facciata del castello vicino ad Amboise con i camini in mattoni sopra un pendio erboso, magnolia in fiore e cielo azzurro"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-22.jpg": {
+    "fr": "Le château illuminé la nuit, sa façade reflétée dans l'étang",
+    "en": "The château lit up at night, its facade mirrored in the pond",
+    "it": "Il castello illuminato di notte, la facciata riflessa nello stagno"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-23.jpg": {
+    "fr": "Vue aérienne du château, de ses dépendances et du parc boisé",
+    "en": "Aerial view of the château, its outbuildings and wooded grounds",
+    "it": "Veduta aerea del castello, delle dipendenze e del parco boscoso"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-24.jpg": {
+    "fr": "Le château, près d'Amboise, vu depuis l'étang du parc, au printemps, un pissenlit monté en graine au premier plan",
+    "en": "The château near Amboise, seen from the lake in the grounds, in spring, with a dandelion clock in the foreground",
+    "it": "Il castello, vicino ad Amboise, visto dallo stagno del parco, in primavera, con un soffione in primo piano"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-25.jpg": {
+    "fr": "Le château, près d'Amboise, se reflète dans l'étang du parc, un jour d'été",
+    "en": "The château near Amboise, reflected in the estate pond on a summer day",
+    "it": "Il castello, vicino ad Amboise, riflesso nello stagno del parco, in una giornata d'estate"
+  },
+  "bibliotheque/chateau-exterieur/chateau-exterieur-26.jpg": {
+    "fr": "Le perron et l'escalier de pierre du château sous un ciel bleu, encadrés par le feuillage",
+    "en": "The château's front steps and stone staircase under a blue sky, framed by foliage",
+    "it": "La scalinata di pietra e l'ingresso del castello sotto un cielo azzurro, incorniciati dal fogliame"
+  },
+  "bibliotheque/famille/famille-01.jpg": {
+    "fr": "Un groupe d'une quinzaine de personnes réuni devant le château, voitures garées derrière",
+    "en": "A group of around fifteen gathered in front of the château, cars parked behind",
+    "it": "Un gruppo di una quindicina di persone riunito davanti al castello, auto parcheggiate dietro"
+  },
+  "bibliotheque/jardin-fleurs/jardin-fleurs-01.jpg": {
+    "fr": "Rosier grimpant en fleurs contre un mur du château, pins et grands arbres du parc sous un ciel bleu",
+    "en": "Climbing rose in bloom against a château wall, pines and tall trees of the grounds under a blue sky",
+    "it": "Rosa rampicante in fiore contro un muro del castello, pini e grandi alberi del parco sotto un cielo azzurro"
+  },
+  "bibliotheque/jardin-fleurs/jardin-fleurs-02.jpg": {
+    "fr": "Parc vu d'en haut en été : arceaux de roses, bassin rectangulaire, grands pins et transats à l'ombre",
+    "en": "The grounds seen from above in summer: rose arches, a rectangular ornamental pond, tall pines and deckchairs in the shade",
+    "it": "Il parco visto dall'alto in estate: archi di rose, vasca rettangolare, alti pini e sdraio all'ombra"
+  },
+  "bibliotheque/jardin-fleurs/jardin-fleurs-03.jpg": {
+    "fr": "Pelouse du parc au printemps, rosier en fleurs et transats à l'ombre",
+    "en": "The lawn in spring, a rose in bloom and loungers in the shade",
+    "it": "Prato del parco in primavera, rosa in fiore e sdraio all'ombra"
+  },
+  "bibliotheque/jardin-fleurs/jardin-fleurs-04.jpg": {
+    "fr": "Pivoines roses et fuchsia en fleurs dans le jardin du château",
+    "en": "Pink and fuchsia peonies in bloom in the château garden",
+    "it": "Peonie rosa e fucsia in fiore nel giardino del castello"
+  },
+  "bibliotheque/jardin-fleurs/jardin-fleurs-05.jpg": {
+    "fr": "Bouquet de fleurs séchées rouges, orangées et d'hortensias bleutés dans un vase doré, devant une fenêtre à petits bois",
+    "en": "A dried flower bouquet in red, orange and bluish hydrangea in a gold vase, before a small-paned window",
+    "it": "Bouquet di fiori secchi rossi, arancio e ortensie bluastre in un vaso dorato, davanti a una finestra a riquadri"
+  },
+  "bibliotheque/mariage/mariage-01.jpg": {
+    "fr": "Mariés enlacés sur un escalier en pierre moussu à balustres, le long voile de la mariée étalé sur les marches",
+    "en": "Newlyweds embracing on a mossy balustraded stone staircase, the bride's long veil spread over the steps",
+    "it": "Sposi abbracciati su una scalinata in pietra coperta di muschio con balaustra, il lungo velo della sposa steso sui gradini"
+  },
+  "bibliotheque/mariage/mariage-02.jpg": {
+    "fr": "Cérémonie laïque sur la terrasse en gravier du château, une quinzaine d'invités sur des chaises en fer forgé face aux mariés et à l'officiante, devant la balustrade et les hortensias",
+    "en": "Humanist ceremony on the château's gravel terrace, around fifteen guests on wrought iron chairs facing the couple and the celebrant, in front of the balustrade and hydrangeas",
+    "it": "Cerimonia simbolica sulla terrazza in ghiaia del castello, una quindicina di invitati su sedie in ferro battuto di fronte agli sposi e alla celebrante, davanti alla balaustra e alle ortensie"
+  },
+  "bibliotheque/mariage/mariage-03.jpg": {
+    "fr": "Invités de mariage en tenue de cérémonie, bras levés et regard au ciel devant le parc boisé, en noir et blanc",
+    "en": "Wedding guests in formal dress, arms raised and looking skyward in front of the wooded grounds, in black and white",
+    "it": "Invitati a un matrimonio in abito da cerimonia, braccia alzate e sguardo al cielo davanti al parco boscoso, in bianco e nero"
+  },
+  "bibliotheque/mariage/mariage-04.jpg": {
+    "fr": "Robe de mariée suspendue à une armoire ancienne dans une chambre du château, boiseries claires et lumière de fenêtre",
+    "en": "Wedding dress hanging from an antique wardrobe in a château bedroom, pale panelling and window light",
+    "it": "Abito da sposa appeso a un armadio antico in una camera del castello, boiserie chiare e luce dalla finestra"
+  },
+  "bibliotheque/mariage/mariage-05.jpg": {
+    "fr": "Mariée en robe de dentelle attachant son collier face à un grand miroir doré qui reflète un lustre",
+    "en": "A bride in a lace gown fastening her necklace before a tall gilded mirror reflecting a chandelier",
+    "it": "Sposa in abito di pizzo che allaccia la collana davanti a un grande specchio dorato in cui si riflette un lampadario"
+  },
+  "bibliotheque/mariage/mariage-06.jpg": {
+    "fr": "Les mariés s'embrassent devant la porte rouge du château, encadrée de lierre, sur le gravier de la cour",
+    "en": "The bride and groom kiss in front of the château's red door, framed with ivy, on the gravel of the courtyard",
+    "it": "Gli sposi si baciano davanti alla porta rossa del castello, incorniciata dall'edera, sulla ghiaia del cortile"
+  },
+  "bibliotheque/mariage/mariage-07.jpg": {
+    "fr": "Allée de cérémonie dans le parc du château, chaises pliantes blanches de part et d'autre, colonnes blanches surmontées de bouquets rouges, arbres centenaires en fond",
+    "en": "Ceremony aisle in the château grounds, white folding chairs on either side, white columns topped with red bouquets, century-old trees behind",
+    "it": "Navata della cerimonia nel parco del castello, sedie pieghevoli bianche ai due lati, colonne bianche sormontate da bouquet rossi, alberi secolari sullo sfondo"
+  },
+  "bibliotheque/mariage/mariage-08.jpg": {
+    "fr": "Salle de réception voûtée du château, tables rondes nappées de blanc, chaises dorées à assise bordeaux et bouquet de fleurs des champs",
+    "en": "The château's vaulted reception hall, round tables dressed in white, gilded chairs with burgundy seats and a posy of wild flowers",
+    "it": "Sala dei ricevimenti voltata del castello, tavoli rotondi con tovaglie bianche, sedie dorate con seduta bordeaux e mazzolino di fiori di campo"
+  },
+  "bibliotheque/mariage/mariage-09.jpg": {
+    "fr": "Table de réception dressée dans la grande salle voûtée, verres en cristal, serviettes pliées, bouquet blanc et chaises dorées",
+    "en": "A reception table laid in the great vaulted hall, crystal glasses, folded napkins, a white bouquet and gilded chairs",
+    "it": "Tavola del ricevimento apparecchiata nella grande sala voltata, bicchieri di cristallo, tovaglioli piegati, un bouquet bianco e sedie dorate"
+  },
+  "bibliotheque/piscine/piscine-01.jpg": {
+    "fr": "Piscine vue d'en haut, transats et petit bâtiment blanc, champs de colza en fleur jusqu'à l'horizon au printemps",
+    "en": "The pool seen from above, sun loungers and a small white building, flowering rapeseed fields to the horizon in spring",
+    "it": "Piscina vista dall'alto, lettini e piccolo edificio bianco, campi di colza in fiore fino all'orizzonte in primavera"
+  },
+  "bibliotheque/piscine/piscine-02.jpg": {
+    "fr": "La piscine chauffée dans le parc, transats posés sur la pelouse",
+    "en": "The heated pool in the grounds, loungers set out on the lawn",
+    "it": "La piscina riscaldata nel parco, lettini disposti sul prato"
+  },
+  "bibliotheque/piscine/piscine-03.jpg": {
+    "fr": "Le bassin allongé de la piscine chauffée, bordé d'arbres et de dalles de pierre",
+    "en": "The long heated pool, framed by trees and stone paving",
+    "it": "La lunga piscina riscaldata, incorniciata da alberi e lastre di pietra"
+  },
+  "bibliotheque/piscine/piscine-04.jpg": {
+    "fr": "Le château vu du jardin en contrebas, son escalier de pierre et le bassin d'ornement ancien au premier plan",
+    "en": "The château seen from the lower garden, its stone staircase and the old ornamental basin in the foreground",
+    "it": "Il castello visto dal giardino sottostante, la scalinata in pietra e l'antica vasca ornamentale in primo piano"
+  },
+  "bibliotheque/restauration/restauration-01.jpg": {
+    "fr": "Assiette de pâtes fraîches au citron, citrons entiers dans une coupe à côté",
+    "en": "A plate of fresh lemon pasta, whole lemons in a bowl beside it",
+    "it": "Piatto di pasta fresca al limone, limoni interi in una coppa accanto"
+  },
+  "bibliotheque/restauration/restauration-02.jpg": {
+    "fr": "Table dressée dans la salle à manger boisée, porte ouverte sur le parc",
+    "en": "Table laid in the panelled dining room, door open onto the grounds",
+    "it": "Tavolo apparecchiato nella sala da pranzo in legno, porta aperta sul parco"
+  },
+  "bibliotheque/restauration/restauration-03.jpg": {
+    "fr": "Table dressée en extérieur sur le gravier, nappe blanche, plat de tomates cerises et mozzarella, roses orangées dans un vase",
+    "en": "Table laid outdoors on the gravel, white cloth, a dish of cherry tomatoes and mozzarella, orange roses in a vase",
+    "it": "Tavola apparecchiata all'aperto sulla ghiaia, tovaglia bianca, piatto di pomodorini e mozzarella, rose arancioni in un vaso"
+  },
+  "bibliotheque/restauration/restauration-04.jpg": {
+    "fr": "Table dressée en extérieur sur la terrasse, nappe blanche et fleurs orange",
+    "en": "Table laid outside on the terrace, white cloth and orange flowers",
+    "it": "Tavolo apparecchiato all'aperto sulla terrazza, tovaglia bianca e fiori arancioni"
+  },
+  "bibliotheque/restauration/restauration-05.jpg": {
+    "fr": "La grande table dressée dans la salle à manger boisée, chandeliers allumés et porte-fenêtre ouverte sur le parc",
+    "en": "The long table laid in the panelled dining room, candles lit and the French windows open onto the grounds",
+    "it": "La grande tavola apparecchiata nella sala da pranzo rivestita in legno, candelabri accesi e portafinestra aperta sul parco"
+  },
+  "bibliotheque/restauration/restauration-06.jpg": {
+    "fr": "Convives attablés à la table d'hôtes, bougies allumées et bouquet de fleurs",
+    "en": "Guests seated at the communal table, candles lit and a vase of flowers",
+    "it": "Ospiti seduti alla tavola comune, candele accese e un vaso di fiori"
+  },
+  "bibliotheque/restauration/restauration-07.jpg": {
+    "fr": "Plateau de boulettes roulées à la main, alignées avant cuisson",
+    "en": "A tray of hand-rolled balls lined up before cooking",
+    "it": "Vassoio di polpette arrotolate a mano, allineate prima della cottura"
+  },
+  "bibliotheque/restauration/restauration-08.jpg": {
+    "fr": "Salle à manger aux boiseries vert d'eau, tables rondes dressées près de la cheminée",
+    "en": "Dining room with pale green panelling, round tables set near the fireplace",
+    "it": "Sala da pranzo con boiserie verde acqua, tavoli rotondi apparecchiati vicino al camino"
+  },
+  "bibliotheque/restauration/restauration-09.jpg": {
+    "fr": "Table de jardin verte dressée pour le petit-déjeuner, panier de croissants, pastèque, confitures et cafetière en argent, vue à travers une porte-fenêtre",
+    "en": "Green garden table laid for breakfast, a basket of croissants, watermelon, jams and a silver coffee pot, seen through a French window",
+    "it": "Tavolo da giardino verde apparecchiato per la colazione, cesto di croissant, anguria, marmellate e caffettiera d'argento, visti attraverso una porta finestra"
+  },
+  "bibliotheque/restauration/restauration-10.jpg": {
+    "fr": "Petit-déjeuner dressé en terrasse : croissants en corbeille, porcelaine fleurie et verseuse argentée au soleil bas",
+    "en": "Breakfast laid out on the terrace: croissants in a basket, floral china and a silver jug in low sunlight",
+    "it": "Colazione apparecchiata in terrazza: cornetti nel cestino, porcellana a fiori e bricco argentato al sole radente"
+  },
+  "bibliotheque/retraite-yoga/retraite-yoga-01.jpg": {
+    "fr": "Séance de méditation du soir dans la bibliothèque : participants assis sur des tapis, feu dans la cheminée et bougies",
+    "en": "An evening meditation session in the library: participants seated on mats, a fire in the hearth and candles",
+    "it": "Sessione di meditazione serale in biblioteca: partecipanti seduti sui tappetini, fuoco nel camino e candele"
+  },
+  "bibliotheque/retraite-yoga/retraite-yoga-02.jpg": {
+    "fr": "Portes-fenêtres grandes ouvertes sur le parc, tapis et coussins posés au sol",
+    "en": "French doors thrown open onto the grounds, mats and cushions laid on the floor",
+    "it": "Portefinestre spalancate sul parco, tappetini e cuscini posati a terra"
+  },
+  "bibliotheque/retraite-yoga/retraite-yoga-03.jpg": {
+    "fr": "Groupe en posture debout sur des tapis, dans la salle à poutres ouverte sur le parc",
+    "en": "A group standing on mats in the beamed hall, opening onto the grounds",
+    "it": "Gruppo in posizione eretta sui tappetini, nella sala con travi aperta sul parco"
+  },
+  "bibliotheque/retraite-yoga/retraite-yoga-04.jpg": {
+    "fr": "Femme jouant d'un gong dans la bibliothèque à la bougie, grand gong flou et bol chantant au premier plan",
+    "en": "A woman playing a gong in the candlelit library, a large blurred gong and a singing bowl in the foreground",
+    "it": "Donna che suona un gong nella biblioteca a lume di candela, grande gong sfocato e campana tibetana in primo piano"
+  },
+  "bibliotheque/retraite-yoga/retraite-yoga-05.jpg": {
+    "fr": "Tapis de yoga prêts avec coussins rouges et briques sur le parquet d'un salon, porte-fenêtre ouverte sur la terrasse au soleil",
+    "en": "Yoga mats laid out with red bolsters and blocks on a salon's parquet, a French door open to the sunny terrace",
+    "it": "Tappetini da yoga pronti con cuscini rossi e mattoncini sul parquet di un salone, portafinestra aperta sulla terrazza soleggiata"
+  },
+  "bibliotheque/salons-interieurs/salons-interieurs-01.jpg": {
+    "fr": "Coin fenêtre aux murs lambrissés blancs et sol vert, fauteuils en rotin et console avec plateau à thé",
+    "en": "A window corner with white wood-panelled walls and a green floor, rattan armchairs and a console with a tea tray",
+    "it": "Angolo finestra con pareti rivestite di perline bianche e pavimento verde, poltrone in rattan e consolle con vassoio da tè"
+  },
+  "bibliotheque/salons-interieurs/salons-interieurs-02.jpg": {
+    "fr": "Salon lambrissé de bois sombre vu de face : cheminée sculptée, trumeau à miroir et chandeliers sur la table",
+    "en": "A dark wood-panelled salon seen head-on: a carved fireplace, an overmantel mirror and candlesticks on the table",
+    "it": "Salone rivestito in legno scuro visto di fronte: camino scolpito, specchiera sopra il camino e candelabri sul tavolo"
+  },
+  "bibliotheque/salons-interieurs/salons-interieurs-03.jpg": {
+    "fr": "Cheminée de pierre allumée dans un salon, bougies posées sur le manteau",
+    "en": "A lit stone fireplace in a drawing room, candles along the mantelpiece",
+    "it": "Camino in pietra acceso in un salone, candele sulla mensola"
+  },
+  "bibliotheque/salons-interieurs/salons-interieurs-04.jpg": {
+    "fr": "Salon lambrissé en vue large : table ovale nappée, chaises cannées, atlas ouvert et portes-fenêtres sur la terrasse",
+    "en": "A panelled salon in wide view: an oval table with a cloth, cane chairs, an open atlas and French windows onto the terrace",
+    "it": "Salone in legno in campo largo: tavolo ovale con tovaglia, sedie impagliate, atlante aperto, portefinestre sulla terrazza"
+  },
+  "bibliotheque/salons-interieurs/salons-interieurs-05.jpg": {
+    "fr": "Le hall d'entrée du château, son escalier de bois et un piano à queue posé sous la volée de marches",
+    "en": "The château's entrance hall, its wooden staircase and a grand piano set beneath the flight of steps",
+    "it": "L'ingresso del castello, la sua scala in legno e un pianoforte a coda sotto la rampa di scalini"
+  },
+  "bibliotheque/salons-interieurs/salons-interieurs-06.jpg": {
+    "fr": "Secrétaire ancien en marqueterie et lampe à abat-jour noir devant un panneau de papier peint botanique aux animaux",
+    "en": "An antique marquetry writing desk and a black-shaded lamp before a botanical wallpaper panel with animals",
+    "it": "Scrittoio antico intarsiato e lampada con paralume nero davanti a un pannello di carta da parati botanica con animali"
+  },
+  "bibliotheque/salons-interieurs/salons-interieurs-07.jpg": {
+    "fr": "Salon aux boiseries rouges et papier peint fleuri, table de jeu et fauteuils roses, carreaux de soleil sur le parquet",
+    "en": "A salon with red woodwork and floral wallpaper, a games table and pink armchairs, squares of sunlight on the parquet",
+    "it": "Salone con boiserie rosse e carta da parati a fiori, tavolo da gioco e poltrone rosa, riquadri di sole sul parquet"
+  },
+  "bibliotheque/salons-interieurs/salons-interieurs-08.jpg": {
+    "fr": "Le grand salon du château, murs rouges, canapés de velours et cheminée de pierre",
+    "en": "The château's main drawing room, red walls, velvet sofas and a stone fireplace",
+    "it": "Il grande salone del castello, pareti rosse, divani di velluto e camino in pietra"
+  },
+  "bibliotheque/salons-interieurs/salons-interieurs-09.jpg": {
+    "fr": "Escalier de bois ciré et bibliothèque murale dans un salon du château, parquet en point de Hongrie et lustre en fer forgé",
+    "en": "Polished wooden staircase and wall of books in a château drawing room, herringbone parquet floor and wrought-iron chandelier",
+    "it": "Scala in legno lucidato e parete di libri in un salotto del castello, parquet a spina ungherese e lampadario in ferro battuto"
+  },
+  "bibliotheque/salons-interieurs/salons-interieurs-10.jpg": {
+    "fr": "Crassula en cache-pot argenté et succulentes sur une cheminée en marbre, le miroir reflète une vigne vierge rougie",
+    "en": "A jade plant in a silver pot cover and succulents on a marble mantelpiece, the mirror reflecting reddened Virginia creeper",
+    "it": "Albero di giada in un coprivaso argentato e piante grasse su un camino di marmo, lo specchio riflette una vite americana arrossata"
+  },
+  "bibliotheque/salons-interieurs/salons-interieurs-11.jpg": {
+    "fr": "Deux fauteuils en velours rouge autour d'un jeu d'échecs, murs à papier peint fleuri et porte-fenêtre rouge",
+    "en": "Two red velvet armchairs around a chess set, floral-papered walls and a red French window",
+    "it": "Due poltrone di velluto rosso attorno a una scacchiera, pareti con carta da parati a fiori e portafinestra rossa"
+  },
+  "bibliotheque/salons-interieurs/salons-interieurs-12.jpg": {
+    "fr": "Vue par une porte ouverte sur un salon aux boiseries vertes, parquet à bâtons rompus, plantes et chaises en rotin",
+    "en": "View through an open door into a green-panelled salon with herringbone parquet, plants and rattan chairs",
+    "it": "Vista da una porta aperta su un salone con boiserie verdi, parquet a spina di pesce, piante e sedie in rattan"
+  },
+  "bibliotheque/salons-interieurs/salons-interieurs-13.jpg": {
+    "fr": "Grande pièce à poutres et bibliothèque, tomettes au sol et portes vitrées",
+    "en": "A large beamed room with bookshelves, terracotta floor and glazed doors",
+    "it": "Grande stanza con travi e libreria, pavimento in cotto e porte a vetri"
+  },
+  "bibliotheque/salons-interieurs/salons-interieurs-14.jpg": {
+    "fr": "Salle à manger vert d'eau dressée : nappe à fleurs roses, porcelaine, chaises cannées et cheminée en marbre sous un miroir",
+    "en": "A pale green dining room laid for a meal: a pink floral tablecloth, china, cane chairs and a marble fireplace under a mirror",
+    "it": "Sala da pranzo verde acqua apparecchiata: tovaglia a fiori rosa, porcellane, sedie impagliate e camino di marmo sotto uno specchio"
+  },
+  "bibliotheque/salons-interieurs/salons-interieurs-15.jpg": {
+    "fr": "Fenêtre à petits carreaux et volets intérieurs ouverts sur la balustrade en pierre, la pelouse et les arbres sous un ciel bleu",
+    "en": "A small-paned window with open interior shutters onto the stone balustrade, the lawn and trees under a blue sky",
+    "it": "Finestra a piccoli riquadri con scuri interni aperti sulla balaustra in pietra, il prato e gli alberi sotto un cielo azzurro"
+  },
+  "bibliotheque/seminaire/seminaire-01.jpg": {
+    "fr": "Salle de travail installée en U face aux fenêtres, murs tapissés de livres",
+    "en": "Meeting room set up in a U facing the windows, walls lined with books",
+    "it": "Sala di lavoro a ferro di cavallo davanti alle finestre, pareti rivestite di libri"
+  },
+  "bibliotheque/seminaire/seminaire-02.jpg": {
+    "fr": "Grande salle vide sous charpente ancienne, sol de tomettes et lustres",
+    "en": "A large empty hall under old roof timbers, terracotta floor and chandeliers",
+    "it": "Grande sala vuota sotto un'antica travatura, pavimento in cotto e lampadari"
+  },
+  "bibliotheque/seminaire/seminaire-03.jpg": {
+    "fr": "Salle de séminaire en U dans la bibliothèque, nappes bleues et chaises dorées",
+    "en": "U-shaped meeting layout in the library, blue tablecloths and gilt chairs",
+    "it": "Sala riunioni a ferro di cavallo nella biblioteca, tovaglie blu e sedie dorate"
+  },
+  "bibliotheque/seminaire/seminaire-04.jpg": {
+    "fr": "Table de réunion dressée avec bouteilles d'eau et carnets, chaises dorées à coussin rouge, porte ouverte sur le jardin",
+    "en": "A meeting table set with water bottles and notepads, gilded chairs with red cushions, a door open onto the garden",
+    "it": "Tavolo riunioni allestito con bottiglie d'acqua e blocchi note, sedie dorate con cuscino rosso, porta aperta sul giardino"
+  }
+}
