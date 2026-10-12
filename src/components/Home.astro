@@ -35,6 +35,12 @@ const booking = settings[lang].booking;
 // Lien vers la page contact, préfixé selon la langue (FR sans préfixe).
 const contactHref = lang === "fr" ? "/contact" : `/${lang}/contact`;
 const actImages = [actSejour, actMariage, actSeminaire, actFamille, actRetraite];
+// Seul texte alternatif localisé de la page, Amboise y figure (conseil de l'office de tourisme, 12/10).
+const heroAlt: Record<string, string> = {
+  fr: "Château de la Huberdière vu depuis l'étang, près d'Amboise",
+  en: "Château de la Huberdière seen from the pond, near Amboise",
+  it: "Château de la Huberdière visto dallo stagno, vicino ad Amboise",
+};
 const actAlts = [
   "Chambre du château aux murs poudrés",
   "Entrée fleurie du château aux beaux jours",
@@ -58,7 +64,7 @@ const actIds = ["sejour", "mariage", "seminaire", "famille", "retraite"];
   <HeroPicture
     desktop={hero}
     mobile={heroMobile}
-    alt="Château de la Huberdière vu depuis l'étang"
+    alt={heroAlt[lang]}
     sizesMobile="150vw"
     widthsMobile={[640, 900, 1150, 1400]}
     qualityMobile={58}

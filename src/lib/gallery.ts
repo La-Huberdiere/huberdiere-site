@@ -55,7 +55,7 @@ const DEFAULT_CHAPTERS: {
       en: "Ten rooms, no two alike. Beams, parquet and fabrics chosen one by one.",
       it: "Dieci camere, nessuna uguale. Travi, parquet e tessuti scelti uno a uno.",
     },
-    alt: { fr: "Chambre du Château de la Huberdière", en: "Room at Château de la Huberdière", it: "Camera dello Château de la Huberdière" },
+    alt: { fr: "Chambre du Château de la Huberdière, hôtel de charme près d'Amboise", en: "Room at Château de la Huberdière, a boutique hotel near Amboise", it: "Camera dello Château de la Huberdière, hotel di charme vicino ad Amboise" },
   },
   {
     id: "chateau-parc",
@@ -67,7 +67,7 @@ const DEFAULT_CHAPTERS: {
       en: "Fourteen hectares, a 16th-century house, a pond and a heated pool.",
       it: "Quattordici ettari, una dimora del XVI secolo, uno stagno e una piscina riscaldata.",
     },
-    alt: { fr: "Château de la Huberdière et son parc", en: "Château de la Huberdière and its grounds", it: "Château de la Huberdière e il suo parco" },
+    alt: { fr: "Château de la Huberdière et son parc, près d'Amboise", en: "Château de la Huberdière and its grounds, near Amboise", it: "Château de la Huberdière e il suo parco, vicino ad Amboise" },
   },
   {
     id: "salons",
