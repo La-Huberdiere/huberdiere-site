@@ -27,9 +27,9 @@ export default defineConfig({
       // produirait des alternates faux (ex. /it/chateau-wedding-loire inexistant).
       // Le hreflang correct est émis dans le <head> de chaque page (Base.astro),
       // c'est celui que Google lit en priorité. Le sitemap liste toutes les URLs.
-      // Exclut les pages sans valeur d'indexation (remerciement, 404, éditeur).
+      // Exclut les pages sans valeur d'indexation (remerciement, 404, éditeur, carnet non listé).
       filter: (page) =>
-        !/\/merci|\/404|\/keystatic/.test(page),
+        !/\/merci|\/404|\/keystatic|\/carnet\/?$/.test(page),
     }),
   ],
   // Multilingue calé sur le site Wix actuel : FR par défaut (sans préfixe),

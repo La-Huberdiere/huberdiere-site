@@ -1,0 +1,17 @@
+---
+import Base from "../layouts/Base.astro";
+import CarnetPage from "../components/CarnetPage.astro";
+
+// Carnet de Lodovica, démo du kit « faire circuler la satisfaction ».
+// URL non listée : noindex, hors sitemap (astro.config.mjs), liée nulle part.
+---
+<Base
+  title="Le carnet de Lodovica · Château de la Huberdière"
+  description="Les adresses de Lodovica et Patrick autour d'Amboise : où manger, que faire."
+  lang="fr"
+  path="/carnet"
+  noindex={true}
+  bare={true}
+>
+  <CarnetPage lang="fr" />
+</Base>

@@ -30,6 +30,7 @@ interface Props {
   path?: string; // chemin sans préfixe de langue, ex. "/" ou "/mariage"
   image?: string; // image OG (chemin public ou URL absolue)
   noindex?: boolean; // pages à exclure de l'index (merci, etc.)
+  bare?: boolean; // sans header ni footer du site : page autonome (carnet), la page porte sa propre signature
   ogType?: "website" | "article";
   schemas?: object[]; // données structurées spécifiques à la page
   // Routage du bouton persistant, quand la page en sait plus que son chemin :
@@ -44,6 +45,7 @@ const {
   path = "/",
   image,
   noindex = false,
+  bare = false,
   ogType = "website",
   schemas = [],
   cta,
@@ -289,9 +291,9 @@ const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
     {GTM_ID && (
       <noscript set:html={`<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`} />
     )}
-    <Header settings={s} lang={lang} langs={langs} ctaKind={ctaKind} ctaHref={ctaHrefOverride} />
+    {!bare && <Header settings={s} lang={lang} langs={langs} ctaKind={ctaKind} ctaHref={ctaHrefOverride} />}
     <slot />
-    <Footer settings={s} lang={lang} />
+    {!bare && <Footer settings={s} lang={lang} />}
     <CookieBanner lang={lang} />
     {showStickyCta && <StickyCta ctaKind={ctaKind} ctaHref={ctaHrefOverride} lang={lang} settings={s} />}
 
