@@ -13,6 +13,16 @@
   ],
   "redirects": [
     {
+      "source": "/carte",
+      "destination": "/?utm_source=carte-postale&utm_medium=url&utm_campaign=satisfaction",
+      "permanent": false
+    },
+    {
+      "source": "/carte/qr",
+      "destination": "/?utm_source=carte-postale&utm_medium=qr&utm_campaign=satisfaction",
+      "permanent": false
+    },
+    {
       "source": "/(.*)",
       "has": [{ "type": "host", "value": "fr.chateaudelahuberdiere.com" }],
       "destination": "https://www.chateaudelahuberdiere.com/",

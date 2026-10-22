@@ -122,6 +122,16 @@ test("une page se lit en clair : article nommé, page du site nommée, langue pr
   assert.equal(libellePage("", pages), null)
 })
 
+test("les canaux du kit satisfaction sont nommés : carnet et carte postale", () => {
+  const contacts = [
+    contact("a@ex.fr", "LP_Mariage", "2026-11-05T10:00:00Z", { UTM_SOURCE: "carnet" }),
+    contact("b@ex.fr", "LP_Sejour", "2026-11-06T10:00:00Z", { UTM_SOURCE: "carte-postale" }),
+  ]
+  const canal = Object.fromEntries(buildLeadsData(contacts, "2026-11").parCanal)
+  assert.equal(canal["Carnet de Lodovica"], 1)
+  assert.equal(canal["Carte postale"], 1)
+})
+
 test("« de la part de qui » remonte dans le détail de la demande, sans scinder le déclaratif", () => {
   const bao = "Bouche à oreille, recommandation"
   const contacts = [

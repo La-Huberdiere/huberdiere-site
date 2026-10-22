@@ -28,6 +28,9 @@ function leadChannel(src) {
   if (/google|bing|yahoo|duckduckgo|qwant|ecosia|brave/.test(r)) return "Recherche Google"
   if (/instagram|facebook|linkedin|pinterest|tiktok|youtube|twitter|x\.com/.test(r)) return "Réseaux sociaux"
   if (/bouche/.test(r)) return "Bouche à oreille"
+  // Kit « faire circuler la satisfaction » (octobre 2026) : le carnet partagé et la carte postale.
+  if (r === "carnet") return "Carnet de Lodovica"
+  if (r === "carte-postale") return "Carte postale"
   // Domaine référent nommé : on l'affiche proprement. Un token non reconnu qui n'est
   // pas un domaine (utm cassé, saisie parasite) retombe en non identifié, jamais brut.
   if (r.includes(".")) return `Référent : ${r.replace(/^https?:\/\//, "").replace(/^www\./, "").split("/")[0]}`

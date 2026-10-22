@@ -379,6 +379,8 @@ const SOURCE_NAMES = {
   "gemini.google.com": "Gemini", gemini: "Gemini",
   "copilot.microsoft.com": "Copilot", copilot: "Copilot",
   "claude.ai": "Claude",
+  // Kit « faire circuler la satisfaction » : carnet partagé, carte postale.
+  carnet: "Carnet de Lodovica", "carte-postale": "Carte postale",
 };
 const SOCIAL_SOURCES = new Set([
   "ig", "instagram", "insta", "fb", "facebook", "meta", "li", "linkedin",
