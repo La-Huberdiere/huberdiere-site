@@ -73,6 +73,16 @@ export function attributionField(lang: Lang = "fr") {
   return { prompt: l.prompt, options: ATTRIBUTION_KEYS.map((k) => ({ value: k, label: l.options[k] })) };
 }
 
+/** Libellé du champ libre qui s'ouvre quand « bouche à oreille » est choisi. */
+const RECOMMENDER: Record<Lang, string> = {
+  fr: "De la part de qui ?",
+  en: "Who recommended us?",
+  it: "Chi ci ha consigliato?",
+};
+export function recommenderLabel(lang: Lang = "fr"): string {
+  return RECOMMENDER[lang] ?? RECOMMENDER.fr;
+}
+
 /** Libellé français d'une clé, pour le CRM et le rapport client. */
 export function attributionLabel(key?: string | null): string {
   if (!key) return "";

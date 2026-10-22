@@ -427,6 +427,7 @@ section{padding:112px 48px;position:relative}
    disparaissait à la première frappe et le lecteur d'écran n'avait rien à annoncer. */
 .lead-form .field{display:flex;flex-direction:column;margin-bottom:16px}
 .lead-form .row .field{margin-bottom:0}
+.lead-form .field[hidden]{display:none}
 .lead-form label{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:400;color:var(--ink-2);margin:0 0 7px;letter-spacing:.02em}
 .lead-form label .opt{color:var(--muted);font-weight:300}
 .lead-form .field-error{margin:7px 0 0;font-family:'Montserrat',sans-serif;font-size:12.5px;line-height:1.45;color:var(--burgundy)}

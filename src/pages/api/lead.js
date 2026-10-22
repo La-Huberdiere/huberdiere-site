@@ -166,6 +166,10 @@ export async function POST({ request }) {
       ...qualif,
       // Déclaratif du prospect, seul rattrapage des leads en accès direct.
       ATTRIBUTION: attributionLabel(data.attribution),
+      // Champ « De la part de qui ? », ouvert par le seul bouche à oreille. La
+      // dernière déclaration écrase la précédente, voulu. Attribut créé côté
+      // compte le 22/10/2026 ; absent, il serait retiré au repli « noyau ».
+      DE_LA_PART_DE: dePartDe(data),
       UTM_SOURCE: data.utm_source || "",
       UTM_MEDIUM: data.utm_medium || "",
       UTM_TERM: data.utm_term || "",
@@ -425,6 +429,7 @@ function notifyHtml(data, cibleLabel, meta, origin) {
     ["Activité", cibleLabel],
     ["Canal (détecté)", origin],
     ["Connu par (déclaré)", attributionLabel(data.attribution)],
+    ["De la part de", dePartDe(data)],
     ["Source (utm_source)", data.utm_source],
     ["Support (utm_medium)", data.utm_medium],
     ["Campagne (utm_campaign)", data.utm_campaign],
@@ -475,6 +480,13 @@ function notifyHtml(data, cibleLabel, meta, origin) {
       </div>
     </div>
   </div>`;
+}
+
+// Nom donné au champ conditionnel, gardé seulement si le bouche à oreille est coché
+// (un champ masqué puis rempli ne doit pas fuiter dans le CRM).
+function dePartDe(data) {
+  if (data.attribution !== "bouche-a-oreille") return "";
+  return String(data.de_la_part_de || "").trim().slice(0, 120);
 }
 
 function json(obj, status = 200) {

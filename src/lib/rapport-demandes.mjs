@@ -91,6 +91,9 @@ export function buildLeadsData(contacts, ym, moisSoumission = null) {
       canal: leadChannel(sourceDe(A(x, "UTM_SOURCE"), A(x, "REFERRER"))),
       // Déclaratif du prospect (champ « Comment nous avez-vous connus ? »).
       declare: String(A(x, "ATTRIBUTION") || "").trim(),
+      // Nom donné au champ « De la part de qui ? », affiché seulement quand le
+      // prospect a coché le bouche à oreille.
+      dePart: String(A(x, "DE_LA_PART_DE") || "").trim(),
       // Parcours : première page de la visite venue d'un moteur ou d'un lien
       // (vide si elle n'a laissé aucune trace), page consultée juste avant celle
       // du formulaire, et page du formulaire. Sert à montrer le rôle des articles.
@@ -100,6 +103,11 @@ export function buildLeadsData(contacts, ym, moisSoumission = null) {
       formulaire: String(A(x, "PAGE_FORMULAIRE") || "").trim(),
     })
   }
+
+  const recommandations = demandes
+    .filter((d) => d.dePart && /bouche/i.test(d.declare))
+    .map((d) => ({ date: d.date, cible: d.cible, detail: `Bouche à oreille, de la part de ${d.dePart}` }))
+    .sort((a, b) => a.date.localeCompare(b.date))
 
   const tally = (arr, key) => {
     const m = new Map()
@@ -118,6 +126,7 @@ export function buildLeadsData(contacts, ym, moisSoumission = null) {
     total: demandes.length, newsletter,
     parCible: tally(demandes, "cible"), parCanal: tally(demandes, "canal"),
     parDeclare: tally(declares, "declare"), declares: declares.length,
+    recommandations,
     chatgpt, identifies,
     ia: { total: tracees + declareesSeules, tracees, declareesSeules },
     parcours: demandes

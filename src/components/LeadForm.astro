@@ -1,5 +1,5 @@
 ---
-import { attributionField } from "../lib/attribution";
+import { attributionField, recommenderLabel } from "../lib/attribution";
 import { formLabels, type Lang } from "../lib/formLabels";
 import { localizePath } from "../lib/routes";
 import RatingLines from "./RatingLines.astro";
@@ -26,6 +26,7 @@ const { lang = "fr", cible, submitLabel, variant = "project", responseLine } = A
 
 const L = formLabels(lang);
 const attribution = attributionField(lang);
+const recommender = recommenderLabel(lang);
 const thanksPath = lang === "fr" ? "/merci" : `/${lang}/merci`;
 const privacyHref = localizePath("/politique-de-confidentialite", lang);
 const messageHint = variant === "contact" ? L.messageHintContact : L.messageHintProject;
@@ -76,10 +77,17 @@ const trustLines = [responseLine || L.reassurance[0], ...L.reassurance.slice(1)]
 
   <div class="field">
     <label class="attr-label" for="attribution">{attribution.prompt}</label>
-    <select name="attribution" id="attribution" class="attr-select">
+    <select name="attribution" id="attribution" class="attr-select" aria-controls="lf-recommender-field" aria-expanded="false">
       <option value="">{L.selectPlaceholder}</option>
       {attribution.options.map((o) => <option value={o.value}>{o.label}</option>)}
     </select>
+  </div>
+
+  {/* Ouvert par la seule réponse « bouche à oreille ». Masqué, il reste hors du
+      parcours clavier et n'est pas envoyé (le serveur l'ignore sans cette réponse). */}
+  <div class="field" id="lf-recommender-field" hidden>
+    <label for="lf-recommender">{recommender} <span class="opt">({L.optional})</span></label>
+    <input type="text" id="lf-recommender" name="de_la_part_de" maxlength="120" autocomplete="off" />
   </div>
 
   <button type="submit" class="btn-burgundy" id="submitBtn">{submitLabel}</button>
@@ -118,6 +126,20 @@ const trustLines = [responseLine || L.reassurance[0], ...L.reassurance.slice(1)]
         if (r && r.host === location.host && r.pathname !== location.pathname) fromRef = r.pathname;
       } catch (e) {}
       el.value = fromParam || fromRef || "";
+    })();
+
+    // « De la part de qui ? » : visible seulement si le bouche à oreille est coché.
+    (function recommender() {
+      const sel = document.getElementById("attribution");
+      const box = document.getElementById("lf-recommender-field");
+      if (!sel || !box) return;
+      const sync = () => {
+        const open = sel.value === "bouche-a-oreille";
+        box.hidden = !open;
+        sel.setAttribute("aria-expanded", open ? "true" : "false");
+      };
+      sel.addEventListener("change", sync);
+      sync();
     })();
 
     async function sha256(str) {
@@ -175,6 +197,7 @@ const trustLines = [responseLine || L.reassurance[0], ...L.reassurance.slice(1)]
       btn.disabled = true;
       status.textContent = L.sending;
       const data = Object.fromEntries(new FormData(form).entries());
+      if (data.attribution !== "bouche-a-oreille") delete data.de_la_part_de;
       data.lang = (document.documentElement.lang || "fr").slice(0, 2);
       data.browser_lang = navigator.language || "";
       const qp = new URLSearchParams(location.search);

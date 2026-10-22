@@ -121,3 +121,17 @@ test("une page se lit en clair : article nommé, page du site nommée, langue pr
   assert.deepEqual(libellePage("/inconnue?x=1#a", pages), { texte: "/inconnue", blog: false })
   assert.equal(libellePage("", pages), null)
 })
+
+test("« de la part de qui » remonte dans le détail de la demande, sans scinder le déclaratif", () => {
+  const bao = "Bouche à oreille, recommandation"
+  const contacts = [
+    contact("a@ex.fr", "LP_Mariage", "2026-11-05T10:00:00Z", { ATTRIBUTION: bao, DE_LA_PART_DE: "  Marie Dupont " }),
+    contact("b@ex.fr", "LP_Sejour", "2026-11-06T10:00:00Z", { ATTRIBUTION: bao }),
+    contact("c@ex.fr", "LP_Sejour", "2026-11-07T10:00:00Z", { ATTRIBUTION: "Recherche Google", DE_LA_PART_DE: "Paul" }),
+  ]
+  const ld = buildLeadsData(contacts, "2026-11")
+  assert.deepEqual(ld.parDeclare.find(([c]) => c === bao), [bao, 2])
+  assert.deepEqual(ld.recommandations, [
+    { date: "2026-11-05", cible: "Mariage", detail: "Bouche à oreille, de la part de Marie Dupont" },
+  ])
+})

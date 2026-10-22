@@ -88,6 +88,13 @@ for (const [path, lang, expectedLabel] of CASES) {
   check(`${path} email invalide signalé`, ((await page.textContent("#err-email")) || "").trim().length > 0);
   check(`${path} aucun envoi sur email invalide`, payload === null);
 
+  // « De la part de qui ? » : caché par défaut, ouvert par le seul bouche à oreille.
+  check(`${path} « de la part de » caché par défaut`, !(await page.isVisible("#lf-recommender")));
+  await page.selectOption("#attribution", "bouche-a-oreille");
+  check(`${path} « de la part de » ouvert`, await page.isVisible("#lf-recommender"));
+  check(`${path} aria-expanded`, (await page.getAttribute("#attribution", "aria-expanded")) === "true");
+  await page.fill("#lf-recommender", "Marie Test");
+
   // Envoi valide : la requête part, la charge utile est complète, on arrive sur /merci.
   await page.fill("#lf-email", "ne-pas-utiliser@example.invalid");
   await page.fill("#lf-message", "Test automatisé, ne pas traiter.");
@@ -102,6 +109,7 @@ for (const [path, lang, expectedLabel] of CASES) {
     check(`${path} langue transmise`, payload.lang === lang, `lang=${payload.lang}`);
     check(`${path} honeypot vide`, payload.website === "", `website="${payload.website}"`);
     check(`${path} identifiant de lead`, !!payload.lead_id);
+    check(`${path} « de la part de » transmis`, payload.de_la_part_de === "Marie Test", `="${payload.de_la_part_de}"`);
     for (const k of PAYLOAD_KEYS) check(`${path} clé ${k}`, k in payload);
   }
   check(`${path} redirection vers /merci`, /\/merci\/?\?/.test(page.url()), page.url().slice(0, 80));

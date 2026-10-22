@@ -783,6 +783,7 @@ export function renderLeads(ld, monthLabel, pages = new Map()) {
   <p class="note">Le canal est déduit de la première visite (recherche Google, IA, réseaux, lien direct). ${declareRows
     ? `La troisième colonne vient du champ « Comment nous avez-vous connus &#63; » du formulaire, renseigné par ${ld.declares} personne${ld.declares > 1 ? "s" : ""} ce mois-ci. C'est la seule mesure qui rattrape le bouche à oreille et les réponses d'IA, invisibles pour les outils de suivi.`
     : `Une part des demandes reste en « source non identifiée » : le champ « Comment nous avez-vous connus &#63; » vient d'être ajouté aux formulaires, ses premiers résultats apparaîtront le mois prochain.`}</p>
+  ${(ld.recommandations ?? []).length ? `<p class="note"><strong>Recommandations nommées :</strong> ${ld.recommandations.map((r) => `${esc(r.cible)}, ${esc(r.detail.charAt(0).toLowerCase() + r.detail.slice(1))}`).join(" ; ")}.</p>` : ""}
   ${renderParcours(ld, pages)}`
 }
 
