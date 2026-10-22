@@ -277,11 +277,11 @@ const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
     <meta name="twitter:description" content={metaDescription} />
     <meta name="twitter:image" content={ogImage} />
 
-    {/* hreflang */}
-    {langs.map((l) => (
+    {/* hreflang : jamais sur une page noindex, ses alternates peuvent ne pas exister (/carnet en FR seul) */}
+    {!noindex && langs.map((l) => (
       <link rel="alternate" hreflang={hreflangMap[l.code]} href={new URL(l.href, Astro.site).href} />
     ))}
-    <link rel="alternate" hreflang="x-default" href={new URL(localePath("fr"), Astro.site).href} />
+    {!noindex && <link rel="alternate" hreflang="x-default" href={new URL(localePath("fr"), Astro.site).href} />}
 
     {allSchemas.map((sc) => (
       <script type="application/ld+json" set:html={JSON.stringify(sc)} />

@@ -104,6 +104,9 @@ const siteLabel = (s: string) => s.replace(/^www\./, "");
 
 <script is:inline define:vars={{ query: CARNET_PARTAGE_QUERY, titre: c.partageTitre, texte: c.partageTexte, copie: c.lienCopie }}>
   (function () {
+    if (new URLSearchParams(location.search).has("brouillon")) {
+      document.querySelector(".carnet").classList.add("brouillon");
+    }
     var status = document.getElementById("carnetStatus");
     var track = function (name, data) {
       // Jamais window.umami en direct : il est chargé en async, voir Base.astro.
@@ -248,7 +251,10 @@ const siteLabel = (s: string) => s.replace(/^www\./, "");
   .c-large img { width: 100%; height: clamp(260px, 46vw, 520px); object-fit: cover; object-position: 50% 78%; }
 
   /* Trou à faire combler : discret, dans l'esprit d'une note marginale. */
-  .c-a-completer {
+  /* Notes de travail pour Lodovica : visibles seulement en démo, /carnet?brouillon */
+  .c-a-completer { display: none; }
+  .carnet.brouillon .c-a-completer {
+    display: block;
     max-width: 46em;
     margin: 22px 0 0;
     padding: 10px 16px;
