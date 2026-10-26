@@ -226,7 +226,10 @@ export async function GET({ request, url }) {
     // On envoie d'abord pour pouvoir marquer le mois comme « emailed » dans l'historique
     // persisté (verrou du doublon). Un échec d'envoi laisse le drapeau à false → un run
     // ultérieur retentera.
-    const emailed = noemail ? false : await sendEmail(summary, monthLabel)
+    // Depuis le 26/10/2026, plus d'envoi automatique au client : Alexis relit et
+    // envoie lui-même, depuis un brouillon posé par son Mac (Huberdiere/ops/brouillon-rapport).
+    // `?envoyer=1` garde l'ancien envoi direct pour un besoin ponctuel.
+    const emailed = noemail || url.searchParams.get("envoyer") !== "1" ? false : await sendEmail(summary, monthLabel)
     if (emailed) {
       const e = history.find((h) => h.month === ym)
       if (e) e.emailed = true
