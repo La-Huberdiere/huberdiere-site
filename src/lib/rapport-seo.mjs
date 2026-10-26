@@ -1,8 +1,10 @@
 /**
- * Château de la Huberdière — moteur du rapport SEO/GEO client (v2).
+ * Château de la Huberdière, moteur du rapport SEO/GEO client (v3).
  *
- * Version serverless : tire DataForSEO (positions locales, netlinking + détail et
- * historique, fiche Google, visibilité IA sur 4 moteurs et 6 thèmes), lit les
+ * Depuis octobre 2026, pages Google et réponses des IA viennent d'OpenSEO, poussées
+ * par le NAS le dernier jour du mois (rapport-openseo.mjs) : plus rien n'est acheté
+ * deux fois. DataForSEO n'est appelé en direct que pour la fiche Google, l'estimation
+ * Keyword Planner du nom, et en secours si l'envoi OpenSEO du mois manque. Lit les
  * articles du repo via import.meta.glob, fusionne l'historique passé en argument et
  * rend le HTML (graphique SVG sans script, charte Huberdière, imprimable en noir et blanc). L'I/O historique + HTML est
  * gérée par l'appelant (Vercel Blob).
@@ -26,6 +28,7 @@ import { fenetresDeJours, pointDeComparaison, moisDecales } from "./rapport-peri
 import { BRAND_KEYWORDS, GSC_BRAND_REGEX } from "./rapport-marque.mjs"
 import { repartirAbsents, absenceProuvee, domainesCites, kpiBaseFixe } from "./rapport-positions.mjs"
 import { buildLeadsData, libellePage } from "./rapport-demandes.mjs"
+import { serpDepuisOpenseo, iaDepuisOpenseo, bilanIa, bilanApercus, aPorteeDepuisGsc, renderIa, renderApercus, renderAPortee } from "./rapport-openseo.mjs"
 import { localizePath } from "./routes.ts"
 export { buildLeadsData }
 
@@ -446,11 +449,24 @@ async function pullBrand(ym) {
   }
 }
 
-async function pullBacklinks() {
-  const target = DOMAIN.replace(/^www\./, "")
-  let s = {}
-  try { s = (await dfs("/backlinks/summary/live", { target, include_subdomains: true, exclude_internal_backlinks: true, backlinks_status_type: "live", internal_list_limit: 1 }))[0] ?? {} } catch (e) { console.error("BL summary", e.message) }
-  return { backlinks: s.backlinks ?? 0, referringDomains: s.referring_domains ?? 0, spamScore: s.backlinks_spam_score ?? 0, referringMainDomains: s.referring_main_domains ?? 0 }
+// Recherches à portée de la première page, dans la Search Console du site : gratuit,
+// et des centaines de recherches au lieu des 19 suivies. Figées dans l'instantané.
+async function pullAPortee(ym) {
+  try {
+    const token = await gscToken()
+    if (!token) return null
+    const url = `https://searchconsole.googleapis.com/webmasters/v3/sites/${encodeURIComponent(GSC_SITE)}/searchAnalytics/query`
+    const r = await fetch(url, {
+      method: "POST",
+      headers: { authorization: `Bearer ${token}`, "content-type": "application/json" },
+      body: JSON.stringify({ startDate: `${ym}-01`, endDate: monthEndYMD(ym), dimensions: ["query", "page"], rowLimit: 5000, type: "web" }),
+    })
+    if (!r.ok) throw new Error(`GSC ${r.status} : ${(await r.text()).slice(0, 200)}`)
+    return aPorteeDepuisGsc((await r.json()).rows, GSC_BRAND_REGEX)
+  } catch (e) {
+    console.error("[rapport] recherches à portée KO :", e.message)
+    return null
+  }
 }
 
 async function pullGbp() {
@@ -498,27 +514,6 @@ async function pullLlm() {
  */
 function pullCompetitors() {
   return { rows: COMPETITORS.map((c) => ({ domain: c.domain, label: c.label, isBrand: false })) }
-}
-
-async function pullDomainHistory() {
-  try {
-    const result = await dfs("/dataforseo_labs/google/historical_rank_overview/live", {
-      target: DOMAIN, location_name: "France", language_code: "fr", ignore_synonyms: true,
-    })
-    const items = result[0]?.items ?? []
-    return items
-      .map((it) => {
-        const o = it.metrics?.organic ?? {}
-        const top3 = (o.pos_1 || 0) + (o.pos_2_3 || 0)
-        const top10 = top3 + (o.pos_4_10 || 0)
-        const top20 = top10 + (o.pos_11_20 || 0)
-        return { ym: `${it.year}-${String(it.month).padStart(2, "0")}`, top3, top10, top20, etv: Math.round(o.etv || 0) }
-      })
-      .sort((a, b) => a.ym.localeCompare(b.ym))
-  } catch (e) {
-    console.error("Domain history KO", e.message)
-    return []
-  }
 }
 
 const monthShort = (ym) => new Intl.DateTimeFormat("fr-FR", { month: "short", year: "2-digit", timeZone: "UTC" }).format(new Date(`${ym}-15T00:00:00Z`))
@@ -1022,7 +1017,7 @@ export function renderGains(opportunities) {
 }
 
 function renderHtml(data) {
-  const { month, serp, gbp, llm, articles, history, exec, leads, traffic, brand, competitors } = data
+  const { month, serp, gbp, llm, articles, history, exec, leads, traffic, brand, competitors, ia, aPortee } = data
   const monthLabel = monthLong(month)
   // Recherches réellement relevées ce mois-ci : les autres ne sont ni gagnées ni perdues.
   const serpMesure = serp.filter((s) => s.releve !== false)
@@ -1073,9 +1068,15 @@ function renderHtml(data) {
     const answered = llm.filter((e) => !e.rows[idx]?.error).length
     return { theme: p.theme, prompt: p.prompt, citedBy, answered }
   })
-  const citedTotal = perQuestion.reduce((s, q) => s + q.citedBy.length, 0)
-  const answeredTotal = perQuestion.reduce((s, q) => s + q.answered, 0)
+  // Relevé OpenSEO (depuis octobre 2026) ou relevé direct des instantanés d'avant.
+  const { cites: citedTotal, reponses: answeredTotal } = ia ? bilanIa(ia) : {
+    cites: perQuestion.reduce((s, q) => s + q.citedBy.length, 0),
+    reponses: perQuestion.reduce((s, q) => s + q.answered, 0),
+  }
   const muets = llm.filter((e) => !e.rows.some((r) => !r.error)).map((e) => e.engine)
+  // La note de changement d'outil ne paraît que le premier mois mesuré par OpenSEO.
+  const rapportPrecedent = [...history].reverse().find((h) => h.month < month && h.hasReport)
+  const changementMethode = !!ia && !!rapportPrecedent && rapportPrecedent.iaSource !== "openseo"
 
   // Archives : rapports précédents déjà générés (hors mois courant).
   const archiveMonths = history.filter((h) => h.hasReport && h.month < month).map((h) => h.month).sort((a, b) => b.localeCompare(a))
@@ -1250,7 +1251,7 @@ function renderHtml(data) {
     // plutôt que de montrer encore des chiffres faux.
     : ""}
 
-  ${renderGains(opportunities)}
+  ${aPortee ? renderAPortee(aPortee, (p) => libellePage(p, cartePages(articles))) : renderGains(opportunities)}
 
   <h2>Articles publiés ce mois-ci</h2>
   <p class="lead">Le contenu mis en ligne pour le château en ${esc(monthLabel)}, avec les mots-clés visés. Cliquez le titre pour lire l'article.</p>
@@ -1260,7 +1261,7 @@ function renderHtml(data) {
   </table>` : `<div class="card"><p style="margin:0;color:var(--gris)">Aucun article publié sur cette période.</p></div>`}
   <p class="note">Votre blog compte désormais ${articles.length} article${articles.length > 1 ? "s" : ""} en ligne. Les prochains sont planifiés dans votre <a href="/rapport?doc=calendrier">calendrier éditorial SEO &rarr;</a> : quatre articles par mois, chacun visant une recherche précise de vos futurs clients.</p>
 
-  <h2>Aperçus IA de Google</h2>
+  ${ia ? renderApercus(ia) : `<h2>Aperçus IA de Google</h2>
   <p class="lead">Depuis le 22 juillet 2026, Google affiche en France un résumé rédigé par son IA au-dessus des résultats classiques. Il répond directement à la question de l'internaute et cite quelques sites en source. Être cité dans cet encart, c'est occuper la place la plus visible de la page.</p>
   <div class="kpis" style="grid-template-columns:repeat(2,1fr)">
     <div class="kpi"><div class="l">Mots-clés avec aperçu IA</div><div class="v">${kpiAio.valeur}<span style="font-size:15px;color:var(--gris)"> / ${kpiAio.base}</span></div><div class="n">${esc(kpiAio.note)}</div></div>
@@ -1274,9 +1275,9 @@ function renderHtml(data) {
       return `<tr><td>${esc(s.keyword)}<span class="sur-mobile">${cites.length ? `cités : ${sources}` : sources}</span></td><td class="num pos">${s.position != null ? s.position : '<span style="color:var(--gris)">non classé</span>'}</td><td class="num">${s.aioCited ? '<span class="yes">oui</span>' : '<span class="no">non</span>'}</td><td class="hors-mobile" style="color:var(--gris)">${sources}</td></tr>`
     }).join("")}</tbody>
   </table>` : `<div class="card">Aucun aperçu IA relevé ce mois-ci sur les ${serpMesure.length} recherches mesurées. Google en affiche peu sur les recherches locales et commerciales, qui sont justement les vôtres ; il les réserve surtout aux questions générales, celles que visent les articles du blog.${serpNonReleves ? ` ${serpNonReleves} recherche${serpNonReleves > 1 ? "s n'ont" : " n'a"} pas pu être relevée${serpNonReleves > 1 ? "s" : ""} ce mois-ci, voir plus haut.` : ""}</div>`}
-  <p class="note">Sur les recherches où un aperçu s'affiche, le nombre de clics vers les sites baisse nettement, y compris pour la première position. La parade n'est pas de monter d'un rang, c'est d'être la source que l'IA cite. C'est ce qui guide la façon dont vos articles sont désormais écrits : une question par titre, une réponse nette dessous, des chiffres et des détails que personne d'autre ne peut donner sur le château.</p>
+  <p class="note">Sur les recherches où un aperçu s'affiche, le nombre de clics vers les sites baisse nettement, y compris pour la première position. La parade n'est pas de monter d'un rang, c'est d'être la source que l'IA cite. C'est ce qui guide la façon dont vos articles sont désormais écrits : une question par titre, une réponse nette dessous, des chiffres et des détails que personne d'autre ne peut donner sur le château.</p>`}
 
-  <h2>Visibilité dans les réponses IA</h2>
+  ${ia ? renderIa(ia, { changementMethode }) : `<h2>Visibilité dans les réponses IA</h2>
   <p class="lead">De plus en plus de clients posent leur question à ChatGPT, Gemini, Perplexity ou Claude. On teste 6 questions réelles, une par activité, sur les 4 moteurs, et on regarde si le château est cité.</p>
   <table>
     <thead><tr><th>Activité</th><th class="hors-mobile">Question posée</th><th class="num">Cité par</th></tr></thead>
@@ -1294,14 +1295,16 @@ function renderHtml(data) {
       return `<tr><td>${esc(e.engine)}</td><td class="num"><span class="${c > 0 ? "yes" : "no"}">${c} / ${n}</span></td><td style="color:var(--gris)">${comps.length ? comps.map(esc).join(", ") : "aucun"}</td></tr>`
     }).join("")}</tbody>
   </table>
-  <p class="note">${muets.length ? `${esc(muets.join(" et "))} n'${muets.length > 1 ? "ont" : "a"} rendu aucune réponse ce mois-ci : le décompte porte sur ${answeredTotal} réponses obtenues. ` : ""}Les réponses des IA varient d'un jour à l'autre : lisez ce bloc comme une tendance, pas comme une note figée.</p>
+  <p class="note">${muets.length ? `${esc(muets.join(" et "))} n'${muets.length > 1 ? "ont" : "a"} rendu aucune réponse ce mois-ci : le décompte porte sur ${answeredTotal} réponses obtenues. ` : ""}Les réponses des IA varient d'un jour à l'autre : lisez ce bloc comme une tendance, pas comme une note figée.</p>`}
 
   ${renderPropositions(PROPOSITIONS[month])}
 
   <footer>
     ${archivesHtml}
     Rapport généré automatiquement pour le Château de la Huberdière, ${esc(monthLabel)}.<br>
-    Sources : Google (positions, aperçus IA et trafic estimé), profil Google Business, moteurs IA (ChatGPT, Gemini, Perplexity, Claude), DataForSEO pour la comparaison avec les châteaux voisins, et le blog du château.
+    Sources : ${ia
+      ? "pages de résultats Google et réponses des IA (ChatGPT, Gemini, Perplexity, aperçus IA de Google) relevées par OpenSEO, votre Search Console, profil Google Business, Umami pour la fréquentation, Brevo pour les demandes, et le blog du château."
+      : "Google (positions, aperçus IA et trafic estimé), profil Google Business, moteurs IA (ChatGPT, Gemini, Perplexity, Claude), DataForSEO pour la comparaison avec les châteaux voisins, et le blog du château."}
   </footer>
 </div>
 
@@ -1317,14 +1320,18 @@ function bestKeyword(serp) {
 }
 
 // Phrase de synthèse « faits marquants », construite à partir des données.
-function buildExec({ month, serp, articlesNew, citedTotal, answeredTotal, gbp, leads }) {
+function buildExec({ month, serp, articlesNew, citedTotal, answeredTotal, gbp, leads, ia }) {
   const bits = []
   const best = bestKeyword(serp)
   if (best) bits.push(`meilleure position <strong>#${best.position}</strong> sur « ${esc(best.keyword)} »`)
   bits.push(`<strong>${articlesNew}</strong> article${articlesNew > 1 ? "s" : ""} publié${articlesNew > 1 ? "s" : ""}`)
   if (leads?.total) bits.push(`<strong>${leads.total}</strong> demande${leads.total > 1 ? "s" : ""} reçue${leads.total > 1 ? "s" : ""}`)
   bits.push(`cité <strong>${citedTotal}/${answeredTotal}</strong> fois par les IA`)
-  const aioN = serp.filter((s) => s.aio).length
+  const aioN = ia ? 0 : serp.filter((s) => s.aio).length
+  if (ia) {
+    const b = bilanApercus(ia)
+    if (b.affiches) bits.push(`aperçu IA de Google sur <strong>${b.affiches}</strong> question${b.affiches > 1 ? "s" : ""} sur ${b.questions}, ${b.cites > 0 ? `château cité dans <strong>${b.cites}</strong> d'entre eux` : "château pas encore cité comme source"}`)
+  }
   if (aioN) {
     const cites = serp.filter((s) => s.aioCited).length
     // Nommés tant qu'ils tiennent dans la phrase : « sur 1 mot-clé » ne disait pas lequel.
@@ -1339,7 +1346,7 @@ function buildExec({ month, serp, articlesNew, citedTotal, answeredTotal, gbp, l
  * Génère le rapport. `prevHistory` = historique existant (Blob). Retourne
  * { html, history, summary, monthLabel, month } sans écrire sur disque.
  */
-export async function generateReport(prevHistory = [], month = null) {
+export async function generateReport(prevHistory = [], month = null, openseo = null) {
   if (!process.env.DATAFORSEO_LOGIN || !process.env.DATAFORSEO_PASSWORD) {
     throw new Error("DATAFORSEO_LOGIN / DATAFORSEO_PASSWORD manquants.")
   }
@@ -1347,12 +1354,17 @@ export async function generateReport(prevHistory = [], month = null) {
   const ym = month || `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`
   const monthLabelShort = monthShort(ym)
 
-  // `pullBacklinks` reste appelé sans rien afficher : il entretient la série
-  // backlinks/domaines de l'historique, seul moyen de rouvrir le sujet plus tard
-  // si une vraie acquisition de liens démarre. Un appel, aucun rendu.
-  const [serp, backlinks, gbp, llm, domainHistory, leads, traffic, brand, competitors] = await Promise.all([
-    pullSerp(), pullBacklinks(), pullGbp(), pullLlm(), pullDomainHistory(), pullLeads(ym), pullUmami(ym), pullBrand(ym), Promise.resolve(pullCompetitors()),
+  // Pages Google et réponses des IA : l'envoi OpenSEO du mois s'il est là, sinon un
+  // relevé direct de secours (un seul achat, pas un doublon : OpenSEO n'a rien relevé).
+  // Liens entrants et historique de trafic estimé ne sont plus achetés : rien ne les
+  // affichait depuis septembre (décision du 26/10/2026, ne pas brûler de crédits).
+  const serpOpenseo = Array.isArray(openseo?.serp?.keywords) && openseo.serp.keywords.length > 0
+  const ia = iaDepuisOpenseo(openseo?.ia)
+  const [serp, gbp, llm, leads, traffic, brand, competitors, aPortee] = await Promise.all([
+    serpOpenseo ? serpDepuisOpenseo(openseo, KEYWORDS, COMPETITORS, DOMAIN) : pullSerp(),
+    pullGbp(), ia ? [] : pullLlm(), pullLeads(ym), pullUmami(ym), pullBrand(ym), Promise.resolve(pullCompetitors()), pullAPortee(ym),
   ])
+  const mesures = { serp: serpOpenseo ? "openseo" : "dataforseo", ia: ia ? "openseo" : "dataforseo" }
   // Borne de publication : aujourd'hui pour le mois courant, fin de mois pour un
   // rapport rétroactif. Évite de lister un article encore à venir (lien 404).
   const nowYMD = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}-${String(now.getUTCDate()).padStart(2, "0")}`
@@ -1363,11 +1375,6 @@ export async function generateReport(prevHistory = [], month = null) {
   const articlesNew = articles.filter((a) => (a.publishedAt || "").slice(0, 7) === ym).length
 
   const byMonth = new Map((Array.isArray(prevHistory) ? prevHistory : []).map((h) => [h.month, h]))
-  for (const d of domainHistory) {
-    const e = byMonth.get(d.ym) ?? { month: d.ym, monthLabel: monthShort(d.ym) }
-    e.domain = { top3: d.top3, top10: d.top10, top20: d.top20, etv: d.etv }
-    byMonth.set(d.ym, e)
-  }
   const positions = {}
   // Une recherche non relevée n'écrit rien : un null ferait lire « sorti » puis
   // « entrée » d'un mois sur l'autre, pour une simple panne de mesure.
@@ -1375,15 +1382,24 @@ export async function generateReport(prevHistory = [], month = null) {
   const cur = byMonth.get(ym) ?? { month: ym, monthLabel: monthLabelShort }
   cur.monthLabel = monthLabelShort
   cur.positions = positions
-  cur.backlinks = backlinks.backlinks
-  cur.referringDomains = backlinks.referringDomains
   cur.gbpNote = gbp?.note ?? null
   cur.gbpReviews = gbp?.reviews ?? null
-  const citedTotal = llm.reduce((s, e) => s + e.rows.filter((r) => r.cited).length, 0)
-  const answeredTotal = llm.reduce((s, e) => s + e.rows.filter((r) => !r.error).length, 0)
+  const { cites: citedTotal, reponses: answeredTotal } = ia ? bilanIa(ia) : {
+    cites: llm.reduce((s, e) => s + e.rows.filter((r) => r.cited).length, 0),
+    reponses: llm.reduce((s, e) => s + e.rows.filter((r) => !r.error).length, 0),
+  }
   cur.llmCited = citedTotal
   cur.llmAnswered = answeredTotal
-  cur.aio = { present: serp.filter((s) => s.aio).length, cited: serp.filter((s) => s.aioCited).length, keywords: serp.filter((s) => s.releve !== false).length }
+  // Depuis OpenSEO, l'aperçu Google se mesure sur les questions du suivi IA, pas sur
+  // les 19 recherches : `source` le dit, pour ne pas comparer les deux séries.
+  if (ia) {
+    const b = bilanApercus(ia)
+    cur.aio = { present: b.affiches, cited: b.cites, keywords: b.questions, source: "openseo" }
+    cur.iaSource = "openseo"
+  } else {
+    cur.aio = { present: serp.filter((s) => s.aio).length, cited: serp.filter((s) => s.aioCited).length, keywords: serp.filter((s) => s.releve !== false).length }
+  }
+  cur.mesures = mesures
   if (brand) cur.brandVolume = brand.serie[brand.serie.length - 1]?.volume ?? null
   if (leads) cur.leads = { total: leads.total, newsletter: leads.newsletter, chatgpt: leads.chatgpt, ia: leads.ia?.total ?? null }
   if (traffic) cur.traffic = { pageviews: traffic.pageviews, visitors: traffic.visitors, visits: traffic.visits }
@@ -1394,9 +1410,10 @@ export async function generateReport(prevHistory = [], month = null) {
   // Tout ce dont le rendu a besoin, figé tel quel. `exec` en est exclu : c'est du
   // texte dérivé, on le recalcule au rendu pour qu'un changement de formulation
   // profite aussi aux mois passés.
-  const snapshot = { month: ym, serp, gbp, llm, articles, history, leads, traffic, brand, competitors }
-  const exec = buildExec({ month: ym, serp, articlesNew, citedTotal, answeredTotal, gbp, leads })
+  const snapshot = { month: ym, serp, gbp, llm, ia, aPortee, mesures, articles, history, leads, traffic, brand, competitors }
+  const exec = buildExec({ month: ym, serp, articlesNew, citedTotal, answeredTotal, gbp, leads, ia })
   const html = renderHtml({ ...snapshot, exec })
+  const apercus = ia ? bilanApercus(ia) : null
 
   // Même règle que le rendu : le dernier mois mesuré et complet, sinon le dernier complet.
   const serieMarque = brand?.serie ?? []
@@ -1411,15 +1428,15 @@ export async function generateReport(prevHistory = [], month = null) {
     keywords: serp.filter((s) => s.releve !== false).length,
     llmCited: citedTotal,
     llmAnswered: answeredTotal,
-    aioPresent: serp.filter((s) => s.aio).length,
-    aioCited: serp.filter((s) => s.aioCited).length,
+    aioPresent: apercus ? apercus.affiches : serp.filter((s) => s.aio).length,
+    aioCited: apercus ? apercus.cites : serp.filter((s) => s.aioCited).length,
+    mesures,
     // Dernier mois CONFIRMÉ, pas le plus récent : le point tout juste publié par
     // Keyword Planner est trop instable pour être annoncé au client (cf. renderHtml).
     marque: marqueConfirmee?.volume ?? null,
     marqueMois: marqueConfirmee?.label ?? null,
     // Même mois un an plus tôt, ou rien : la phrase du mail dit « un an plus tôt ».
     marqueAnPasse: marqueComparee?.titre === "Il y a un an" ? marqueComparee.point.volume : null,
-    backlinks: backlinks.backlinks,
     gbpNote: gbp?.note ?? null,
     demandes: leads?.total ?? null,
     demandesChatgpt: leads?.chatgpt ?? 0,
@@ -1490,13 +1507,15 @@ export async function completerInstantane(snap, { serp: relever = false } = {}) 
  * synthèse sont volontairement relus au rendu : eux peuvent encore être corrigés.
  */
 export function renderFromSnapshot(snap) {
-  const { month, serp, gbp, llm, articles, history, leads, traffic, brand, competitors } = snap
-  if (!month || !Array.isArray(serp) || !Array.isArray(llm)) {
-    throw new Error("Instantané incomplet : month, serp et llm sont requis.")
+  const { month, serp, gbp, llm = [], ia = null, aPortee = null, articles, history, leads, traffic, brand, competitors } = snap
+  if (!month || !Array.isArray(serp) || !(Array.isArray(snap.llm) || ia)) {
+    throw new Error("Instantané incomplet : month, serp et llm (ou ia) sont requis.")
   }
-  const citedTotal = llm.reduce((s, e) => s + e.rows.filter((r) => r.cited).length, 0)
-  const answeredTotal = llm.reduce((s, e) => s + e.rows.filter((r) => !r.error).length, 0)
+  const { cites: citedTotal, reponses: answeredTotal } = ia ? bilanIa(ia) : {
+    cites: llm.reduce((s, e) => s + e.rows.filter((r) => r.cited).length, 0),
+    reponses: llm.reduce((s, e) => s + e.rows.filter((r) => !r.error).length, 0),
+  }
   const articlesNew = (articles ?? []).filter((a) => (a.publishedAt || "").slice(0, 7) === month).length
-  const exec = buildExec({ month, serp, articlesNew, citedTotal, answeredTotal, gbp, leads })
-  return renderHtml({ month, serp, gbp, llm, articles: articles ?? [], history: history ?? [], exec, leads, traffic, brand, competitors })
+  const exec = buildExec({ month, serp, articlesNew, citedTotal, answeredTotal, gbp, leads, ia })
+  return renderHtml({ month, serp, gbp, llm, ia, aPortee, articles: articles ?? [], history: history ?? [], exec, leads, traffic, brand, competitors })
 }

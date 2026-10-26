@@ -13,6 +13,8 @@ const HTML_PATH = "rapport/index.html"
 // rapport déjà envoyé obligeait à retirer les données : le rapport d'août se serait
 // rempli de positions de septembre. Un mois = un instantané, figé le jour de l'envoi.
 const snapshotPath = (ym) => `rapport/m/${ym}.data.json`
+// Relevés OpenSEO du mois, poussés par le NAS (api/rapport-openseo.js).
+const openseoPath = (ym) => `rapport/m/${ym}.openseo.json`
 // Ces chemins sont RÉÉCRITS (index.html chaque mois, un mois donné lors d'un rejeu).
 // Le CDN de Vercel Blob garde un objet écrasé 30 jours par défaut : sans ce plafond
 // court, une correction publiée reste invisible pendant des semaines.
@@ -66,6 +68,30 @@ async function sendEmail(summary, monthLabel) {
   })
   if (!res.ok) console.error("[rapport] Brevo:", res.status, (await res.text()).slice(0, 200))
   return res.ok
+}
+
+async function loadOpenseo(ym) {
+  try {
+    const o = await loadBlobJson(openseoPath(ym))
+    return o?.month === ym ? o : null
+  } catch {
+    return null // pas d'envoi du NAS pour ce mois
+  }
+}
+
+// Le rapport part quand même, sur un relevé direct de secours : un mois sans rapport
+// est perdu pour toujours. Mais Alexis doit savoir que le NAS n'a rien envoyé.
+async function alerterSecours(ym, mesures) {
+  const key = process.env.BREVO_API_KEY
+  if (!key) return
+  const quoi = [mesures.serp !== "openseo" && "pages Google", mesures.ia !== "openseo" && "réponses des IA"].filter(Boolean).join(" et ")
+  const html = `<p>Rapport Huberdière de ${ym} : aucun relevé OpenSEO reçu pour les ${quoi}. Le rapport est parti sur un relevé DataForSEO direct de secours.</p><p>Vérifier sur le NAS : <code>/mnt/apps/openseo-rapport/</code> (journal et state.json), puis le suivi IA d'OpenSEO.</p>`
+  const res = await fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: { "api-key": key, "content-type": "application/json", accept: "application/json" },
+    body: JSON.stringify({ sender: SENDER, to: [{ email: "alexis@morain.fr" }], subject: `Rapport Huberdière ${ym} : relevé OpenSEO absent`, htmlContent: html }),
+  }).catch((e) => ({ ok: false, statusText: e.message }))
+  if (!res.ok) console.error("[rapport] alerte secours non envoyée :", res.status ?? res.statusText)
 }
 
 export async function GET({ request, url }) {
@@ -185,7 +211,11 @@ export async function GET({ request, url }) {
       })
     }
 
-    const { html, history, summary, snapshot, monthLabel, month: ym } = await generateReport(prev, ymTarget)
+    const { html, history, summary, snapshot, monthLabel, month: ym } = await generateReport(prev, ymTarget, await loadOpenseo(ymTarget))
+    // Une régénération muette (`noemail=1`) ne réalerte pas : seul l'envoi réel compte.
+    if ((snapshot.mesures.serp !== "openseo" || snapshot.mesures.ia !== "openseo") && url.searchParams.get("noemail") !== "1") {
+      await alerterSecours(ym, snapshot.mesures)
+    }
 
     // Régénération silencieuse : reconstruit le rapport en ligne (blob + archive) sans
     // réexpédier de mail. Sert à corriger un rapport déjà envoyé. Le drapeau `emailed`
