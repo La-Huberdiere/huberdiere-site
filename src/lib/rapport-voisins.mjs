@@ -39,7 +39,10 @@ export function positionsVoisins(items, voisins) {
 // tantôt 31 ou 42, tantôt zéro (mesuré le 28/09, facturé à chaque fois). On relève
 // donc plusieurs fois et on garde la page la plus longue : les positions qu'elle
 // contient sont justes, c'est l'absence dans une page tronquée qui ment.
-export const PAGE_COMPLETE = 80 // résultats organiques, pour une demande de 100
+// Pour une demande de 100 résultats, Google rend 70 à 91 liens naturels (le reste en
+// cartes, vidéos, questions : pages OpenSEO d'octobre 2026). 80 classait des pages
+// pleines de 71 en « non relevées » ; 60 écarte toujours les troncatures à 20, 31, 42.
+export const PAGE_COMPLETE = 60 // résultats organiques, pour une demande de 100
 
 export function pageLaPlusComplete(resultats) {
   let meilleure = { items: [], organiques: 0 }

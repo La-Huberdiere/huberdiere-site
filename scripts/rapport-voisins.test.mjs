@@ -82,6 +82,9 @@ test("entre plusieurs relevés d'une même recherche, garde la page la plus comp
   assert.equal(pageLaPlusComplete([vide, []]).items.length, 0)
   assert.ok(pageLaPlusComplete([page(PAGE_COMPLETE)]).complete)
   assert.ok(!pageLaPlusComplete([page(42)]).complete)
+  // Octobre 2026, pages OpenSEO de 100 résultats : 70 à 91 liens naturels, le reste
+  // en cartes, vidéos et questions. Une page de 71 est une page pleine.
+  assert.ok(pageLaPlusComplete([page(71)]).complete)
 })
 
 test("une recherche de blog où l'on cherche un lieu à réserver compte comme recherche client", () => {
