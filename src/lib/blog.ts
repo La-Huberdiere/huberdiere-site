@@ -82,7 +82,7 @@ export const BLOG_UI: Record<Lang, Record<string, string>> = {
     nlLead: "Saisons, événements et inspirations, quelques fois par an.",
     nlPlaceholder: "Votre email",
     nlBtn: "S'inscrire",
-    nlOk: "Merci, votre inscription est confirmée.",
+    nlOk: "Merci. Un mail vient de partir : cliquez sur son lien pour confirmer votre inscription.",
     nlErr: "Une erreur est survenue. Réessayez.",
   },
   en: {
@@ -124,7 +124,7 @@ export const BLOG_UI: Record<Lang, Record<string, string>> = {
     nlLead: "Seasons, events and inspiration, a few times a year.",
     nlPlaceholder: "Your email",
     nlBtn: "Subscribe",
-    nlOk: "Thank you, your subscription is confirmed.",
+    nlOk: "Thank you. We have just sent you an email: click its link to confirm your subscription.",
     nlErr: "Something went wrong. Please try again.",
   },
   it: {
@@ -166,7 +166,7 @@ export const BLOG_UI: Record<Lang, Record<string, string>> = {
     nlLead: "Stagioni, eventi e ispirazioni, qualche volta l'anno.",
     nlPlaceholder: "La tua email",
     nlBtn: "Iscriviti",
-    nlOk: "Grazie, la tua iscrizione è confermata.",
+    nlOk: "Grazie. Ti abbiamo appena inviato un'email: clicca sul link per confermare l'iscrizione.",
     nlErr: "Si è verificato un errore. Riprova.",
   },
 };

@@ -28,7 +28,7 @@ import { fenetresDeJours, pointDeComparaison, moisDecales } from "./rapport-peri
 import { BRAND_KEYWORDS, GSC_BRAND_REGEX } from "./rapport-marque.mjs"
 import { repartirAbsents, absenceProuvee, domainesCites, kpiBaseFixe } from "./rapport-positions.mjs"
 import { buildLeadsData, libellePage } from "./rapport-demandes.mjs"
-import { serpDepuisOpenseo, iaDepuisOpenseo, bilanIa, bilanApercus, aPorteeDepuisGsc, renderIa, renderApercus, renderAPortee } from "./rapport-openseo.mjs"
+import { serpDepuisOpenseo, iaDepuisOpenseo, bilanIa, bilanApercus, aPorteeDepuisGsc, positionsGsc, renderIa, renderApercus, renderAPortee } from "./rapport-openseo.mjs"
 import { localizePath } from "./routes.ts"
 export { buildLeadsData }
 
@@ -469,6 +469,27 @@ async function pullAPortee(ym) {
   }
 }
 
+// Place moyenne du mois des 19 recherches suivies, dans la même Search Console. Le
+// relevé de positions est national et d'un seul jour : une recherche qu'il ne voit
+// pas peut rester en première page pour les internautes réels, surtout locaux.
+async function pullGscPositions(ym) {
+  try {
+    const token = await gscToken()
+    if (!token) return null
+    const url = `https://searchconsole.googleapis.com/webmasters/v3/sites/${encodeURIComponent(GSC_SITE)}/searchAnalytics/query`
+    const r = await fetch(url, {
+      method: "POST",
+      headers: { authorization: `Bearer ${token}`, "content-type": "application/json" },
+      body: JSON.stringify({ startDate: `${ym}-01`, endDate: monthEndYMD(ym), dimensions: ["query"], rowLimit: 5000, type: "web" }),
+    })
+    if (!r.ok) throw new Error(`GSC ${r.status} : ${(await r.text()).slice(0, 200)}`)
+    return positionsGsc((await r.json()).rows, KEYWORDS)
+  } catch (e) {
+    console.error("[rapport] places moyennes GSC KO :", e.message)
+    return null
+  }
+}
+
 async function pullGbp() {
   try {
     const result = await dfs("/business_data/business_listings/search/live", { title: GBP.title, location_coordinate: GBP.coord, limit: 10 })
@@ -578,6 +599,7 @@ const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replac
 // fr-FR sépare les milliers par une espace fine (U+202F) que Montserrat ne dessine
 // pas : « 1318 » à l'écran. Espace insécable ordinaire à la place.
 const fr = (n) => Number(n || 0).toLocaleString("fr-FR").replace(/\u202f/g, "\u00a0")
+const fr1 = (n) => Number(n || 0).toLocaleString("fr-FR", { minimumFractionDigits: 1, maximumFractionDigits: 1 })
 
 // ── Demandes entrantes (Brevo) ────────────────────────────────────────────
 // Le rapport referme la boucle business : pas seulement des positions Google, mais
@@ -1017,7 +1039,7 @@ export function renderGains(opportunities) {
 }
 
 function renderHtml(data) {
-  const { month, serp, gbp, llm, articles, history, exec, leads, traffic, brand, competitors, ia, aPortee } = data
+  const { month, serp, gbp, llm, articles, history, exec, leads, traffic, brand, competitors, ia, aPortee, gscPositions } = data
   const monthLabel = monthLong(month)
   // Recherches réellement relevées ce mois-ci : les autres ne sont ni gagnées ni perdues.
   const serpMesure = serp.filter((s) => s.releve !== false)
@@ -1057,7 +1079,7 @@ function renderHtml(data) {
   const brandAnPasse = comparaison?.point ?? null
   const serpClasses = serp.filter((s) => s.position != null).sort((a, b) => a.position - b.position)
   const serpAbsents = serpMesure.filter((s) => s.position == null)
-  const absents = repartirAbsents(serpAbsents, prevPos, hasPrev)
+  const absents = repartirAbsents(serpAbsents, prevPos, hasPrev, gscPositions ?? {})
   const aioKw = serp.filter((s) => s.aio)
   const aioCitedKw = serp.filter((s) => s.aioCited)
   const kpiAio = kpiBaseFixe(serp, (s) => s.aio, aioKw.length && aioKw.length <= 3 ? aioKw.map((x) => `«\u00a0${x.keyword}\u00a0»`).join(", ") : "sur vos mots-clés suivis")
@@ -1234,12 +1256,18 @@ function renderHtml(data) {
       // Classée le mois dernier, absente des 100 premiers résultats ce mois-ci : dans
       // le tableau, pas noyée parmi les « pas encore classées ».
       const avant = `${p.avant}<sup>${p.avant === 1 ? "er" : "e"}</sup> le mois dernier`
+      // Encore vue en première ou deuxième page par la Search Console : pas une sortie.
+      if (p.gsc) {
+        const moy = `${fr1(p.gsc.position)}<sup>e</sup> en moyenne (Search Console), ${avant}`
+        return `<tr><td>${esc(p.keyword)}<span class="sur-mobile">${moy}</span></td><td class="num pos" style="color:var(--gris)">–</td><td class="num" style="color:var(--gris)">non vue au relevé</td><td class="hors-mobile" style="color:var(--gris)">${moy}</td></tr>`
+      }
       return `<tr><td>${esc(p.keyword)}<span class="sur-mobile">${avant}</span></td><td class="num pos" style="color:var(--gris)">–</td><td class="num down">sortie</td><td class="hors-mobile" style="color:var(--gris)">${avant}</td></tr>`
     }).join("")}</tbody>
   </table>` : `<div class="card">Aucune des recherches suivies ne place encore le château dans les 100 premiers résultats.</div>`}
   ${absents.perdues.length && !serp.some((s) => s.organiques != null) ? `<p class="note">« Sortie » : absente du relevé de ce mois alors que classée le mois dernier. L'outil de mesure a rendu ce mois-là des pages de résultats souvent incomplètes : une sortie n'y prouve pas une perte.</p>` : ""}
   ${absents.jamais.length ? `<p class="note"><strong>Pas encore classées (${absents.jamais.length})</strong> : ${absents.jamais.map((s) => esc(s.keyword)).join(", ")}.</p>` : ""}
   ${serpNonReleves ? `<p class="note"><strong>Non relevées ce mois-ci (${serpNonReleves})</strong>, faute de réponse de l'outil de mesure : ${serp.filter((s) => s.releve === false).map((s) => esc(s.keyword)).join(", ")}. Elles ne comptent ni comme gagnées ni comme perdues.</p>` : ""}
+  ${absents.perdues.some((p) => p.gsc) ? `<p class="note">« Non vue au relevé » : absente de la page relevée ce mois-ci, mais toujours affichée dans les deux premières pages pour les internautes qui l'ont tapée, d'après votre Search Console. Le relevé est fait un seul jour, depuis toute la France ; la Search Console compte sur le mois les vraies recherches, souvent faites près du château.</p>` : ""}
   <p class="note">« Évolution » compare au rapport du mois dernier : « entrée » quand le château n'y était pas classé.</p>
 
   ${aDesVoisins(serp)
@@ -1360,9 +1388,9 @@ export async function generateReport(prevHistory = [], month = null, openseo = n
   // affichait depuis septembre (décision du 26/10/2026, ne pas brûler de crédits).
   const serpOpenseo = Array.isArray(openseo?.serp?.keywords) && openseo.serp.keywords.length > 0
   const ia = iaDepuisOpenseo(openseo?.ia)
-  const [serp, gbp, llm, leads, traffic, brand, competitors, aPortee] = await Promise.all([
+  const [serp, gbp, llm, leads, traffic, brand, competitors, aPortee, gscPositions] = await Promise.all([
     serpOpenseo ? serpDepuisOpenseo(openseo, KEYWORDS, COMPETITORS, DOMAIN) : pullSerp(),
-    pullGbp(), ia ? [] : pullLlm(), pullLeads(ym), pullUmami(ym), pullBrand(ym), Promise.resolve(pullCompetitors()), pullAPortee(ym),
+    pullGbp(), ia ? [] : pullLlm(), pullLeads(ym), pullUmami(ym), pullBrand(ym), Promise.resolve(pullCompetitors()), pullAPortee(ym), pullGscPositions(ym),
   ])
   const mesures = { serp: serpOpenseo ? "openseo" : "dataforseo", ia: ia ? "openseo" : "dataforseo" }
   // Borne de publication : aujourd'hui pour le mois courant, fin de mois pour un
@@ -1410,7 +1438,7 @@ export async function generateReport(prevHistory = [], month = null, openseo = n
   // Tout ce dont le rendu a besoin, figé tel quel. `exec` en est exclu : c'est du
   // texte dérivé, on le recalcule au rendu pour qu'un changement de formulation
   // profite aussi aux mois passés.
-  const snapshot = { month: ym, serp, gbp, llm, ia, aPortee, mesures, articles, history, leads, traffic, brand, competitors }
+  const snapshot = { month: ym, serp, gbp, llm, ia, aPortee, gscPositions, mesures, articles, history, leads, traffic, brand, competitors }
   const exec = buildExec({ month: ym, serp, articlesNew, citedTotal, answeredTotal, gbp, leads, ia })
   const html = renderHtml({ ...snapshot, exec })
   const apercus = ia ? bilanApercus(ia) : null
@@ -1468,8 +1496,8 @@ export async function completerInstantane(snap, { serp: relever = false } = {}) 
   // part désormais le 1er avec des relevés du 1er, un relevé plus tardif daterait
   // le mois d'un autre. Utilisé le 01/10/2026 pour septembre, dont les pages de
   // résultats du 30/09 étaient tronquées. Coût : 0,3 à 0,6 $ de DataForSEO.
-  const [leads, traffic, brand, serpBrut] = await Promise.all([pullLeads(ym), pullUmami(ym), pullBrand(ym), relever ? pullSerp() : null])
-  const out = { ...snap, leads: leads ?? snap.leads, traffic: traffic ?? snap.traffic, brand: brand ?? snap.brand, complete: now.toISOString() }
+  const [leads, traffic, brand, serpBrut, gscPositions] = await Promise.all([pullLeads(ym), pullUmami(ym), pullBrand(ym), relever ? pullSerp() : null, pullGscPositions(ym)])
+  const out = { ...snap, leads: leads ?? snap.leads, traffic: traffic ?? snap.traffic, brand: brand ?? snap.brand, gscPositions: gscPositions ?? snap.gscPositions, complete: now.toISOString() }
   const serp = serpBrut
   // Deux relevés du même jour se complètent : une recherche ratée par le second
   // garde le résultat du premier, s'il avait été lu sur une page complète
@@ -1507,7 +1535,7 @@ export async function completerInstantane(snap, { serp: relever = false } = {}) 
  * synthèse sont volontairement relus au rendu : eux peuvent encore être corrigés.
  */
 export function renderFromSnapshot(snap) {
-  const { month, serp, gbp, llm = [], ia = null, aPortee = null, articles, history, leads, traffic, brand, competitors } = snap
+  const { month, serp, gbp, llm = [], ia = null, aPortee = null, gscPositions = null, articles, history, leads, traffic, brand, competitors } = snap
   if (!month || !Array.isArray(serp) || !(Array.isArray(snap.llm) || ia)) {
     throw new Error("Instantané incomplet : month, serp et llm (ou ia) sont requis.")
   }
@@ -1517,5 +1545,5 @@ export function renderFromSnapshot(snap) {
   }
   const articlesNew = (articles ?? []).filter((a) => (a.publishedAt || "").slice(0, 7) === month).length
   const exec = buildExec({ month, serp, articlesNew, citedTotal, answeredTotal, gbp, leads, ia })
-  return renderHtml({ month, serp, gbp, llm, ia, aPortee, articles: articles ?? [], history: history ?? [], exec, leads, traffic, brand, competitors })
+  return renderHtml({ month, serp, gbp, llm, ia, aPortee, gscPositions, articles: articles ?? [], history: history ?? [], exec, leads, traffic, brand, competitors })
 }

@@ -53,3 +53,16 @@ test("tout relevé : la note reste celle d'origine", () => {
   const k = kpiBaseFixe([{ position: 3 }, { position: null }], (s) => s.position != null, "dans le top 100 Google")
   assert.deepEqual(k, { valeur: 1, base: 2, note: "dans le top 100 Google" })
 })
+
+test("une sortie que la Search Console voit encore en première page porte sa place moyenne", () => {
+  // Octobre 2026 : « séminaire château touraine » sortie du relevé national, 3,4e
+  // en moyenne sur 20 affichages dans la Search Console du même mois.
+  const absents = [{ keyword: "séminaire château touraine" }, { keyword: "gîte touraine" }, { keyword: "location salle" }]
+  const prev = { "séminaire château touraine": 4, "gîte touraine": 30, "location salle": 12 }
+  const gsc = { "séminaire château touraine": { position: 3.4, impressions: 20 }, "gîte touraine": { position: 9, impressions: 2 }, "location salle": { position: 35, impressions: 40 } }
+  const r = repartirAbsents(absents, prev, true, gsc)
+  assert.deepEqual(r.perdues[0], { keyword: "séminaire château touraine", avant: 4, gsc: { position: 3.4, impressions: 20 } })
+  // Trop peu d'affichages, ou hors des deux premières pages : la sortie reste une sortie.
+  assert.equal(r.perdues[1].gsc, undefined)
+  assert.equal(r.perdues[2].gsc, undefined)
+})

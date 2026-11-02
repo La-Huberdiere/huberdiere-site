@@ -88,7 +88,8 @@ export function buildLeadsData(contacts, ym, moisSoumission = null) {
     const form = String(first(A(x, "FORM")) || "")
     if (!FORMS_DU_SITE.has(form)) continue
     if (isTestEmail(x.email)) continue
-    if (form === "Newsletter_Form") { newsletter++; continue }
+    // Sur liste noire : robots du 19 au 23/10/2026, ou désinscrit. Pas un abonné.
+    if (form === "Newsletter_Form") { if (!x.emailBlacklisted) newsletter++; continue }
     demandes.push({
       cible: CIBLE_LABEL_RAPPORT[form] || form,
       canal: leadChannel(sourceDe(A(x, "UTM_SOURCE"), A(x, "REFERRER"))),

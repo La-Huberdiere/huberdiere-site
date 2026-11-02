@@ -27,6 +27,8 @@ const T = ((siteTexts as any)[lang] ?? (siteTexts as any).fr).newsletter;
     if (!form) return;
     var status = document.getElementById("nlStatus");
     var btn = document.getElementById("nlBtn");
+    // Horodatage du chargement, contrôlé par /api/newsletter (newsletter-optin.mjs).
+    var t0 = Date.now();
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
       if (!form.reportValidity()) return;
@@ -34,6 +36,7 @@ const T = ((siteTexts as any)[lang] ?? (siteTexts as any).fr).newsletter;
       status.textContent = "…";
       var data = Object.fromEntries(new FormData(form).entries());
       data.lang = lang;
+      data.t = t0;
       try {
         var res = await fetch("/api/newsletter", {
           method: "POST",

@@ -1,33 +1,41 @@
-// Inscription newsletter → Brevo (liste "newsletter_form" id 17 + tag Newsletter_Form)
-// + mail de confirmation d'inscription au contact (localisé FR/EN/IT, à la DA du château).
+// Inscription newsletter, en double confirmation depuis le 02/11/2026
+// (src/lib/newsletter-optin.mjs) : ce point d'entrée n'inscrit plus personne, il
+// envoie un lien signé ; l'adresse n'entre dans Brevo (liste "newsletter_form"
+// id 17, tag Newsletter_Form) qu'au clic sur le bouton de /newsletter/confirmer.
 // L'opt-in marketing plus fin reste géré côté Brevo (automation du client).
+import { signerLien, saisieHumaine } from "../../lib/newsletter-optin.mjs";
 export const prerender = false;
-
-const NEWSLETTER_LIST_ID = 17; // liste "newsletter_form" du compte château
 
 // Expéditeur : DOIT être un expéditeur validé du compte Brevo château (hello@ / lodovica.dalpozzo@).
 // contact@ n'est PAS validé comme expéditeur → on envoie depuis hello@ et on répond vers contact@.
 const SENDER = { name: "Château de la Huberdière", email: "hello@chateaudelahuberdiere.com" };
 const REPLY_PUBLIC = { email: "contact@chateaudelahuberdiere.com", name: "Château de la Huberdière" };
+const SITE = "https://www.chateaudelahuberdiere.com";
 
-// Confirmation envoyée au nouvel inscrit, localisée.
+// Demande de confirmation envoyée à l'adresse saisie, localisée.
 const CONFIRM = {
   fr: {
-    subject: "Bienvenue dans la lettre du château",
-    title: "Votre inscription est confirmée",
-    body: "Merci de rejoindre la lettre du Château de la Huberdière. Vous recevrez, quelques fois par an, nos saisons, nos événements et quelques inspirations pour la vallée de la Loire. À très bientôt.",
+    subject: "Confirmez votre inscription à la lettre du château",
+    title: "Une dernière étape",
+    body: "Vous avez demandé à recevoir la lettre du Château de la Huberdière : nos saisons, nos événements et quelques idées pour la vallée de la Loire, quelques fois par an. Confirmez d'un clic.",
+    button: "Confirmer mon inscription",
+    ignore: "Vous n'avez rien demandé ? Ignorez ce message : sans confirmation, votre adresse n'est pas enregistrée.",
     signoff: "L'équipe du Château de la Huberdière",
   },
   en: {
-    subject: "Welcome to the château newsletter",
-    title: "Your subscription is confirmed",
-    body: "Thank you for joining the Château de la Huberdière newsletter. A few times a year, we will share our seasons, our events and some inspiration for the Loire Valley. See you soon.",
+    subject: "Confirm your subscription to the château newsletter",
+    title: "One last step",
+    body: "You asked to receive the Château de la Huberdière newsletter: our seasons, our events and a few ideas for the Loire Valley, a few times a year. Confirm with one click.",
+    button: "Confirm my subscription",
+    ignore: "Didn't ask for anything? Just ignore this message: without confirmation, your address is not recorded.",
     signoff: "The Château de la Huberdière team",
   },
   it: {
-    subject: "Benvenuti nella newsletter del castello",
-    title: "La tua iscrizione è confermata",
-    body: "Grazie per esserti iscritto alla newsletter del Château de la Huberdière. Qualche volta l'anno condivideremo le nostre stagioni, i nostri eventi e qualche ispirazione per la Valle della Loira. A presto.",
+    subject: "Conferma l'iscrizione alla newsletter del castello",
+    title: "Un ultimo passo",
+    body: "Hai chiesto di ricevere la newsletter del Château de la Huberdière: le nostre stagioni, i nostri eventi e qualche idea per la Valle della Loira, qualche volta l'anno. Conferma con un clic.",
+    button: "Confermo l'iscrizione",
+    ignore: "Non hai chiesto nulla? Ignora questo messaggio: senza conferma, il tuo indirizzo non viene registrato.",
     signoff: "Il team del Château de la Huberdière",
   },
 };
@@ -40,8 +48,9 @@ export async function POST({ request }) {
     return json({ ok: false, error: "bad_request" }, 400);
   }
 
-  // Anti-spam : honeypot.
-  if (data.website) return json({ ok: true });
+  // Anti-spam : champ piège, puis horodatage posé par le script de la page. Un
+  // robot reçoit la même réponse qu'un humain, sans qu'aucun mail ne parte.
+  if (data.website || !saisieHumaine(data.t)) return json({ ok: true });
   const email = (data.email || "").trim();
   if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
     return json({ ok: false, error: "email_invalid" }, 422);
@@ -49,49 +58,35 @@ export async function POST({ request }) {
   const lang = ["fr", "en", "it"].includes(data.lang) ? data.lang : "fr";
 
   const key = process.env.BREVO_API_KEY || import.meta.env.BREVO_API_KEY;
-  if (!key) {
-    console.log("[newsletter] BREVO_API_KEY absente — inscription non envoyée :", email);
+  const secret = process.env.CRON_SECRET || import.meta.env.CRON_SECRET;
+  if (!key || !secret) {
+    console.log("[newsletter] BREVO_API_KEY ou CRON_SECRET absente : demande de confirmation non envoyée");
     return json({ ok: true, brevo: false });
   }
 
-  const headers = { "api-key": key, "content-type": "application/json", accept: "application/json" };
   try {
-    // 1) Ajout du contact à la liste.
-    const contact = fetch("https://api.brevo.com/v3/contacts", {
+    const lien = `${SITE}/newsletter/confirmer?j=${signerLien(email, lang, secret)}`;
+    const m = await fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
-      headers,
-      body: JSON.stringify({
-        email,
-        updateEnabled: true,
-        listIds: [NEWSLETTER_LIST_ID],
-        attributes: { FORM: ["Newsletter_Form"] },
-      }),
-    });
-
-    // 2) Mail de confirmation d'inscription à l'abonné.
-    const confirm = fetch("https://api.brevo.com/v3/smtp/email", {
-      method: "POST",
-      headers,
+      headers: { "api-key": key, "content-type": "application/json", accept: "application/json" },
       body: JSON.stringify({
         sender: SENDER,
         to: [{ email }],
         replyTo: REPLY_PUBLIC,
         subject: CONFIRM[lang].subject,
-        htmlContent: confirmHtml(lang),
+        htmlContent: confirmHtml(lang, lien),
+        tags: ["newsletter-confirmation"],
       }),
     });
-
-    const [c, m] = await Promise.all([contact, confirm]);
-    if (!c.ok) console.error("[newsletter] Brevo contact:", c.status, await safeText(c));
     if (!m.ok) console.error("[newsletter] Brevo confirm:", m.status, await safeText(m));
-    return json({ ok: true, brevo: c.ok && m.ok });
+    return json({ ok: true, brevo: m.ok });
   } catch (e) {
     console.error("[newsletter] erreur Brevo:", e);
     return json({ ok: true, brevo: false });
   }
 }
 
-function confirmHtml(lang) {
+function confirmHtml(lang, lien) {
   const t = CONFIRM[lang];
   return `
   <div style="background:#f4f2ec;padding:32px 0;font-family:Helvetica,Arial,sans-serif">
@@ -102,6 +97,8 @@ function confirmHtml(lang) {
       <div style="padding:30px 28px">
         <h1 style="font-family:Georgia,serif;color:#8B0000;font-size:22px;font-weight:normal;margin:0 0 16px">${t.title}</h1>
         <p style="color:#2e3a48;font-size:15px;line-height:1.65;margin:0 0 22px">${t.body}</p>
+        <p style="margin:0 0 24px"><a href="${lien}" style="display:inline-block;background:#8B0000;color:#fff;text-decoration:none;font-size:15px;padding:13px 24px">${t.button}</a></p>
+        <p style="color:#646464;font-size:13px;line-height:1.6;margin:0 0 22px">${t.ignore}</p>
         <p style="color:#2e3a48;font-size:15px;margin:0">${t.signoff}</p>
         <hr style="border:none;border-top:1px solid #ece6d8;margin:26px 0">
         <p style="color:#646464;font-size:13px;line-height:1.6;margin:0">

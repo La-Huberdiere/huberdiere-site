@@ -250,6 +250,8 @@ const schemas = [
       }
 
       var f = document.getElementById("railNl");
+      // Horodatage du chargement, contrôlé par /api/newsletter (newsletter-optin.mjs).
+      var nlT0 = Date.now();
       if (f) {
         var st = document.getElementById("railNlStatus");
         var btn = document.getElementById("railNlBtn");
@@ -259,6 +261,7 @@ const schemas = [
           btn.disabled = true; st.textContent = "…";
           var data = Object.fromEntries(new FormData(f).entries());
           data.lang = f.getAttribute("data-lang") || "fr";
+          data.t = nlT0;
           try {
             var res = await fetch("/api/newsletter", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(data) });
             if (!res.ok) throw new Error("http " + res.status);

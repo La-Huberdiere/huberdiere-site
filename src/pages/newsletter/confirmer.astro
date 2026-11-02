@@ -1,0 +1,148 @@
+---
+// Page du lien de confirmation newsletter (src/lib/newsletter-optin.mjs). Ouverte,
+// elle ne fait rien : les passerelles de sécurité des messageries ouvrent tous les
+// liens d'un mail. L'adresse n'entre dans Brevo qu'au clic sur le bouton (POST).
+import Base from "../../layouts/Base.astro";
+import { lireLien } from "../../lib/newsletter-optin.mjs";
+export const prerender = false;
+
+const NEWSLETTER_LIST_ID = 17; // liste "newsletter_form" du compte château
+
+const TEXTES = {
+  fr: {
+    titre: "Confirmez votre inscription",
+    corps: "Un clic, et vous recevrez quelques fois par an la lettre du château : nos saisons, nos événements, quelques idées pour la vallée de la Loire.",
+    bouton: "Je confirme mon inscription",
+    fait: "C'est fait, merci",
+    faitCorps: "Votre inscription à la lettre du Château de la Huberdière est confirmée. À très bientôt.",
+    invalide: "Ce lien n'est plus valable",
+    invalideCorps: "Il a peut-être expiré, il reste valable sept jours. Inscrivez-vous de nouveau depuis le bas de n'importe quelle page du site.",
+    erreur: "Une erreur est survenue. Réessayez dans un instant.",
+    accueil: "Retour au site",
+  },
+  en: {
+    titre: "Confirm your subscription",
+    corps: "One click, and a few times a year you will receive the château newsletter: our seasons, our events, a few ideas for the Loire Valley.",
+    bouton: "I confirm my subscription",
+    fait: "Done, thank you",
+    faitCorps: "Your subscription to the Château de la Huberdière newsletter is confirmed. See you soon.",
+    invalide: "This link is no longer valid",
+    invalideCorps: "It may have expired, it stays valid for seven days. You can subscribe again from the bottom of any page of the site.",
+    erreur: "Something went wrong. Please try again in a moment.",
+    accueil: "Back to the site",
+  },
+  it: {
+    titre: "Conferma la tua iscrizione",
+    corps: "Un clic, e qualche volta l'anno riceverai la newsletter del castello: le nostre stagioni, i nostri eventi, qualche idea per la Valle della Loira.",
+    bouton: "Confermo l'iscrizione",
+    fait: "Fatto, grazie",
+    faitCorps: "La tua iscrizione alla newsletter del Château de la Huberdière è confermata. A presto.",
+    invalide: "Questo link non è più valido",
+    invalideCorps: "Forse è scaduto, resta valido sette giorni. Puoi iscriverti di nuovo dal fondo di qualsiasi pagina del sito.",
+    erreur: "Si è verificato un errore. Riprova tra un istante.",
+    accueil: "Torna al sito",
+  },
+};
+
+const secret = process.env.CRON_SECRET || import.meta.env.CRON_SECRET;
+let jeton = Astro.url.searchParams.get("j") || "";
+let etat = "demande"; // demande | fait | invalide | erreur
+if (Astro.request.method === "POST") {
+  try { jeton = String((await Astro.request.formData()).get("j") || ""); } catch {}
+}
+const lien = lireLien(jeton, secret);
+const lang = lien?.lang ?? "fr";
+const T = TEXTES[lang];
+if (!lien) etat = "invalide";
+else if (Astro.request.method === "POST") {
+  const key = process.env.BREVO_API_KEY || import.meta.env.BREVO_API_KEY;
+  const headers = { "api-key": key, "content-type": "application/json", accept: "application/json" };
+  try {
+    // Création sans `updateEnabled` : sur une fiche existante (un client, un
+    // prospect), réécrire FORM changerait son activité dans le rapport. Une fiche
+    // existante reçoit seulement la liste, et sort de la liste noire puisque la
+    // personne vient de prouver qu'elle tient à son adresse.
+    const c = await fetch("https://api.brevo.com/v3/contacts", {
+      method: "POST", headers,
+      body: JSON.stringify({ email: lien.email, listIds: [NEWSLETTER_LIST_ID], attributes: { FORM: ["Newsletter_Form"] } }),
+    });
+    let ok = c.ok;
+    if (!ok && c.status === 400) {
+      const u = await fetch(`https://api.brevo.com/v3/contacts/${encodeURIComponent(lien.email)}`, {
+        method: "PUT", headers, body: JSON.stringify({ listIds: [NEWSLETTER_LIST_ID], emailBlacklisted: false }),
+      });
+      ok = u.ok;
+      if (!ok) console.error("[newsletter] confirmation Brevo PUT:", u.status, await u.text().catch(() => ""));
+    } else if (!ok) console.error("[newsletter] confirmation Brevo:", c.status, await c.text().catch(() => ""));
+    etat = ok ? "fait" : "erreur";
+  } catch (e) {
+    console.error("[newsletter] confirmation:", e);
+    etat = "erreur";
+  }
+}
+const accueil = lang === "fr" ? "/" : `/${lang}`;
+---
+<Base title={`${T.titre} · Château de la Huberdière`} description={T.corps} lang={lang} path="/newsletter/confirmer" noindex={true}>
+  <section class="nl-confirm">
+    <span class="section-rule" aria-hidden="true"></span>
+    {etat === "demande" && (
+      <>
+        <h1>{T.titre}</h1>
+        <p>{T.corps}</p>
+        <form method="post" action="/newsletter/confirmer">
+          <input type="hidden" name="j" value={jeton} />
+          <button type="submit" class="btn-burgundy">{T.bouton}</button>
+        </form>
+      </>
+    )}
+    {etat === "fait" && (
+      <>
+        <h1>{T.fait}</h1>
+        <p>{T.faitCorps}</p>
+        <a class="btn-burgundy" href={accueil}>{T.accueil}</a>
+      </>
+    )}
+    {etat === "invalide" && (
+      <>
+        <h1>{T.invalide}</h1>
+        <p>{T.invalideCorps}</p>
+        <a class="btn-burgundy" href={accueil}>{T.accueil}</a>
+      </>
+    )}
+    {etat === "erreur" && (
+      <>
+        <h1>{T.titre}</h1>
+        <p role="alert">{T.erreur}</p>
+        <form method="post" action="/newsletter/confirmer">
+          <input type="hidden" name="j" value={jeton} />
+          <button type="submit" class="btn-burgundy">{T.bouton}</button>
+        </form>
+      </>
+    )}
+  </section>
+  {etat === "fait" && <script is:inline>if (window.huberTrack) window.huberTrack("newsletter_signup", {});</script>}
+</Base>
+
+<style>
+  .nl-confirm {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 140px 24px 120px;
+  }
+  .nl-confirm h1 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-weight: 400;
+    color: #8B0000;
+    margin: 18px 0 20px;
+  }
+  .nl-confirm p {
+    color: #2E3A48;
+    line-height: 1.7;
+    margin: 0 0 32px;
+  }
+  .nl-confirm button {
+    border: 0;
+    cursor: pointer;
+    font: inherit;
+  }
+</style>

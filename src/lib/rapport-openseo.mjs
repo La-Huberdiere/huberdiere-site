@@ -19,6 +19,10 @@ const domMatch = (d, t) => {
   const a = sansWww(d), b = sansWww(t)
   return a === b || a.endsWith("." + b)
 }
+// Google lui-même : jamais un site cité, jamais un concurrent. Octobre 2026 : en tête
+// des sources IA, et la moitié des résultats en liens masqués « google.com/goto ».
+const estGoogle = (d) => /^(www\.)?google\.[a-z.]+$/i.test(String(d || ""))
+const lienMasque = (i) => i?.type === "organic" && /^https?:\/\/(www\.)?google\.com\/goto\b/i.test(String(i?.url || ""))
 const fr = (n) => new Intl.NumberFormat("fr-FR").format(n)
 const fr1 = (n) => new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 1, minimumFractionDigits: 1 }).format(n)
 
@@ -46,8 +50,12 @@ export function serpDepuisOpenseo(payload, keywords, voisins, domaine) {
     if (!page.items.length) return vide
     const organiques = page.items.filter((i) => i.type === "organic")
     const own = organiques.find((i) => domMatch(i.domain, domaine))
-    if (!own && !absenceProuvee(page)) return { ...vide, organiques: page.organiques }
-    const leader = organiques.find((i) => i.rank_absolute === 1) ?? organiques[0]
+    // Le NAS résout les liens masqués avant l'envoi ; s'il en reste, le château
+    // peut se cacher derrière l'un d'eux : son absence ne prouve plus rien.
+    const masques = organiques.some(lienMasque)
+    if (!own && (masques || !absenceProuvee(page))) return { ...vide, organiques: page.organiques }
+    const lisibles = organiques.filter((i) => !lienMasque(i))
+    const leader = lisibles.find((i) => i.rank_absolute === 1) ?? lisibles[0]
     return {
       ...k,
       position: own?.rank_absolute ?? null,
@@ -95,6 +103,7 @@ export function iaDepuisOpenseo(ia) {
     }
   }
   const sources = (ia.sources ?? [])
+    .filter((s) => !estGoogle(s.domain))
     .map((s) => ({ domain: sansWww(s.domain), ownership: s.ownership, reponses: s.answerCount ?? 0, moteurs: (s.engines ?? []).map((e) => e.engine) }))
     .sort((a, b) => b.reponses - a.reponses || a.domain.localeCompare(b.domain))
   return {
@@ -162,8 +171,9 @@ export function renderIa(ia, { changementMethode = false } = {}) {
     const c = rs.filter((r) => r.cite).length
     return `<tr><td>${esc(MOTEURS[m])}</td><td class="num"><span class="${c ? "yes" : "no"}">${c} / ${rs.length}</span></td><td style="color:var(--gris)">${comps.length ? comps.map(esc).join(", ") : "aucun"}</td></tr>`
   }).join("")
+  // Instantanés d'avant le 02/11/2026 : Google y figure encore parmi les sources.
   const own = ia.sources.find((s) => s.ownership === "own")
-  const autres = ia.sources.filter((s) => s.ownership !== "own").slice(0, 8)
+  const autres = ia.sources.filter((s) => s.ownership !== "own" && !estGoogle(s.domain)).slice(0, 8)
   const nomsMoteurs = moteurs.map((m) => MOTEURS[m])
   const listeMoteurs = nomsMoteurs.length > 1 ? `${nomsMoteurs.slice(0, -1).join(", ")} et ${nomsMoteurs.at(-1)}` : nomsMoteurs.join("")
 
@@ -193,7 +203,7 @@ export function renderApercus(ia) {
   const qs = neutres(ia).filter((q) => q.reponses[APERCU])
   if (!qs.length) return ""
   const b = bilanApercus(ia)
-  const sources = ia.sources.filter((s) => s.moteurs.includes(APERCU) && s.ownership !== "own").slice(0, 5)
+  const sources = ia.sources.filter((s) => s.moteurs.includes(APERCU) && s.ownership !== "own" && !estGoogle(s.domain)).slice(0, 5)
   return `<h2>Aperçus IA de Google</h2>
   <p class="lead">Depuis le 22 juillet 2026, Google affiche en France un résumé rédigé par son IA au-dessus des résultats classiques. Il répond directement à la question et cite quelques sites en source. Être cité dans cet encart, c'est occuper la place la plus visible de la page. Nous tapons dans Google les mêmes questions que celles posées aux IA.</p>
   <div class="kpis" style="grid-template-columns:repeat(2,1fr)">
@@ -244,6 +254,20 @@ export function aPorteeDepuisGsc(rows, regexMarque, max = 8) {
       try { page = new URL(e.top.url).pathname } catch {}
       return { requete: e.requete, page, position: Math.round(e.top.position * 10) / 10, impressions: e.impressions, clics: e.clics }
     })
+}
+
+/**
+ * Place moyenne du mois des recherches suivies, lue dans la Search Console
+ * (lignes de dimension `query`). Figée dans l'instantané sous `gscPositions`.
+ */
+export function positionsGsc(rows, keywords) {
+  const parRequete = new Map((Array.isArray(rows) ? rows : []).map((r) => [String(r?.keys?.[0] ?? "").toLowerCase(), r]))
+  const out = {}
+  for (const { keyword } of keywords) {
+    const r = parRequete.get(keyword.toLowerCase())
+    if (r) out[keyword] = { position: Math.round(r.position * 10) / 10, impressions: r.impressions ?? 0 }
+  }
+  return out
 }
 
 export function renderAPortee(liste, libelle) {

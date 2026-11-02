@@ -2,7 +2,7 @@
 import { test } from "node:test"
 import assert from "node:assert/strict"
 import {
-  serpDepuisOpenseo, iaDepuisOpenseo, bilanIa, bilanApercus, aPorteeDepuisGsc,
+  serpDepuisOpenseo, iaDepuisOpenseo, bilanIa, bilanApercus, aPorteeDepuisGsc, positionsGsc,
   renderIa, renderApercus, renderAPortee,
 } from "../src/lib/rapport-openseo.mjs"
 
@@ -141,4 +141,45 @@ test("recherches à portée : positions 4 à 20, hors marque, regroupées par re
   const html = renderAPortee(out, (p) => ({ texte: p === "/" ? "Accueil" : p }))
   assert.match(html, /Accueil/)
   assert.match(html, /17,2/)
+})
+
+test("lien masqué de Google : l'absence du château n'est pas prouvée", () => {
+  // Octobre 2026 : OpenSEO rendait 50 à 75 % des résultats en « google.com/goto?url=… ».
+  // Le château, caché derrière l'un d'eux, passait pour absent d'une page complète.
+  const masque = page(95)
+  masque[3] = { type: "organic", rank: 4, organicRank: 4, domain: "google.com", url: "https://google.com/goto?url=CAESdQ" }
+  const payload = { serp: { keywords: [{ keyword: "mariage château touraine", pages: [masque] }] } }
+  const [s] = serpDepuisOpenseo(payload, KW.slice(0, 1), VOISINS, DOMAINE)
+  assert.equal(s.position, null)
+  assert.equal(s.releve, false)
+})
+
+test("lien masqué de Google : jamais en tête de page", () => {
+  const p = page(95, { "www.chateaudelahuberdiere.com": 7 })
+  p[0] = { type: "organic", rank: 1, organicRank: 1, domain: "google.com", url: "https://google.com/goto?url=CAESdQ" }
+  const [s] = serpDepuisOpenseo({ serp: { keywords: [{ keyword: "mariage château touraine", pages: [p] }] } }, KW.slice(0, 1), VOISINS, DOMAINE)
+  assert.equal(s.position, 7)
+  assert.equal(s.leader, "site2.fr")
+})
+
+test("Google n'est pas un site cité par les IA", () => {
+  const ia = iaDepuisOpenseo({ ...IA, sources: [...IA.sources,
+    { domain: "google.com", ownership: "other", answerCount: 40, engines: [{ engine: "google_ai_overview", answerCount: 40 }] },
+    { domain: "www.google.fr", ownership: "other", answerCount: 9, engines: [{ engine: "gemini", answerCount: 9 }] },
+  ] })
+  assert.deepEqual(ia.sources.map((s) => s.domain), ["mariages.net", "chateaudelahuberdiere.com", "leclosdamboise.com"])
+})
+
+test("place moyenne Search Console des recherches suivies", () => {
+  const rows = [
+    { keys: ["Séminaire château touraine"], position: 3.4, impressions: 20, clicks: 1 },
+    { keys: ["mariage château touraine"], position: 5.6, impressions: 31, clicks: 0 },
+    { keys: ["autre recherche"], position: 2, impressions: 99, clicks: 9 },
+  ]
+  const kw = [{ keyword: "séminaire château touraine" }, { keyword: "mariage château touraine" }, { keyword: "gîte amboise" }]
+  assert.deepEqual(positionsGsc(rows, kw), {
+    "séminaire château touraine": { position: 3.4, impressions: 20 },
+    "mariage château touraine": { position: 5.6, impressions: 31 },
+  })
+  assert.deepEqual(positionsGsc(null, kw), {})
 })

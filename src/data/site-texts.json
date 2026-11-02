@@ -38,7 +38,7 @@
       "lead": "Saisons, événements et inspirations, quelques fois par an. Pas de spam.",
       "placeholder": "Votre email",
       "button": "S'inscrire",
-      "ok": "Merci, votre inscription est bien prise en compte.",
+      "ok": "Merci. Un mail vient de partir : cliquez sur son lien pour confirmer votre inscription.",
       "err": "Une erreur est survenue. Réessayez dans un instant."
     }
   },
@@ -81,7 +81,7 @@
       "lead": "Seasons, events and inspiration, a few times a year. No spam.",
       "placeholder": "Your email",
       "button": "Subscribe",
-      "ok": "Thank you, your subscription is confirmed.",
+      "ok": "Thank you. We have just sent you an email: click its link to confirm your subscription.",
       "err": "Something went wrong. Please try again in a moment."
     }
   },
@@ -124,7 +124,7 @@
       "lead": "Stagioni, eventi e ispirazioni, qualche volta l'anno. Niente spam.",
       "placeholder": "La tua email",
       "button": "Iscriviti",
-      "ok": "Grazie, la tua iscrizione è confermata.",
+      "ok": "Grazie. Ti abbiamo appena inviato un'email: clicca sul link per confermare l'iscrizione.",
       "err": "Si è verificato un errore. Riprova tra un istante."
     }
   }

@@ -10,12 +10,20 @@ export const absenceProuvee = (page) => !!page?.complete
 // l'ont jamais placé, et celles qui le plaçaient au rapport précédent. Les mettre
 // toutes sous « ne placent pas encore » faisait passer une perte, ou un relevé
 // raté, pour un statu quo.
-export function repartirAbsents(absents, prevPos, hasPrev) {
+//
+// Une perdue que la Search Console du mois voit encore dans les deux premières pages
+// porte sa place moyenne (`gsc`) : le relevé est national, la Search Console voit
+// les vrais internautes, surtout locaux. Octobre 2026 : « séminaire château
+// touraine » sortie du relevé, 3,4e en moyenne sur 20 affichages.
+export const GSC_SORTIE_MIN_IMPRESSIONS = 5
+
+export function repartirAbsents(absents, prevPos, hasPrev, gsc = {}) {
   const jamais = [], perdues = []
   for (const s of absents) {
     const avant = hasPrev ? prevPos?.[s.keyword] : null
-    if (avant != null) perdues.push({ keyword: s.keyword, avant })
-    else jamais.push(s)
+    if (avant == null) { jamais.push(s); continue }
+    const g = gsc?.[s.keyword]
+    perdues.push(g && g.position <= 20 && g.impressions >= GSC_SORTIE_MIN_IMPRESSIONS ? { keyword: s.keyword, avant, gsc: g } : { keyword: s.keyword, avant })
   }
   return { jamais, perdues }
 }

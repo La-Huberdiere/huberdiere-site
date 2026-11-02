@@ -145,3 +145,17 @@ test("« de la part de qui » remonte dans le détail de la demande, sans scinde
     { date: "2026-11-05", cible: "Mariage", detail: "Bouche à oreille, de la part de Marie Dupont" },
   ])
 })
+
+test("une inscription newsletter sur liste noire ne compte pas", () => {
+  // Octobre 2026 : 362 adresses saisies par des robots du 19 au 23/10, mises sur
+  // liste noire le 02/11. Le rapport annonçait 364 inscriptions.
+  const contacts = [
+    contact("a@ex.fr", "Newsletter_Form", "2026-10-20T08:00:00Z"),
+    { ...contact("robot@ex.fr", "Newsletter_Form", "2026-10-20T08:01:00Z"), emailBlacklisted: true },
+    { ...contact("b@ex.fr", "LP_Mariage", "2026-10-21T08:00:00Z"), emailBlacklisted: true },
+  ]
+  const ld = buildLeadsData(contacts, "2026-10")
+  assert.equal(ld.newsletter, 1)
+  // Une vraie demande reste une demande, même si la personne s'est désabonnée depuis.
+  assert.equal(ld.total, 1)
+})
