@@ -26,7 +26,7 @@ import { renderBrandChart } from "./rapport-graphique.mjs"
 import { positionsVoisins, renderVoisins, aDesVoisins, pageLaPlusComplete } from "./rapport-voisins.mjs"
 import { fenetresDeJours, pointDeComparaison, moisDecales } from "./rapport-periodes.mjs"
 import { BRAND_KEYWORDS, GSC_BRAND_REGEX } from "./rapport-marque.mjs"
-import { repartirAbsents, absenceProuvee, domainesCites, kpiBaseFixe } from "./rapport-positions.mjs"
+import { repartirAbsents, absenceProuvee, sansPanneau, domainesCites, kpiBaseFixe } from "./rapport-positions.mjs"
 import { buildLeadsData, libellePage } from "./rapport-demandes.mjs"
 import { serpDepuisOpenseo, iaDepuisOpenseo, bilanIa, bilanApercus, aPorteeDepuisGsc, positionsGsc, renderSectionIa, renderAPortee } from "./rapport-openseo.mjs"
 import { localizePath } from "./routes.ts"
@@ -209,7 +209,7 @@ async function pullSerp() {
         }
         if (!page.items.length) throw new Error(`page de résultats vide après ${releves.length} relevés`)
         if (!page.complete) console.warn("SERP page incomplète", k.keyword, page.organiques)
-        const all = page.items
+        const all = sansPanneau(page.items)
         const items = all.filter((i) => i.type === "organic")
         const own = items.find((i) => domMatch(i.domain, DOMAIN))
         // Absent d'une page tronquée : rien n'est prouvé, la recherche n'est pas relevée.
@@ -1279,9 +1279,11 @@ function renderHtml(data) {
       // le tableau, pas noyée parmi les « pas encore classées ».
       const avant = `${p.avant}<sup>${p.avant === 1 ? "er" : "e"}</sup> le mois dernier`
       // Encore vue en première ou deuxième page par la Search Console : pas une sortie.
+      // Sa place moyenne du mois va dans la colonne Position, marquée « ≈ » : un
+      // chiffre d'une autre mesure, donc pas d'évolution calculée contre le relevé.
       if (p.gsc) {
-        const moy = `${fr1(p.gsc.position)}<sup>e</sup> en moyenne (Search Console), ${avant}`
-        return `<tr><td>${esc(p.keyword)}<span class="sur-mobile">${moy}</span></td><td class="num pos" style="color:var(--gris)">–</td><td class="num" style="color:var(--gris)">non vue au relevé</td><td class="hors-mobile" style="color:var(--gris)">${moy}</td></tr>`
+        const tete = p.leader ? `en tête : ${esc(p.leader)}` : ""
+        return `<tr><td>${esc(p.keyword)}${tete ? `<span class="sur-mobile">${tete}</span>` : ""}</td><td class="num pos">≈&nbsp;${fr1(p.gsc.position)}</td><td class="num" style="color:var(--gris)">–</td><td class="hors-mobile" style="color:var(--gris)">${esc(p.leader || "")}</td></tr>`
       }
       return `<tr><td>${esc(p.keyword)}<span class="sur-mobile">${avant}</span></td><td class="num pos" style="color:var(--gris)">–</td><td class="num down">sortie</td><td class="hors-mobile" style="color:var(--gris)">${avant}</td></tr>`
     }).join("")}</tbody>
@@ -1289,7 +1291,7 @@ function renderHtml(data) {
   ${absents.perdues.length && !serp.some((s) => s.organiques != null) ? `<p class="note">« Sortie » : absente du relevé de ce mois alors que classée le mois dernier. L'outil de mesure a rendu ce mois-là des pages de résultats souvent incomplètes : une sortie n'y prouve pas une perte.</p>` : ""}
   ${absents.jamais.length ? `<p class="note"><strong>Pas encore classées (${absents.jamais.length})</strong> : ${absents.jamais.map((s) => esc(s.keyword)).join(", ")}.</p>` : ""}
   ${serpNonReleves ? `<p class="note"><strong>Non relevées ce mois-ci (${serpNonReleves})</strong>, faute de réponse de l'outil de mesure : ${serp.filter((s) => s.releve === false).map((s) => esc(s.keyword)).join(", ")}. Elles ne comptent ni comme gagnées ni comme perdues.</p>` : ""}
-  ${absents.perdues.some((p) => p.gsc) ? `<p class="note">« Non vue au relevé » : absente de la page relevée ce mois-ci, mais toujours affichée dans les deux premières pages pour les internautes qui l'ont tapée, d'après votre Search Console. Le relevé est fait un seul jour, depuis toute la France ; la Search Console compte sur le mois les vraies recherches, souvent faites près du château.</p>` : ""}
+  ${absents.perdues.some((p) => p.gsc) ? `<p class="note">« ≈ » : le château n'est pas dans la page relevée ce mois-ci, et le chiffre est sa place moyenne du mois d'après votre Search Console. Le relevé photographie une seule page de Google, un seul jour, vue depuis la France entière. La Search Console compte toutes les vraies recherches du mois, souvent faites près du château, et inclut les encarts Google Maps et hôtels où le site s'affiche, que le relevé ne détaille pas. Les deux mesures ne se comparent pas : pas d'évolution sur ces lignes.</p>` : ""}
   <p class="note">« Évolution » compare au rapport du mois dernier : « entrée » quand le château n'y était pas classé.</p>
 
   ${aDesVoisins(serp)

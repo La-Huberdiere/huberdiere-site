@@ -10,7 +10,7 @@
 // Contrat de l'envoi : plans/2026-10-26-rapport-depuis-openseo.md.
 
 import { positionsVoisins, pageLaPlusComplete } from "./rapport-voisins.mjs"
-import { absenceProuvee } from "./rapport-positions.mjs"
+import { absenceProuvee, sansPanneau } from "./rapport-positions.mjs"
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
 const sansWww = (d) => String(d || "").replace(/^www\./i, "").toLowerCase()
@@ -31,9 +31,9 @@ const fr1 = (n) => new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 1, mi
 // OpenSEO rend `rank` (rang absolu, aperçu IA et encarts compris) et `organicRank`.
 // Le rapport compare au rang ABSOLU depuis juillet : on garde celui-là, sinon
 // chaque position gagnerait une ou deux places le mois du changement d'outil.
-const versDataforseo = (items) => (Array.isArray(items) ? items : []).map((i) => ({
+const versDataforseo = (items) => sansPanneau((Array.isArray(items) ? items : []).map((i) => ({
   type: i?.type ?? null, rank_absolute: i?.rank ?? null, domain: i?.domain ?? null, url: i?.url ?? null,
-}))
+})))
 
 /**
  * Lignes `serp` du rapport, dans l'ordre de `keywords`, à partir des pages

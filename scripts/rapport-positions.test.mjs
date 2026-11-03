@@ -66,3 +66,8 @@ test("une sortie que la Search Console voit encore en première page porte sa pl
   assert.equal(r.perdues[1].gsc, undefined)
   assert.equal(r.perdues[2].gsc, undefined)
 })
+
+test("une sortie garde le site en tête de la page relevée", () => {
+  const r = repartirAbsents([{ keyword: "salle de la huberdière", leader: "www.auvergne-livradois-forez.com" }], { "salle de la huberdière": 15 }, true, { "salle de la huberdière": { position: 10.3, impressions: 30 } })
+  assert.equal(r.perdues[0].leader, "www.auvergne-livradois-forez.com")
+})

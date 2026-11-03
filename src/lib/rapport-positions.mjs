@@ -6,6 +6,18 @@
 // touraine » sortait 42e sur une page de 50, absente sur deux pages vides.
 export const absenceProuvee = (page) => !!page?.complete
 
+// Le panneau d'information (knowledge_graph) occupe la colonne de droite sur
+// ordinateur : il ne prend la place de personne. Le compter faisait passer le
+// château 2e sur son propre nom en octobre 2026, derrière son propre panneau.
+// Les rangs suivants remontent d'autant ; l'aperçu IA, lui, garde sa place.
+export function sansPanneau(items) {
+  const liste = Array.isArray(items) ? items : []
+  const panneaux = liste.filter((i) => i?.type === "knowledge_graph" && i.rank_absolute != null).map((i) => i.rank_absolute)
+  if (!panneaux.length) return liste
+  return liste.filter((i) => i?.type !== "knowledge_graph").map((i) => i.rank_absolute == null ? i
+    : { ...i, rank_absolute: i.rank_absolute - panneaux.filter((r) => r < i.rank_absolute).length })
+}
+
 // Les recherches où le château n'apparaît pas, séparées en deux : celles qui ne
 // l'ont jamais placé, et celles qui le plaçaient au rapport précédent. Les mettre
 // toutes sous « ne placent pas encore » faisait passer une perte, ou un relevé
@@ -23,7 +35,8 @@ export function repartirAbsents(absents, prevPos, hasPrev, gsc = {}) {
     const avant = hasPrev ? prevPos?.[s.keyword] : null
     if (avant == null) { jamais.push(s); continue }
     const g = gsc?.[s.keyword]
-    perdues.push(g && g.position <= 20 && g.impressions >= GSC_SORTIE_MIN_IMPRESSIONS ? { keyword: s.keyword, avant, gsc: g } : { keyword: s.keyword, avant })
+    const base = s.leader ? { keyword: s.keyword, avant, leader: s.leader } : { keyword: s.keyword, avant }
+    perdues.push(g && g.position <= 20 && g.impressions >= GSC_SORTIE_MIN_IMPRESSIONS ? { ...base, gsc: g } : base)
   }
   return { jamais, perdues }
 }

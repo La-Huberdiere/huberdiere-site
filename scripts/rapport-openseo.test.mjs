@@ -215,3 +215,14 @@ test("place moyenne Search Console des recherches suivies", () => {
   })
   assert.deepEqual(positionsGsc(null, kw), {})
 })
+
+test("le panneau d'information de Google ne prend pas de place au château", () => {
+  // Octobre 2026, « château de la huberdière » : le panneau de la colonne de droite
+  // portait le rang 1, le site le 2. Le rapport affichait 2e et « ▼ 1 ».
+  const kg = { type: "knowledge_graph", rank: 1, domain: null, url: "https://www.chateaudelahuberdiere.com/" }
+  const p = [kg, ...page(90, { "www.chateaudelahuberdiere.com": 1, "chateaudepray.fr": 3 })].map((i) => (i === kg ? i : { ...i, rank: i.rank + 1 }))
+  const [s] = serpDepuisOpenseo({ serp: { keywords: [{ keyword: "mariage château touraine", pages: [p] }] } }, KW.slice(0, 1), VOISINS, DOMAINE)
+  assert.equal(s.position, 1)
+  assert.equal(s.leader, "www.chateaudelahuberdiere.com")
+  assert.deepEqual(s.voisins, { "chateaudepray.fr": 3 })
+})
