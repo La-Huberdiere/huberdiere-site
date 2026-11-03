@@ -139,6 +139,28 @@ const STYLE = `<link rel="preconnect" href="https://fonts.googleapis.com">
   .regles li{margin:0;padding-left:16px;border-left:2px solid var(--ink);font-size:14px}
   .regles b{display:block}
 
+  /* Le carnet : la page, le formulaire d'envoi à un proche et le mail qu'il reçoit. */
+  .carnet-lp{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:24px;align-items:start}
+  .carnet-lp figure{margin-top:4px}
+  .envoi{background:#fff;border:1px solid var(--line);border-top:3px solid var(--wine);padding:18px 20px;margin:18px 0 6px}
+  .envoi .t{font-family:'Playfair Display',Georgia,serif;font-size:18px;font-weight:600;margin:0 0 4px}
+  .envoi .s{font-size:13px!important;color:var(--muted);margin:0 0 12px}
+  .envoi .champs{display:grid;grid-template-columns:1fr 1.4fr auto;gap:10px;align-items:end}
+  .envoi label{display:block;font-size:12px;color:var(--muted)}
+  .envoi .champ{display:block;border:1px solid #bfb6a3;padding:8px 10px;font-size:14px;color:var(--ink);margin-top:3px;background:var(--cream);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .envoi .btn{background:var(--wine);color:#fff;padding:9px 16px;font-size:14px;white-space:nowrap;text-align:center}
+  .envoi .ok{font-size:13px!important;margin:12px 0 0;padding-top:10px;border-top:1px dashed var(--line)}
+  .envoi .ok::before{content:"✓ ";font-weight:600}
+  .mail-ami{max-width:520px;margin:20px auto 6px;background:#fff;border:1px solid var(--line);box-shadow:0 8px 24px rgba(33,33,33,.08)}
+  .mail-ami .entete{padding:12px 20px;border-bottom:1px solid var(--line);font-size:13px}
+  .mail-ami .entete span{display:block;color:var(--muted)}
+  .mail-ami .entete strong{font-weight:600}
+  .mail-ami .entete .objet-m{font-family:'Playfair Display',Georgia,serif;font-size:17px;color:var(--ink);margin-top:4px}
+  .mail-ami .corps{padding:18px 20px 6px}
+  .mail-ami .corps p{font-size:14px;margin:0 0 10px}
+  .mail-ami .bouton{display:inline-block;background:var(--wine);color:#fff;padding:8px 16px;font-size:13px}
+  .mail-ami .pied{padding:10px 20px 14px;font-size:12px!important;color:var(--muted);border-top:1px solid #f0ebe0;margin:0}
+
   table{width:100%;border-collapse:collapse;font-size:14px;margin-top:10px}
   th,td{text-align:left;padding:9px 6px;border-bottom:1px solid var(--line);vertical-align:top}
   th{font-weight:600;font-size:13px}
@@ -169,6 +191,9 @@ const STYLE = `<link rel="preconnect" href="https://fonts.googleapis.com">
     .frise .c .q{display:block;grid-row:span 3;font-weight:600;color:var(--wine)}
     .frise .rien{grid-column:auto;border-left:0;padding:4px 0}
     .dates li{grid-template-columns:1fr;gap:2px}
+    .carnet-lp{grid-template-columns:1fr;gap:8px}
+    .carnet-lp figure{max-width:300px}
+    .envoi .champs{grid-template-columns:1fr}
   }
   @media print{
     .rapport-nav{display:none!important}
@@ -178,7 +203,7 @@ const STYLE = `<link rel="preconnect" href="https://fonts.googleapis.com">
     .dates b,.sat .maison,.projet,.mail-quand{color:#000}
     .mail{border-left-color:#000}
     details>*{display:block}
-    figure,tr,.mail,.carte-verso,.frise,.moteurs,.boite{break-inside:avoid}
+    figure,tr,.mail,.carte-verso,.frise,.moteurs,.boite,.envoi,.mail-ami{break-inside:avoid}
   }
 </style>`
 
@@ -235,7 +260,7 @@ export function satisfactionPage(head) {
         <p><span class="bouton">Offrir le carnet</span></p>
         <p>Et si l'un d'eux vient un jour, qu'il donne votre nom en réservant. Nous l'accueillerons comme un ami de la maison.</p>
         <p>À bientôt peut-être,<br>Lodovica et Patrick</p>`,
-      variantes: `<p>Le bouton ouvre un partage par WhatsApp, SMS ou mail, avec un message prêt et modifiable : « Je te passe le carnet de Lodovica, du château où on a dormi près d'Amboise. Ses adresses valent le coup même si tu ne dors pas là-bas. »</p>
+      variantes: `<p>Le bouton ouvre le carnet. De là, le client le transmet comme il préfère : par WhatsApp ou SMS, avec un message prêt et modifiable (« Je te passe le carnet de Lodovica, du château où on a dormi près d'Amboise. Ses adresses valent le coup même si tu ne dors pas là-bas. »), ou en tapant l'adresse mail d'un proche, qui reçoit le carnet de sa part.</p>
         <p><strong>Mariage :</strong> « Vos invités ont vu le château. Si l'un d'eux prépare son mariage, nous faisons visiter sur rendez-vous », avec la page mariage.</p>
         <p><strong>Séminaire :</strong> « Si un collègue cherche un lieu pour le prochain séminaire de son équipe », avec la page séminaire.</p>`,
     }),
@@ -392,13 +417,71 @@ export function satisfactionPage(head) {
       <li><b>Trois langues.</b>Chaque message existe en français, en anglais et en italien, envoyé selon la langue du client.</li>
     </ul>
 
+    <h2>Le carnet de Lodovica, ce que l'ami reçoit</h2>
+    <div class="carnet-lp">
+      <div>
+        <p>Le mail de J+14 mène ici. Le carnet réunit les adresses que Lodovica donne à ses propres amis : ses tables, ses sorties, ses balades autour d'Amboise. Il sert à qui prépare un voyage en Val de Loire, qu'il dorme au château ou non, et c'est pour cela qu'on a envie de le transmettre.</p>
+        <p>La page existe déjà, en version de démonstration : le bouton « Offrir ce carnet » le partage par WhatsApp, SMS ou mail, depuis le téléphone du client.</p>
+        <p>Le projet y ajoute une deuxième porte, plus simple encore : le client tape l'adresse mail d'un proche, et c'est le château qui lui envoie le carnet, de sa part.</p>
+      </div>
+      ${figure("carnet-page.webp", "Le haut de la page du carnet de Lodovica : titre, bouton Offrir ce carnet, mot de Lodovica et Patrick, rubrique Où manger", 900, 1150, "La page du carnet, en ligne aujourd'hui")}
+    </div>
+
+    <h3>Envoyer le carnet à un proche</h3>
+    <p>Un petit bloc sous le titre du carnet. Deux champs, un bouton. Ici, Matteo l'envoie à sa sœur.</p>
+    <div class="envoi" role="img" aria-label="Maquette du formulaire : votre prénom, Matteo ; l'adresse mail de votre proche ; bouton Envoyer le carnet ; message de confirmation">
+      <p class="t">Envoyez-le à quelqu'un qui part par ici</p>
+      <p class="s">Nous lui envoyons le carnet de votre part, une seule fois. Son adresse n'est pas conservée.</p>
+      <div class="champs">
+        <div><label>Votre prénom</label><span class="champ">Matteo</span></div>
+        <div><label>L'adresse mail de votre proche</label><span class="champ">giulia.rossi@exemple.it</span></div>
+        <div><span class="btn">Envoyer le carnet</span></div>
+      </div>
+      <p class="ok">C'est parti. Le carnet arrive dans sa boîte dans quelques minutes.</p>
+    </div>
+
+    <h3>Le mail que reçoit Giulia</h3>
+    <div class="mail-ami" aria-label="Maquette du mail reçu par le proche">
+      <div class="entete">
+        <span>De : <strong>Lodovica et Patrick, Château de la Huberdière</strong></span>
+        <span>À : giulia.rossi@exemple.it</span>
+        <span class="objet-m">Matteo vous a recommandé cet endroit</span>
+      </div>
+      <div class="corps">
+        <p>Bonjour,</p>
+        <p>Matteo a séjourné chez nous, au Château de la Huberdière, près d'Amboise. Il a pensé à vous et nous a demandé de vous transmettre nos bonnes adresses.</p>
+        <p>Ce sont celles que Lodovica donne à ses amis : où dîner à Amboise, où louer un vélo pour suivre la Loire, quels sentiers prendre dans les vignes. Elles valent le détour, que vous dormiez chez nous ou non.</p>
+        <p><span class="bouton">Ouvrir le carnet</span></p>
+        <p>Et si un jour vous venez, dites que vous venez de la part de Matteo. Nous vous recevrons comme une amie de la maison.</p>
+        <p>Lodovica et Patrick</p>
+      </div>
+      <p class="pied">Vous recevez ce mail parce que Matteo a saisi votre adresse sur notre site. C'est le seul : nous ne l'avons pas gardée.</p>
+    </div>
+    <p class="note" style="text-align:center">Le mail part en français, en anglais ou en italien, selon la langue de la page où le client l'a envoyé.</p>
+
+    <h3>Le trajet de la recommandation</h3>
+    <ol class="trajet">
+      <li><span class="qui">Matteo</span><b>Sur le carnet</b>Il tape son prénom et l'adresse de Giulia. Dix secondes.</li>
+      <li><span class="qui">Le site</span><b>L'envoi</b>Le mail part aussitôt, de l'adresse du château, une seule fois.</li>
+      <li><span class="qui">Giulia</span><b>Le carnet</b>Elle prépare son voyage avec les adresses de Lodovica.</li>
+      <li><span class="qui">Giulia, plus tard</span><b>La demande</b>« De la part de Matteo » est déjà rempli dans le formulaire.</li>
+    </ol>
+
+    <h3>Les garde-fous</h3>
+    <ul class="regles">
+      <li><b>Une adresse, un envoi.</b>L'adresse du proche ne sert qu'à ce mail. Elle n'entre ni dans votre fichier clients ni dans la newsletter.</li>
+      <li><b>Pas de message libre.</b>Le texte est celui de la maison, seul le prénom change. Personne ne peut se servir du formulaire pour envoyer autre chose en votre nom.</li>
+      <li><b>Fermé aux robots.</b>Les mêmes protections que le formulaire de demande, et un nombre d'envois limité par visiteur.</li>
+      <li><b>Une réponse arrive chez vous.</b>Si Giulia répond au mail, sa réponse tombe dans la boîte contact du château.</li>
+    </ul>
+
     <h2>Ce que chacun y gagne</h2>
     <div class="deux">
       <div>
         <h3>Le client</h3>
         <p>Une carte dont il est fier, des nouvelles qui ne lui vendent rien, de bonnes adresses à donner. S'il recommande, ses amis sont reçus à part grâce à lui.</p>
         <h3>Son ami</h3>
-        <p>Un vrai carnet pour préparer son voyage, et un accueil particulier s'il vient.</p>
+        <p>Un vrai carnet pour préparer son voyage, reçu de la part de quelqu'un qu'il connaît, et un accueil particulier s'il vient.</p>
       </div>
       <div>
         <h3>Le château</h3>
@@ -434,14 +517,14 @@ export function satisfactionPage(head) {
       <li><strong>Octorate.</strong> Ses envois automatiques permettent-ils quatre mails programmés, un tri entre clients directs et plateformes, et un texte par langue ? Gère-t-il aussi la messagerie Booking ? Je vérifierai avec vous dans l'extranet.</li>
       <li><strong>Les mariages et séminaires</strong> passent-ils par Octorate ? Sinon, leur date est saisie à la main dans Brevo et la suite part de là.</li>
       <li><strong>Les lignes de saison de Lodovica</strong> dans les mails de J+2 et de la saison suivante, et la possibilité de tenir des dates sans engagement pour un séminaire.</li>
-      <li><strong>Le carnet.</strong> Lodovica veut-elle l'étoffer avant qu'il circule : l'ordre des visites selon la saison, une journée de pluie, ses marchés et ses producteurs ?</li>
+      <li><strong>Le carnet.</strong> Lodovica veut-elle l'étoffer avant qu'il circule : l'ordre des visites selon la saison, une journée de pluie, ses marchés et ses producteurs ? Et le texte du mail reçu par le proche vous convient-il ?</li>
       <li><strong>Le livret d'accueil</strong> annonce encore le petit-déjeuner inclus : il est à corriger avant le lancement.</li>
     </ol>
 
     <h2>Déjà en place</h2>
     <ul>
       <li>Le champ « De la part de qui ? » du formulaire de demande, en ligne : il mesure dès maintenant.</li>
-      <li>Le carnet de Lodovica, en version de démonstration, invisible pour Google : <a href="/carnet?brouillon" target="_blank" rel="noopener">voir le carnet</a>.</li>
+      <li>Le carnet de Lodovica, en version de démonstration, invisible pour Google : <a href="/carnet?brouillon" target="_blank" rel="noopener">voir le carnet</a>. L'envoi à un proche n'y est pas encore : il se construit après votre accord.</li>
       <li>L'adresse courte et le QR code de la carte, qui mènent déjà au site.</li>
       <li>Les maquettes de la carte, du chevalet et de la carte mariage, et les textes de la séquence.</li>
     </ul>
@@ -450,7 +533,7 @@ export function satisfactionPage(head) {
     <ul class="dates">
       <li><b>Novembre 2026</b><span>Le call : vous décidez de ce que vous gardez.</span></li>
       <li><b>Décembre</b><span>Le visuel du timbre envoyé à La Poste (une semaine de validation) et la commande, au tarif 2026 si les timbres restent valables.</span></li>
-      <li><b>Janvier 2027</b><span>Les textes relus par Lodovica, traduits en anglais et en italien. La séquence branchée et testée : elle peut partir dès ce moment, hors saison comprise.</span></li>
+      <li><b>Janvier 2027</b><span>Les textes relus par Lodovica, traduits en anglais et en italien. La séquence branchée et testée, l'envoi du carnet à un proche construit : tout peut partir dès ce moment, hors saison comprise.</span></li>
       <li><b>Février</b><span>Les maquettes définitives de la carte et du chevalet, la commande des tampons.</span></li>
       <li><b>Mars</b><span>L'impression des cartes et des chevalets.</span></li>
       <li><b>Avril 2027</b><span>Les cartes en chambre, pour l'ouverture de la saison.</span></li>
