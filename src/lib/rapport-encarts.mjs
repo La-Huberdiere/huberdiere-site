@@ -2,7 +2,8 @@
 // clé AAAA-MM : { concurrents: { titre, intro, chiffres: { titre, colonnes, lignes: [{ libelle,
 // detail, valeurs, barres, meilleur }], note }, fiches: [{ nom, statut, resume, plus, moins,
 // garder }], points: [{ titre, texte }] },
-// satisfaction: { titre, texte, lien, libelle } }. Lus au rendu comme les travaux :
+// satisfaction: { titre, texte, lien, libelle },
+// mission: { titre, texte, colonnes, lignes: [{ libelle, valeurs }], note } }. Lus au rendu comme les travaux :
 // un mois sans entrée reste identique au rejeu. Module sans import de JSON pour rester
 // testable sous `node --test`.
 
@@ -94,5 +95,24 @@ export function renderLienSatisfaction(e) {
     <h3 class="sub-h">${esc(e.titre)}</h3>
     <p>${esc(e.texte)}</p>
     <p class="encart-lien"><a href="${esc(lien)}">${esc(e.libelle || "Lire la page")} &rarr;</a></p>
+  </section>`
+}
+
+// Formules de la mission proposées au client : une colonne par formule, une ligne par
+// poste. La dernière colonne reprend le fond et l'en-tête de « Vous » du tableau des
+// voisins ; rien n'y repose sur la couleur seule, le rapport s'imprime en noir et blanc.
+export function renderEncartMission(e) {
+  const colonnes = (e?.colonnes || []).filter(Boolean)
+  const lignes = (e?.lignes || []).filter((l) => l?.libelle && Array.isArray(l.valeurs))
+  if (!colonnes.length || !lignes.length) return ""
+  const corps = lignes.map((l) => `<tr><td>${esc(l.libelle)}</td>${colonnes.map((_, i) => `<td>${esc(l.valeurs[i])}</td>`).join("")}</tr>`).join("")
+  return `<section class="encart">
+    <h3 class="sub-h">${esc(e.titre)}</h3>
+    ${e.texte ? `<p class="encart-intro">${esc(e.texte)}</p>` : ""}
+    <table class="chiffres-voisins formules-mission">
+      <thead><tr><th></th>${colonnes.map((c) => `<th>${esc(c)}</th>`).join("")}</tr></thead>
+      <tbody>${corps}</tbody>
+    </table>
+    ${e.note ? `<p class="note">${esc(e.note)}</p>` : ""}
   </section>`
 }

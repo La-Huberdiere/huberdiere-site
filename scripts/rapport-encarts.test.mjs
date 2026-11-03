@@ -1,7 +1,7 @@
 // node --test scripts/rapport-encarts.test.mjs
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { renderEncartConcurrents, renderLienSatisfaction } from "../src/lib/rapport-encarts.mjs"
+import { renderEncartConcurrents, renderLienSatisfaction, renderEncartMission } from "../src/lib/rapport-encarts.mjs"
 
 test("sans entrée pour le mois, rien n'est rendu", () => {
   assert.equal(renderEncartConcurrents(undefined), "")
@@ -85,4 +85,33 @@ test("chaque fiche de voisin porte ses plus, ses moins et ce que nous en gardons
 test("un encart sans points mais avec des fiches s'affiche quand même", () => {
   const { points, ...sansPoints } = voisins
   assert.match(renderEncartConcurrents(sansPoints), /fiche-voisin/)
+})
+
+const mission = {
+  titre: "La mission en 2027",
+  texte: "Deux formules à partir du 1er janvier.",
+  colonnes: ["Socle", "Mission complète"],
+  lignes: [
+    { libelle: "Prix", valeurs: ["700 € par mois", "1 000 € par mois"] },
+    { libelle: "Articles", valeurs: ["2 par mois, en <FR>, EN et IT", "4 par mois"] },
+  ],
+  note: "Newsletter et projets restent hors forfait.",
+}
+
+test("sans formules, l'encart mission ne rend rien", () => {
+  assert.equal(renderEncartMission(undefined), "")
+  assert.equal(renderEncartMission({ titre: "x", texte: "y" }), "")
+  assert.equal(renderEncartMission({ titre: "x", colonnes: ["A"], lignes: [] }), "")
+})
+
+test("l'encart mission met les deux formules côte à côte, texte échappé", () => {
+  const html = renderEncartMission(mission)
+  assert.match(html, /class="encart"/)
+  assert.match(html, /<h3 class="sub-h">La mission en 2027<\/h3>/)
+  assert.match(html, /Deux formules à partir du 1er janvier\./)
+  assert.match(html, /<th>Socle<\/th><th>Mission complète<\/th>/)
+  assert.match(html, /<td>Prix<\/td><td>700 € par mois<\/td><td>1 000 € par mois<\/td>/)
+  assert.match(html, /&lt;FR&gt;/)
+  assert.match(html, /Newsletter et projets restent hors forfait\./)
+  assert.doesNotMatch(html, /—/)
 })

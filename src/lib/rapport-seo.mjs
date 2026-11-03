@@ -22,7 +22,7 @@ import NEWSLETTERS from "../data/rapport-newsletters.json"
 import PROPOSITIONS from "../data/rapport-propositions.json"
 import { renderPropositions, propositionsManquantes as propositionsVides } from "./rapport-propositions.mjs"
 import ENCARTS from "../data/rapport-encarts.json"
-import { renderEncartConcurrents, renderLienSatisfaction } from "./rapport-encarts.mjs"
+import { renderEncartConcurrents, renderLienSatisfaction, renderEncartMission } from "./rapport-encarts.mjs"
 import { renderNewsletters } from "./rapport-newsletter.mjs"
 import { renderBrandChart } from "./rapport-graphique.mjs"
 import { positionsVoisins, renderVoisins, aDesVoisins, pageLaPlusComplete } from "./rapport-voisins.mjs"
@@ -1206,6 +1206,8 @@ function renderHtml(data) {
   /* Voisins regardés de près : chiffres comparés avec barres, puis une fiche par voisin. */
   .titre-voisins,.fiche-voisin h4{font-family:"Playfair Display",serif;color:var(--encre);font-size:16px;font-weight:600;margin:20px 0 4px}
   .chiffres-voisins td{vertical-align:middle}
+  .formules-mission td{vertical-align:top}
+  .formules-mission td:first-child{font-weight:600}
   .chiffres-voisins th:last-child,.chiffres-voisins td:last-child{background:#fbf7f0}
   .chiffres-voisins th:last-child{color:var(--bordeaux)}
   .detail-voisin{display:block;color:var(--gris);font-size:12px;margin-top:2px}
@@ -1427,6 +1429,8 @@ function renderHtml(data) {
   <p class="note">${muets.length ? `${esc(muets.join(" et "))} n'${muets.length > 1 ? "ont" : "a"} rendu aucune réponse ce mois-ci : le décompte porte sur ${answeredTotal} réponses obtenues. ` : ""}Les réponses des IA varient d'un jour à l'autre : lisez ce bloc comme une tendance, pas comme une note figée.</p>`}
 
   ${renderLienSatisfaction(ENCARTS[month]?.satisfaction)}
+
+  ${renderEncartMission(ENCARTS[month]?.mission)}
 
   ${renderPropositions(PROPOSITIONS[month])}
 
