@@ -21,6 +21,8 @@ import NEWSLETTERS from "../data/rapport-newsletters.json"
 // Section finale « Pour le mois prochain », même mécanique : lue au rendu.
 import PROPOSITIONS from "../data/rapport-propositions.json"
 import { renderPropositions, propositionsManquantes as propositionsVides } from "./rapport-propositions.mjs"
+import ENCARTS from "../data/rapport-encarts.json"
+import { renderEncartConcurrents, renderLienSatisfaction } from "./rapport-encarts.mjs"
 import { renderNewsletters } from "./rapport-newsletter.mjs"
 import { renderBrandChart } from "./rapport-graphique.mjs"
 import { positionsVoisins, renderVoisins, aDesVoisins, pageLaPlusComplete } from "./rapport-voisins.mjs"
@@ -1163,6 +1165,12 @@ function renderHtml(data) {
   .propositions li:last-child{border-bottom:0}
   .propositions li::before{content:counter(prop);position:absolute;left:2px;top:9px;font-family:"Playfair Display",serif;font-weight:600;color:var(--bordeaux)}
   .propositions li strong{color:var(--encre)}
+  .encart{border-top:2px solid var(--bordeaux);margin-top:30px;padding-top:2px}
+  .encart .sub-h{margin:14px 0 6px}
+  .encart p{font-size:14px;margin:0 0 10px}
+  .encart p strong{color:var(--encre)}
+  .encart-intro{color:var(--gris)}
+  .encart-lien a{color:var(--bordeaux);font-weight:600;text-decoration:none}
   .evolution-ia td{padding-top:8px;padding-bottom:8px;vertical-align:middle}
   details.note summary{cursor:pointer;color:var(--bordeaux)}
   details.note ul{margin:8px 0 0;padding-left:18px}
@@ -1195,6 +1203,8 @@ function renderHtml(data) {
     .propositions-grille{grid-template-columns:1fr;gap:14px}
     .propositions{border-top-color:#000}
     .propositions li::before{color:#000}
+    .encart{border-top-color:#000;break-inside:avoid}
+    .encart-lien a{color:#000}
     .barre-ia{fill:#222}
     .wrap{max-width:none;padding:0}
     header{background:#fff;color:#000;border-bottom:2px solid #000;padding:0 0 14px}
@@ -1304,6 +1314,7 @@ function renderHtml(data) {
     // contredisait les positions relevées juste au-dessus. Retiré au rejeu (01/10),
     // plutôt que de montrer encore des chiffres faux.
     : ""}
+  ${renderEncartConcurrents(ENCARTS[month]?.concurrents)}
 
   ${aPortee ? renderAPortee(aPortee, (p) => libellePage(p, cartePages(articles))) : renderGains(opportunities)}
 
@@ -1350,6 +1361,8 @@ function renderHtml(data) {
     }).join("")}</tbody>
   </table>
   <p class="note">${muets.length ? `${esc(muets.join(" et "))} n'${muets.length > 1 ? "ont" : "a"} rendu aucune réponse ce mois-ci : le décompte porte sur ${answeredTotal} réponses obtenues. ` : ""}Les réponses des IA varient d'un jour à l'autre : lisez ce bloc comme une tendance, pas comme une note figée.</p>`}
+
+  ${renderLienSatisfaction(ENCARTS[month]?.satisfaction)}
 
   ${renderPropositions(PROPOSITIONS[month])}
 

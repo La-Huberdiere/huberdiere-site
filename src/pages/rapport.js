@@ -7,6 +7,7 @@ export const prerender = false
 
 import { head } from "@vercel/blob"
 import PLAN_DATA from "../data/calendrier-editorial.json"
+import { satisfactionPage } from "../lib/page-satisfaction.mjs"
 
 const HISTORY_PATH = "rapport/history.json"
 const PASSWORD = "SEOHUBERDIERE"
@@ -106,6 +107,13 @@ function indexPage(months) {
       <span>
         <span style="display:block;font-family:'Playfair Display',Georgia,serif;font-size:17px;color:var(--ink)">Plan éditorial SEO</span>
         <span style="display:block;color:var(--muted);font-size:12.5px;margin-top:2px">Les contenus prévus sur 6 mois</span>
+      </span>
+      <span style="color:var(--wine)">→</span>
+    </a>
+    <a href="/rapport?doc=satisfaction" style="display:flex;justify-content:space-between;align-items:center;text-decoration:none;background:#fff;border:1px solid var(--line);border-top:3px solid var(--wine);padding:16px 20px;margin:-20px 0 34px">
+      <span>
+        <span style="display:block;font-family:'Playfair Display',Georgia,serif;font-size:17px;color:var(--ink)">Faire circuler la satisfaction</span>
+        <span style="display:block;color:var(--muted);font-size:12.5px;margin-top:2px">Le projet présenté au call de novembre</span>
       </span>
       <span style="color:var(--wine)">→</span>
     </a>
@@ -313,6 +321,12 @@ export async function GET({ request, url }) {
   }
   if (url.searchParams.get("doc") === "calendrier") {
     return new Response(calendrierPage(), {
+      status: 200,
+      headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "x-robots-tag": "noindex, nofollow" },
+    })
+  }
+  if (url.searchParams.get("doc") === "satisfaction") {
+    return new Response(satisfactionPage(HEAD), {
       status: 200,
       headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "x-robots-tag": "noindex, nofollow" },
     })
