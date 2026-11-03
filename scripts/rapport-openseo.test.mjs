@@ -115,6 +115,12 @@ test("rendu IA : activités, moteurs, sources, sans la question de marque", () =
   assert.doesNotMatch(html, /est-il un hôtel/)
   assert.match(html, /septembre/i) // note sur le changement d'outil
   assert.doesNotMatch(renderIa(ia, { changementMethode: false }), /changé d'outil/)
+  // Le compte des réponses se déduit des questions et des IA : 2 questions x 2 IA = 4,
+  // dont 2 seulement sont arrivées. Sans le calcul, « 14 questions » puis « sur 42 » égarait.
+  assert.match(html, /les mêmes 2 questions/)
+  assert.match(html, /à 2 IA \(ChatGPT et Perplexity\) et nous/)
+  assert.match(html, /4 réponses attendues, 2 sont arrivées/)
+  assert.match(html, /cité dans <strong>2<\/strong> d'entre elles/)
   // Rien ne passe par la couleur seule : un mot accompagne toujours le symbole.
   assert.doesNotMatch(html, /—/)
   const ap = renderApercus(ia)

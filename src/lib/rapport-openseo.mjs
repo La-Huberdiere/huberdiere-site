@@ -177,8 +177,17 @@ export function renderIa(ia, { changementMethode = false } = {}) {
   const nomsMoteurs = moteurs.map((m) => MOTEURS[m])
   const listeMoteurs = nomsMoteurs.length > 1 ? `${nomsMoteurs.slice(0, -1).join(", ")} et ${nomsMoteurs.at(-1)}` : nomsMoteurs.join("")
 
+  // Le total des réponses se lit comme questions x IA : l'écrire, sinon « 14 questions »
+  // puis « sur 42 » laisse croire à deux chiffres contradictoires.
+  const pl = (n, mot) => `${n} ${mot}${n > 1 ? "s" : ""}`
+  const attendues = qs.length * moteurs.length
+  const total = reponses === attendues
+    ? `Cela fait ${pl(attendues, "réponse")}`
+    : `Cela fait ${pl(attendues, "réponse")} attendue${attendues > 1 ? "s" : ""}, ${reponses} ${reponses > 1 ? "sont arrivées" : "est arrivée"}`
+  const questions = `les mêmes ${pl(qs.length, "question")}, couvrant toutes vos activités`
+  const aQui = moteurs.length ? `à ${moteurs.length} IA (${esc(listeMoteurs)})` : "aux assistants IA"
   return `<h2>Visibilité dans les réponses IA</h2>
-  <p class="lead">De plus en plus de clients posent leur question à une IA plutôt qu'à Google. Nous posons chaque mois ${qs.length} question${qs.length > 1 ? "s" : ""} réelle${qs.length > 1 ? "s" : ""}, couvrant toutes vos activités${listeMoteurs ? `, à ${esc(listeMoteurs)}` : " aux assistants IA"}, et nous regardons si le château est cité. Le château est cité dans <strong>${cites}</strong> réponse${cites > 1 ? "s" : ""} sur ${reponses}.</p>
+  <p class="lead">De plus en plus de clients posent leur question à une IA plutôt qu'à Google. Nous posons chaque mois ${questions}, ${aQui} et nous regardons si le château est cité. ${total}, et le château est cité dans <strong>${cites}</strong> d'entre elles.</p>
   <table>
     <thead><tr><th>Activité</th><th class="num hors-mobile">Questions</th><th class="num">Château cité</th><th class="hors-mobile">Par</th></tr></thead>
     <tbody>${themes.map((t) => `<tr><td>${esc(t.theme)}<span class="sur-mobile">${t.questions} question${t.questions > 1 ? "s" : ""}${t.par.size ? `, cité par ${[...t.par].map(esc).join(", ")}` : ""}</span></td><td class="num hors-mobile">${t.questions}</td><td class="num"><span class="${t.cites ? "yes" : "no"}">${t.cites} / ${t.reponses}</span></td><td class="hors-mobile">${t.par.size ? [...t.par].map(badge).join("") : '<span style="color:var(--gris)">personne</span>'}</td></tr>`).join("")}</tbody>
