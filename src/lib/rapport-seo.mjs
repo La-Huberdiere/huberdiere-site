@@ -28,7 +28,7 @@ import { renderBrandChart } from "./rapport-graphique.mjs"
 import { positionsVoisins, renderVoisins, aDesVoisins, pageLaPlusComplete } from "./rapport-voisins.mjs"
 import { fenetresDeJours, pointDeComparaison, moisDecales } from "./rapport-periodes.mjs"
 import { BRAND_KEYWORDS, GSC_BRAND_REGEX } from "./rapport-marque.mjs"
-import { repartirAbsents, absenceProuvee, sansPanneau, domainesCites, kpiBaseFixe } from "./rapport-positions.mjs"
+import { repartirAbsents, absenceProuvee, sansPanneau, domainesCites, kpiBaseFixe, garderRecherchesSuivies } from "./rapport-positions.mjs"
 import { buildLeadsData, libellePage } from "./rapport-demandes.mjs"
 import { serpDepuisOpenseo, iaDepuisOpenseo, bilanIa, bilanApercus, aPorteeDepuisGsc, positionsGsc, renderSectionIa, renderAPortee } from "./rapport-openseo.mjs"
 import { localizePath } from "./routes.ts"
@@ -48,7 +48,6 @@ const SITE_BASE = "https://www.chateaudelahuberdiere.com"
 // protéger) ET le local gagnable aligné sur chaque offre.
 const KEYWORDS = [
   { intent: "Notoriété", keyword: "château de la huberdière" },
-  { intent: "Notoriété", keyword: "salle de la huberdière" },
   { intent: "Mariage", keyword: "mariage château touraine" },
   { intent: "Mariage", keyword: "location château mariage touraine" },
   { intent: "Mariage", keyword: "château mariage val de loire" },
@@ -64,7 +63,7 @@ const KEYWORDS = [
   // suivies à part : un aperçu IA se déclenche sur 99 % des recherches de ce type,
   // contre 3 à 6 % des recherches locales et commerciales ci-dessus. Sans elles, la
   // mesure des aperçus IA ne verrait jamais rien et laisserait croire au calme plat.
-  // `blog: true` les sort du graphe de positions, qui deviendrait illisible à 19 lignes.
+  // `blog: true` les sort du graphe de positions, qui deviendrait illisible à 18 lignes.
   { intent: "Blog", keyword: "dormir dans un château de la loire", blog: true },
   { intent: "Blog", keyword: "visiter les châteaux de la loire", blog: true },
   { intent: "Blog", keyword: "prix mariage château loire", blog: true },
@@ -452,7 +451,7 @@ async function pullBrand(ym) {
 }
 
 // Recherches à portée de la première page, dans la Search Console du site : gratuit,
-// et des centaines de recherches au lieu des 19 suivies. Figées dans l'instantané.
+// et des centaines de recherches au lieu des 18 suivies. Figées dans l'instantané.
 async function pullAPortee(ym) {
   try {
     const token = await gscToken()
@@ -471,7 +470,7 @@ async function pullAPortee(ym) {
   }
 }
 
-// Place moyenne du mois des 19 recherches suivies, dans la même Search Console. Le
+// Place moyenne du mois des 18 recherches suivies, dans la même Search Console. Le
 // relevé de positions est national et d'un seul jour : une recherche qu'il ne voit
 // pas peut rester en première page pour les internautes réels, surtout locaux.
 async function pullGscPositions(ym) {
@@ -1458,7 +1457,7 @@ export async function generateReport(prevHistory = [], month = null, openseo = n
   cur.llmCited = citedTotal
   cur.llmAnswered = answeredTotal
   // Depuis OpenSEO, l'aperçu Google se mesure sur les questions du suivi IA, pas sur
-  // les 19 recherches : `source` le dit, pour ne pas comparer les deux séries.
+  // les 18 recherches : `source` le dit, pour ne pas comparer les deux séries.
   if (ia) {
     const b = bilanApercus(ia)
     cur.aio = { present: b.affiches, cited: b.cites, keywords: b.questions, source: "openseo" }
@@ -1573,7 +1572,8 @@ export async function completerInstantane(snap, { serp: relever = false } = {}) 
  * L'encart « Ce qui a été réalisé » (`rapport-travaux.json`) et le texte de
  * synthèse sont volontairement relus au rendu : eux peuvent encore être corrigés.
  */
-export function renderFromSnapshot(snap) {
+export function renderFromSnapshot(instantane) {
+  const snap = garderRecherchesSuivies(instantane, KEYWORDS.map((k) => k.keyword))
   const { month, serp, gbp, llm = [], ia = null, aPortee = null, gscPositions = null, articles, history, leads, traffic, brand, competitors } = snap
   if (!month || !Array.isArray(serp) || !(Array.isArray(snap.llm) || ia)) {
     throw new Error("Instantané incomplet : month, serp et llm (ou ia) sont requis.")

@@ -283,7 +283,7 @@ export const A_PORTEE_MIN_IMPRESSIONS = 10
  * Recherches où le château sort déjà entre la 4e et la 20e place en moyenne sur
  * le mois, hors recherches sur son nom. Une ligne par recherche : la page qui
  * s'y affiche le plus, sa place moyenne, et les vues cumulées de toutes les pages
- * du site dans cette plage. Remplace les « pages 2 et 3 » des 19 recherches
+ * du site dans cette plage. Remplace les « pages 2 et 3 » des 18 recherches
  * suivies : la Search Console en voit des centaines, gratuitement.
  */
 export function aPorteeDepuisGsc(rows, regexMarque, max = 8) {

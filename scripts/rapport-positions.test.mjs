@@ -1,7 +1,7 @@
 // node --test scripts/rapport-positions.test.mjs
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { repartirAbsents, absenceProuvee, domainesCites, kpiBaseFixe } from "../src/lib/rapport-positions.mjs"
+import { repartirAbsents, absenceProuvee, domainesCites, kpiBaseFixe, garderRecherchesSuivies } from "../src/lib/rapport-positions.mjs"
 
 test("une recherche classée le mois dernier n'est pas « pas encore classée »", () => {
   // Septembre 2026 : « salle de la huberdière » (17e en août) listée parmi les
@@ -70,4 +70,27 @@ test("une sortie que la Search Console voit encore en première page porte sa pl
 test("une sortie garde le site en tête de la page relevée", () => {
   const r = repartirAbsents([{ keyword: "salle de la huberdière", leader: "www.auvergne-livradois-forez.com" }], { "salle de la huberdière": 15 }, true, { "salle de la huberdière": { position: 10.3, impressions: 30 } })
   assert.equal(r.perdues[0].leader, "www.auvergne-livradois-forez.com")
+})
+
+test("une recherche retirée du suivi disparaît aussi des mois rejoués", () => {
+  // 02/11/2026 : « salle de la huberdière » retirée, un homonyme (salle des fêtes)
+  // sans rapport avec le château. Les instantanés d'août à octobre la portent encore.
+  const snap = {
+    month: "2026-10",
+    serp: [{ keyword: "château de la huberdière", position: 1 }, { keyword: "salle de la huberdière", position: 15 }],
+    gscPositions: { "salle de la huberdière": { position: 12, impressions: 9 }, "château de la huberdière": { position: 1, impressions: 80 } },
+    history: [{ month: "2026-09", positions: { "château de la huberdière": 1, "salle de la huberdière": 17 } }, { month: "2026-07" }],
+  }
+  const r = garderRecherchesSuivies(snap, ["château de la huberdière"])
+  assert.deepEqual(r.serp.map((s) => s.keyword), ["château de la huberdière"])
+  assert.deepEqual(Object.keys(r.gscPositions), ["château de la huberdière"])
+  assert.deepEqual(r.history[0].positions, { "château de la huberdière": 1 })
+  assert.equal(r.history[1].positions, undefined)
+  assert.equal(snap.serp.length, 2, "l'instantané d'origine reste intact")
+})
+
+test("sans gscPositions ni history, le filtre ne casse rien", () => {
+  const r = garderRecherchesSuivies({ serp: [{ keyword: "a" }, { keyword: "b" }] }, ["a"])
+  assert.deepEqual(r.serp, [{ keyword: "a" }])
+  assert.equal(r.gscPositions, undefined)
 })

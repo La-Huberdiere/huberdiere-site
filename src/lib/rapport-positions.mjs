@@ -68,3 +68,18 @@ export function kpiBaseFixe(serp, compte, note) {
     note: nonReleves ? `${note} · ${nonReleves} non relevée${nonReleves > 1 ? "s" : ""} ce mois-ci` : note,
   }
 }
+
+// Une recherche retirée du suivi sort aussi des mois rejoués depuis leur instantané,
+// sinon la base fixe du KPI changerait d'un mois à l'autre. Le 02/11/2026,
+// « salle de la huberdière » est retirée : ses résultats parlaient d'une salle des
+// fêtes homonyme. Copie : l'instantané stocké reste la trace de ce qui a été relevé.
+export function garderRecherchesSuivies(snap, suivies) {
+  const garde = new Set(suivies)
+  const filtrer = (o) => o && Object.fromEntries(Object.entries(o).filter(([k]) => garde.has(k)))
+  return {
+    ...snap,
+    serp: (snap.serp ?? []).filter((s) => garde.has(s.keyword)),
+    ...(snap.gscPositions ? { gscPositions: filtrer(snap.gscPositions) } : {}),
+    ...(snap.history ? { history: snap.history.map((h) => h.positions ? { ...h, positions: filtrer(h.positions) } : h) } : {}),
+  }
+}
