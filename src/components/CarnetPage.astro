@@ -26,6 +26,7 @@ const siteLabel = (s: string) => s.replace(/^www\./, "");
         <button type="button" class="c-btn c-btn-vide" id="carnetImprimer">{c.imprimer}</button>
       </div>
       <p class="c-status no-print" id="carnetStatus" role="status"></p>
+      <a class="c-lien-proche no-print" href="#c-proche">{c.proche.lienTete}</a>
     </div>
     <figure class="c-head-photo">
       <img
@@ -41,7 +42,17 @@ const siteLabel = (s: string) => s.replace(/^www\./, "");
 
   <section class="c-mot" aria-label="Le mot de Lodovica et Patrick">
     {c.mot.map((p) => <p>{p}</p>)}
-    <p class="c-signature">{c.signature}</p>
+    <div class="c-signe">
+      <p class="c-signature">{c.signature}</p>
+      <svg class="c-cachet" viewBox="0 0 100 100" aria-hidden="true">
+        <defs><path id="c-rond" d="M50,50 m-36,0 a36,36 0 1,1 72,0 a36,36 0 1,1 -72,0" /></defs>
+        <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="2.4" />
+        <circle cx="50" cy="50" r="27" fill="none" stroke="currentColor" stroke-width="1.4" />
+        <text font-family="Montserrat,sans-serif" font-size="7.3" font-weight="600" fill="currentColor" letter-spacing=".25"><textPath href="#c-rond">POSTÉ AU CHÂTEAU DE LA HUBERDIÈRE · AMBOISE ·</textPath></text>
+        <text x="50" y="47" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="11" font-style="italic" fill="currentColor">la maison</text>
+        <text x="50" y="60" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="11" font-style="italic" fill="currentColor">poste</text>
+      </svg>
+    </div>
   </section>
 
   <section class="c-section" aria-labelledby="c-tables">
@@ -84,17 +95,57 @@ const siteLabel = (s: string) => s.replace(/^www\./, "");
   <section class="c-section" aria-labelledby="c-activites">
     <h2 id="c-activites">{c.activites.titre}</h2>
     <p class="c-intro">{c.activites.intro}</p>
-    <ul class="c-liste c-liste-activites">
-      {c.activites.liste.map((a) => (
-        <li>
-          <span class="c-nom">{a.nom}{a.prestataire && <span class="c-presta"> avec {a.prestataire}</span>}</span>
-          <span class="c-note">{a.texte}</span>
-        </li>
-      ))}
-    </ul>
+    <div class="c-activites">
+      <ul class="c-liste c-liste-activites">
+        {c.activites.liste.map((a) => (
+          <li>
+            <span class="c-nom">{a.nom}{a.prestataire && <span class="c-presta"> avec {a.prestataire}</span>}</span>
+            <span class="c-note">{a.texte}</span>
+          </li>
+        ))}
+      </ul>
+      <figure class="c-activites-photo">
+        <img
+          src="/images/inline/chateau-exterieur/chateau-exterieur-13.webp"
+          srcset="/images/inline/chateau-exterieur/chateau-exterieur-13.webp 1x, /images/inline/chateau-exterieur/chateau-exterieur-13@2x.webp 2x"
+          alt="Le château de la Huberdière, près d'Amboise, se reflète dans l'étang du parc, en automne"
+          loading="lazy"
+          width="720"
+          height="540"
+        />
+        <figcaption>L'étang du parc, en automne.</figcaption>
+      </figure>
+    </div>
     <p class="c-a-completer no-print"><strong>{c.aCompleter.etiquette}</strong>{c.aCompleter.coordonnees}</p>
     <p class="c-a-completer no-print"><strong>{c.aCompleter.etiquette}</strong>{c.aCompleter.saisons}</p>
     <p class="c-a-completer no-print"><strong>{c.aCompleter.etiquette}</strong>{c.aCompleter.pluie}</p>
+  </section>
+
+  <!-- Envoi à un proche : maquette pour le client, visible seulement avec ?brouillon.
+       Le formulaire n'envoie rien ; le vrai envoi attend l'accord du client et une revue sécurité. -->
+  <section class="c-proche no-print" id="c-proche" aria-labelledby="c-proche-titre">
+    <div class="c-proche-in">
+      <div class="c-proche-texte">
+        <h2 id="c-proche-titre">{c.proche.titre}</h2>
+        <p>{c.proche.texte}</p>
+      </div>
+      <form class="c-proche-form" id="carnetProche" novalidate>
+        <label class="c-champ">
+          <span>{c.proche.prenom}</span>
+          <input type="text" name="prenom" autocomplete="given-name" maxlength="40" required />
+        </label>
+        <label class="c-champ">
+          <span>{c.proche.email}</span>
+          <input type="email" name="email" autocomplete="off" inputmode="email" maxlength="120" required />
+        </label>
+        <div class="c-hp" aria-hidden="true">
+          <label>Site web <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+        </div>
+        <button type="submit" class="c-btn c-btn-creme">{c.proche.bouton}</button>
+        <p class="c-promesse">{c.proche.promesse}</p>
+        <p class="c-proche-status" id="carnetProcheStatus" role="status"></p>
+      </form>
+    </div>
   </section>
 
   <footer class="c-pied">
@@ -102,7 +153,7 @@ const siteLabel = (s: string) => s.replace(/^www\./, "");
   </footer>
 </main>
 
-<script is:inline define:vars={{ query: CARNET_PARTAGE_QUERY, titre: c.partageTitre, texte: c.partageTexte, copie: c.lienCopie }}>
+<script is:inline define:vars={{ query: CARNET_PARTAGE_QUERY, titre: c.partageTitre, texte: c.partageTexte, copie: c.lienCopie, proche: c.proche }}>
   (function () {
     if (new URLSearchParams(location.search).has("brouillon")) {
       document.querySelector(".carnet").classList.add("brouillon");
@@ -135,6 +186,20 @@ const siteLabel = (s: string) => s.replace(/^www\./, "");
     document.getElementById("carnetImprimer").addEventListener("click", function () {
       track("carnet_impression");
       window.print();
+    });
+
+    // Démonstration : on valide et on montre ce qui partirait, sans rien envoyer.
+    var form = document.getElementById("carnetProche");
+    var procheStatus = document.getElementById("carnetProcheStatus");
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (form.website.value) return;
+      var prenom = form.prenom.value.trim();
+      var email = form.email.value.trim();
+      var ok = prenom && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+      procheStatus.classList.toggle("is-erreur", !ok);
+      procheStatus.textContent = ok ? proche.demo.replace("{email}", email).replace("{prenom}", prenom) : proche.erreur;
+      if (ok) track("carnet_proche_demo");
     });
   })();
 </script>
@@ -211,13 +276,27 @@ const siteLabel = (s: string) => s.replace(/^www\./, "");
     line-height: 1.75;
     color: var(--ink);
   }
+  .c-signe { display: flex; align-items: center; gap: 22px; margin: 24px 0 0 22%; }
   .c-mot .c-signature {
     font-family: "Playfair Display", Georgia, serif;
     font-style: italic;
     font-size: 20px;
     color: var(--burgundy);
-    margin-top: 24px;
+    margin: 0;
   }
+  .c-cachet { width: 92px; height: 92px; flex: none; color: var(--burgundy); transform: rotate(-9deg); opacity: 0.9; }
+
+  .c-lien-proche { display: none; }
+  .carnet.brouillon .c-lien-proche {
+    display: inline-block;
+    margin-top: 0;
+    font-size: 14px;
+    color: var(--burgundy);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+  .c-lien-proche:hover { color: var(--burgundy-deep); }
 
   .c-section { max-width: var(--c-max); margin: 88px auto 0; padding: 0 32px; }
   .c-section h2 {
@@ -245,6 +324,68 @@ const siteLabel = (s: string) => s.replace(/^www\./, "");
   .c-coord a { color: var(--ink-2); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; overflow-wrap: anywhere; }
   .c-coord a:hover { color: var(--burgundy); text-decoration-color: var(--burgundy); }
   .c-liste-activites { max-width: 46em; }
+  .c-activites { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 56px; align-items: start; }
+  .c-activites-photo { margin: 0; position: sticky; top: 32px; }
+  .c-activites-photo img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+  .c-activites-photo figcaption {
+    margin-top: 10px;
+    font-family: "Playfair Display", Georgia, serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink-2);
+  }
+
+  /* Parlez-en à un proche : bande bordeaux pleine largeur, maquette en ?brouillon. */
+  .c-proche { display: none; }
+  .carnet.brouillon .c-proche { display: block; margin: 96px 0 0; padding: 0; background: var(--burgundy); color: #fff; scroll-margin-top: 24px; }
+  .c-proche-in {
+    max-width: var(--c-max);
+    margin: 0 auto;
+    padding: 64px 32px 60px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: 56px;
+    align-items: start;
+  }
+  .c-proche h2 {
+    color: #fff;
+    font-size: clamp(32px, 4.4vw, 48px);
+    line-height: 1.08;
+    margin: 0 0 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  }
+  .c-proche-texte p { margin: 0; max-width: 26em; font-size: 17px; line-height: 1.65; color: #fff; }
+  .c-proche-form { display: grid; gap: 16px; }
+  .c-champ { display: grid; gap: 6px; }
+  .c-champ span { font-size: 14px; color: #fff; }
+  .c-champ input {
+    font: 400 16px/1.3 "Montserrat", sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--bg);
+    border-radius: 0;
+    padding: 13px 14px;
+    min-height: 48px;
+  }
+  .c-champ input:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+  .c-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .c-btn-creme { justify-self: start; background: var(--bg); color: var(--burgundy); border-color: var(--bg); }
+  .c-proche .c-btn-creme:hover { background: #fff; border-color: #fff; color: var(--burgundy-deep); }
+  .c-proche .c-btn:focus-visible { outline-color: #fff; }
+  .c-promesse { margin: 0; font-size: 13.5px; line-height: 1.55; color: rgba(255, 255, 255, 0.88); max-width: 34em; }
+  .c-proche-status:empty { display: none; }
+  .c-proche-status {
+    margin: 4px 0 0;
+    padding: 12px 14px;
+    border: 1px dashed rgba(255, 255, 255, 0.75);
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .c-proche-status.is-erreur { border-style: solid; font-weight: 500; }
+  .carnet :global(::selection) { background: var(--burgundy); color: #fff; }
+  .c-proche :global(::selection) { background: var(--bg); color: var(--burgundy); }
 
   /* Photo pleine largeur, coupe le texte entre les deux grandes parties. */
   .c-large { margin: 88px 0 0; }
@@ -276,6 +417,13 @@ const siteLabel = (s: string) => s.replace(/^www\./, "");
     .c-mark { margin-bottom: 14px; }
     .c-mot { padding: 0 20px; margin-top: 44px; }
     .c-mot p { margin-left: 0; }
+    .c-signe { margin-left: 0; gap: 18px; }
+    .c-cachet { width: 76px; height: 76px; }
+    .c-activites { grid-template-columns: 1fr; gap: 28px; }
+    .c-activites-photo { position: static; }
+    .carnet.brouillon .c-proche { margin-top: 72px; }
+    .c-proche-in { grid-template-columns: 1fr; gap: 28px; padding: 48px 20px 44px; }
+    .c-btn-creme { justify-self: stretch; }
     .c-section { padding: 0 20px; margin-top: 64px; }
     .c-groupes { grid-template-columns: 1fr; gap: 36px; }
     .c-large { margin-top: 64px; }
@@ -308,7 +456,10 @@ const siteLabel = (s: string) => s.replace(/^www\./, "");
     .c-note, .c-coord { font-size: 8.5pt; }
     .c-coord a { text-decoration: none; color: var(--ink-2); }
     .c-liste-activites { max-width: none; columns: 2; column-gap: 9mm; }
-    .c-large { display: none; }
+    .c-large, .c-activites-photo { display: none; }
+    .c-activites { display: block; }
+    .c-signe { margin-left: 0; }
+    .c-cachet { width: 20mm; height: 20mm; }
     :global(.cookie-banner), :global(.pv-lightbox) { display: none !important; }
     :global(body) { background: #fff; }
     .c-pied { margin-top: 8mm; font-size: 8.5pt; }

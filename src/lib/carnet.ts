@@ -49,6 +49,18 @@ export interface Carnet {
     pluie: string;
     coordonnees: string;
   };
+  /** Envoi du carnet à un proche : maquette, rien ne part tant que le client n'a pas dit oui. */
+  proche: {
+    lienTete: string;
+    titre: string;
+    texte: string;
+    prenom: string;
+    email: string;
+    bouton: string;
+    promesse: string;
+    erreur: string;
+    demo: string;
+  };
   pied: string;
 }
 
@@ -124,6 +136,19 @@ const FR: Carnet = {
     producteurs: "Vos marchés, vos producteurs, votre boulangerie.",
     pluie: "Un plan de journée quand il pleut.",
     coordonnees: "Les coordonnées de Cathy, de Millière Raboton, de Mondomaine et de l'Ambacia.",
+  },
+  proche: {
+    lienTete: "Ou l'envoyer à un proche",
+    titre: "Parlez-en à un proche",
+    texte:
+      "Quelqu'un autour de vous part en Touraine ? Donnez-nous son adresse, nous lui envoyons ce carnet de votre part.",
+    prenom: "Votre prénom",
+    email: "L'adresse de votre proche",
+    bouton: "Lui envoyer le carnet",
+    promesse: "Un seul message, signé de votre prénom. Nous ne gardons pas son adresse et il ne recevra rien d'autre.",
+    erreur: "Il manque votre prénom ou une adresse valide.",
+    // {email} et {prenom} sont remplacés dans le navigateur.
+    demo: "Démonstration, rien n'est parti. En service, {email} recevrait le carnet de la part de {prenom}, une seule fois.",
   },
   pied: "Château de la Huberdière, hôtel de charme près d'Amboise.",
 };
