@@ -13,9 +13,9 @@ test("les deux blocs sont rendus, texte échappé", () => {
   assert.match(html, /<h2>Pour le mois prochain<\/h2>/)
   assert.match(html, /Ce que je fais/)
   assert.match(html, /Ce que je vous propose/)
-  assert.match(html, /<p>Écrire « où dormir à Amboise »<\/p>/)
+  assert.match(html, /<li>Écrire « où dormir à Amboise »<\/li>/)
   assert.match(html, /Analyser &lt;Pray&gt;/)
-  assert.match(html, /<p>Poser le supplément à 15 € dans Octorate<\/p>/)
+  assert.match(html, /<li>Poser le supplément à 15 € dans Octorate<\/li>/)
   assert.doesNotMatch(html, /—/)
 })
 
@@ -30,4 +30,18 @@ test("le préflight signale une entrée absente ou incomplète", () => {
   assert.equal(propositionsManquantes({ alexis: ["x"], client: [] }), true)
   assert.equal(propositionsManquantes({ alexis: [" "], client: ["y"] }), true)
   assert.equal(propositionsManquantes({ alexis: "x", client: ["y"] }), false)
+})
+
+test("éléments { titre, texte } : intitulé en gras, deux colonnes, préflight satisfait", () => {
+  const entree = {
+    alexis: [{ titre: "Articles de novembre", texte: "Quatre articles, les 2, 9, 16 et 23." }],
+    client: [{ titre: "Avis <Google>", texte: "En demander un après chaque séjour." }, { titre: "", texte: "" }],
+  }
+  const html = renderPropositions(entree)
+  assert.match(html, /class="propositions-grille"/)
+  assert.match(html, /<strong>Articles de novembre\.<\/strong> Quatre articles, les 2, 9, 16 et 23\./)
+  assert.match(html, /<strong>Avis &lt;Google&gt;\.<\/strong>/)
+  assert.equal((html.match(/<li>/g) ?? []).length, 2) // l'élément vide disparaît
+  assert.equal(propositionsManquantes(entree), false)
+  assert.equal(propositionsManquantes({ alexis: [{ titre: "x", texte: "y" }], client: [{ titre: " ", texte: "" }] }), true)
 })

@@ -139,96 +139,140 @@ export function bilanApercus(ia) {
   return { questions: qs.length, affiches: affiches.length, cites: affiches.filter((q) => q.reponses[APERCU].cite).length }
 }
 
-const badge = (t) => `<span class="badge">${esc(t)}</span>`
+const pl = (n, mot) => `${n} ${mot}${n > 1 ? "s" : ""}`
+const pct = (c, n) => (n ? Math.round((c / n) * 100) : 0)
+const listeEt = (xs) => (xs.length > 1 ? `${xs.slice(0, -1).join(", ")} et ${xs.at(-1)}` : xs.join(""))
+const moisCourt = (ym) => new Intl.DateTimeFormat("fr-FR", { month: "short", year: "2-digit", timeZone: "UTC" }).format(new Date(`${ym}-15T00:00:00Z`))
 
 /**
- * « Visibilité dans les réponses IA » : par activité, par moteur, puis les sites
- * que les IA citent. Ce dernier tableau est le plus utile au client : une IA
- * recommande ce qu'elle lit ailleurs, être présent sur ces sites-là est le moyen
- * le plus direct d'entrer dans ses réponses.
+ * Mois après mois, part des réponses des IA qui citent le château, lue dans
+ * l'historique du rapport (12 derniers mois mesurés jusqu'au mois du rapport).
+ * Jusqu'en septembre 2026 la mesure était autre (6 questions, versions techniques
+ * des IA) : `methode` le dit, pour que le saut d'octobre ne passe pas pour un progrès.
+ * L'aperçu Google n'est repris que depuis qu'il se lit sur les mêmes questions.
  */
-export function renderIa(ia, { changementMethode = false } = {}) {
+export function evolutionIa(history, month) {
+  return (Array.isArray(history) ? history : [])
+    .filter((h) => h?.month && h.month <= month && h.llmAnswered > 0)
+    .sort((a, b) => a.month.localeCompare(b.month))
+    .slice(-12)
+    .map((h) => ({
+      month: h.month,
+      label: h.monthLabel || moisCourt(h.month),
+      cites: h.llmCited ?? 0,
+      reponses: h.llmAnswered,
+      pct: pct(h.llmCited ?? 0, h.llmAnswered),
+      methode: h.iaSource === "openseo" ? "actuelle" : "ancienne",
+      apercu: h.aio?.source === "openseo" ? { cites: h.aio.cited ?? 0, affiches: h.aio.present ?? 0 } : null,
+    }))
+}
+
+// Barre horizontale en SVG : elle s'imprime (un fond CSS ne s'imprime pas) et sa
+// longueur porte le sens, pas la couleur. Hachurée pour l'ancienne mesure.
+function barre(p, i) {
+  const id = `hach-ia-${i}`
+  const w = Math.max(p.pct, 0.5)
+  const motif = p.methode === "ancienne"
+    ? `<defs><pattern id="${id}" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#fff"/><line x1="0" y1="0" x2="0" y2="5" stroke="#222" stroke-width="1.6"/></pattern></defs>`
+    : ""
+  const rempli = p.methode === "ancienne" ? `fill="url(#${id})" stroke="#222" stroke-width=".8"` : `fill="#8B0000" class="barre-ia"`
+  return `<svg viewBox="0 0 100 12" preserveAspectRatio="none" style="display:block;width:100%;height:14px" aria-hidden="true">${motif}<rect x="0" y="0" width="100" height="12" fill="#f1ede3"/><rect x="0" y="0" width="${w}" height="12" ${rempli}/></svg>`
+}
+
+function renderEvolutionIa(points, { changementMethode, questions }) {
+  if (points.length < 2) return ""
+  const avecApercu = points.some((p) => p.apercu)
+  const anciens = points.some((p) => p.methode === "ancienne")
+  const lignes = points.map((p, i) => `<tr><td style="white-space:nowrap">${esc(p.label)}${p.methode === "ancienne" ? '<span class="sur-mobile">ancienne mesure</span>' : ""}</td><td style="width:48%">${barre(p, i)}</td><td class="num"><strong>${p.pct} %</strong><span class="sur-mobile">${p.cites} sur ${p.reponses}</span></td><td class="num hors-mobile" style="color:var(--gris)">${p.cites} sur ${p.reponses}${p.methode === "ancienne" ? ", ancienne mesure" : ""}</td>${avecApercu ? `<td class="num hors-mobile">${p.apercu ? `${p.apercu.cites} sur ${p.apercu.affiches}` : '<span style="color:var(--gris)">–</span>'}</td>` : ""}</tr>`).join("")
+  return `<h3 class="sub-h">Mois après mois</h3>
+  <table class="evolution-ia">
+    <thead><tr><th>Mois</th><th>Réponses des IA citant le château</th><th class="num">Part</th><th class="num hors-mobile">Réponses</th>${avecApercu ? '<th class="num hors-mobile">Aperçus Google</th>' : ""}</tr></thead>
+    <tbody>${lignes}</tbody>
+  </table>
+  ${anciens ? `<p class="note">Barres hachurées, « ancienne mesure » : jusqu'en septembre 2026, 6 questions posées aux versions techniques des IA. Depuis octobre, ${questions} questions posées comme le ferait un client.${changementMethode ? " Ce bloc a changé d'outil ce mois-ci, et le saut d'octobre vient surtout de ce changement : la progression se lit à partir d'octobre." : " La progression se lit sur les barres pleines."}</p>` : ""}`
+}
+
+/**
+ * « Le château dans les réponses des IA » : aperçus Google et assistants (ChatGPT,
+ * Gemini, Perplexity) en une seule section. Deux chiffres, l'évolution mois par
+ * mois, une ligne par activité, puis ce qui se fait concrètement : les sites que
+ * les IA lisent. Le détail des questions reste replié.
+ */
+export function renderSectionIa(ia, { history = [], month = "", changementMethode = false } = {}) {
   const qs = neutres(ia)
   const moteurs = moteursConversation(ia)
   const { cites, reponses } = bilanIa(ia)
+  const ap = bilanApercus(ia)
+  const avecApercu = ap.questions > 0
+  const noms = moteurs.map((m) => MOTEURS[m])
+  const attendues = qs.length * moteurs.length
+  const total = reponses === attendues
+    ? `soit ${pl(attendues, "réponse")}`
+    : `soit ${pl(attendues, "réponse")} attendue${attendues > 1 ? "s" : ""}, ${reponses} ${reponses > 1 ? "sont arrivées" : "est arrivée"}`
+
+  // Par activité : assistants et aperçu Google côte à côte.
   const parTheme = new Map()
   for (const q of qs) {
-    const t = parTheme.get(q.topic) ?? { theme: q.topic, questions: 0, reponses: 0, cites: 0, par: new Set() }
-    t.questions++
+    const t = parTheme.get(q.topic) ?? { theme: q.topic, reponses: 0, cites: 0, apAff: 0, apCit: 0 }
     for (const m of moteurs) {
       const r = q.reponses[m]
       if (!r?.repondu) continue
       t.reponses++
-      if (r.cite) { t.cites++; t.par.add(MOTEURS[m]) }
+      if (r.cite) t.cites++
     }
+    const a = q.reponses[APERCU]
+    if (a?.repondu) { t.apAff++; if (a.cite) t.apCit++ }
     parTheme.set(q.topic, t)
   }
   const themes = [...parTheme.values()]
-  const lignesMoteurs = moteurs.map((m) => {
+  const cellule = (c, n) => (n ? `<span class="${c ? "yes" : "no"}">${c} sur ${n}</span>` : '<span style="color:var(--gris)">–</span>')
+
+  // Une phrase par moteur, du plus favorable au moins favorable.
+  const parMoteur = moteurs.map((m) => {
     const rs = qs.map((q) => q.reponses[m]).filter((r) => r?.repondu)
-    const comps = [...new Set(rs.flatMap((r) => r.concurrents))]
-    if (!rs.length) return `<tr><td>${esc(MOTEURS[m])}</td><td class="num" style="color:var(--gris)">–</td><td style="color:var(--gris)">pas de réponse de ce moteur ce mois-ci</td></tr>`
-    const c = rs.filter((r) => r.cite).length
-    return `<tr><td>${esc(MOTEURS[m])}</td><td class="num"><span class="${c ? "yes" : "no"}">${c} / ${rs.length}</span></td><td style="color:var(--gris)">${comps.length ? comps.map(esc).join(", ") : "aucun"}</td></tr>`
-  }).join("")
-  // Instantanés d'avant le 02/11/2026 : Google y figure encore parmi les sources.
+    return { nom: MOTEURS[m], n: rs.length, c: rs.filter((r) => r.cite).length }
+  })
+  const repondants = parMoteur.filter((x) => x.n).sort((a, b) => b.c - a.c)
+  const muets = parMoteur.filter((x) => !x.n).map((x) => x.nom)
+  const phraseMoteurs = repondants.length
+    ? `${repondants.map((x, i) => (i === 0 ? `${esc(x.nom)} cite le château dans ${x.c} réponse${x.c > 1 ? "s" : ""} sur ${x.n}` : `${esc(x.nom)} dans ${x.c} sur ${x.n}`)).join(", ")}.${muets.length ? ` ${esc(listeEt(muets))} n'${muets.length > 1 ? "ont" : "a"} pas répondu ce mois-ci.` : ""}`
+    : ""
+
+  // Les voisins que les IA nomment le plus souvent, aperçus Google compris.
+  const compte = new Map()
+  for (const q of qs) for (const r of Object.values(q.reponses)) {
+    if (!r?.repondu) continue
+    for (const c of new Set(r.concurrents)) compte.set(c, (compte.get(c) ?? 0) + 1)
+  }
+  const voisins = [...compte.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 5)
+
   const own = ia.sources.find((s) => s.ownership === "own")
-  const autres = ia.sources.filter((s) => s.ownership !== "own" && !estGoogle(s.domain)).slice(0, 8)
-  const nomsMoteurs = moteurs.map((m) => MOTEURS[m])
-  const listeMoteurs = nomsMoteurs.length > 1 ? `${nomsMoteurs.slice(0, -1).join(", ")} et ${nomsMoteurs.at(-1)}` : nomsMoteurs.join("")
+  const sites = ia.sources.filter((s) => s.ownership !== "own" && !estGoogle(s.domain)).slice(0, 5)
 
-  // Le total des réponses se lit comme questions x IA : l'écrire, sinon « 14 questions »
-  // puis « sur 42 » laisse croire à deux chiffres contradictoires.
-  const pl = (n, mot) => `${n} ${mot}${n > 1 ? "s" : ""}`
-  const attendues = qs.length * moteurs.length
-  const total = reponses === attendues
-    ? `Cela fait ${pl(attendues, "réponse")}`
-    : `Cela fait ${pl(attendues, "réponse")} attendue${attendues > 1 ? "s" : ""}, ${reponses} ${reponses > 1 ? "sont arrivées" : "est arrivée"}`
-  const questions = `les mêmes ${pl(qs.length, "question")}, couvrant toutes vos activités`
-  const aQui = moteurs.length ? `à ${moteurs.length} IA (${esc(listeMoteurs)})` : "aux assistants IA"
-  return `<h2>Visibilité dans les réponses IA</h2>
-  <p class="lead">De plus en plus de clients posent leur question à une IA plutôt qu'à Google. Nous posons chaque mois ${questions}, ${aQui} et nous regardons si le château est cité. ${total}, et le château est cité dans <strong>${cites}</strong> d'entre elles.</p>
-  <table>
-    <thead><tr><th>Activité</th><th class="num hors-mobile">Questions</th><th class="num">Château cité</th><th class="hors-mobile">Par</th></tr></thead>
-    <tbody>${themes.map((t) => `<tr><td>${esc(t.theme)}<span class="sur-mobile">${t.questions} question${t.questions > 1 ? "s" : ""}${t.par.size ? `, cité par ${[...t.par].map(esc).join(", ")}` : ""}</span></td><td class="num hors-mobile">${t.questions}</td><td class="num"><span class="${t.cites ? "yes" : "no"}">${t.cites} / ${t.reponses}</span></td><td class="hors-mobile">${t.par.size ? [...t.par].map(badge).join("") : '<span style="color:var(--gris)">personne</span>'}</td></tr>`).join("")}</tbody>
-  </table>
-  <table style="margin-top:18px">
-    <thead><tr><th>Moteur</th><th class="num">Château cité</th><th>Concurrents nommés dans ses réponses</th></tr></thead>
-    <tbody>${lignesMoteurs}</tbody>
-  </table>
-  ${autres.length ? `<h3 class="sub-h">Où les IA vont chercher leurs réponses</h3>
-  <p class="lead">Les sites que ces IA citent le plus souvent en source sur vos questions. Une IA recommande ce qu'elle lit ailleurs : figurer sur ces sites (fiche d'annuaire, guide, article) est le moyen le plus direct d'entrer dans ses réponses.</p>
-  <table>
-    <thead><tr><th>Site cité</th><th class="num">Réponses qui le citent</th><th class="hors-mobile">Nature</th></tr></thead>
-    <tbody>${autres.map((s) => `<tr><td>${esc(s.domain)}${s.ownership === "competitor" ? '<span class="sur-mobile">concurrent suivi</span>' : ""}</td><td class="num">${s.reponses}</td><td class="hors-mobile" style="color:var(--gris)">${s.ownership === "competitor" ? "concurrent suivi" : "site tiers"}</td></tr>`).join("")}</tbody>
-  </table>
-  <p class="note">${own ? `Le site du château lui-même est cité en source dans ${own.reponses} réponse${own.reponses > 1 ? "s" : ""}.` : "Le site du château n'est cité en source dans aucune réponse ce mois-ci."}</p>` : ""}
-  <details class="note"><summary>Les ${qs.length} questions posées</summary><ul>${qs.map((q) => `<li>${esc(q.prompt)} <span style="color:var(--gris)">(${esc(q.topic)})</span></li>`).join("")}</ul></details>
-  <p class="note">${changementMethode ? "Ce bloc a changé d'outil ce mois-ci : jusqu'en septembre, 6 questions étaient posées aux versions techniques des IA ; elles sont désormais posées comme le ferait un client, sur leurs sites publics, avec plus de questions. L'écart avec septembre tient en partie à ce changement : comparez d'un mois sur l'autre à partir de maintenant. " : ""}Les réponses des IA varient d'un jour à l'autre : lisez ce bloc comme une tendance, pas comme une note figée.</p>`
-}
+  const detail = qs.map((q) => {
+    const par = moteurs.filter((m) => q.reponses[m]?.repondu && q.reponses[m].cite).map((m) => MOTEURS[m])
+    const a = q.reponses[APERCU]
+    const apTxt = !a ? "" : !a.repondu ? " ; pas d'aperçu Google" : a.cite ? " ; cité dans l'aperçu Google" : " ; absent de l'aperçu Google"
+    return `<li>${esc(q.prompt)} <span style="color:var(--gris)">(${esc(q.topic)}) : ${par.length ? `cité par ${esc(listeEt(par))}` : "cité par aucune IA"}${apTxt}</span></li>`
+  }).join("")
 
-/** « Aperçus IA de Google », lus dans le suivi IA : l'encart au-dessus des résultats. */
-export function renderApercus(ia) {
-  const qs = neutres(ia).filter((q) => q.reponses[APERCU])
-  if (!qs.length) return ""
-  const b = bilanApercus(ia)
-  const sources = ia.sources.filter((s) => s.moteurs.includes(APERCU) && s.ownership !== "own" && !estGoogle(s.domain)).slice(0, 5)
-  return `<h2>Aperçus IA de Google</h2>
-  <p class="lead">Depuis le 22 juillet 2026, Google affiche en France un résumé rédigé par son IA au-dessus des résultats classiques. Il répond directement à la question et cite quelques sites en source. Être cité dans cet encart, c'est occuper la place la plus visible de la page. Nous tapons dans Google les mêmes questions que celles posées aux IA.</p>
-  <div class="kpis" style="grid-template-columns:repeat(2,1fr)">
-    <div class="kpi"><div class="l">Questions avec aperçu IA</div><div class="v">${b.affiches}<span style="font-size:15px;color:var(--gris)"> / ${b.questions}</span></div><div class="n">questions tapées dans Google</div></div>
-    <div class="kpi"><div class="l">Château cité dans l'aperçu</div><div class="v">${b.cites}</div><div class="n">${b.affiches ? `sur ${b.affiches} aperçu${b.affiches > 1 ? "s" : ""} affiché${b.affiches > 1 ? "s" : ""}` : "aucun aperçu ce mois-ci"}</div></div>
+  return `<h2>Le château dans les réponses des IA</h2>
+  <p class="lead">De plus en plus de clients posent leur question à une IA plutôt qu'à Google. Chaque mois, nous posons les mêmes ${pl(qs.length, "question")} de futurs clients, couvrant toutes vos activités, à ${esc(listeEt(noms))}${avecApercu ? ", et nous les tapons dans Google, qui affiche désormais au-dessus des résultats un résumé rédigé par son IA, l'aperçu IA" : ""}.</p>
+  <div class="kpis" style="grid-template-columns:repeat(${avecApercu ? 2 : 1},1fr)">
+    <div class="kpi"><div class="l">Réponses des IA citant le château</div><div class="v">${cites}<span style="font-size:15px;color:var(--gris)"> / ${reponses}</span></div><div class="n">${pl(qs.length, "question")} à ${moteurs.length} IA, ${total}</div></div>
+    ${avecApercu ? `<div class="kpi"><div class="l">Aperçus Google citant le château</div><div class="v">${ap.cites}<span style="font-size:15px;color:var(--gris)"> / ${ap.affiches}</span></div><div class="n">${ap.affiches} aperçu${ap.affiches > 1 ? "s" : ""} affiché${ap.affiches > 1 ? "s" : ""} sur ${pl(ap.questions, "question")}</div></div>` : ""}
   </div>
-  <table style="margin-top:16px">
-    <thead><tr><th>Question</th><th class="num">Aperçu</th><th class="num">Château cité</th><th class="hors-mobile">Concurrents nommés</th></tr></thead>
-    <tbody>${qs.map((q) => {
-      const r = q.reponses[APERCU]
-      const comps = r.repondu && r.concurrents.length ? r.concurrents.map(esc).join(", ") : ""
-      return `<tr><td>${esc(q.prompt)}${comps ? `<span class="sur-mobile">nommés : ${comps}</span>` : ""}</td><td class="num">${r.repondu ? "oui" : '<span style="color:var(--gris)">non</span>'}</td><td class="num">${!r.repondu ? '<span style="color:var(--gris)">–</span>' : r.cite ? '<span class="yes">oui</span>' : '<span class="no">non</span>'}</td><td class="hors-mobile" style="color:var(--gris)">${comps || (r.repondu ? "aucun" : "")}</td></tr>`
-    }).join("")}</tbody>
+  ${renderEvolutionIa(evolutionIa(history, month), { changementMethode, questions: qs.length })}
+  <h3 class="sub-h">Par activité</h3>
+  <table>
+    <thead><tr><th>Activité</th><th class="num">Réponses des IA</th>${avecApercu ? '<th class="num">Aperçu Google</th>' : ""}</tr></thead>
+    <tbody>${themes.map((t) => `<tr><td>${esc(t.theme)}</td><td class="num">${cellule(t.cites, t.reponses)}</td>${avecApercu ? `<td class="num">${cellule(t.apCit, t.apAff)}</td>` : ""}</tr>`).join("")}</tbody>
   </table>
-  ${sources.length ? `<p class="note">Sites que Google cite le plus dans ces aperçus : ${sources.map((s) => esc(s.domain)).join(", ")}.</p>` : ""}
-  <p class="note">Sur les recherches où un aperçu s'affiche, les clics vers les sites baissent nettement, y compris pour la première position. La parade n'est pas de monter d'un rang, c'est d'être la source que l'IA cite : une question par titre, une réponse nette dessous, des détails que personne d'autre ne peut donner sur le château.</p>`
+  ${phraseMoteurs || voisins.length ? `<p class="note">${phraseMoteurs}${voisins.length ? ` Les voisins les plus nommés à votre place : ${voisins.map(([n, k]) => `${esc(n)} (${pl(k, "réponse")})`).join(", ")}.` : ""}</p>` : ""}
+  ${sites.length ? `<h3 class="sub-h">Où les IA vont chercher leurs réponses</h3>
+  <p class="note" style="font-size:14px;color:var(--encre)">Une IA recommande ce qu'elle lit ailleurs. Les sites qu'elles citent le plus en source sur vos questions : ${sites.map((s) => `<strong>${esc(s.domain)}</strong> (${pl(s.reponses, "réponse")})`).join(", ")}. Y figurer, par une fiche, un guide ou un article, est le moyen le plus direct d'entrer dans leurs réponses. ${own ? `Le site du château est lui-même cité en source dans ${pl(own.reponses, "réponse")}.` : "Le site du château n'est cité en source dans aucune réponse ce mois-ci."}</p>` : ""}
+  <details class="note"><summary>Le détail des ${pl(qs.length, "question")}</summary><ul>${detail}</ul></details>
+  <p class="note">Les réponses des IA varient d'un jour à l'autre : lisez ce bloc comme une tendance, pas comme une note figée.</p>`
 }
 
 // ── Recherches à portée (Search Console) ──────────────────────────────────

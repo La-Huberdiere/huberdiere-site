@@ -1,19 +1,52 @@
 {
   "2026-10": {
     "alexis": [
-      "Publier les quatre articles de novembre : la cérémonie laïque dans le parc (sorti le 2), le rétroplanning du mariage (le 9), que faire à Amboise (le 16, avec une partie sur où dormir à Amboise) et les spécialités de Touraine (le 23).",
-      "Écrire ceux de décembre : privatiser un château le temps d'un week-end entre amis, les vignobles de Vouvray et Montlouis, et ce qui distingue un hôtel de charme d'une chambre d'hôtes.",
-      "Compléter l'article sur les nuits en château de la Loire pour qu'il réponde aussi à « hôtel châteaux de la Loire » (880 recherches par mois), une recherche que Le Clos d'Amboise vise depuis septembre.",
-      "Ajouter chaque mois une dizaine de photos du domaine sur votre fiche Google, saison par saison : vous en avez 365, Le Clos d'Amboise 941, La Bourdaisière près de 4 800.",
-      "Rédiger un texte plus complet pour votre fiche sur le site de l'office de tourisme d'Amboise : hôtel de charme 3 étoiles, 10 chambres, parc de 14 hectares, mariages et séminaires, 2 h 20 de Paris.",
-      "Vous présenter au call de novembre le projet « faire circuler la satisfaction » et le suivi des réservations faites sur Octorate."
+      {
+        "titre": "Articles de novembre",
+        "texte": "La cérémonie laïque dans le parc (sorti le 2), le rétroplanning du mariage (le 9), que faire à Amboise, avec où y dormir (le 16), et les spécialités de Touraine (le 23)."
+      },
+      {
+        "titre": "Articles de décembre",
+        "texte": "Privatiser un château le temps d'un week-end entre amis, les vignobles de Vouvray et Montlouis, et ce qui distingue un hôtel de charme d'une chambre d'hôtes."
+      },
+      {
+        "titre": "Article sur les nuits en château",
+        "texte": "Le compléter pour qu'il réponde aussi à « hôtel châteaux de la Loire » (880 recherches par mois), que Le Clos d'Amboise vise depuis septembre."
+      },
+      {
+        "titre": "Photos de la fiche Google",
+        "texte": "En ajouter une dizaine par mois, saison par saison : vous en avez 365, Le Clos d'Amboise 941, La Bourdaisière près de 4 800."
+      },
+      {
+        "titre": "Fiche de l'office de tourisme",
+        "texte": "Rédiger un texte plus complet : hôtel de charme 3 étoiles, 10 chambres, parc de 14 hectares, mariages et séminaires, 2 h 20 de Paris."
+      },
+      {
+        "titre": "Call de novembre",
+        "texte": "Vous présenter le projet « faire circuler la satisfaction » et le suivi des réservations faites sur Octorate."
+      }
     ],
     "client": [
-      "Transmettre à l'office de tourisme d'Amboise le texte de votre fiche quand je vous l'envoie, et lui demander un article sur le château comme celui qu'il consacre au Château de Pray. L'office sort premier sur « week-end Amboise », et c'est son site que Google résume en tête des résultats.",
-      "Choisir un rendez-vous annuel ouvert au public : une journée portes ouvertes pour les futurs mariés en début d'année, les Journées du patrimoine en septembre, ou un dîner italien de Lodovica. C'est ce qui fait chercher le nom de La Bourdaisière toute l'année.",
-      "Continuer à demander un avis Google après chaque séjour : vous avez la meilleure note des trois (4,9), mais 124 avis, contre 716 au Clos d'Amboise et 1 274 à La Bourdaisière.",
-      "Retrouver la plateforme qui publie sur Google Maps l'annonce de location « Château de la Huberdière - Junior Suite Allium » : elle annonce 11 chambres et 15 personnes, alors que le château a 10 chambres et 21 couchages.",
-      "Me dire si les dîners des clients de l'hôtel paient aussi le droit de bouchon de 8 € : la page restauration n'en parle pas encore."
+      {
+        "titre": "Office de tourisme d'Amboise",
+        "texte": "Lui transmettre le texte de votre fiche quand je vous l'envoie, et lui demander un article sur le château comme celui qu'il consacre au Château de Pray. Son site sort premier sur « week-end Amboise », et c'est lui que Google résume en tête des résultats."
+      },
+      {
+        "titre": "Un rendez-vous annuel",
+        "texte": "En choisir un, ouvert au public : portes ouvertes pour les futurs mariés en début d'année, Journées du patrimoine en septembre, ou dîner italien de Lodovica. C'est ce qui fait chercher le nom de La Bourdaisière toute l'année."
+      },
+      {
+        "titre": "Avis Google",
+        "texte": "Continuer à en demander un après chaque séjour : votre note est la meilleure des trois (4,9), mais vous avez 124 avis, contre 716 au Clos d'Amboise et 1 274 à La Bourdaisière."
+      },
+      {
+        "titre": "Fausse annonce sur Google Maps",
+        "texte": "Retrouver la plateforme qui publie « Château de la Huberdière - Junior Suite Allium » : elle annonce 11 chambres et 15 personnes, au lieu de 10 chambres et 21 couchages."
+      },
+      {
+        "titre": "Droit de bouchon",
+        "texte": "Me dire si les dîners des clients de l'hôtel paient aussi les 8 € par bouteille : la page restauration n'en parle pas encore."
+      }
     ]
   }
 }

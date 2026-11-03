@@ -3,7 +3,7 @@ import { test } from "node:test"
 import assert from "node:assert/strict"
 import {
   serpDepuisOpenseo, iaDepuisOpenseo, bilanIa, bilanApercus, aPorteeDepuisGsc, positionsGsc,
-  renderIa, renderApercus, renderAPortee,
+  renderSectionIa, evolutionIa, renderAPortee,
 } from "../src/lib/rapport-openseo.mjs"
 
 const DOMAINE = "chateaudelahuberdiere.com"
@@ -106,26 +106,52 @@ test("bilans : questions de marque et aperçus Google hors du compte des répons
   assert.deepEqual(bilanApercus(ia), { questions: 2, affiches: 1, cites: 0 })
 })
 
-test("rendu IA : activités, moteurs, sources, sans la question de marque", () => {
+test("évolution IA : un point par mois mesuré, méthode marquée, 12 mois au plus", () => {
+  const history = [
+    { month: "2026-06" },
+    { month: "2026-07", monthLabel: "juil. 26", llmCited: 7, llmAnswered: 24 },
+    { month: "2026-08", monthLabel: "août 26", llmCited: 3, llmAnswered: 24, aio: { present: 3, cited: 0, keywords: 19 } },
+    { month: "2026-10", monthLabel: "oct. 26", llmCited: 21, llmAnswered: 42, aio: { present: 14, cited: 4, keywords: 14, source: "openseo" }, iaSource: "openseo" },
+    { month: "2026-11", monthLabel: "nov. 26", llmCited: 30, llmAnswered: 42, iaSource: "openseo" },
+  ]
+  const pts = evolutionIa(history, "2026-10")
+  assert.deepEqual(pts.map((p) => p.month), ["2026-07", "2026-08", "2026-10"]) // ni mois vide, ni mois futur
+  assert.deepEqual(pts.map((p) => p.methode), ["ancienne", "ancienne", "actuelle"])
+  assert.equal(pts[2].pct, 50)
+  // L'aperçu d'août se lisait sur les 19 recherches, pas sur les questions : pas comparable.
+  assert.equal(pts[1].apercu, null)
+  assert.deepEqual(pts[2].apercu, { cites: 4, affiches: 14 })
+  const mois = [...Array(12)].map((_, i) => `2027-${String(i + 1).padStart(2, "0")}`).concat(["2028-01", "2028-02", "2028-03"])
+  const long = mois.map((month) => ({ month, llmCited: 1, llmAnswered: 2 }))
+  assert.equal(evolutionIa(long, "2028-12").length, 12)
+})
+
+test("section IA : une seule section, chiffres clés, évolution, activités, sans la question de marque", () => {
   const ia = iaDepuisOpenseo(IA)
-  const html = renderIa(ia, { changementMethode: true })
-  assert.match(html, /Visibilité dans les réponses IA/)
+  const historique = [
+    { month: "2026-09", monthLabel: "sept. 26", llmCited: 3, llmAnswered: 18 },
+    { month: "2026-10", monthLabel: "oct. 26", llmCited: 2, llmAnswered: 2, aio: { present: 1, cited: 0, keywords: 2, source: "openseo" }, iaSource: "openseo" },
+  ]
+  const html = renderSectionIa(ia, { history: historique, month: "2026-10", changementMethode: true })
+  assert.match(html, /<h2>Le château dans les réponses des IA<\/h2>/)
+  assert.equal((html.match(/<h2>/g) ?? []).length, 1) // aperçus Google et assistants réunis
+  assert.doesNotMatch(html, /est-il un hôtel/)
+  // Le total se lit comme questions x IA : 2 questions x 2 IA = 4 attendues, 2 arrivées.
+  assert.match(html, /les mêmes 2 questions/)
+  assert.match(html, /ChatGPT et Perplexity/)
+  assert.match(html, /4 réponses attendues, 2 sont arrivées/)
+  // Mois après mois, l'ancienne méthode marquée par un mot, pas seulement par le motif.
+  assert.match(html, /Mois après mois/)
+  assert.match(html, /sept\. 26/)
+  assert.match(html, /17 %/)
+  assert.match(html, /ancienne mesure/)
   assert.match(html, /Mariage/)
   assert.match(html, /mariages\.net/)
-  assert.doesNotMatch(html, /est-il un hôtel/)
-  assert.match(html, /septembre/i) // note sur le changement d'outil
-  assert.doesNotMatch(renderIa(ia, { changementMethode: false }), /changé d'outil/)
-  // Le compte des réponses se déduit des questions et des IA : 2 questions x 2 IA = 4,
-  // dont 2 seulement sont arrivées. Sans le calcul, « 14 questions » puis « sur 42 » égarait.
-  assert.match(html, /les mêmes 2 questions/)
-  assert.match(html, /à 2 IA \(ChatGPT et Perplexity\) et nous/)
-  assert.match(html, /4 réponses attendues, 2 sont arrivées/)
-  assert.match(html, /cité dans <strong>2<\/strong> d'entre elles/)
-  // Rien ne passe par la couleur seule : un mot accompagne toujours le symbole.
+  assert.match(html, /Château de Pray/)
+  assert.match(html, /Le Clos d'Amboise/)
   assert.doesNotMatch(html, /—/)
-  const ap = renderApercus(ia)
-  assert.match(ap, /Aperçus IA de Google/)
-  assert.match(ap, /Le Clos d'Amboise/)
+  assert.match(html, /changé d'outil ce mois-ci/)
+  assert.doesNotMatch(renderSectionIa(ia, { history: historique, month: "2026-10", changementMethode: false }), /changé d'outil/)
 })
 
 test("recherches à portée : positions 4 à 20, hors marque, regroupées par recherche", () => {

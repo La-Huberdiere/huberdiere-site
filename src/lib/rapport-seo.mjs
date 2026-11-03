@@ -28,7 +28,7 @@ import { fenetresDeJours, pointDeComparaison, moisDecales } from "./rapport-peri
 import { BRAND_KEYWORDS, GSC_BRAND_REGEX } from "./rapport-marque.mjs"
 import { repartirAbsents, absenceProuvee, domainesCites, kpiBaseFixe } from "./rapport-positions.mjs"
 import { buildLeadsData, libellePage } from "./rapport-demandes.mjs"
-import { serpDepuisOpenseo, iaDepuisOpenseo, bilanIa, bilanApercus, aPorteeDepuisGsc, positionsGsc, renderIa, renderApercus, renderAPortee } from "./rapport-openseo.mjs"
+import { serpDepuisOpenseo, iaDepuisOpenseo, bilanIa, bilanApercus, aPorteeDepuisGsc, positionsGsc, renderSectionIa, renderAPortee } from "./rapport-openseo.mjs"
 import { localizePath } from "./routes.ts"
 export { buildLeadsData }
 
@@ -1152,7 +1152,19 @@ function renderHtml(data) {
   footer .arch{margin-bottom:14px}
   footer .arch a{margin-right:12px;white-space:nowrap}
   .pos{font-weight:600}
-  .propositions p{margin:0 0 10px}.propositions p:last-child{margin-bottom:0}
+  /* « Pour le mois prochain » : deux colonnes sous un filet bordeaux, éléments numérotés. */
+  .propositions-grille{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:6px}
+  .propositions{border-top:2px solid var(--bordeaux)}
+  .propositions .sub-h{margin:14px 0 4px}
+  .propositions ol{list-style:none;counter-reset:prop;margin:0;padding:0}
+  .propositions li{counter-increment:prop;position:relative;padding:10px 0 10px 28px;border-bottom:1px solid #efeada;font-size:14px}
+  .propositions li:last-child{border-bottom:0}
+  .propositions li::before{content:counter(prop);position:absolute;left:2px;top:9px;font-family:"Playfair Display",serif;font-weight:600;color:var(--bordeaux)}
+  .propositions li strong{color:var(--encre)}
+  .evolution-ia td{padding-top:8px;padding-bottom:8px;vertical-align:middle}
+  details.note summary{cursor:pointer;color:var(--bordeaux)}
+  details.note ul{margin:8px 0 0;padding-left:18px}
+  details.note li{margin-bottom:4px}
   .sub-h{font-family:"Playfair Display",serif;color:var(--encre);font-size:17px;margin:26px 0 2px;font-weight:600}
   /* Téléphone : une colonne secondaire (.hors-mobile) disparaît et revient en
      ligne grise sous la première cellule (.sur-mobile), comme dans « Face aux
@@ -1160,6 +1172,7 @@ function renderHtml(data) {
      sous ce seuil, et l'impression garde toutes ses colonnes. */
   .sur-mobile{display:none}
   @media screen and (max-width:720px){
+    .propositions-grille{grid-template-columns:1fr;gap:18px}
     .wrap{padding:0 16px}
     th,td{padding:9px 8px}
     th{font-size:11px}
@@ -1177,6 +1190,10 @@ function renderHtml(data) {
   @page{size:A4;margin:14mm 12mm 16mm}
   @media print{
     body{background:#fff;color:#000;font-size:10.5pt}
+    .propositions-grille{grid-template-columns:1fr;gap:14px}
+    .propositions{border-top-color:#000}
+    .propositions li::before{color:#000}
+    .barre-ia{fill:#222}
     .wrap{max-width:none;padding:0}
     header{background:#fff;color:#000;border-bottom:2px solid #000;padding:0 0 14px}
     header .sub{opacity:1;color:#333}
@@ -1294,7 +1311,7 @@ function renderHtml(data) {
   </table>` : `<div class="card"><p style="margin:0;color:var(--gris)">Aucun article publié sur cette période.</p></div>`}
   <p class="note">Votre blog compte désormais ${articles.length} article${articles.length > 1 ? "s" : ""} en ligne. Les prochains sont planifiés dans votre <a href="/rapport?doc=calendrier">calendrier éditorial SEO &rarr;</a> : quatre articles par mois, chacun visant une recherche précise de vos futurs clients.</p>
 
-  ${ia ? renderApercus(ia) : `<h2>Aperçus IA de Google</h2>
+  ${ia ? "" : `<h2>Aperçus IA de Google</h2>
   <p class="lead">Depuis le 22 juillet 2026, Google affiche en France un résumé rédigé par son IA au-dessus des résultats classiques. Il répond directement à la question de l'internaute et cite quelques sites en source. Être cité dans cet encart, c'est occuper la place la plus visible de la page.</p>
   <div class="kpis" style="grid-template-columns:repeat(2,1fr)">
     <div class="kpi"><div class="l">Mots-clés avec aperçu IA</div><div class="v">${kpiAio.valeur}<span style="font-size:15px;color:var(--gris)"> / ${kpiAio.base}</span></div><div class="n">${esc(kpiAio.note)}</div></div>
@@ -1310,7 +1327,7 @@ function renderHtml(data) {
   </table>` : `<div class="card">Aucun aperçu IA relevé ce mois-ci sur les ${serpMesure.length} recherches mesurées. Google en affiche peu sur les recherches locales et commerciales, qui sont justement les vôtres ; il les réserve surtout aux questions générales, celles que visent les articles du blog.${serpNonReleves ? ` ${serpNonReleves} recherche${serpNonReleves > 1 ? "s n'ont" : " n'a"} pas pu être relevée${serpNonReleves > 1 ? "s" : ""} ce mois-ci, voir plus haut.` : ""}</div>`}
   <p class="note">Sur les recherches où un aperçu s'affiche, le nombre de clics vers les sites baisse nettement, y compris pour la première position. La parade n'est pas de monter d'un rang, c'est d'être la source que l'IA cite. C'est ce qui guide la façon dont vos articles sont désormais écrits : une question par titre, une réponse nette dessous, des chiffres et des détails que personne d'autre ne peut donner sur le château.</p>`}
 
-  ${ia ? renderIa(ia, { changementMethode }) : `<h2>Visibilité dans les réponses IA</h2>
+  ${ia ? renderSectionIa(ia, { history, month, changementMethode }) : `<h2>Visibilité dans les réponses IA</h2>
   <p class="lead">De plus en plus de clients posent leur question à ChatGPT, Gemini, Perplexity ou Claude. On teste 6 questions réelles, une par activité, sur les 4 moteurs, et on regarde si le château est cité.</p>
   <table>
     <thead><tr><th>Activité</th><th class="hors-mobile">Question posée</th><th class="num">Cité par</th></tr></thead>
