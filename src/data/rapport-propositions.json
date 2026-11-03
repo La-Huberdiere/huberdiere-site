@@ -20,16 +20,16 @@
       {
         "titre": "Fiche de l'office de tourisme",
         "texte": "Rédiger un texte plus complet : hôtel de charme 3 étoiles, 10 chambres, parc de 14 hectares, mariages et séminaires, 2 h 20 de Paris."
-      },
-      {
-        "titre": "Call de novembre",
-        "texte": "Vous présenter le projet « faire circuler la satisfaction » et le suivi des réservations faites sur Octorate."
       }
     ],
     "client": [
       {
         "titre": "Office de tourisme d'Amboise",
-        "texte": "Lui transmettre le texte de votre fiche quand je vous l'envoie, et lui demander un article sur le château comme celui qu'il consacre au Château de Pray. Son site sort premier sur « week-end Amboise », et c'est lui que Google résume en tête des résultats."
+        "texte": "Lui transmettre le texte de votre fiche quand je vous l'envoie, et lui demander un article sur le château comme celui qu'il consacre au Château de Pray. Son site sort premier sur « week-end Amboise », et c'est lui que Google résume en tête des résultats.",
+        "lien": {
+          "ancre": "celui qu'il consacre au Château de Pray",
+          "url": "https://link.morain.fr/nANsh"
+        }
       },
       {
         "titre": "Un rendez-vous annuel",
@@ -42,10 +42,6 @@
       {
         "titre": "Fausse annonce sur Google Maps",
         "texte": "Retrouver la plateforme qui publie « Château de la Huberdière - Junior Suite Allium » : elle annonce 11 chambres et 15 personnes, au lieu de 10 chambres et 21 couchages."
-      },
-      {
-        "titre": "Droit de bouchon",
-        "texte": "Me dire si les dîners des clients de l'hôtel paient aussi les 8 € par bouteille : la page restauration n'en parle pas encore."
       }
     ]
   }

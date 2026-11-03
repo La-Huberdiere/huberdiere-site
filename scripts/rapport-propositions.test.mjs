@@ -45,3 +45,12 @@ test("éléments { titre, texte } : intitulé en gras, deux colonnes, préflight
   assert.equal(propositionsManquantes(entree), false)
   assert.equal(propositionsManquantes({ alexis: [{ titre: "x", texte: "y" }], client: [{ titre: " ", texte: "" }] }), true)
 })
+
+test("lien : l'ancre du texte devient un lien https, sinon le texte reste brut", () => {
+  const html = renderPropositions({ client: [{ titre: "Office", texte: "Demander un article comme celui sur Pray & co.", lien: { ancre: "celui sur Pray & co", url: "https://link.morain.fr/abc" } }] })
+  assert.match(html, /comme <a href="https:\/\/link\.morain\.fr\/abc">celui sur Pray &amp; co<\/a>\./)
+  const brut = renderPropositions({ client: [{ titre: "", texte: "Voir ici", lien: { ancre: "ici", url: "javascript:alert(1)" } }] })
+  assert.doesNotMatch(brut, /<a /)
+  const absente = renderPropositions({ client: [{ titre: "", texte: "Voir ici", lien: { ancre: "là", url: "https://x.fr" } }] })
+  assert.doesNotMatch(absente, /<a /)
+})

@@ -10,11 +10,21 @@ const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replac
 // en gras se lit en diagonale, le texte tient en une phrase ou deux.
 const elements = (v) => (Array.isArray(v) ? v : v == null ? [] : [v])
   .map((t) => (t && typeof t === "object"
-    ? { titre: String(t.titre ?? "").trim(), texte: String(t.texte ?? "").trim() }
+    ? { titre: String(t.titre ?? "").trim(), texte: String(t.texte ?? "").trim(), lien: t.lien }
     : { titre: "", texte: String(t ?? "").trim() }))
   .filter((e) => e.titre || e.texte)
 
-const contenu = (e) => (e.titre ? `<strong>${esc(e.titre)}.</strong> ${esc(e.texte)}` : esc(e.texte)).trim()
+// Lien optionnel { ancre, url } : la première occurrence de l'ancre dans le texte
+// devient un lien, en https seulement ; ancre introuvable, texte rendu brut.
+const texteLie = (e) => {
+  const texte = esc(e.texte)
+  const ancre = esc(String(e.lien?.ancre ?? ""))
+  const url = String(e.lien?.url ?? "")
+  if (!ancre || !/^https:\/\//.test(url) || !texte.includes(ancre)) return texte
+  return texte.replace(ancre, () => `<a href="${esc(url)}">${ancre}</a>`)
+}
+
+const contenu = (e) => (e.titre ? `<strong>${esc(e.titre)}.</strong> ${texteLie(e)}` : texteLie(e)).trim()
 
 // Le préflight des 25 et 28 alerte tant que l'un des deux côtés est vide.
 export function propositionsManquantes(entree) {
