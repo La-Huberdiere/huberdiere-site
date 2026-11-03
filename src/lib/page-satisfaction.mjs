@@ -4,6 +4,8 @@
 // le plan du 05/10 (carte postale, budget). Aucune rémunération d'Alexis ici : elle se
 // discute avec le périmètre contractuel, pas sur une page client.
 
+import { insecables } from "./rapport-encarts.mjs"
+
 const IMG = "/images/satisfaction"
 
 const figure = (src, alt, w, h, legende) => `<figure>
@@ -69,8 +71,7 @@ export function satisfactionPage(head) {
   const nav = `<div class="rapport-nav" style="background:var(--wine);color:#fff;font-family:'Montserrat',system-ui,sans-serif;font-size:13px;padding:10px 18px;display:flex;align-items:center">
     <a href="/rapport" style="color:#fff;text-decoration:none;font-weight:600">← Tous les rapports</a>
   </div>`
-  return `<!doctype html><html lang="fr"><head>${head}${STYLE}
-<title>Faire circuler la satisfaction, Château de la Huberdière</title></head>
+  const corps = insecables(`
 <body>
   ${nav}
   <main class="sat">
@@ -127,7 +128,7 @@ export function satisfactionPage(head) {
       ${figure("carte-recto-parc.webp", "Maquette de la carte postale, recto avec le parc", 900, 600, "Recto, le parc")}
     </div>
     ${figure("carte-verso.webp", "Maquette du verso de la carte postale : lignes pour le texte et l'adresse, case du timbre, QR code et adresse courte du site", 900, 600, "Verso : la moitié droite reste libre pour l'adresse et le timbre. En pied, une adresse courte et un QR code qui mènent au site.")}
-    <p class="note">L'adresse courte et le QR code disent combien de visites la carte amène, et quelle photo fait venir. L'adresse du destinataire n'est jamais notée.</p>
+    <p class="note">Ils disent combien de visites la carte amène, et quelle photo fait venir. L'adresse du destinataire n'est jamais notée.</p>
 
     <div class="objet">
       <div>
@@ -207,5 +208,8 @@ export function satisfactionPage(head) {
       <li><b>Avril 2027</b><span>Le lancement, avant la saison.</span></li>
     </ul>
   </main>
-</body></html>`
+</body>`)
+  return `<!doctype html><html lang="fr"><head>${head}${STYLE}
+<title>Faire circuler la satisfaction, Château de la Huberdière</title></head>
+${corps}</html>`
 }

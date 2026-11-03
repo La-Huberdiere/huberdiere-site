@@ -4,7 +4,10 @@
 // un mois sans entrée reste identique au rejeu. Module sans import de JSON pour rester
 // testable sous `node --test`.
 
-const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
+// Espaces insécables de la typographie française : un « ou un ? ne finit jamais seul
+// en début ou en bout de ligne.
+export const insecables = (s) => s.replace(/« /g, "«&nbsp;").replace(/ ([»?!;])/g, "&nbsp;$1")
+const esc = (s) => insecables(String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"))
 
 // Encart rapide sous « Face aux voisins » : l'analyse SEO d'un ou deux concurrents
 // regardés de près ce mois-là, en quelques paragraphes à l'intitulé en gras.
