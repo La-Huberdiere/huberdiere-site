@@ -228,7 +228,7 @@ export function satisfactionPage(head) {
       quand: "J+14",
       objet: "Pour vos amis qui partent en Val de Loire",
       demande: "transmettre le carnet à un proche",
-      pourquoi: `<p>C'est le moment que Patrick appelait la « soirée diapo » : les quinze jours où l'on montre ses photos et où un ami demande « c'était où ? ». Le mail donne au client quelque chose à transmettre qui a de la valeur en soi, le carnet d'adresses de Lodovica, utile même à qui ne dort pas au château. Rien à vendre, aucune remise : un ami qui vient « de la part de » est accueilli comme un ami de la maison.</p>`,
+      pourquoi: `<p>Deux semaines après le retour, on raconte encore son séjour et un ami demande « c'était où ? ». Le mail donne au client quelque chose à transmettre qui a de la valeur en soi, le carnet d'adresses de Lodovica, utile même à qui ne dort pas au château. Rien à vendre, aucune remise : un ami qui vient « de la part de » est accueilli comme un ami de la maison.</p>`,
       texte: `<p>Bonjour Camille,</p>
         <p>Les photos du séjour ont peut-être déjà circulé. Si quelqu'un vous a demandé où c'était, voici de quoi lui répondre.</p>
         <p>Lodovica a réuni dans un carnet les adresses qu'elle donne à ses propres amis : où dîner à Amboise, où louer un vélo pour suivre la Loire, quels sentiers prendre dans les vignes. Il se lit sans avoir dormi chez nous.</p>
@@ -310,7 +310,7 @@ export function satisfactionPage(head) {
       <li><b>1</b><span><strong>Le timbre à l'image du château.</strong> Un vrai timbre de La Poste, imprimé avec une photo du domaine. On le remarque avant de lire la carte.</span></li>
       <li><b>2</b><span><strong>Le cachet de la maison.</strong> Un tampon bordeaux « Posté au Château de la Huberdière, Amboise », et un tampon dateur. La carte porte la preuve d'où elle vient.</span></li>
       <li><b>3</b><span><strong>Le mot de Lodovica.</strong> Une ligne à la main au pied de la carte, ajoutée au moment où elle passe à l'accueil. Le client ne s'y attend pas.</span></li>
-      <li><b>4</b><span><strong>La carte à soi-même.</strong> Le chevalet le propose : « Écrivez-vous, vous la trouverez dans votre boîte en rentrant. » Le jour de la soirée diapo, elle est sur la table.</span></li>
+      <li><b>4</b><span><strong>La carte à soi-même.</strong> Le chevalet le propose : « Écrivez-vous, vous la trouverez dans votre boîte en rentrant. » Une fois rentré, le client retrouve son séjour dans sa boîte aux lettres, et la carte reste sur le frigo.</span></li>
     </ol>
 
     <h3>Le trajet de la carte</h3>
@@ -331,7 +331,7 @@ export function satisfactionPage(head) {
         <h3>Le chevalet en chambre</h3>
         <p>Il explique le service en deux phrases, en français, en anglais et en italien, et propose la carte à soi-même.</p>
         <h3>Pour un mariage</h3>
-        <p>La soirée diapo a lieu sur place, devant 80 à 120 invités. Une carte « Vous aussi, vous vous mariez ? » les attend dans les chambres et au bar.</p>
+        <p>Le mariage se raconte sur place, devant 80 à 120 invités. Une carte « Vous aussi, vous vous mariez ? » les attend dans les chambres et au bar.</p>
       </div>
       <div>${figure("chevalet-trilingue.webp", "Maquette du chevalet trilingue : Écrivez à qui vous voulez, Write to whoever you like, Scrivete a chi volete", 700, 987, "Le chevalet")}</div>
     </div>
