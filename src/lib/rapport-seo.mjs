@@ -832,7 +832,9 @@ async function umamiShareHeaders() {
 }
 
 async function umamiAuthHeaders() {
-  if (process.env.UMAMI_API_KEY) return { "x-umami-api-key": process.env.UMAMI_API_KEY }
+  // Umami auto-hébergé : la clé passe en jeton Bearer. L'en-tête `x-umami-api-key`
+  // n'existe que sur Umami Cloud, il rendait 401 ici (constaté le 02/11/2026).
+  if (process.env.UMAMI_API_KEY) return { authorization: `Bearer ${process.env.UMAMI_API_KEY}` }
   if (_umamiHeaders) return _umamiHeaders
   const user = process.env.UMAMI_USERNAME, pass = process.env.UMAMI_PASSWORD
   if (user && pass) {
