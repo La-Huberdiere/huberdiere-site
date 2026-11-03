@@ -2,19 +2,139 @@
   "2026-10": {
     "concurrents": {
       "titre": "Deux voisins regardés de près",
-      "intro": "Ce mois-ci, j'ai comparé votre site à ceux de deux voisins, le Clos d'Amboise et La Bourdaisière.",
+      "intro": "Ce mois-ci, j'ai comparé votre site à ceux de deux voisins. Le Clos d'Amboise, parce que c'est l'hôtel le plus visible d'Amboise sur Google. La Bourdaisière, parce qu'elle a votre classement et votre offre, et que ChatGPT, Perplexity et Claude la citent souvent à votre place.",
+      "chiffres": {
+        "titre": "Les trois maisons en chiffres",
+        "colonnes": [
+          "Clos d'Amboise",
+          "Bourdaisière",
+          "Vous"
+        ],
+        "lignes": [
+          {
+            "libelle": "Classement",
+            "valeurs": [
+              "4 étoiles",
+              "3 étoiles",
+              "3 étoiles"
+            ]
+          },
+          {
+            "libelle": "Note Google",
+            "valeurs": [
+              "4,6",
+              "4,3",
+              "4,9"
+            ],
+            "meilleur": 2
+          },
+          {
+            "libelle": "Avis Google",
+            "valeurs": [
+              716,
+              1274,
+              124
+            ],
+            "barres": true
+          },
+          {
+            "libelle": "Photos sur la fiche Google",
+            "valeurs": [
+              941,
+              4795,
+              365
+            ],
+            "barres": true
+          },
+          {
+            "libelle": "Recherches où le site sort en première page de Google",
+            "detail": "ordre de grandeur",
+            "valeurs": [
+              97,
+              53,
+              10
+            ],
+            "barres": true
+          },
+          {
+            "libelle": "Citations dans les réponses des IA",
+            "detail": "ordre de grandeur",
+            "valeurs": [
+              14,
+              29,
+              5
+            ],
+            "barres": true
+          },
+          {
+            "libelle": "Classé sur les recherches de mariage et de séminaire",
+            "valeurs": [
+              "non",
+              "non",
+              "oui"
+            ],
+            "meilleur": 2
+          }
+        ],
+        "note": "Relevés de fin octobre 2026. Note, avis et photos : fiches Google. Recherches en première page et citations des IA : base de l'outil de mesure en septembre, pour comparer les trois sites entre eux, pas des visites."
+      },
+      "fiches": [
+        {
+          "nom": "Le Clos d'Amboise",
+          "statut": "Hôtel 4 étoiles en centre-ville d'Amboise, restaurant ouvert au public.",
+          "resume": "Sur Google, la moitié de ses visites arrive par sa page restaurant, l'autre moitié par sa page d'accueil. Le reste de son site pèse très peu.",
+          "plus": [
+            "2e sur « hôtel Amboise » (4 400 recherches par mois) et 3e sur « restaurant Amboise » (14 800).",
+            "Premier établissement cité dans le résumé que Google affiche en tête de « hôtel de charme Amboise ».",
+            "716 avis. Les clients y parlent du jardin, de l'accueil et de la piscine, et ce sont ces mots qui le font sortir sur « charme » et « piscine ».",
+            "Prix « à partir de » et disponibilités affichés pour chaque chambre dès la page d'accueil.",
+            "Une vingtaine de liens venus de la Loire à Vélo et de voyagistes à vélo."
+          ],
+          "moins": [
+            "Pas de page mariage. Il n'apparaît sur aucune des recherches de mariage ou de séminaire que nous suivons.",
+            "Des pages tourisme très courtes : 274 mots pour « Visiter Amboise ».",
+            "Ses trois articles de 2026 (week-end, piscine, châteaux de la Loire) ne sortent encore sur rien.",
+            "Jamais cité par les IA dans notre test mensuel sur les châteaux : ce n'en est pas un.",
+            "La description qu'il donne de lui-même à Google porte encore le nom d'un autre hôtel du groupe."
+          ],
+          "garder": [
+            "Demander un avis après chaque séjour et répondre à tous : c'est votre plus gros écart avec lui.",
+            "Ajouter une dizaine de photos par mois sur votre fiche Google, saison par saison.",
+            "Afficher un prix « à partir de » par type de chambre sur la page séjour, si vous êtes d'accord.",
+            "Faire répondre notre article sur les nuits en château à « hôtel châteaux de la Loire » (880 recherches par mois), que le Clos vise depuis septembre."
+          ]
+        },
+        {
+          "nom": "La Bourdaisière",
+          "statut": "Château-hôtel 3 étoiles à Montlouis-sur-Loire, parc ouvert à la visite, mariages et séminaires.",
+          "resume": "Son nom est cherché 3 600 fois par mois. Les trois quarts de ses visites Google viennent de là, le reste de ses événements.",
+          "plus": [
+            "Fête de la tomate, fête des plantes, expositions : chaque rendez-vous est annoncé dans les agendas de sorties, puis repris par les sites de jardin et la presse locale. Le Monde et Le Figaro ont aussi écrit sur elle.",
+            "Une page Wikipédia, que les IA reprennent comme source (13 fois dans notre relevé).",
+            "Citée par ChatGPT, Perplexity et Claude en septembre parmi les châteaux à recommander pour un mariage, un séminaire ou un séjour.",
+            "1 274 avis et près de 4 800 photos, laissés surtout par les visiteurs du parc et des fêtes.",
+            "Prix des chambres affichés en clair, de 128 à 357 €."
+          ],
+          "moins": [
+            "Son site n'apparaît sur aucune recherche de mariage ou de séminaire.",
+            "Ses pages n'ont ni description pour Google ni titre principal, et ses compteurs (« mariages célébrés », « invités ») s'affichent à 0 pour Google et les IA.",
+            "Une note Google de 4,3, la plus basse des trois.",
+            "Pas de blog."
+          ],
+          "garder": [
+            "Un rendez-vous ouvert au public chaque année, avec sa page sur le site et une inscription dans les agendas de l'office de tourisme, de Touraine Val de Loire et d'OpenAgenda.",
+            "Exister ailleurs que sur votre site : une fiche plus complète à l'office de tourisme d'Amboise, un article chez lui, la presse locale. C'est là que les IA vont chercher."
+          ]
+        }
+      ],
       "points": [
         {
-          "titre": "Le Clos d'Amboise",
-          "texte": "C'est l'hôtel le plus visible de la ville sur Google : 2e sur « hôtel Amboise » (4 400 recherches par mois), et premier établissement cité dans le résumé que Google affiche au-dessus des résultats pour « hôtel de charme Amboise ». Il le doit à son adresse en centre-ville et à ses 716 avis, bien plus qu'à ses textes."
-        },
-        {
-          "titre": "La Bourdaisière",
-          "texte": "Hôtel 3 étoiles comme vous, elle revient souvent dans les réponses de ChatGPT, Perplexity et Claude. Son nom est cherché 3 600 fois par mois, grâce à sa fête de la tomate, à son propriétaire et à sa page Wikipédia. Son site, lui, n'apparaît sur aucune recherche de mariage ou de séminaire."
-        },
-        {
           "titre": "Ce que j'en retiens",
-          "texte": "Aucun des deux ne vous devance sur les recherches de mariage ou de séminaire. Ce qu'ils ont de plus que vous : beaucoup plus d'avis Google et, pour La Bourdaisière, un rendez-vous ouvert au public qui fait parler du lieu toute l'année. Les deux propositions qui en découlent sont en fin de rapport."
+          "texte": "Aucun des deux ne vous devance sur le mariage, le séminaire, la retraite ou les sujets du blog. Vous avez la meilleure note des trois, et votre site se décrit mieux à Google que les leurs. L'écart se joue hors du site : avis, photos, présence dans les agendas et à l'office de tourisme. Les propositions qui en découlent sont en fin de rapport, dans « Pour le mois prochain »."
+        },
+        {
+          "titre": "Ce que nous ne copierons pas",
+          "texte": "Le restaurant comme moteur, comme au Clos : votre table n'est pas ouverte toute l'année. Ses petites pages « hôtel avec piscine » ou « week-end à Amboise », qui ne sortent toujours pas après cinq mois. Et une page Wikipédia écrite par nous : elle doit s'appuyer sur des sources indépendantes, sinon elle est supprimée."
         }
       ]
     },

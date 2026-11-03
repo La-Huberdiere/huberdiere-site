@@ -37,3 +37,52 @@ test("les guillemets ne restent jamais seuls en bout de ligne", () => {
   const html = renderLienSatisfaction({ titre: "T", texte: "le mail « Bien rentrés ? »", lien: "/rapport?doc=satisfaction" })
   assert.match(html, /«&nbsp;Bien rentrés&nbsp;\?&nbsp;»/)
 })
+
+const voisins = {
+  titre: "Deux voisins regardés de près",
+  intro: "Intro.",
+  chiffres: {
+    titre: "Les trois maisons en chiffres",
+    colonnes: ["Le Clos d'Amboise", "La Bourdaisière", "Vous"],
+    lignes: [
+      { libelle: "Note Google", valeurs: ["4,6", "4,3", "4,9"], meilleur: 2 },
+      { libelle: "Avis Google", valeurs: [716, 1274, 124], barres: true },
+    ],
+    note: "Relevés du 22/10.",
+  },
+  fiches: [{
+    nom: "Le Clos d'Amboise", statut: "Hôtel 4 étoiles", resume: "Résumé.",
+    plus: ["2e sur « hôtel Amboise »"], moins: ["Pas de page mariage"], garder: ["Demander un avis"],
+  }],
+  points: [{ titre: "Ce que j'en retiens", texte: "Conclusion." }],
+}
+
+test("le tableau des voisins met chaque chiffre en clair et une barre à l'échelle de sa ligne", () => {
+  const html = renderEncartConcurrents(voisins)
+  assert.match(html, /Les trois maisons en chiffres/)
+  assert.match(html, /<th class="num">Vous<\/th>/)
+  assert.match(html, /1 274/, "milliers séparés par une espace fine insécable")
+  assert.match(html, /<strong>4,9<\/strong>/, "la meilleure valeur en gras, lisible en noir et blanc")
+  // 1 274 est le maximum de sa ligne : barre pleine ; 124 en fait moins d'un dixième.
+  assert.match(html, /width="100"/)
+  assert.match(html, /width="9\.7"/)
+  assert.equal((html.match(/<svg/g) || []).length, 3, "pas de barre sur une ligne sans `barres`")
+  assert.match(html, /Relevés du 22\/10\./)
+})
+
+test("chaque fiche de voisin porte ses plus, ses moins et ce que nous en gardons", () => {
+  const html = renderEncartConcurrents(voisins)
+  assert.match(html, /class="fiche-voisin"/)
+  assert.match(html, /Le Clos d'Amboise<\/h4>/)
+  assert.match(html, /Hôtel 4 étoiles/)
+  assert.match(html, /class="plus"[\s\S]*2e sur «&nbsp;hôtel Amboise&nbsp;»/)
+  assert.match(html, /class="moins"[\s\S]*Pas de page mariage/)
+  assert.match(html, /Ce que nous en gardons[\s\S]*Demander un avis/)
+  assert.match(html, /<strong>Ce que j'en retiens\.<\/strong> Conclusion\./)
+  assert.doesNotMatch(html, /—/)
+})
+
+test("un encart sans points mais avec des fiches s'affiche quand même", () => {
+  const { points, ...sansPoints } = voisins
+  assert.match(renderEncartConcurrents(sansPoints), /fiche-voisin/)
+})
