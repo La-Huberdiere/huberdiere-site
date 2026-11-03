@@ -69,7 +69,9 @@ test("sans UTM, le canal vient du référent d'entrée, et le site lui-même n'e
   ]
   const ld = buildLeadsData(contacts, "2026-09")
   const canal = Object.fromEntries(ld.parCanal)
-  assert.equal(canal["Recherche Google"], 2)
+  // Chaque moteur garde son nom : Bing n'est pas Google.
+  assert.equal(canal["Recherche Google"], 1)
+  assert.equal(canal["Recherche Bing"], 1)
   assert.equal(canal["ChatGPT"], 2)
   assert.equal(canal["Accès direct / source non identifiée"], 1)
   assert.equal(ld.identifies, 4)

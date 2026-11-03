@@ -1,6 +1,8 @@
 // Bloc « Demandes reçues » du rapport client : contacts Brevo bruts → demandes du
 // mois, par activité, canal et déclaratif. Module pur, testé sous `node --test`.
 
+import { moteurDe } from "./rapport-moteurs.mjs"
+
 const CIBLE_LABEL_RAPPORT = {
   LP_Mariage: "Mariage",
   LP_Seminaire: "Séminaire",
@@ -25,7 +27,8 @@ function leadChannel(src) {
   if (!r) return "Accès direct / source non identifiée"
   if (/chatgpt|openai/.test(r)) return "ChatGPT"
   if (/perplexity|gemini|claude|copilot/.test(r)) return "Autres IA"
-  if (/google|bing|yahoo|duckduckgo|qwant|ecosia|brave/.test(r)) return "Recherche Google"
+  const moteur = moteurDe(r)
+  if (moteur) return `Recherche ${moteur}`
   if (/instagram|facebook|linkedin|pinterest|tiktok|youtube|twitter|x\.com/.test(r)) return "Réseaux sociaux"
   if (/bouche/.test(r)) return "Bouche à oreille"
   // Kit « faire circuler la satisfaction » (octobre 2026) : le carnet partagé et la carte postale.

@@ -30,6 +30,8 @@ import { fenetresDeJours, pointDeComparaison, moisDecales } from "./rapport-peri
 import { BRAND_KEYWORDS, GSC_BRAND_REGEX } from "./rapport-marque.mjs"
 import { repartirAbsents, absenceProuvee, sansPanneau, domainesCites, kpiBaseFixe, garderRecherchesSuivies } from "./rapport-positions.mjs"
 import { buildLeadsData, libellePage } from "./rapport-demandes.mjs"
+import { visitesParMoteur } from "./rapport-moteurs.mjs"
+import { bilanBing, renderBing } from "./rapport-bing.mjs"
 import { serpDepuisOpenseo, iaDepuisOpenseo, bilanIa, bilanApercus, aPorteeDepuisGsc, positionsGsc, renderSectionIa, renderAPortee } from "./rapport-openseo.mjs"
 import { localizePath } from "./routes.ts"
 export { buildLeadsData }
@@ -798,7 +800,7 @@ export function renderLeads(ld, monthLabel, pages = new Map()) {
     <div><table><thead><tr><th>Par canal d'origine</th><th class="num">Demandes</th></tr></thead><tbody>${canalRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
     ${declareRows ? `<div><table><thead><tr><th>Ce qu'ils déclarent</th><th class="num">Demandes</th></tr></thead><tbody>${declareRows}</tbody></table></div>` : ""}
   </div>
-  <p class="note">Le canal est déduit de la première visite (recherche Google, IA, réseaux, lien direct). ${declareRows
+  <p class="note">Le canal est déduit de la première visite (moteur de recherche nommé, IA, réseaux, lien direct). ${declareRows
     ? `La troisième colonne vient du champ « Comment nous avez-vous connus &#63; » du formulaire, renseigné par ${ld.declares} personne${ld.declares > 1 ? "s" : ""} ce mois-ci. C'est la seule mesure qui rattrape le bouche à oreille et les réponses d'IA, invisibles pour les outils de suivi.`
     : `Une part des demandes reste en « source non identifiée » : le champ « Comment nous avez-vous connus &#63; » vient d'être ajouté aux formulaires, ses premiers résultats apparaîtront le mois prochain.`}</p>
   ${(ld.recommandations ?? []).length ? `<p class="note"><strong>Recommandations nommées :</strong> ${ld.recommandations.map((r) => `${esc(r.cible)}, ${esc(r.detail.charAt(0).toLowerCase() + r.detail.slice(1))}`).join(" ; ")}.</p>` : ""}
@@ -884,13 +886,15 @@ async function pullUmami(ym) {
     // laquelle la visite commence : ce n'est pas le classement des pages vues, et
     // c'est lui qui dit quelle porte du site travaille vraiment.
     const arr = (v) => (Array.isArray(v) ? v : [])
-    const [stats, statsPrev, pages, channels, entries, devices] = await Promise.all([
+    const [stats, statsPrev, pages, channels, entries, devices, referrers] = await Promise.all([
       umamiGet(`/api/websites/${id}/stats?${q(cur)}`, headers),
       umamiGet(`/api/websites/${id}/stats?${q(prev)}`, headers),
       umamiGet(`/api/websites/${id}/metrics?type=path&${q(cur)}&limit=8`, headers).then(arr).catch(() => []),
       umamiGet(`/api/websites/${id}/metrics?type=channel&${q(cur)}&limit=8`, headers).then(arr).catch(() => []),
       umamiGet(`/api/websites/${id}/metrics?type=entry&${q(cur)}&limit=8`, headers).then(arr).catch(() => []),
       umamiGet(`/api/websites/${id}/metrics?type=device&${q(cur)}&limit=8`, headers).then(arr).catch(() => []),
+      // Référents bruts, pour séparer les moteurs que le canal organicSearch confond.
+      umamiGet(`/api/websites/${id}/metrics?type=referrer&${q(cur)}&limit=200`, headers).then(arr).catch(() => []),
     ])
     // Umami v2 renvoie {value, prev} par métrique ; on ne garde que value.
     const val = (o, k) => (o && o[k] && typeof o[k] === "object" ? o[k].value : o?.[k]) ?? 0
@@ -915,9 +919,33 @@ async function pullUmami(ym) {
       // artefact de mesure, pas un usage. On regroupe les deux sous « ordinateur »,
       // le détail reste dans le tableau de bord lié plus haut.
       devices: groupDevices(devices),
+      moteurs: visitesParMoteur(referrers),
     }
   } catch (e) {
     console.error("[rapport] pullUmami KO:", e.message)
+    return null
+  }
+}
+
+// Bing Webmaster Tools : trafic jour par jour et recherches par semaine, sur les
+// six derniers mois environ. La propriété suivie est le www : l'ancienne, sans
+// www, s'est arrêtée au 13/07/2026 avec la redirection vers le www.
+const BING_SITE = "https://www.chateaudelahuberdiere.com/"
+async function pullBing(ym) {
+  const key = process.env.BING_WEBMASTER_API_KEY
+  if (!key) { console.log("[rapport] Bing : BING_WEBMASTER_API_KEY absente, bloc ignoré."); return null }
+  const get = async (methode) => {
+    const res = await fetch(`https://ssl.bing.com/webmaster/api.svc/json/${methode}?siteUrl=${encodeURIComponent(BING_SITE)}&apikey=${encodeURIComponent(key)}`, { signal: AbortSignal.timeout(20000) })
+    const body = await res.json().catch(() => ({}))
+    // Bing répond 200 avec { ErrorCode, Message } quand la propriété n'est pas vérifiée.
+    if (!res.ok || body.ErrorCode) throw new Error(`Bing ${methode} ${res.status} ${body.Message || ""}`.trim())
+    return Array.isArray(body.d) ? body.d : []
+  }
+  try {
+    const [trafic, requetes] = await Promise.all([get("GetRankAndTrafficStats"), get("GetQueryStats")])
+    return bilanBing(trafic, requetes, ym)
+  } catch (e) {
+    console.error("[rapport] pullBing KO:", e.message)
     return null
   }
 }
@@ -945,8 +973,9 @@ function groupDevices(rows) {
 // Traduit les canaux d'acquisition Umami en libellés client.
 const CHANNEL_LABELS = {
   direct: "Accès direct",
-  organicSearch: "Recherche Google",
-  paidSearch: "Publicité Google",
+  organicSearch: "Moteurs de recherche",
+  paidSearch: "Publicité sur les moteurs",
+  llm: "Assistants IA",
   paidAds: "Publicité",
   organicSocial: "Réseaux sociaux",
   paidSocial: "Réseaux sociaux (payant)",
@@ -979,9 +1008,13 @@ export function renderTraffic(td, monthLabel) {
   const other = Math.max(0, td.visits - classified)
   if (other > 0) rows.push({ label: "Accès direct / autres", visits: other, key: "_other" })
   rows.sort((a, b) => b.visits - a.visits)
+  // Sous la ligne des moteurs, le détail par moteur (instantanés depuis novembre
+  // 2026 ; les précédents n'ont que le total).
+  const moteurRows = (td.moteurs || []).slice(0, 5)
+    .map((m) => `<tr><td style="padding-left:18px;color:var(--gris)">dont ${esc(m.moteur)}</td><td class="num" style="color:var(--gris)">${fr(m.visites)}</td></tr>`).join("")
   const refRows = rows.map((r) => {
     const strong = r.key === "organicSearch"
-    return `<tr><td>${strong ? `<strong style="color:var(--bordeaux)">${esc(r.label)}</strong>` : esc(r.label)}</td><td class="num">${fr(r.visits)}</td></tr>`
+    return `<tr><td>${strong ? `<strong style="color:var(--bordeaux)">${esc(r.label)}</strong>` : esc(r.label)}</td><td class="num">${fr(r.visits)}</td></tr>${strong ? moteurRows : ""}`
   }).join("")
   // Sous-libellé d'un KPI : comparaison M-1 seulement si le mois précédent est fiable.
   const sub = (d, plain) => td.hasBaseline ? `${badge(d)} vs mois dernier` : plain
@@ -999,7 +1032,7 @@ export function renderTraffic(td, monthLabel) {
     <div><table><thead><tr><th>D'où viennent les visiteurs</th><th class="num">Visites</th></tr></thead><tbody>${refRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
     <div><table><thead><tr><th>Sur quel appareil</th><th class="num">Visiteurs</th></tr></thead><tbody>${deviceRows || `<tr><td colspan="2" style="color:var(--gris)">—</td></tr>`}</tbody></table></div>
   </div>
-  <p class="note">« Visiteurs » compte les personnes uniques, « visites » leurs sessions, « pages vues » le total des pages ouvertes. Le taux « en une page » mesure les visiteurs partis après une seule page. Les canaux regroupent l'origine des visites : recherche Google, réseaux sociaux, publicité, accès direct, sites référents. « Par où les visiteurs entrent » compte la première page de chaque visite : c'est la porte d'entrée réelle du site. L'appareil est déduit de la taille de l'écran.${td.hasBaseline ? "" : " C'est le premier mois de mesure Umami : la comparaison avec le mois précédent apparaîtra au prochain rapport."}</p>`
+  <p class="note">« Visiteurs » compte les personnes uniques, « visites » leurs sessions, « pages vues » le total des pages ouvertes. Le taux « en une page » mesure les visiteurs partis après une seule page. Les canaux regroupent l'origine des visites : moteurs de recherche (Google, Bing, Ecosia, DuckDuckGo, Qwant, Brave…), réseaux sociaux, publicité, accès direct, sites référents. « Par où les visiteurs entrent » compte la première page de chaque visite : c'est la porte d'entrée réelle du site. L'appareil est déduit de la taille de l'écran.${td.hasBaseline ? "" : " C'est le premier mois de mesure Umami : la comparaison avec le mois précédent apparaîtra au prochain rapport."}</p>`
 }
 
 // Encart "Ce qui a été réalisé ce mois-ci" : le travail concret livré, en langage
@@ -1047,7 +1080,7 @@ export function renderGains(opportunities) {
 }
 
 function renderHtml(data) {
-  const { month, serp, gbp, llm, articles, history, exec, leads, traffic, brand, competitors, ia, aPortee, gscPositions } = data
+  const { month, serp, gbp, llm, articles, history, exec, leads, traffic, bing = null, brand, competitors, ia, aPortee, gscPositions } = data
   const monthLabel = monthLong(month)
   // Recherches réellement relevées ce mois-ci : les autres ne sont ni gagnées ni perdues.
   const serpMesure = serp.filter((s) => s.releve !== false)
@@ -1284,6 +1317,7 @@ function renderHtml(data) {
   ${renderLeads(leads, monthLabel, cartePages(articles))}
 
   ${renderTraffic(traffic, monthLabel)}
+  ${renderBing(bing, monthLabel)}
 
   ${renderNewsletters(NEWSLETTERS[month])}
 
@@ -1457,9 +1491,9 @@ export async function generateReport(prevHistory = [], month = null, openseo = n
   // affichait depuis septembre (décision du 26/10/2026, ne pas brûler de crédits).
   const serpOpenseo = Array.isArray(openseo?.serp?.keywords) && openseo.serp.keywords.length > 0
   const ia = iaDepuisOpenseo(openseo?.ia)
-  const [serp, gbp, llm, leads, traffic, brand, competitors, aPortee, gscPositions] = await Promise.all([
+  const [serp, gbp, llm, leads, traffic, brand, competitors, aPortee, gscPositions, bing] = await Promise.all([
     serpOpenseo ? serpDepuisOpenseo(openseo, KEYWORDS, COMPETITORS, DOMAIN) : pullSerp(),
-    pullGbp(), ia ? [] : pullLlm(), pullLeads(ym), pullUmami(ym), pullBrand(ym), Promise.resolve(pullCompetitors()), pullAPortee(ym), pullGscPositions(ym),
+    pullGbp(), ia ? [] : pullLlm(), pullLeads(ym), pullUmami(ym), pullBrand(ym), Promise.resolve(pullCompetitors()), pullAPortee(ym), pullGscPositions(ym), pullBing(ym),
   ])
   const mesures = { serp: serpOpenseo ? "openseo" : "dataforseo", ia: ia ? "openseo" : "dataforseo" }
   // Borne de publication : aujourd'hui pour le mois courant, fin de mois pour un
@@ -1507,7 +1541,7 @@ export async function generateReport(prevHistory = [], month = null, openseo = n
   // Tout ce dont le rendu a besoin, figé tel quel. `exec` en est exclu : c'est du
   // texte dérivé, on le recalcule au rendu pour qu'un changement de formulation
   // profite aussi aux mois passés.
-  const snapshot = { month: ym, serp, gbp, llm, ia, aPortee, gscPositions, mesures, articles, history, leads, traffic, brand, competitors }
+  const snapshot = { month: ym, serp, gbp, llm, ia, aPortee, gscPositions, mesures, articles, history, leads, traffic, bing, brand, competitors }
   const exec = buildExec({ month: ym, serp, articlesNew, citedTotal, answeredTotal, gbp, leads, ia })
   const html = renderHtml({ ...snapshot, exec })
   const apercus = ia ? bilanApercus(ia) : null
@@ -1565,8 +1599,8 @@ export async function completerInstantane(snap, { serp: relever = false } = {}) 
   // part désormais le 1er avec des relevés du 1er, un relevé plus tardif daterait
   // le mois d'un autre. Utilisé le 01/10/2026 pour septembre, dont les pages de
   // résultats du 30/09 étaient tronquées. Coût : 0,3 à 0,6 $ de DataForSEO.
-  const [leads, traffic, brand, serpBrut, gscPositions] = await Promise.all([pullLeads(ym), pullUmami(ym), pullBrand(ym), relever ? pullSerp() : null, pullGscPositions(ym)])
-  const out = { ...snap, leads: leads ?? snap.leads, traffic: traffic ?? snap.traffic, brand: brand ?? snap.brand, gscPositions: gscPositions ?? snap.gscPositions, complete: now.toISOString() }
+  const [leads, traffic, brand, serpBrut, gscPositions, bing] = await Promise.all([pullLeads(ym), pullUmami(ym), pullBrand(ym), relever ? pullSerp() : null, pullGscPositions(ym), pullBing(ym)])
+  const out = { ...snap, leads: leads ?? snap.leads, traffic: traffic ?? snap.traffic, bing: bing ?? snap.bing ?? null, brand: brand ?? snap.brand, gscPositions: gscPositions ?? snap.gscPositions, complete: now.toISOString() }
   const serp = serpBrut
   // Deux relevés du même jour se complètent : une recherche ratée par le second
   // garde le résultat du premier, s'il avait été lu sur une page complète
@@ -1605,7 +1639,7 @@ export async function completerInstantane(snap, { serp: relever = false } = {}) 
  */
 export function renderFromSnapshot(instantane) {
   const snap = garderRecherchesSuivies(instantane, KEYWORDS.map((k) => k.keyword))
-  const { month, serp, gbp, llm = [], ia = null, aPortee = null, gscPositions = null, articles, history, leads, traffic, brand, competitors } = snap
+  const { month, serp, gbp, llm = [], ia = null, aPortee = null, gscPositions = null, articles, history, leads, traffic, bing = null, brand, competitors } = snap
   if (!month || !Array.isArray(serp) || !(Array.isArray(snap.llm) || ia)) {
     throw new Error("Instantané incomplet : month, serp et llm (ou ia) sont requis.")
   }
@@ -1615,5 +1649,5 @@ export function renderFromSnapshot(instantane) {
   }
   const articlesNew = (articles ?? []).filter((a) => (a.publishedAt || "").slice(0, 7) === month).length
   const exec = buildExec({ month, serp, articlesNew, citedTotal, answeredTotal, gbp, leads, ia })
-  return renderHtml({ month, serp, gbp, llm, ia, aPortee, gscPositions, articles: articles ?? [], history: history ?? [], exec, leads, traffic, brand, competitors })
+  return renderHtml({ month, serp, gbp, llm, ia, aPortee, gscPositions, articles: articles ?? [], history: history ?? [], exec, leads, traffic, bing, brand, competitors })
 }
