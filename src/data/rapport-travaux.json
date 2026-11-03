@@ -32,14 +32,37 @@
     "Mise en place de ce reporting mensuel automatisé sur votre référencement et votre visibilité dans les réponses IA."
   ],
   "2026-10": [
-    "Quatre nouveaux articles publiés sur le blog les 2, 9, 16 et 23 octobre, en français, en anglais et en italien. Les quatre articles de novembre sont déjà écrits, traduits et programmés.",
-    "Suites du call du 5 octobre : les positions se comptent désormais toujours sur les 19 mêmes recherches, une nouvelle partie « Pour le mois prochain » termine le rapport, et Amboise figure dans le titre et l'accroche de la page d'accueil, à 7 km comme vous nous l'avez précisé (la page retraite indiquait 5 km, c'est corrigé).",
-    "Droit de bouchon aligné partout sur votre consigne du 8 octobre : 8 € par bouteille quand le château assure le repas, conditions du traiteur sinon. Le site annonçait « aucun droit de bouchon » sur 9 pages et articles, dans les trois langues.",
-    "Amboise ajouté aux descriptions des photos de la page d'accueil, de la galerie et de trois articles, pour répondre à la suggestion du directeur de l'office de tourisme sans changer les adresses des images déjà connues de Google. Une traduction erronée de « cérémonie laïque » en anglais et en italien a aussi été corrigée.",
-    "Fiche Google : publication d'un post « Toussaint au château » qui remplace celui d'août (il annonçait encore le petit-déjeuner inclus), et vérification de la seconde fiche « La Huberdière » repérée sur Maps : c'est le lieu-dit, pas un doublon de la vôtre.",
-    "Analyse de trois voisins : le Château de Pray en début de mois, puis Le Clos d'Amboise et La Bourdaisière. Ce qui en ressort nourrit les propositions en fin de rapport.",
-    "Le rapport change d'outil de mesure : un seul outil relève désormais vos positions sur des pages Google complètes et pose chaque mois 16 questions aux IA au lieu de 6, avec Gemini en plus. Vos recherches en anglais et en italien sont aussi suivies depuis ce mois-ci.",
-    "Premières pièces du projet « faire circuler la satisfaction » préparées pour le call de novembre : un champ « De la part de qui ? » dans tous les formulaires du site, quand la personne dit venir par le bouche à oreille, et les recommandations nommées dans ce rapport. Le carnet de Lodovica et la carte postale sont prêts en démonstration, rien n'est imprimé ni envoyé.",
-    "Formulaire de la newsletter protégé : du 19 au 23 octobre, des robots y ont inscrit 362 adresses, qui ont reçu le mail de bienvenue du château. Elles sont retirées et bloquées, et l'inscription demande désormais une confirmation par mail. Le chiffre des inscriptions de ce rapport ne compte que les vraies."
+    {
+      "titre": "Articles",
+      "texte": "Quatre articles publiés les 2, 9, 16 et 23 octobre, en français, en anglais et en italien. Les quatre de novembre sont écrits, traduits et programmés."
+    },
+    {
+      "titre": "Rapport",
+      "texte": "Les positions se comptent toujours sur les 19 mêmes recherches, relevées sur des pages Google complètes, et le rapport se termine par « Pour le mois prochain ». Les IA reçoivent 16 questions par mois au lieu de 6, Gemini compris, et vos recherches en anglais et en italien sont suivies."
+    },
+    {
+      "titre": "Amboise mieux mis en avant",
+      "texte": "Amboise figure dans le titre et l'accroche de la page d'accueil, à 7 km (la page retraite disait 5 km, c'est corrigé). Il entre aussi dans les descriptions des photos de l'accueil, de la galerie et de trois articles, sans changer l'adresse des images."
+    },
+    {
+      "titre": "Corrections du site",
+      "texte": "Droit de bouchon aligné sur votre consigne du 8 octobre : 8 € par bouteille quand le château assure le repas, conditions du traiteur sinon. Le site disait « aucun droit de bouchon » sur 9 pages, dans les trois langues. La traduction de « cérémonie laïque » est corrigée en anglais et en italien."
+    },
+    {
+      "titre": "Fiche Google",
+      "texte": "Un post « Toussaint au château » remplace celui d'août, qui annonçait encore le petit-déjeuner inclus. La seconde fiche « La Huberdière » vue sur Maps est le lieu-dit, pas un doublon."
+    },
+    {
+      "titre": "Voisins analysés",
+      "texte": "Château de Pray, Le Clos d'Amboise et La Bourdaisière. Les propositions de fin de rapport en découlent."
+    },
+    {
+      "titre": "Faire circuler la satisfaction",
+      "texte": "Pour le call de novembre : un champ « De la part de qui ? » dans les formulaires quand la personne vient par le bouche à oreille, et les recommandations nommées dans ce rapport. Le carnet de Lodovica et la carte postale sont prêts en démonstration, rien n'est imprimé ni envoyé."
+    },
+    {
+      "titre": "Newsletter protégée",
+      "texte": "Du 19 au 23 octobre, des robots ont inscrit 362 adresses, qui ont reçu le mail de bienvenue. Elles sont retirées et bloquées, et l'inscription demande désormais une confirmation par mail. Ce rapport ne compte que les vraies inscriptions."
+    }
   ]
 }

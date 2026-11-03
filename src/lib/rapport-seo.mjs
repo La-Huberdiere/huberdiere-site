@@ -1001,11 +1001,16 @@ export function renderTraffic(td, monthLabel) {
 
 // Encart "Ce qui a été réalisé ce mois-ci" : le travail concret livré, en langage
 // client. Alimenté à la main via src/data/rapport-travaux.json (clé AAAA-MM).
+// Un élément est soit une phrase (mois d'avant novembre 2026), soit
+// { titre, texte } : l'intitulé en gras se lit en diagonale, le texte tient en une ou deux phrases.
 export function renderTravaux(items) {
   if (!Array.isArray(items) || !items.length) return ""
+  const contenu = (t) => (t && typeof t === "object"
+    ? `<strong style="color:var(--ink,#212121)">${esc(t.titre)}.</strong> ${esc(t.texte)}`
+    : esc(t))
   const li = items.map((t) =>
     `<li style="position:relative;padding:9px 0 9px 28px;border-bottom:1px solid #efeada">
-      <span style="position:absolute;left:2px;top:9px;color:var(--bordeaux);font-weight:700">✓</span>${esc(t)}</li>`
+      <span style="position:absolute;left:2px;top:9px;color:var(--bordeaux);font-weight:700">✓</span>${contenu(t)}</li>`
   ).join("")
   return `<h2>Ce qui a été réalisé ce mois-ci</h2>
   <p class="lead">Le détail concret du travail mené sur votre site et votre référencement sur la période.</p>
