@@ -110,13 +110,6 @@ function indexPage(months) {
       </span>
       <span style="color:var(--wine)">→</span>
     </a>
-    <a href="/rapport?doc=satisfaction" style="display:flex;justify-content:space-between;align-items:center;text-decoration:none;background:#fff;border:1px solid var(--line);border-top:3px solid var(--wine);padding:16px 20px;margin:-20px 0 34px">
-      <span>
-        <span style="display:block;font-family:'Playfair Display',Georgia,serif;font-size:17px;color:var(--ink)">Faire circuler la satisfaction</span>
-        <span style="display:block;color:var(--muted);font-size:12.5px;margin-top:2px">Le projet présenté au call de novembre</span>
-      </span>
-      <span style="color:var(--wine)">→</span>
-    </a>
     ${body}
   </div>
 </body></html>`
