@@ -1188,9 +1188,9 @@ function renderHtml(data) {
   .plus li:last-child,.moins li:last-child,.garder-liste li:last-child{border-bottom:0}
   .plus li::before,.moins li::before,.garder-liste li::before{position:absolute;left:2px;top:4px;font-weight:700}
   .plus li::before{content:"+";color:var(--encre)}
-  .moins li::before{content:"\2212";color:var(--gris)}
+  .moins li::before{content:"−";color:var(--gris)}
   .garder{background:#fff;border-left:3px solid var(--bordeaux);padding:6px 16px 8px;margin-top:12px}
-  .garder-liste li::before{content:"\2192";color:var(--bordeaux);font-weight:600}
+  .garder-liste li::before{content:"→";color:var(--bordeaux);font-weight:600}
   .evolution-ia td{padding-top:8px;padding-bottom:8px;vertical-align:middle}
   details.note summary{cursor:pointer;color:var(--bordeaux)}
   details.note ul{margin:8px 0 0;padding-left:18px}
