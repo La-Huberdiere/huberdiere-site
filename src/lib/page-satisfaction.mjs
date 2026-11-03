@@ -11,7 +11,9 @@ const figure = (src, alt, w, h, legende) => `<figure>
   ${legende ? `<figcaption>${legende}</figcaption>` : ""}
 </figure>`
 
-const STYLE = `<style>
+const STYLE = `<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
   .sat{max-width:700px;margin:0 auto;padding:52px 22px 80px}
   .sat h1{font-family:'Playfair Display',Georgia,serif;font-size:34px;font-weight:600;margin:0 0 12px;line-height:1.15}
   .sat h2{font-family:'Playfair Display',Georgia,serif;font-size:23px;font-weight:600;margin:46px 0 12px;padding-top:16px;border-top:2px solid var(--wine)}
