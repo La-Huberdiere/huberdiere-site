@@ -3,7 +3,7 @@
 // detail, valeurs, barres, meilleur }], note }, fiches: [{ nom, statut, resume, plus, moins,
 // garder }], points: [{ titre, texte }] },
 // satisfaction: { titre, texte, lien, libelle },
-// mission: { titre, texte, colonnes, lignes: [{ libelle, valeurs }], note } }. Lus au rendu comme les travaux :
+// mission: { titre, texte, colonnes, lignes: [{ libelle, valeurs }], points: [{ titre, texte }], note } }. Lus au rendu comme les travaux :
 // un mois sans entrée reste identique au rejeu. Module sans import de JSON pour rester
 // testable sous `node --test`.
 
@@ -104,15 +104,18 @@ export function renderLienSatisfaction(e) {
 export function renderEncartMission(e) {
   const colonnes = (e?.colonnes || []).filter(Boolean)
   const lignes = (e?.lignes || []).filter((l) => l?.libelle && Array.isArray(l.valeurs))
-  if (!colonnes.length || !lignes.length) return ""
+  const points = (e?.points || []).filter((p) => p?.texte)
+  const tableau = colonnes.length && lignes.length
+  if (!tableau && !points.length) return ""
   const corps = lignes.map((l) => `<tr><td>${esc(l.libelle)}</td>${colonnes.map((_, i) => `<td>${esc(l.valeurs[i])}</td>`).join("")}</tr>`).join("")
   return `<section class="encart">
     <h3 class="sub-h">${esc(e.titre)}</h3>
     ${e.texte ? `<p class="encart-intro">${esc(e.texte)}</p>` : ""}
-    <table class="chiffres-voisins formules-mission">
+    ${tableau ? `<table class="chiffres-voisins formules-mission">
       <thead><tr><th></th>${colonnes.map((c) => `<th>${esc(c)}</th>`).join("")}</tr></thead>
       <tbody>${corps}</tbody>
-    </table>
+    </table>` : ""}
+    ${points.map((p) => `<p>${p.titre ? `<strong>${esc(p.titre)}.</strong> ` : ""}${esc(p.texte)}</p>`).join("")}
     ${e.note ? `<p class="note">${esc(e.note)}</p>` : ""}
   </section>`
 }

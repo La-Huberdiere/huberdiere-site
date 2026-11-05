@@ -137,6 +137,28 @@
           "texte": "Le restaurant comme moteur, comme au Clos : votre table n'est pas ouverte toute l'année. Ses petites pages « hôtel avec piscine » ou « week-end à Amboise », qui ne sortent toujours pas après cinq mois. Et une page Wikipédia écrite par nous : elle doit s'appuyer sur des sources indépendantes, sinon elle est supprimée."
         }
       ]
+    },
+    "mission": {
+      "titre": "La mission en 2027",
+      "texte": "À partir du 1er janvier 2027, la mission passe à 1 000 € par mois, pour le même contenu qu'aujourd'hui. Jusqu'au 31 décembre, rien ne change. Nous en parlons au call du 5 novembre, et j'attends votre réponse avant le 20 novembre.",
+      "points": [
+        {
+          "titre": "Les résultats sont là",
+          "texte": "Environ une demande par jour depuis l'été : 20 en août, 13 en septembre, dont 4 venues d'une intelligence artificielle comme ChatGPT."
+        },
+        {
+          "titre": "Le prix de départ datait d'avant les preuves",
+          "texte": "J'ai fixé 700 € fin juin, refonte du site comprise, quand rien n'était encore démontré. Six mois plus tard, le site tourne et il rapporte."
+        },
+        {
+          "titre": "Le forfait a grandi en route",
+          "texte": "Les analyses des voisins, les propositions du mois et le travail sur la visibilité à Amboise sont venus en plus, sans supplément."
+        },
+        {
+          "titre": "Ce qui est compris",
+          "texte": "Quatre articles par mois en français, anglais et italien, un post par mois sur la fiche Google, le rapport chaque 1er du mois et les retouches courantes du site. La newsletter et les projets restent hors forfait (150 € l'envoi)."
+        }
+      ]
     }
   }
 }

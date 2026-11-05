@@ -115,3 +115,15 @@ test("l'encart mission met les deux formules côte à côte, texte échappé", (
   assert.match(html, /Newsletter et projets restent hors forfait\./)
   assert.doesNotMatch(html, /—/)
 })
+
+test("l'encart mission peut porter un seul prix et ses arguments, sans tableau", () => {
+  const html = renderEncartMission({
+    titre: "La mission en 2027",
+    texte: "1 000 € par mois.",
+    points: [{ titre: "Les résultats sont là", texte: "Une demande par <jour>." }, { texte: "" }],
+  })
+  assert.match(html, /<p class="encart-intro">1 000 € par mois\.<\/p>/)
+  assert.match(html, /<p><strong>Les résultats sont là\.<\/strong> Une demande par &lt;jour&gt;\.<\/p>/)
+  assert.doesNotMatch(html, /<table/)
+  assert.equal((html.match(/<p>/g) || []).length, 1)
+})
