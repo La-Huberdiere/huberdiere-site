@@ -36,6 +36,12 @@ const STYLE = `<link rel="preconnect" href="https://fonts.googleapis.com">
   .sat strong{color:var(--ink)}
   .projet{font-family:'Playfair Display',Georgia,serif;font-style:italic;color:var(--wine);font-size:15px;margin:52px 0 -40px}
   .note{color:var(--muted);font-size:13px}
+  .bref{background:#fff;border:1px solid var(--line);border-top:3px solid var(--wine);padding:18px 22px 14px;margin:28px 0 0}
+  .bref .t{font-family:'Playfair Display',Georgia,serif;font-size:19px;font-weight:600;margin:0 0 8px}
+  .bref dl{display:grid;grid-template-columns:110px 1fr;gap:10px 18px;margin:0}
+  .bref dt{font-weight:600;font-size:14px;color:var(--wine)}
+  .bref dd{margin:0;font-size:15px}
+  .bref .s{color:var(--muted);font-size:13px;margin:12px 0 0}
   figure{margin:16px 0 6px}
   figure img{display:block;width:100%;height:auto;border:1px solid var(--line)}
   figcaption{color:var(--muted);font-size:13px;margin-top:6px}
@@ -176,6 +182,8 @@ const STYLE = `<link rel="preconnect" href="https://fonts.googleapis.com">
   @media screen and (max-width:720px){
     .sat h1{font-size:28px}
     .deux,.objet,.regles,.legende-carte{grid-template-columns:1fr;gap:16px}
+    .bref dl{grid-template-columns:1fr;gap:2px}
+    .bref dd{margin-bottom:10px}
     .objet figure{max-width:220px}
     .moteurs{grid-template-columns:1fr;gap:12px}
     .moteurs .fleche{grid-template-columns:1fr;height:26px}
@@ -284,9 +292,21 @@ export function satisfactionPage(head) {
 <body>
   ${nav}
   <main class="sat">
-    <p class="maison">Château de la Huberdière, projet pour le call de novembre 2026</p>
+    <p class="maison">Château de la Huberdière, projet pour le call de décembre 2026</p>
     <h1>Faire circuler la satisfaction</h1>
     <p class="chapo">Vos clients repartent contents. Ce projet leur donne les moyens de le dire, à leurs amis et aux inconnus qui hésitent, sans rien leur demander de plus qu'un geste. Deux projets, sans aucune remise ni contrepartie. Tout est à l'état de maquette : rien n'est imprimé ni envoyé avant votre accord.</p>
+
+    <div class="bref">
+      <p class="t">En bref</p>
+      <dl>
+        <dt>Projet 1</dt><dd><strong>La carte postale.</strong> Une carte du château dans chaque chambre. Le client l'écrit, la dépose à l'accueil, la maison la poste avec un timbre à l'image du château, son cachet et un mot de Lodovica.</dd>
+        <dt>Projet 2</dt><dd><strong>Les nouvelles après le séjour.</strong> Quatre mails signés de vous deux, chacun avec une seule demande : aucune, puis un avis Google, puis transmettre le carnet de Lodovica à un ami, puis revenir. Ils remplacent le mail d'avis envoyé aujourd'hui par Octorate.</dd>
+        <dt>Le coût</dt><dd>830 à 965 € de matériel par saison pour la carte, presque tout en timbres. Rien pour les mails.</dd>
+        <dt>Votre part</dt><dd>À l'accueil, une minute par carte. Et lire les réponses au premier mail.</dd>
+        <dt>Le lancement</dt><dd>Avril 2027, pour l'ouverture de la saison.</dd>
+      </dl>
+      <p class="s">Les questions à trancher ensemble sont en fin de page.</p>
+    </div>
 
     <h2>Deux moteurs, une même arrivée</h2>
     <p>Un séjour réussi fait venir de nouveaux clients par deux chemins. Les proches, qui entendent le récit et voient la carte arriver. Les inconnus, qui lisent les avis avant de réserver. Le premier projet travaille le premier chemin, le second travaille les deux.</p>
@@ -376,7 +396,7 @@ export function satisfactionPage(head) {
       <div class="c"><span class="q">J+14</span><b>Le carnet à offrir</b><em>à un proche</em></div>
       <div class="c"><span class="q">Saison suivante</span><b>Revenir</b><em>en direct</em></div>
 
-      <div class="canal">Réservé par Booking<small>30 % des réservations</small></div>
+      <div class="canal">Réservé par Booking<small>et les autres plateformes, 30 % des réservations</small></div>
       <div class="c objet-c"><span class="q">Au séjour</span><b>La carte postale</b><em>projet 1</em></div>
       <div class="c"><span class="q">Veille du départ</span><b>Un message Booking</b><em>merci, la carte, le questionnaire</em></div>
       <div class="c booking"><span class="q">J+2</span><b>Le questionnaire</b><em>envoyé par Booking</em></div>
@@ -410,24 +430,25 @@ export function satisfactionPage(head) {
     <h3>Les règles de la suite</h3>
     <ul class="regles">
       <li><b>Une demande par mail.</b>Un avis, ou un carnet à transmettre, jamais les deux.</li>
-      <li><b>Aucune contrepartie.</b>Ni remise contre un avis, ni cadeau contre un ami recommandé. Google et Booking l'interdisent, et cela abîme la confiance.</li>
+      <li><b>Aucune contrepartie.</b>Ni remise contre un avis, ce que Google et Booking interdisent, ni cadeau contre un ami recommandé, qui ferait d'une recommandation une affaire.</li>
       <li><b>Tout le monde reçoit la demande d'avis.</b>Même un client qui s'est plaint à J+2. Google interdit de trier ses clients avant de leur demander un avis.</li>
       <li><b>Jamais de relance.</b>Celui qui ne répond pas ne reçoit rien de plus sur le même sujet.</li>
       <li><b>Les mots du client.</b>On ne lui souffle aucune formule, on lui rappelle seulement ce qu'il a vécu : un séjour, un mariage, un séminaire.</li>
-      <li><b>Trois langues.</b>Chaque message existe en français, en anglais et en italien, envoyé selon la langue du client.</li>
+      <li><b>Trois langues.</b>Chaque message, et le carnet, existe en français, en anglais et en italien, envoyé selon la langue du client.</li>
     </ul>
 
+    <p class="projet">Projet 2, le mail de J+14</p>
     <h2>Le carnet de Lodovica, ce que l'ami reçoit</h2>
     <div class="carnet-lp">
       <div>
         <p>Le mail de J+14 mène ici. Le carnet réunit les adresses que Lodovica donne à ses propres amis : ses tables, ses sorties, ses balades autour d'Amboise. Il sert à qui prépare un voyage en Val de Loire, qu'il dorme au château ou non, et c'est pour cela qu'on a envie de le transmettre.</p>
         <p>La page existe déjà, en version de démonstration : le bouton « Offrir ce carnet » le partage par WhatsApp, SMS ou mail, depuis le téléphone du client.</p>
-        <p>Le projet y ajoute une deuxième porte, plus simple encore : le client tape l'adresse mail d'un proche, et c'est le château qui lui envoie le carnet, de sa part.</p>
+        <p>Une deuxième porte est possible, plus simple encore pour le client : il tape l'adresse mail d'un proche, et c'est le château qui lui envoie le carnet, de sa part. Elle demande plus de travail et de précautions que le partage par téléphone : c'est une option, à décider ensemble.</p>
       </div>
       ${figure("carnet-page.webp", "Le haut de la page du carnet de Lodovica : titre, bouton Offrir ce carnet, mot de Lodovica et Patrick, rubrique Où manger", 900, 1150, "La page du carnet, en ligne aujourd'hui")}
     </div>
 
-    <h3>Envoyer le carnet à un proche</h3>
+    <h3>L'option : envoyer le carnet à un proche par mail</h3>
     <p>Un petit bloc sous le titre du carnet. Deux champs, un bouton. Ici, Matteo l'envoie à sa sœur.</p>
     <div class="envoi" role="img" aria-label="Maquette du formulaire : votre prénom, Matteo ; l'adresse mail de votre proche ; bouton Envoyer le carnet ; message de confirmation">
       <p class="t">Envoyez-le à quelqu'un qui part par ici</p>
@@ -506,7 +527,7 @@ export function satisfactionPage(head) {
       </tbody>
     </table>
     <p class="note">Le timbre fait les trois quarts du budget, qui suit donc le nombre de cartes envoyées. Le timbre à l'image du château ajoute 135 € à la saison ; sans lui, la carte reste possible avec un timbre ordinaire. Commander les timbres en décembre, au tarif 2026, économiserait environ 50 € s'ils restent valables après la hausse de janvier : c'est à vérifier auprès du service des timbres personnalisés de La Poste.</p>
-    <p>La séquence n'a pas de coût de matériel : elle part d'Octorate si ses envois automatiques le permettent, sinon de votre compte Brevo existant.</p>
+    <p>La séquence n'a pas de coût de matériel : elle part d'Octorate si ses envois automatiques le permettent. Sinon, elle part de votre compte Brevo existant, ce qui demande de lui transmettre les dates de départ depuis Octorate : un branchement de plus à mettre en place.</p>
 
     <h2>À trancher ensemble</h2>
     <ol class="trancher">
@@ -517,23 +538,23 @@ export function satisfactionPage(head) {
       <li><strong>Octorate.</strong> Ses envois automatiques permettent-ils quatre mails programmés, un tri entre clients directs et plateformes, et un texte par langue ? Gère-t-il aussi la messagerie Booking ? Je vérifierai avec vous dans l'extranet.</li>
       <li><strong>Les mariages et séminaires</strong> passent-ils par Octorate ? Sinon, leur date est saisie à la main dans Brevo et la suite part de là.</li>
       <li><strong>Les lignes de saison de Lodovica</strong> dans les mails de J+2 et de la saison suivante, et la possibilité de tenir des dates sans engagement pour un séminaire.</li>
-      <li><strong>Le carnet.</strong> Lodovica veut-elle l'étoffer avant qu'il circule : l'ordre des visites selon la saison, une journée de pluie, ses marchés et ses producteurs ? Et le texte du mail reçu par le proche vous convient-il ?</li>
+      <li><strong>Le carnet.</strong> Lodovica veut-elle l'étoffer avant qu'il circule : l'ordre des visites selon la saison, une journée de pluie, ses marchés et ses producteurs ? Il recommande aussi les tables du Château de Pray et du Clos d'Amboise, deux hôtels voisins : un ami qui ouvre leur site y trouve aussi leurs chambres. Les garde-t-on ?</li>
+      <li><strong>L'envoi du carnet par mail</strong>, en plus du partage par téléphone : le voulez-vous dès le lancement, ou plus tard si le partage par téléphone ne suffit pas ? Si oui, le texte du mail reçu par le proche vous convient-il ?</li>
       <li><strong>Le livret d'accueil</strong> annonce encore le petit-déjeuner inclus : il est à corriger avant le lancement.</li>
     </ol>
 
     <h2>Déjà en place</h2>
     <ul>
       <li>Le champ « De la part de qui ? » du formulaire de demande, en ligne : il mesure dès maintenant.</li>
-      <li>Le carnet de Lodovica, en version de démonstration, invisible pour Google : <a href="/carnet?brouillon" target="_blank" rel="noopener">voir le carnet</a>. L'envoi à un proche n'y est pas encore : il se construit après votre accord.</li>
+      <li>Le carnet de Lodovica, en français et en version de démonstration, invisible pour Google : <a href="/carnet?brouillon" target="_blank" rel="noopener">voir le carnet</a>. Le bouton « Offrir ce carnet » fonctionne ; l'envoi à un proche par mail n'est qu'une maquette, rien ne part.</li>
       <li>L'adresse courte et le QR code de la carte, qui mènent déjà au site.</li>
       <li>Les maquettes de la carte, du chevalet et de la carte mariage, et les textes de la séquence.</li>
     </ul>
 
     <h2>Le calendrier</h2>
     <ul class="dates">
-      <li><b>Novembre 2026</b><span>Le call : vous décidez de ce que vous gardez.</span></li>
-      <li><b>Décembre</b><span>Le visuel du timbre envoyé à La Poste (une semaine de validation) et la commande, au tarif 2026 si les timbres restent valables.</span></li>
-      <li><b>Janvier 2027</b><span>Les textes relus par Lodovica, traduits en anglais et en italien. La séquence branchée et testée, l'envoi du carnet à un proche construit : tout peut partir dès ce moment, hors saison comprise.</span></li>
+      <li><b>Décembre 2026</b><span>Le call : vous décidez de ce que vous gardez. Si le timbre au château est retenu, son visuel part à La Poste dans la foulée (une semaine de validation), pour commander avant la hausse de janvier si les timbres restent valables.</span></li>
+      <li><b>Janvier 2027</b><span>Les textes des mails et le carnet relus par Lodovica, traduits en anglais et en italien. La séquence branchée et testée : elle peut partir dès ce moment, hors saison comprise.</span></li>
       <li><b>Février</b><span>Les maquettes définitives de la carte et du chevalet, la commande des tampons.</span></li>
       <li><b>Mars</b><span>L'impression des cartes et des chevalets.</span></li>
       <li><b>Avril 2027</b><span>Les cartes en chambre, pour l'ouverture de la saison.</span></li>
