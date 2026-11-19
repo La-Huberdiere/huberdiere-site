@@ -43,6 +43,10 @@ const COVERS = [
   { slug: "ceremonie-laique-parc-chateau", dir: PUBLIC, photo: "images/bibliotheque/mariage/mariage-07.jpg" },
   { slug: "checklist-mariage-retroplanning", dir: PUBLIC, photo: "images/bibliotheque/mariage/mariage-04.jpg" },
   { slug: "que-faire-a-amboise", dir: PUBLIC, photo: "images/bibliotheque/chateau-exterieur/chateau-exterieur-21.jpg" },
+  { slug: "ou-dormir-a-amboise", dir: PUBLIC, photo: "images/bibliotheque/chambres/chambre-01.jpg" },
+  { slug: "mariage-printemps-chateau", dir: PUBLIC, photo: "images/bibliotheque/chateau-exterieur/chateau-exterieur-16.jpg" },
+  { slug: "vignobles-vouvray-montlouis", dir: PUBLIC, photo: "images/bibliotheque/chateau-exterieur/chateau-exterieur-14.jpg" },
+  { slug: "hotel-charme-vs-chambres-hotes", dir: PUBLIC, photo: "images/bibliotheque/chambres/chambre-giboulee-01.jpg" },
 ];
 
 // Dégradé très doux, sans aucun texte (rien à rogner quel que soit le recadrage).
