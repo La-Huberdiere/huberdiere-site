@@ -3,6 +3,7 @@ import LeadForm from "./LeadForm.astro";
 import Reviews from "./Reviews.astro";
 import RatingLines from "./RatingLines.astro";
 import { Image } from "astro:assets";
+import sharp from "sharp";
 import pHero from "../assets/SD_5.jpg";
 import v1 from "../assets/SD_6.jpg";
 import v2 from "../assets/SD_9.jpg";
@@ -49,6 +50,23 @@ const webpOf = (p: string) => p.replace(/\.(jpe?g|png)$/i, ".webp");
 // Le paysage 3/2 mis à la hauteur du bloc ne laissait voir que 40 % de sa largeur.
 const heroMobileSrcSet = (p: string) =>
   [720, 1080, 1440].map((w) => `${p.replace(/\.(jpe?g|png)$/i, "")}-m${w}.webp ${w}w`).join(", ");
+// Photos de galerie : <nom>-w480.webp et -w800.webp (scripts/gen-landing-gallery.mjs) plus le
+// <nom>.webp d'origine, déclaré à sa vraie largeur lue sur le fichier.
+const gallerySrcSet = async (p: string) => {
+  const full = webpOf(p);
+  const { width } = await sharp(`public${p}`).metadata();
+  const steps = [480, 800].filter((w) => width && w < width);
+  return [...steps.map((w) => `${full.replace(/\.webp$/, "")}-w${w}.webp ${w}w`), `${full} ${width}w`].join(", ");
+};
+const gallerySrcSets = media?.gallery ? await Promise.all(media.gallery.map(gallerySrcSet)) : [];
+// Largeur d'affichage de chaque photo de la bande (grille de 6 colonnes, 1200 px max, voir .landing-gallery) :
+// la 1re sur 4 colonnes, la 2e et la 3e sur 2, la 4e pleine largeur ; sous 760 px, 2 colonnes.
+const gallerySizes = [
+  "(max-width: 760px) calc(100vw - 44px), min(763px, 66vw)",
+  "(max-width: 760px) calc(50vw - 27px), min(375px, 32vw)",
+  "(max-width: 760px) calc(50vw - 27px), min(375px, 32vw)",
+  "(max-width: 760px) calc(100vw - 44px), min(1152px, calc(100vw - 48px))",
+];
 const roomAlt = (name: string, idx: number) =>
   idx === 0
     ? `Chambre ${name}, Château de la Huberdière`
@@ -103,9 +121,11 @@ const midCtaLead = {
 <section class="page-hero">
   {media?.hero ? (
     <picture class="page-hero__pic">
+      {/* sizes = largeur réellement dessinée : l'image 3/4 est mise à la hauteur du bloc
+          (620 px mini), soit 465 px de large, ou 100vw au-delà. 124vw surestimait. */}
       {/* Sous 768 px, recadrage 3/4 : cadrage tenable et deux fois moins lourd que
           le paysage 1920 px, dont le mobile ne montrait qu'un tiers. */}
-      <source media="(max-width: 768px)" type="image/webp" srcset={heroMobileSrcSet(media.hero)} sizes="124vw" width="1080" height="1440" />
+      <source media="(max-width: 768px)" type="image/webp" srcset={heroMobileSrcSet(media.hero)} sizes="max(100vw, 465px)" width="1080" height="1440" />
       <source srcset={webpOf(media.hero)} type="image/webp" />
       <img src={media.hero} alt={m.hero.titleLine1} loading="eager" fetchpriority="high" decoding="async" />
     </picture>
@@ -341,7 +361,7 @@ const midCtaLead = {
       {media.gallery.map((src, i) => (
         <figure class="reveal">
           <picture>
-            <source srcset={webpOf(src)} type="image/webp" />
+            <source srcset={gallerySrcSets[i]} sizes={gallerySizes[i] ?? "50vw"} type="image/webp" />
             <img src={src} alt={`${m.hero.titleLine1} · ${i + 1}`} loading="lazy" decoding="async" />
           </picture>
         </figure>
