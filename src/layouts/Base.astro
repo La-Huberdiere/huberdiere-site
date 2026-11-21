@@ -189,6 +189,8 @@ const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
       window.huberTrack = function (name, data) {
         try { (window.dataLayer = window.dataLayer || []).push(Object.assign({ event: name }, data || {})); } catch (e) {}
         window.huberUmami(name, data);
+        // GTM est injecté en différé (voir plus bas) : un événement suivi le charge sans attendre.
+        if (window.huberLoadGtm) window.huberLoadGtm();
       };
       document.addEventListener(
         "click",
@@ -243,9 +245,17 @@ const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
       })();
     </script>
 
-    {/* Google Tag Manager (chargé seulement si PUBLIC_GTM_ID est défini) */}
+    {/* Google Tag Manager (chargé seulement si PUBLIC_GTM_ID est défini).
+        Le dataLayer (consent par défaut, puis `gtm.js` avec son horodatage) est rempli tout de suite,
+        comme avec le snippet standard : GTM rejoue cette file à son arrivée, l'ordre des événements et
+        le Consent Mode ne changent pas. Seule l'injection de gtm.js (157 Ko) est différée : après le
+        `load` puis à l'idle (3 s au plus), ou à la 1re interaction, ou tout de suite :
+        - sur les pages noindex (/merci, la page de conversion) ;
+        - quand l'URL porte un identifiant de clic Google (gclid, gbraid, wbraid, gad_*) : le
+          Conversion Linker doit lire l'URL avant la 1re navigation interne ;
+        - dès qu'un événement passe par window.huberTrack (window.huberLoadGtm). */}
     {GTM_ID && (
-      <script is:inline set:html={`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`} />
+      <script is:inline set:html={`(function(w,d,s,l,i,now){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var done=false,ev=['pointerdown','keydown','touchstart'];function go(){if(done)return;done=true;for(var k=0;k<ev.length;k++)w.removeEventListener(ev[k],go,true);var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i;f.parentNode.insertBefore(j,f);}w.huberLoadGtm=go;if(now||/[?&](gclid|gbraid|wbraid|gad_source|gad_campaignid)=/.test(location.search)){go();return;}for(var k=0;k<ev.length;k++)w.addEventListener(ev[k],go,{capture:true,passive:true});function plan(){if(w.requestIdleCallback)w.requestIdleCallback(go,{timeout:3000});else setTimeout(go,2000);}if(d.readyState==='complete')plan();else w.addEventListener('load',plan);})(window,document,'script','dataLayer','${GTM_ID}',${noindex ? 'true' : 'false'});`} />
     )}
 
     {/* Umami (cookieless, RGPD) : audience anonyme, sans consentement requis */}
