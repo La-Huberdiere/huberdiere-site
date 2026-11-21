@@ -1,3 +1,10 @@
+/* Polices de repli ajustées : le texte garde sa largeur et sa hauteur de ligne quand la
+   police du site arrive, ce qui supprime le saut (CLS), en particulier sur la bannière
+   cookies. size-adjust mesuré dans Chrome sur un texte FR/EN/IT (Montserrat 300 / Arial,
+   Playfair 400 / Georgia), ascent et descent tirés des tables des polices. */
+@font-face{font-family:"Montserrat Fallback";src:local("Arial"),local("Helvetica");size-adjust:110%;ascent-override:88%;descent-override:22.8%;line-gap-override:0%}
+@font-face{font-family:"Playfair Display Fallback";src:local("Georgia"),local("Times New Roman");size-adjust:101.2%;ascent-override:106.9%;descent-override:24.8%;line-gap-override:0%}
+@font-face{font-family:"Playfair Display Fallback";font-style:italic;src:local("Georgia Italic"),local("Georgia-Italic");size-adjust:93.9%;ascent-override:115.2%;descent-override:26.7%;line-gap-override:0%}
 :root{
   /* Palette officielle Huberdière (extraite des landings) */
   --bg:#F4F2EC;
@@ -15,14 +22,14 @@
 html,body{margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
-  font-family:'Montserrat',-apple-system,BlinkMacSystemFont,sans-serif;
+  font-family:'Montserrat', 'Montserrat Fallback',-apple-system,BlinkMacSystemFont,sans-serif;
   color:var(--ink);background:var(--bg);
   font-size:15px;line-height:1.7;font-weight:300;letter-spacing:.01em;
   -webkit-font-smoothing:antialiased;overflow-x:hidden;
 }
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
-h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;margin:0;letter-spacing:-.005em;color:var(--ink)}
+h1,h2,h3,h4,h5{font-family:'Playfair Display', 'Playfair Display Fallback',Georgia,serif;font-weight:400;margin:0;letter-spacing:-.005em;color:var(--ink)}
 .italic{font-style:italic}
 /* L'italique-accent reste sur les héros et l'intro (moments forts). Les titres de
    section courants passent en romain pour ne pas systématiser le tic sur tout le site. */
@@ -66,7 +73,7 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
 .lang-switch a.active{opacity:1;font-weight:600}
 .lang-switch a:hover{opacity:1}
 .lang-switch .sep{opacity:.35}
-.nav a{font-family:'Montserrat',sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:400;opacity:.92;transition:opacity .3s}
+.nav a{font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:400;opacity:.92;transition:opacity .3s}
 /* Le bouton d'action ne se met pas en retrait : l'opacité 0,92 héritée des liens
    du menu rognait le blanc sur bordeaux du seul bouton persistant du site. */
 .nav .book,.book--bar{opacity:1}
@@ -80,7 +87,7 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
    affiché dès que le menu passe en burger pour qu'il reste toujours visible et cliquable
    (sinon il disparaissait dans le panneau, cf. retour Patrick 06/07). */
 .book--bar{display:none;background:var(--burgundy);color:#fff;border:1px solid var(--burgundy);
-  font-family:'Montserrat',sans-serif;font-size:12px;font-weight:400;text-transform:uppercase;
+  font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:12px;font-weight:400;text-transform:uppercase;
   letter-spacing:.2em;text-decoration:none;padding:11px 22px;transition:all .35s}
 .book--bar:hover{background:#6e0808;border-color:#6e0808;color:#fff}
 /* « Demander un devis » est deux fois plus long que « Réserver » : sans ces
@@ -166,16 +173,16 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
    en capitales espacées. Le contenu y est centré, le filet aussi. */
 .page-hero .hero-rule{display:block;margin:0 auto 30px}
 .hero h1{font-size:clamp(48px,7.2vw,92px);line-height:1.04;font-weight:400;letter-spacing:-.012em;color:#fff;margin-bottom:30px}
-.hero p.lead{font-family:'Montserrat',sans-serif;font-weight:300;font-size:clamp(14px,1.4vw,16px);max-width:560px;margin:0 0 40px;letter-spacing:.04em;line-height:1.85}
+.hero p.lead{font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-weight:300;font-size:clamp(14px,1.4vw,16px);max-width:560px;margin:0 0 40px;letter-spacing:.04em;line-height:1.85}
 .hero-cta{display:flex;gap:30px;align-items:center;justify-content:flex-start;flex-wrap:wrap;margin-bottom:40px}
 /* CTA secondaire en lien souligné discret (réutilise le registre .act-link, sur fond sombre). */
-.hero-cta .hero-link{display:inline-flex;align-items:center;gap:12px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:#fff;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.6);transition:all .3s}
+.hero-cta .hero-link{display:inline-flex;align-items:center;gap:12px;font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:12px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:#fff;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.6);transition:all .3s}
 .hero-cta .hero-link::after{content:"→";font-family:Georgia,serif;font-size:14px;letter-spacing:0;transition:transform .3s}
 .hero-cta .hero-link:hover{border-color:#fff}
 .hero-cta .hero-link:hover::after{transform:translateX(4px)}
 
 /* Boutons */
-.btn-primary,.btn-ghost,.btn-burgundy{font-family:'Montserrat',sans-serif;font-weight:500;font-size:12px;letter-spacing:.26em;text-transform:uppercase;padding:18px 38px;cursor:pointer;transition:all .35s;border:1px solid;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+.btn-primary,.btn-ghost,.btn-burgundy{font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-weight:500;font-size:12px;letter-spacing:.26em;text-transform:uppercase;padding:18px 38px;cursor:pointer;transition:all .35s;border:1px solid;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
 /* Le bouton de demande de devis prend la couleur d'action du site. Au premier
    écran, quatre appels à l'action se disputaient l'attention et le plus saturé,
    le bouton Recherche du moteur, menait au tunnel le moins rentable : 296 clics
@@ -187,7 +194,7 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display',Georgia,serif;font-weight:400;marg
 .btn-burgundy{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
 .btn-burgundy:hover{background:transparent;color:var(--burgundy)}
 
-.scroll-hint{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);z-index:2;color:#fff;font-family:'Montserrat',sans-serif;font-size:12px;letter-spacing:.44em;text-transform:uppercase;opacity:.9;display:flex;flex-direction:column;align-items:center;gap:12px}
+.scroll-hint{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);z-index:2;color:#fff;font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:12px;letter-spacing:.44em;text-transform:uppercase;opacity:.9;display:flex;flex-direction:column;align-items:center;gap:12px}
 .scroll-hint::after{content:"";display:block;width:1px;height:42px;background:currentColor;animation:scrollLine 2.6s ease-in-out infinite}
 @keyframes scrollLine{0%,100%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1)}}
 
@@ -214,7 +221,7 @@ section{padding:112px 48px;position:relative}
 .section-head .section-rule + h2::after,
 .blog-masthead .section-rule + h1::after,
 .thanks-inner .section-rule + h1::after{margin-left:auto;margin-right:auto}
-.section-title{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(38px,5vw,62px);line-height:1.1;color:var(--ink);margin-bottom:32px}
+.section-title{font-family:'Playfair Display', 'Playfair Display Fallback',serif;font-weight:400;font-size:clamp(38px,5vw,62px);line-height:1.1;color:var(--ink);margin-bottom:32px}
 .section-head{text-align:center;max-width:760px;margin:0 auto 64px}
 .section-head p{font-size:16px;color:var(--muted);font-weight:300;line-height:1.85;max-width:620px;margin:0 auto}
 
@@ -228,11 +235,11 @@ section{padding:112px 48px;position:relative}
 .intro .visual{position:relative;aspect-ratio:4/5}
 .intro .visual img{width:100%;height:100%;object-fit:cover}
 .intro .visual::after{content:"";position:absolute;inset:22px -22px -22px 22px;border:1px solid var(--burgundy);z-index:-1}
-.intro .sign{margin-top:42px;display:flex;align-items:center;gap:20px;font-family:'Playfair Display',serif;font-style:italic;font-size:18px;color:var(--burgundy)}
+.intro .sign{margin-top:42px;display:flex;align-items:center;gap:20px;font-family:'Playfair Display', 'Playfair Display Fallback',serif;font-style:italic;font-size:18px;color:var(--burgundy)}
 .intro .sign::before{content:"";width:48px;height:1px;background:var(--burgundy)}
 
 /* ---------- ORNEMENT ---------- */
-.ornament{display:flex;align-items:center;justify-content:center;gap:18px;color:var(--burgundy);font-family:'Playfair Display',serif;font-style:italic;font-size:14px;letter-spacing:.3em;text-transform:uppercase;padding:40px 0}
+.ornament{display:flex;align-items:center;justify-content:center;gap:18px;color:var(--burgundy);font-family:'Playfair Display', 'Playfair Display Fallback',serif;font-style:italic;font-size:14px;letter-spacing:.3em;text-transform:uppercase;padding:40px 0}
 .ornament::before,.ornament::after{content:"";width:80px;height:1px;background:var(--burgundy);opacity:.4}
 
 /* ---------- ACTIVITES ---------- */
@@ -243,22 +250,22 @@ section{padding:112px 48px;position:relative}
 .act-visual{aspect-ratio:4/3;overflow:hidden;position:relative}
 .act-visual img{width:100%;height:100%;object-fit:cover;transition:transform 1.6s ease}
 .act:hover .act-visual img{transform:scale(1.035)}
-.act-text .num{font-family:'Playfair Display',serif;font-style:italic;font-size:18px;color:var(--burgundy);margin-bottom:20px;display:flex;align-items:center;gap:14px}
+.act-text .num{font-family:'Playfair Display', 'Playfair Display Fallback',serif;font-style:italic;font-size:18px;color:var(--burgundy);margin-bottom:20px;display:flex;align-items:center;gap:14px}
 .act-text .num::before{content:"";width:32px;height:1px;background:var(--burgundy)}
-.act-text h3{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(32px,3.6vw,46px);line-height:1.12;margin-bottom:24px;color:var(--ink)}
+.act-text h3{font-family:'Playfair Display', 'Playfair Display Fallback',serif;font-weight:400;font-size:clamp(32px,3.6vw,46px);line-height:1.12;margin-bottom:24px;color:var(--ink)}
 .act-text p{font-size:15px;color:var(--ink-2);font-weight:300;line-height:1.9;margin:0 0 32px}
 .act-text .list{list-style:none;padding:0;margin:0 0 36px;display:grid;gap:8px;font-size:13.5px;color:var(--muted);font-weight:300}
 .act-text .list li{display:flex;gap:14px;align-items:flex-start}
 .act-text .list li::before{content:"·";color:var(--burgundy);font-weight:700}
-.act-link{display:inline-flex;align-items:center;gap:16px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:var(--ink);padding-bottom:8px;border-bottom:1px solid var(--ink);transition:all .3s}
+.act-link{display:inline-flex;align-items:center;gap:16px;font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:12px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:var(--ink);padding-bottom:8px;border-bottom:1px solid var(--ink);transition:all .3s}
 .act-link::after{content:"→";font-family:Georgia,serif;font-size:14px;letter-spacing:0;transition:transform .3s}
 .act-link:hover{color:var(--burgundy);border-color:var(--burgundy)}
 .act-link:hover::after{transform:translateX(4px)}
 
 /* ---------- QUOTE ---------- */
 .quote{background:var(--bg-deep);padding:180px 48px;text-align:center;position:relative}
-.quote blockquote{margin:0 auto;max-width:920px;font-family:'Playfair Display',serif;font-size:clamp(30px,4vw,52px);line-height:1.32;font-style:italic;font-weight:400;color:var(--ink)}
-.quote cite{display:inline-flex;align-items:center;gap:18px;margin-top:42px;font-family:'Montserrat',sans-serif;font-style:normal;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--burgundy)}
+.quote blockquote{margin:0 auto;max-width:920px;font-family:'Playfair Display', 'Playfair Display Fallback',serif;font-size:clamp(30px,4vw,52px);line-height:1.32;font-style:italic;font-weight:400;color:var(--ink)}
+.quote cite{display:inline-flex;align-items:center;gap:18px;margin-top:42px;font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-style:normal;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--burgundy)}
 .quote cite::before{content:"";width:48px;height:1px;background:var(--burgundy)}
 
 /* ---------- GALERIE ---------- */
@@ -280,35 +287,35 @@ section{padding:112px 48px;position:relative}
 /* Le beige doré #E8C9A0 était hors palette officielle. Sur ce fond bleu-gris,
    le filet passe en doré de charte (--gold), seule teinte chaude déclarée. */
 .location .section-rule + h2::after{background:var(--gold)}
-.location h2{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(38px,4.6vw,58px);line-height:1.1;margin-bottom:32px;color:#fff}
+.location h2{font-family:'Playfair Display', 'Playfair Display Fallback',serif;font-weight:400;font-size:clamp(38px,4.6vw,58px);line-height:1.1;margin-bottom:32px;color:#fff}
 .location p{font-size:15px;color:rgba(255,255,255,.85);font-weight:300;line-height:1.9;margin:0 0 20px}
 /* Bande de faits inline calée à gauche (au lieu de 3 colonnes égales = stat banner). */
 .pins{margin-top:48px;display:flex;flex-wrap:wrap;align-items:baseline;padding-top:38px;border-top:1px solid rgba(255,255,255,.18)}
 .pin{padding-right:40px;margin-right:40px;border-right:1px solid rgba(255,255,255,.18)}
 .pin:last-child{padding-right:0;margin-right:0;border-right:none}
-.pin .big{font-family:'Playfair Display',serif;font-size:48px;font-weight:400;line-height:1;color:#fff}
+.pin .big{font-family:'Playfair Display', 'Playfair Display Fallback',serif;font-size:48px;font-weight:400;line-height:1;color:#fff}
 /* Ces libellés portent les chiffres canoniques du lieu (14 hectares, 2 h 20 de
    Paris, 10 minutes d'Amboise) : ils méritent d'être lus, pas suggérés.
    L'opacité 0,8 sur des capitales fines très espacées les rendait pâles. */
-.pin .lbl{font-family:'Montserrat',sans-serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;margin-top:14px;font-weight:400}
+.pin .lbl{font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;margin-top:14px;font-weight:400}
 .location .visual{aspect-ratio:4/5;overflow:hidden;position:relative}
 .location .visual img{width:100%;height:100%;object-fit:cover}
 
 /* ---------- FINAL CTA ---------- */
 .final{background:var(--bg);padding:180px 48px;text-align:center}
 .final .section-rule + h2::after{margin-left:auto;margin-right:auto}
-.final h2{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(42px,5.4vw,76px);line-height:1.08;margin-bottom:36px;color:var(--ink)}
+.final h2{font-family:'Playfair Display', 'Playfair Display Fallback',serif;font-weight:400;font-size:clamp(42px,5.4vw,76px);line-height:1.08;margin-bottom:36px;color:var(--ink)}
 .final p{font-size:16px;color:var(--ink-2);font-weight:300;line-height:1.9;max-width:580px;margin:0 auto 52px}
 .final-cta{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
 .final-cta .btn-burgundy{padding:20px 44px}
-.final .response-line{margin-top:42px;font-family:'Playfair Display',serif;font-style:italic;font-size:15px;color:var(--burgundy)}
+.final .response-line{margin-top:42px;font-family:'Playfair Display', 'Playfair Display Fallback',serif;font-style:italic;font-size:15px;color:var(--burgundy)}
 
 /* ---------- FOOTER ---------- */
 .site-footer{background:var(--ink);color:rgba(255,255,255,.8);padding:70px 48px 40px}
 .footer-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:60px;align-items:start}
-.site-footer .name{font-family:'Playfair Display',serif;font-size:22px;color:#fff;margin-bottom:16px}
+.site-footer .name{font-family:'Playfair Display', 'Playfair Display Fallback',serif;font-size:22px;color:#fff;margin-bottom:16px}
 .site-footer p{font-size:13px;line-height:1.9;margin:0 0 6px}
-.site-footer h3{font-family:'Montserrat',sans-serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:0 0 18px;font-weight:500}
+.site-footer h3{font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:0 0 18px;font-weight:500}
 .site-footer ul{list-style:none;padding:0;margin:0;display:grid;gap:10px}
 .site-footer ul a{font-size:13px;opacity:.85;transition:opacity .3s}
 .site-footer ul a:hover{opacity:1;color:#fff}
@@ -401,9 +408,9 @@ section{padding:112px 48px;position:relative}
    Le numéral romain bordeaux sert de repère éditorial, texte calé à gauche. */
 .offer-list{max-width:940px;margin:0 auto;padding:0;list-style:none;border-top:1px solid var(--line)}
 .offer-row{display:grid;grid-template-columns:120px 1fr;gap:48px;align-items:baseline;padding:46px 0;border-bottom:1px solid var(--line)}
-.offer-num{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(42px,5vw,64px);line-height:.9;color:var(--burgundy)}
+.offer-num{font-family:'Playfair Display', 'Playfair Display Fallback',serif;font-style:italic;font-size:clamp(42px,5vw,64px);line-height:.9;color:var(--burgundy)}
 /* Sélecteur scopé : .offer-body p, plus spécifique, écrasait la taille sinon. */
-.offer-body .offer-title{font-family:'Playfair Display',serif;font-weight:400;font-size:26px;line-height:1.2;margin:0 0 14px;color:var(--ink);max-width:none}
+.offer-body .offer-title{font-family:'Playfair Display', 'Playfair Display Fallback',serif;font-weight:400;font-size:26px;line-height:1.2;margin:0 0 14px;color:var(--ink);max-width:none}
 .offer-body p{font-size:15px;color:var(--ink-2);font-weight:300;line-height:1.9;margin:0;max-width:580px}
 @media(max-width:760px){
   .offer-row{grid-template-columns:1fr;gap:12px;padding:34px 0}
@@ -414,7 +421,7 @@ section{padding:112px 48px;position:relative}
 .lead-form{max-width:620px;margin:48px auto 0;text-align:left}
 .lead-form .row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 .lead-form input,.lead-form textarea{
-  width:100%;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:300;color:var(--ink);
+  width:100%;font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:14px;font-weight:300;color:var(--ink);
   background:#fff;border:1px solid var(--line);padding:15px 16px;transition:border-color .3s;
 }
 .lead-form textarea{resize:vertical}
@@ -428,13 +435,13 @@ section{padding:112px 48px;position:relative}
 .lead-form .field{display:flex;flex-direction:column;margin-bottom:16px}
 .lead-form .row .field{margin-bottom:0}
 .lead-form .field[hidden]{display:none}
-.lead-form label{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:400;color:var(--ink-2);margin:0 0 7px;letter-spacing:.02em}
+.lead-form label{font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:13px;font-weight:400;color:var(--ink-2);margin:0 0 7px;letter-spacing:.02em}
 .lead-form label .opt{color:var(--muted);font-weight:300}
-.lead-form .field-error{margin:7px 0 0;font-family:'Montserrat',sans-serif;font-size:12.5px;line-height:1.45;color:var(--burgundy)}
+.lead-form .field-error{margin:7px 0 0;font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:12.5px;line-height:1.45;color:var(--burgundy)}
 .lead-form [aria-invalid="true"]{border-color:var(--burgundy)}
 /* Rassurance au point d'envoi, dans le même bloc que le bouton. */
 .form-trust{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 12px;margin:16px 0 0;
-  font-family:'Montserrat',sans-serif;font-size:12.5px;line-height:1.5;color:#5c574c}
+  font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:12.5px;line-height:1.5;color:#5c574c}
 .form-trust a{color:var(--burgundy)}
 .form-trust > *+ *::before{content:"·";margin-right:12px;opacity:.45}
 .lead-form input::placeholder,.lead-form textarea::placeholder{color:#6b6b6b}
@@ -444,7 +451,7 @@ section{padding:112px 48px;position:relative}
    Chevron dessiné en CSS, l'apparence native varie trop d'un système à l'autre. */
 .lead-form .attr-label{color:var(--muted,#646464)}
 .lead-form .attr-select{
-  width:100%;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:300;color:var(--ink);
+  width:100%;font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:14px;font-weight:300;color:var(--ink);
   background:#fff;border:1px solid var(--line);padding:15px 16px;margin-bottom:22px;transition:border-color .3s;
   appearance:none;-webkit-appearance:none;border-radius:0;cursor:pointer;
   background-image:linear-gradient(45deg,transparent 50%,#8b0000 50%),linear-gradient(135deg,#8b0000 50%,transparent 50%);
@@ -471,7 +478,7 @@ section{padding:112px 48px;position:relative}
 .pv-nav[hidden]{display:none}
 .pv-prev{left:22px}
 .pv-next{right:22px}
-.pv-count{position:absolute;bottom:20px;left:0;right:0;text-align:center;color:#f4f2ec;font-family:'Montserrat',sans-serif;font-size:.8rem;letter-spacing:.1em}
+.pv-count{position:absolute;bottom:20px;left:0;right:0;text-align:center;color:#f4f2ec;font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:.8rem;letter-spacing:.1em}
 @media(prefers-reduced-motion:reduce){.pv-img{animation:none}}
 @media(max-width:640px){.pv-nav{width:44px;height:44px;font-size:26px}.pv-prev{left:10px}.pv-next{right:10px}.pv-img{max-width:96vw;max-height:82vh}.pv-close{top:12px;right:12px}}
 
@@ -489,6 +496,6 @@ section{padding:112px 48px;position:relative}
 /* Tag de chambre (« Chambre nuptiale », « Esprit marine »). Il réutilisait la
    classe des sur-titres, dont il n'a jamais eu le rôle : c'est un libellé de
    fiche. Cadre bordeaux fin, casse normale, angles vifs. */
-.room-tag{display:inline-block;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:400;
+.room-tag{display:inline-block;font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:12px;font-weight:400;
   letter-spacing:.04em;color:var(--burgundy);border:1px solid rgba(139,0,0,.35);
   padding:4px 10px;margin:0 0 10px;line-height:1.4}

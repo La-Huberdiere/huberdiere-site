@@ -145,13 +145,13 @@ const directions = `https://www.google.com/maps/dir/?api=1&destination=${encodeU
     gap: 3px;
   }
   .map-name {
-    font-family: "Playfair Display", Georgia, serif;
+    font-family: "Playfair Display", "Playfair Display Fallback", Georgia, serif;
     font-size: 18px;
     color: #fff;
     line-height: 1.1;
   }
   .map-place {
-    font-family: "Montserrat", sans-serif;
+    font-family: "Montserrat", "Montserrat Fallback", sans-serif;
     font-size: 12px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -160,7 +160,7 @@ const directions = `https://www.google.com/maps/dir/?api=1&destination=${encodeU
   .map-cta {
     pointer-events: auto;
     flex-shrink: 0;
-    font-family: "Montserrat", sans-serif;
+    font-family: "Montserrat", "Montserrat Fallback", sans-serif;
     font-size: 12px;
     font-weight: 500;
     letter-spacing: 0.22em;
@@ -207,7 +207,7 @@ const directions = `https://www.google.com/maps/dir/?api=1&destination=${encodeU
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
   }
   .hub-map :global(.leaflet-popup-content) {
-    font-family: "Montserrat", sans-serif;
+    font-family: "Montserrat", "Montserrat Fallback", sans-serif;
     font-size: 12px;
     letter-spacing: 0.04em;
     margin: 12px 16px;

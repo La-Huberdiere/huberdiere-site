@@ -31,7 +31,7 @@ const nf = ((siteTexts as any)[lang] ?? (siteTexts as any).fr).notFound;
     margin: 0 0 12px;
   }
   .notfound h1 {
-    font-family: "Playfair Display", serif;
+    font-family: "Playfair Display", "Playfair Display Fallback", serif;
     font-weight: 500;
     font-size: clamp(1.9rem, 4vw, 2.8rem);
     color: var(--ink, #212121);
@@ -49,7 +49,7 @@ const nf = ((siteTexts as any)[lang] ?? (siteTexts as any).fr).notFound;
     padding: 14px 30px;
     border-radius: 4px;
     text-decoration: none;
-    font-family: "Montserrat", sans-serif;
+    font-family: "Montserrat", "Montserrat Fallback", sans-serif;
     letter-spacing: 0.04em;
   }
   .nf-links {

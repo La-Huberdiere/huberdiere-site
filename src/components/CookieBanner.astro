@@ -69,7 +69,7 @@ const policyHref = "/politique-de-confidentialite";
     flex-wrap: wrap;
     align-items: center;
     gap: 14px 20px;
-    font-family: "Montserrat", sans-serif;
+    font-family: "Montserrat", "Montserrat Fallback", sans-serif;
   }
   /* Sans cette règle, le display:flex ci-dessus écrase le [hidden] du navigateur
      et la bannière reste affichée même après un clic Accepter/Refuser. */
@@ -89,7 +89,7 @@ const policyHref = "/politique-de-confidentialite";
     cursor: pointer;
     border-radius: 0;
     padding: 10px 20px;
-    font-family: "Montserrat", sans-serif;
+    font-family: "Montserrat", "Montserrat Fallback", sans-serif;
     font-size: 0.84rem;
     letter-spacing: 0.02em;
     border: 1px solid #8b0000;
@@ -101,8 +101,10 @@ const policyHref = "/politique-de-confidentialite";
   /* La barre d'action fixe (StickyCta) occupe 52 px en bas d'écran sous 960 px :
      le bandeau remonte au-dessus d'elle plutôt que de la recouvrir. */
   @media (max-width: 960px) {
+    /* Remontée par transform et non par `bottom` : changer `bottom` compte comme
+       un décalage de mise en page (CLS) à chaque passage du seuil de défilement. */
     :global(html.sticky-cta-on) .cookie-banner {
-      bottom: calc(68px + env(safe-area-inset-bottom, 0px));
+      transform: translateY(calc(-52px - env(safe-area-inset-bottom, 0px)));
     }
   }
   @media (max-width: 560px) {

@@ -224,7 +224,7 @@ const siteLabel = (s: string) => s.replace(/^www\./, "");
     align-items: end;
   }
   .c-mark {
-    font-family: "Playfair Display", Georgia, serif;
+    font-family: "Playfair Display", "Playfair Display Fallback", Georgia, serif;
     font-style: italic;
     font-size: 17px;
     color: var(--burgundy);
@@ -247,7 +247,7 @@ const siteLabel = (s: string) => s.replace(/^www\./, "");
   }
   .c-actions { display: flex; flex-wrap: wrap; gap: 12px; }
   .c-btn {
-    font: 400 14px/1 "Montserrat", sans-serif;
+    font: 400 14px/1 "Montserrat", "Montserrat Fallback", sans-serif;
     letter-spacing: 0.02em;
     padding: 16px 26px;
     border: 1px solid var(--burgundy);
@@ -278,7 +278,7 @@ const siteLabel = (s: string) => s.replace(/^www\./, "");
   }
   .c-signe { display: flex; align-items: center; gap: 22px; margin: 24px 0 0 22%; }
   .c-mot .c-signature {
-    font-family: "Playfair Display", Georgia, serif;
+    font-family: "Playfair Display", "Playfair Display Fallback", Georgia, serif;
     font-style: italic;
     font-size: 20px;
     color: var(--burgundy);
@@ -317,8 +317,8 @@ const siteLabel = (s: string) => s.replace(/^www\./, "");
     border-top: 1px solid var(--line);
     break-inside: avoid;
   }
-  .c-nom { font-family: "Playfair Display", Georgia, serif; font-size: 19px; line-height: 1.3; color: var(--ink); }
-  .c-presta { font-family: "Montserrat", sans-serif; font-size: 15px; color: var(--burgundy); }
+  .c-nom { font-family: "Playfair Display", "Playfair Display Fallback", Georgia, serif; font-size: 19px; line-height: 1.3; color: var(--ink); }
+  .c-presta { font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 15px; color: var(--burgundy); }
   .c-note { font-size: 14.5px; line-height: 1.55; color: var(--ink-2); }
   .c-coord { display: flex; flex-wrap: wrap; gap: 2px 16px; font-size: 13.5px; color: var(--muted); }
   .c-coord a { color: var(--ink-2); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; overflow-wrap: anywhere; }
@@ -329,7 +329,7 @@ const siteLabel = (s: string) => s.replace(/^www\./, "");
   .c-activites-photo img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
   .c-activites-photo figcaption {
     margin-top: 10px;
-    font-family: "Playfair Display", Georgia, serif;
+    font-family: "Playfair Display", "Playfair Display Fallback", Georgia, serif;
     font-style: italic;
     font-size: 15px;
     color: var(--ink-2);
@@ -360,7 +360,7 @@ const siteLabel = (s: string) => s.replace(/^www\./, "");
   .c-champ { display: grid; gap: 6px; }
   .c-champ span { font-size: 14px; color: #fff; }
   .c-champ input {
-    font: 400 16px/1.3 "Montserrat", sans-serif;
+    font: 400 16px/1.3 "Montserrat", "Montserrat Fallback", sans-serif;
     color: var(--ink);
     background: var(--bg);
     border: 1px solid var(--bg);

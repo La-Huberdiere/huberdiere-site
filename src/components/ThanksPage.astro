@@ -68,7 +68,7 @@ const T = ((siteTexts as any)[lang] ?? (siteTexts as any).fr).thanks;
   .thanks { padding: 200px 24px 140px; text-align: center; min-height: 70vh; }
   .thanks-inner { max-width: 640px; margin: 0 auto; }
   .thanks h1 {
-    font-family: "Playfair Display", Georgia, serif;
+    font-family: "Playfair Display", "Playfair Display Fallback", Georgia, serif;
     font-weight: 500;
     font-size: clamp(2rem, 5vw, 3.2rem);
     color: #212121;
@@ -77,19 +77,19 @@ const T = ((siteTexts as any)[lang] ?? (siteTexts as any).fr).thanks;
   }
   .thanks h1 :global(.it) { font-style: italic; color: #8b0000; }
   /* 84 caractères par ligne dans le conteneur hérité : colonne dédiée. */
-  .thanks-lead { color: #646464; line-height: 1.75; margin: 0 auto 32px; max-width: 580px; font-family: "Montserrat", sans-serif; }
+  .thanks-lead { color: #646464; line-height: 1.75; margin: 0 auto 32px; max-width: 580px; font-family: "Montserrat", "Montserrat Fallback", sans-serif; }
   .thanks-response {
-    margin-top: 22px; color: #8b0000; font-family: "Montserrat", sans-serif;
+    margin-top: 22px; color: #8b0000; font-family: "Montserrat", "Montserrat Fallback", sans-serif;
     font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase;
   }
   .thanks-explore { margin-top: 64px; border-top: 1px solid #ece6d8; padding-top: 36px; }
   .explore-title {
-    display: block; color: #646464; font-family: "Montserrat", sans-serif;
+    display: block; color: #646464; font-family: "Montserrat", "Montserrat Fallback", sans-serif;
     font-size: 0.82rem; letter-spacing: 0.04em; margin-bottom: 18px;
   }
   .explore-links { display: flex; flex-wrap: wrap; gap: 14px 28px; justify-content: center; }
   .explore-links a {
-    color: #2e3a48; text-decoration: none; font-family: "Playfair Display", Georgia, serif;
+    color: #2e3a48; text-decoration: none; font-family: "Playfair Display", "Playfair Display Fallback", Georgia, serif;
     font-size: 1.05rem; border-bottom: 1px solid transparent;
   }
   .explore-links a:hover { border-bottom-color: #8b0000; color: #8b0000; }

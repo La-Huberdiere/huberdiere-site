@@ -150,7 +150,7 @@ const schemas = [
     .breadcrumb { max-width: 1100px; margin: 0 auto; padding: 0 0 6px; }
     .breadcrumb ol {
       list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0;
-      font-family: "Montserrat", sans-serif; font-size: 0.8rem; color: #646464;
+      font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 0.8rem; color: #646464;
     }
     .breadcrumb li { display: flex; align-items: center; gap: 8px; }
     .breadcrumb li + li::before { content: "›"; color: #6b6558; }
@@ -159,7 +159,7 @@ const schemas = [
     .blog-masthead { max-width: 680px; margin: 0 auto; text-align: center; padding-top: 26px; }
     .blog-masthead .section-rule { margin-bottom: 18px; }
     .blog-masthead h1 {
-      font-family: "Playfair Display", Georgia, serif; font-weight: 500;
+      font-family: "Playfair Display", "Playfair Display Fallback", Georgia, serif; font-weight: 500;
       font-size: clamp(2rem, 4.2vw, 3rem); color: #212121; line-height: 1.12; margin: 0;
     }
     .blog-intro { color: #646464; max-width: 540px; line-height: 1.7; margin: 18px auto 0; }
@@ -172,14 +172,14 @@ const schemas = [
     .search-wrap { position: relative; flex: 1 1 300px; max-width: 420px; }
     .search-ico { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #6b6b6b; pointer-events: none; }
     #blogSearch {
-      width: 100%; font-family: "Montserrat", sans-serif; font-size: 0.92rem; color: #212121;
+      width: 100%; font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 0.92rem; color: #212121;
       background: #fff; border: 1px solid #e2dccc; border-radius: 0; padding: 13px 18px 13px 44px;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
     #blogSearch:focus { outline: none; border-color: #8b0000; box-shadow: 0 0 0 3px rgba(139,0,0,0.08); }
     .filters { display: flex; flex-wrap: wrap; gap: 8px; }
     .chip {
-      font-family: "Montserrat", sans-serif; font-size: 0.78rem; letter-spacing: 0.02em; color: #646464;
+      font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 0.78rem; letter-spacing: 0.02em; color: #646464;
       background: transparent; border: 1px solid #e2dccc; padding: 8px 16px; border-radius: 0;
       cursor: pointer; transition: all 0.18s ease; white-space: nowrap;
     }
@@ -195,7 +195,7 @@ const schemas = [
     .featured:hover .featured-media img { transform: scale(1.04); }
     .featured-flag {
       position: absolute; top: 16px; left: 16px; background: #8b0000; color: #fff;
-      font-family: "Montserrat", sans-serif; font-size: 12px; letter-spacing: 0.14em;
+      font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 12px; letter-spacing: 0.14em;
       text-transform: uppercase; padding: 6px 14px; border-radius: 0;
     }
     .featured-body {
@@ -203,11 +203,11 @@ const schemas = [
       padding: 38px 40px; display: flex; flex-direction: column; justify-content: center;
     }
     .featured-body h2 {
-      font-family: "Playfair Display", Georgia, serif; font-weight: 500;
+      font-family: "Playfair Display", "Playfair Display Fallback", Georgia, serif; font-weight: 500;
       font-size: clamp(1.5rem, 2.4vw, 2rem); color: #212121; line-height: 1.18; margin: 12px 0 12px;
     }
     .featured-body p { color: #646464; line-height: 1.7; margin: 0 0 18px; }
-    .featured-link { font-family: "Montserrat", sans-serif; font-size: 0.82rem; letter-spacing: 0.08em; color: #8b0000; text-transform: uppercase; margin-top: 6px; }
+    .featured-link { font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 0.82rem; letter-spacing: 0.08em; color: #8b0000; text-transform: uppercase; margin-top: 6px; }
 
     .blog-list {
       max-width: 1100px; margin: 40px auto 0; padding: 0 24px;
@@ -223,21 +223,21 @@ const schemas = [
     .blog-card-body { padding: 20px 22px 24px; display: flex; flex-direction: column; flex: 1; }
     .blog-cat {
       display: inline-block; align-self: flex-start; background: #f3e9e9; color: #8b0000;
-      padding: 4px 13px; border-radius: 0; font-family: "Montserrat", sans-serif;
+      padding: 4px 13px; border-radius: 0; font-family: "Montserrat", "Montserrat Fallback", sans-serif;
       font-size: 12px; font-weight: 500; letter-spacing: 0.02em; margin-bottom: 12px;
     }
-    .blog-card h2 { font-family: "Playfair Display", Georgia, serif; font-weight: 500; font-size: 1.25rem; color: #2e3a48; margin: 0 0 8px; line-height: 1.25; }
+    .blog-card h2 { font-family: "Playfair Display", "Playfair Display Fallback", Georgia, serif; font-weight: 500; font-size: 1.25rem; color: #2e3a48; margin: 0 0 8px; line-height: 1.25; }
     .blog-card p { color: #646464; font-size: 0.95rem; line-height: 1.6; margin: 0 0 14px; flex: 1; }
-    .blog-card-meta { font-family: "Montserrat", sans-serif; font-size: 0.78rem; color: #6b6b6b; }
+    .blog-card-meta { font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 0.78rem; color: #6b6b6b; }
 
     .blog-more-wrap { text-align: center; margin: 40px auto 0; }
     .blog-more {
-      font-family: "Montserrat", sans-serif; font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase;
+      font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase;
       color: #8b0000; background: transparent; border: 1px solid #8b0000; border-radius: 0; padding: 14px 34px;
       cursor: pointer; transition: all 0.18s ease;
     }
     .blog-more:hover { background: #8b0000; color: #fff; }
-    .blog-empty { max-width: 1100px; margin: 40px auto 0; padding: 0 24px 60px; text-align: center; font-family: "Montserrat", sans-serif; color: #646464; }
+    .blog-empty { max-width: 1100px; margin: 40px auto 0; padding: 0 24px 60px; text-align: center; font-family: "Montserrat", "Montserrat Fallback", sans-serif; color: #646464; }
 
     @media (max-width: 760px) {
       .featured { grid-template-columns: 1fr; }

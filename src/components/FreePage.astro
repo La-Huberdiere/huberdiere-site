@@ -94,7 +94,7 @@ const captionFeature =
      n'appartenait pas à la palette officielle. */
   /* #b9132f n'est pas dans la charte : le bordeaux du domaine est #8B0000. */
   .fh-rule { display: block; width: 56px; height: 2px; background: var(--burgundy); margin: 0 0 22px; }
-  .free-hero h1 { font-family: "Playfair Display", Georgia, serif; font-weight: 400; color: #fff;
+  .free-hero h1 { font-family: "Playfair Display", "Playfair Display Fallback", Georgia, serif; font-weight: 400; color: #fff;
     font-size: clamp(40px, 6vw, 78px); line-height: 1.04; margin: 0; max-width: 14ch; }
   @keyframes fh-rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
   @keyframes fh-zoom { to { transform: scale(1); } }
@@ -110,14 +110,14 @@ const captionFeature =
   /* Lettrine bordeaux sur le tout premier paragraphe (détail signature). */
   .free-prose :global(p:first-of-type) { font-size: 19px; color: var(--ink); line-height: 1.85; }
   .free-prose :global(p:first-of-type)::first-letter {
-    float: left; font-family: "Playfair Display", Georgia, serif; font-weight: 500;
+    float: left; font-family: "Playfair Display", "Playfair Display Fallback", Georgia, serif; font-weight: 500;
     font-size: 4.8em; line-height: 0.72; padding: 8px 16px 0 0; color: var(--burgundy);
   }
-  .free-prose :global(h2) { font-family: "Playfair Display", Georgia, serif; font-weight: 400;
+  .free-prose :global(h2) { font-family: "Playfair Display", "Playfair Display Fallback", Georgia, serif; font-weight: 400;
     font-size: clamp(26px, 3.2vw, 36px); line-height: 1.2; color: var(--ink);
     margin: 58px 0 22px; padding-top: 30px; border-top: 1px solid var(--line); position: relative; }
   .free-prose :global(h2)::before { content: ""; position: absolute; top: -1px; left: 0; width: 56px; height: 3px; background: var(--burgundy); }
-  .free-prose :global(h3) { font-family: "Playfair Display", Georgia, serif; font-weight: 400;
+  .free-prose :global(h3) { font-family: "Playfair Display", "Playfair Display Fallback", Georgia, serif; font-weight: 400;
     font-size: 22px; color: var(--ink); margin: 36px 0 14px; }
   .free-prose :global(ul) { list-style: none; margin: 0 0 24px; padding: 0; }
   .free-prose :global(li) { position: relative; padding: 0 0 14px 30px; color: var(--ink-2);
@@ -126,7 +126,7 @@ const captionFeature =
   .free-prose :global(li)::before { content: ""; position: absolute; left: 4px; top: 11px; width: 7px; height: 7px;
     background: var(--burgundy); transform: rotate(45deg); }
   .free-prose :global(blockquote) { margin: 40px 0; padding: 6px 0 6px 28px; border-left: 3px solid var(--burgundy); }
-  .free-prose :global(blockquote p) { font-family: "Playfair Display", Georgia, serif; font-style: italic;
+  .free-prose :global(blockquote p) { font-family: "Playfair Display", "Playfair Display Fallback", Georgia, serif; font-style: italic;
     font-size: 23px; line-height: 1.5; color: var(--ink); }
   .free-prose :global(a) { color: var(--burgundy); text-decoration: underline; text-underline-offset: 3px; }
   .free-prose :global(strong) { font-weight: 500; color: var(--ink); }
@@ -134,7 +134,7 @@ const captionFeature =
   /* ---- Photo d'aération pleine largeur ---- */
   .free-feature { position: relative; margin: clamp(40px, 6vw, 80px) 0 0; }
   .free-feature :global(img) { width: 100%; height: clamp(360px, 56vh, 620px); object-fit: cover; display: block; }
-  .free-feature figcaption { font-family: "Montserrat", sans-serif; font-size: 12px; letter-spacing: 0.04em;
+  .free-feature figcaption { font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 12px; letter-spacing: 0.04em;
     color: var(--ink-2); text-align: right; max-width: 1200px; margin: 12px auto 0; padding: 0 24px; }
 
   /* ---- Bloc d'appel ---- */
@@ -143,11 +143,11 @@ const captionFeature =
      au lieu de flotter au-dessus, où il lisait comme un objet orphelin. */
   .cta-rule { display: none; }
   .cta-rule + h2::after { content: ""; display: block; width: 56px; height: 2px; background: var(--burgundy); margin: 18px auto 0; }
-  .free-cta h2 { font-family: "Playfair Display", Georgia, serif; font-weight: 400;
+  .free-cta h2 { font-family: "Playfair Display", "Playfair Display Fallback", Georgia, serif; font-weight: 400;
     font-size: clamp(28px, 4vw, 44px); color: var(--ink); margin: 0 0 16px; }
   .free-cta p { max-width: 480px; margin: 0 auto 36px; color: var(--ink-2); font-weight: 300; line-height: 1.8; }
   .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-  .btn-ghost-line { font-family: "Montserrat", sans-serif; font-weight: 500; font-size: 12px;
+  .btn-ghost-line { font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-weight: 500; font-size: 12px;
     letter-spacing: 0.26em; text-transform: uppercase; padding: 18px 38px; border: 1px solid var(--ink);
     color: var(--ink); text-decoration: none; transition: all 0.35s; }
   .btn-ghost-line:hover { background: var(--ink); color: #fff; }

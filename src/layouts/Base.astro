@@ -14,6 +14,11 @@ import "@fontsource/montserrat/latin-300.css";
 import "@fontsource/montserrat/latin-400.css";
 import "@fontsource/montserrat/latin-500.css";
 import "@fontsource/montserrat/latin-600.css";
+// URL hachées des 3 polices du premier écran (Playfair 400, Montserrat 300 et 400),
+// préchargées dans le head : sans ça le navigateur ne les découvre qu'après le CSS.
+import playfair400 from "@fontsource/playfair-display/files/playfair-display-latin-400-normal.woff2?url";
+import montserrat300 from "@fontsource/montserrat/files/montserrat-latin-300-normal.woff2?url";
+import montserrat400 from "@fontsource/montserrat/files/montserrat-latin-400-normal.woff2?url";
 import Header from "../components/Header.astro";
 import { ctaIntentFor, pageIdFromPath } from "../lib/routes";
 import StickyCta from "../components/StickyCta.astro";
@@ -248,6 +253,9 @@ const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
       <script is:inline async src={UMAMI_SRC} data-website-id={UMAMI_ID}></script>
     )}
 
+    {[playfair400, montserrat300, montserrat400].map((href) => (
+      <link rel="preload" as="font" type="font/woff2" href={href} crossorigin />
+    ))}
     <link rel="icon" href="/favicon.png" type="image/png" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="theme-color" content="#8B0000" />

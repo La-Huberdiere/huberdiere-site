@@ -202,7 +202,7 @@ const calLegend = {
     border-radius: 0;
     box-shadow: 0 14px 38px rgba(0, 0, 0, .26);
     padding: 16px 18px 6px;
-    font-family: "Montserrat", sans-serif;
+    font-family: "Montserrat", "Montserrat Fallback", sans-serif;
     z-index: 99999;
     width: auto !important;
   }
@@ -331,7 +331,7 @@ const calLegend = {
     background: rgba(139, 0, 0, .92);
     color: #fff;
     border-radius: 0;
-    font-family: "Montserrat", sans-serif;
+    font-family: "Montserrat", "Montserrat Fallback", sans-serif;
     font-size: 13px;
     font-weight: 500;
     line-height: 1.5;
@@ -364,6 +364,16 @@ const calLegend = {
     border-radius: 0;
     box-shadow: 0 14px 34px rgba(0, 0, 0, .28);
     padding: 22px 22px 20px;
+    /* Place réservée pour la barre injectée par Octorate (hauteurs mesurées une
+       fois la barre affichée, FR/EN/IT identiques) : sans elle la carte passe de
+       44 px à 127 px, ou 361 px sur mobile, et tout le hero se décale. */
+    min-height: 127px;
+  }
+  @media (max-width: 719px) {
+    .octorate-widget { min-height: 195px; }
+  }
+  @media (max-width: 640px) {
+    .octorate-widget { min-height: 361px; }
   }
 
   /* ---- Neutraliser l'ancrage flottant + rangée en flex CENTRÉE ---- */
@@ -409,7 +419,7 @@ const calLegend = {
   .octorate-widget :global(.octobook label) {
     display: block !important;
     color: #646464 !important;
-    font-family: "Montserrat", sans-serif !important;
+    font-family: "Montserrat", "Montserrat Fallback", sans-serif !important;
     font-size: 12px !important;
     font-weight: 600 !important;
     letter-spacing: .18em !important;
@@ -477,13 +487,13 @@ const calLegend = {
   }
   .octorate-widget :global(.textdate) * {
     color: #212121 !important;
-    font-family: "Montserrat", sans-serif !important;
+    font-family: "Montserrat", "Montserrat Fallback", sans-serif !important;
     font-size: 14px !important;
   }
   .octorate-widget :global(.octobookpax select) {
     padding: 0 12px !important;
     color: #212121 !important;
-    font-family: "Montserrat", sans-serif !important;
+    font-family: "Montserrat", "Montserrat Fallback", sans-serif !important;
     font-size: 15px !important;
     cursor: pointer !important;
     appearance: auto !important;
@@ -506,7 +516,7 @@ const calLegend = {
     color: #fff !important;
     border: 0 !important;
     border-radius: 0 !important;
-    font-family: "Montserrat", sans-serif !important;
+    font-family: "Montserrat", "Montserrat Fallback", sans-serif !important;
     font-weight: 600 !important;
     font-size: 12px !important;
     letter-spacing: .22em !important;

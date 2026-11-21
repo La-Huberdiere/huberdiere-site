@@ -14,26 +14,26 @@ const { entry, html } = Astro.props;
     max-width: 760px;
     margin: 0 auto;
     padding: clamp(120px, 16vw, 160px) 24px 110px;
-    font-family: "Montserrat", sans-serif;
+    font-family: "Montserrat", "Montserrat Fallback", sans-serif;
     color: #2e3a48;
     line-height: 1.7;
   }
   .legal h1 {
-    font-family: "Playfair Display", Georgia, serif;
+    font-family: "Playfair Display", "Playfair Display Fallback", Georgia, serif;
     font-weight: 500;
     font-size: clamp(2rem, 4vw, 2.8rem);
     color: #212121;
     margin: 0 0 32px;
   }
   .legal-prose :global(h2) {
-    font-family: "Playfair Display", Georgia, serif;
+    font-family: "Playfair Display", "Playfair Display Fallback", Georgia, serif;
     font-weight: 500;
     color: #8b0000;
     font-size: 1.3rem;
     margin: 40px 0 12px;
   }
   .legal-prose :global(h3) {
-    font-family: "Playfair Display", Georgia, serif;
+    font-family: "Playfair Display", "Playfair Display Fallback", Georgia, serif;
     font-weight: 500;
     color: #212121;
     font-size: 1.1rem;
