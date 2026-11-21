@@ -14,6 +14,14 @@ const heroSrcSet =
   hero.full === HERO_SOURCE
     ? [720, 1080, 1440, 1920].map((w) => `/images/hero/galerie-hero-${w}.webp ${w}w`).join(", ")
     : null;
+// Vignettes : <nom>-480|800|1100.webp à côté du jpg 1100 (gen-gallery-thumbs.mjs).
+const THUMB_WIDTHS = [480, 800, 1100];
+const thumbSrc = (jpg: string, w: number) => jpg.replace(/\.jpe?g$/i, `-${w}.webp`);
+const thumbSrcset = (jpg: string) => THUMB_WIDTHS.map((w) => `${thumbSrc(jpg, w)} ${w}w`).join(", ");
+// Grille : 2 colonnes sous 640 px, 3 sous 1000, 4 au-delà (cadre de 1360 px, marges comprises).
+const TILE_SIZES = "(max-width: 639px) 50vw, (max-width: 999px) 33vw, 310px";
+// Photo maîtresse pleine largeur de chaque chapitre.
+const LEAD_SIZES = "(max-width: 1360px) 100vw, 1260px";
 ---
 <section class="page-hero gallery-hero" id="hero">
   {/* La photo d'origine était servie telle quelle, 479 Ko sans srcset : recadrée
@@ -48,12 +56,11 @@ const heroSrcSet =
 </nav>
 
 <div class="gallery-wrap">
-  {/* Le premier chapitre se charge sans attendre l'observateur de défilement :
-      113 vignettes en lazy, c'était plusieurs secondes de rectangles beiges au
-      moment précis où le visiteur arrive sur une page qui ne vend que des images.
-      Les dimensions sont déjà déclarées partout, il n'y a donc pas de saut de
-      mise en page ; c'est bien la perception de lenteur qu'on corrige. */}
-  {chapters.map((c, ci) => (
+  {/* Toutes les vignettes sont en lazy : seul le hero de la page est prioritaire
+      (c'est l'image LCP). Un premier chapitre en eager mettait ~2 Mo en concurrence
+      avec lui sur mobile. Les dimensions sont déclarées partout, pas de saut de
+      mise en page. Vignettes en webp 480/800/1100 (scripts/gen-gallery-thumbs.mjs). */}
+  {chapters.map((c) => (
     <section class="gchapter" id={c.id}>
       <header class="gchapter__head">
         <span class="gc-num">{c.numeral}</span>
@@ -61,13 +68,13 @@ const heroSrcSet =
         <p class="gc-intro">{c.intro}</p>
       </header>
       <button type="button" class="tile tile--lead" data-full={c.photos[0].full} data-alt={c.photos[0].alt} aria-label={c.photos[0].alt}>
-        <img src={c.photos[0].thumb} alt={c.photos[0].alt} loading={ci === 0 ? "eager" : "lazy"} fetchpriority={ci === 0 ? "high" : undefined} decoding="async" width={c.photos[0].w} height={c.photos[0].h} />
+        <img src={thumbSrc(c.photos[0].thumb, 800)} srcset={thumbSrcset(c.photos[0].thumb)} sizes={LEAD_SIZES} alt={c.photos[0].alt} loading="lazy" decoding="async" width={c.photos[0].w} height={c.photos[0].h} />
         <span class="tile__cue" aria-hidden="true"><i>⤢</i></span>
       </button>
       <div class="mosaic">
-        {c.photos.slice(1).map((p, pi) => (
+        {c.photos.slice(1).map((p) => (
           <button type="button" class="tile" data-full={p.full} data-alt={p.alt} aria-label={p.alt}>
-            <img src={p.thumb} alt={p.alt} loading={ci === 0 && pi < 5 ? "eager" : "lazy"} decoding="async" width={p.w} height={p.h} />
+            <img src={thumbSrc(p.thumb, 800)} srcset={thumbSrcset(p.thumb)} sizes={TILE_SIZES} alt={p.alt} loading="lazy" decoding="async" width={p.w} height={p.h} />
             <span class="tile__cue" aria-hidden="true"><i>⤢</i></span>
           </button>
         ))}
