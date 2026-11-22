@@ -48,8 +48,8 @@ const galleryCtaLabel = {
 const webpOf = (p: string) => p.replace(/\.(jpe?g|png)$/i, ".webp");
 // Recadrages verticaux du héros pour le mobile (voir scripts/gen-landing-hero-mobile.mjs).
 // Le paysage 3/2 mis à la hauteur du bloc ne laissait voir que 40 % de sa largeur.
-const heroMobileSrcSet = (p: string) =>
-  [720, 1080, 1440].map((w) => `${p.replace(/\.(jpe?g|png)$/i, "")}-m${w}.webp ${w}w`).join(", ");
+const heroMobileSrcSet = (p: string, ext = "webp") =>
+  [720, 1080, 1440].map((w) => `${p.replace(/\.(jpe?g|png)$/i, "")}-m${w}.${ext} ${w}w`).join(", ");
 // Photos de galerie : <nom>-w480.webp et -w800.webp (scripts/gen-landing-gallery.mjs) plus le
 // <nom>.webp d'origine, déclaré à sa vraie largeur lue sur le fichier.
 const gallerySrcSet = async (p: string) => {
@@ -125,6 +125,7 @@ const midCtaLead = {
           (620 px mini), soit 465 px de large, ou 100vw au-delà. 124vw surestimait. */}
       {/* Sous 768 px, recadrage 3/4 : cadrage tenable et deux fois moins lourd que
           le paysage 1920 px, dont le mobile ne montrait qu'un tiers. */}
+      <source media="(max-width: 768px)" type="image/avif" srcset={heroMobileSrcSet(media.hero, "avif")} sizes="max(100vw, 465px)" width="1080" height="1440" />
       <source media="(max-width: 768px)" type="image/webp" srcset={heroMobileSrcSet(media.hero)} sizes="max(100vw, 465px)" width="1080" height="1440" />
       <source srcset={webpOf(media.hero)} type="image/webp" />
       <img src={media.hero} alt={m.hero.titleLine1} loading="eager" fetchpriority="high" decoding="async" />

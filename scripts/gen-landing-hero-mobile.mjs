@@ -15,6 +15,8 @@ const DIR = "public/images/landing";
 const RATIO = 3 / 4;
 const WIDTHS = [720, 1080, 1440];
 const QUALITY = 66;
+// AVIF qualité 50 : environ 15 à 22 % sous le webp 66 sur ces photos (mesuré le 22/11/2026).
+const QUALITY_AVIF = 50;
 
 const files = (await readdir(DIR)).filter((f) => /-hero\.jpg$/.test(f));
 
@@ -30,12 +32,9 @@ for (const file of files.sort()) {
   const top = Math.round((height - cropH) / 2);
 
   for (const w of WIDTHS) {
-    const out = path.join(DIR, `${base}-m${w}.webp`);
-    await sharp(src)
-      .extract({ left, top, width: cropW, height: cropH })
-      .resize(w, Math.round(w / RATIO))
-      .webp({ quality: QUALITY })
-      .toFile(out);
+    const crop = () => sharp(src).extract({ left, top, width: cropW, height: cropH }).resize(w, Math.round(w / RATIO));
+    await crop().webp({ quality: QUALITY }).toFile(path.join(DIR, `${base}-m${w}.webp`));
+    await crop().avif({ quality: QUALITY_AVIF }).toFile(path.join(DIR, `${base}-m${w}.avif`));
   }
   console.log(`${base} ${width}x${height} -> ${cropW}x${cropH} @${left},${top}`);
 }
