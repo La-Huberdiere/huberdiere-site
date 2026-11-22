@@ -33,8 +33,11 @@ const calLegend = {
 ---
 <style is:inline set:html={`:root{--cal-legend:${JSON.stringify(calLegend)}}`}></style>
 <div class="octorate-widget">
+  {/* defer, jamais async : form.js s'accroche à l'événement `load` de la fenêtre, un script
+      async arrivé après lui ne s'exécuterait plus. Mesuré le 22/11 : même rendu, même calendrier. */}
   <script
     is:inline
+    defer
     type="text/javascript"
     src="https://resx.octorate.com/octobook/resources/widget/js/form.js"
     data-sitekey="cfa59f3552d511c8205e1a2bf27d6662"
