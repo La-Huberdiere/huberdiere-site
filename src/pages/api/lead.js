@@ -2,6 +2,7 @@
 // Tourne en fonction serverless sur Vercel. La clé API reste côté serveur.
 // 3 emails : confirmation au prospect + notification à l'équipe (contact@ et Alexis).
 import { attributionLabel } from "../../lib/attribution";
+import { fetchBrevo } from "../../lib/brevo-fetch.mjs";
 
 export const prerender = false;
 
@@ -196,7 +197,7 @@ export async function POST({ request }) {
   });
 
   // 2) Notification à l'équipe (contact@ + Alexis), réponse possible au prospect.
-  const notify = fetch("https://api.brevo.com/v3/smtp/email", {
+  const notify = fetchBrevo("https://api.brevo.com/v3/smtp/email", {
     method: "POST",
     headers,
     body: JSON.stringify({
@@ -209,7 +210,7 @@ export async function POST({ request }) {
   });
 
   // 3) Confirmation au prospect (localisée, à la DA du château).
-  const confirm = fetch("https://api.brevo.com/v3/smtp/email", {
+  const confirm = fetchBrevo("https://api.brevo.com/v3/smtp/email", {
     method: "POST",
     headers,
     body: JSON.stringify({
@@ -281,7 +282,7 @@ const NOYAU_CONTACT = ["PRENOM", "NOM", "MESSAGE", "FORM"];
 // valeur plausible, jamais par du vide.
 async function getContact(headers, email) {
   try {
-    const r = await fetch(`https://api.brevo.com/v3/contacts/${encodeURIComponent(email)}`, { headers });
+    const r = await fetchBrevo(`https://api.brevo.com/v3/contacts/${encodeURIComponent(email)}`, { headers });
     return r.ok ? await r.json() : {};
   } catch {
     return {};
@@ -290,7 +291,7 @@ async function getContact(headers, email) {
 
 async function postContact(headers, payload) {
   const post = (body) =>
-    fetch("https://api.brevo.com/v3/contacts", { method: "POST", headers, body: JSON.stringify(body) });
+    fetchBrevo("https://api.brevo.com/v3/contacts", { method: "POST", headers, body: JSON.stringify(body) });
   const attrs = payload.attributes;
 
   const variantes = [{ nom: "complet", body: payload }];
