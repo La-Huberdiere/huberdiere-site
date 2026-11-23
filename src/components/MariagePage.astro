@@ -1,4 +1,5 @@
 ---
+import { roomSrcset, ROOM_SIZES } from "../lib/covers";
 import LeadForm from "./LeadForm.astro";
 import Reviews from "./Reviews.astro";
 import RatingLines from "./RatingLines.astro";
@@ -270,7 +271,7 @@ const midCtaLead = {
             {photos.length === 1 && (
               <figure class="room-card__media">
                 <picture>
-                  <source srcset={webpOf(photos[0])} type="image/webp" />
+                  <source srcset={roomSrcset(photos[0]) ?? webpOf(photos[0])} sizes={roomSrcset(photos[0]) ? ROOM_SIZES : undefined} type="image/webp" />
                   <img src={photos[0]} alt={roomAlt(r.name, 0)} loading="lazy" decoding="async" />
                 </picture>
               </figure>
@@ -281,7 +282,7 @@ const midCtaLead = {
                   {photos.map((src: string, idx: number) => (
                     <figure class="room-gallery__slide">
                       <picture>
-                        <source srcset={webpOf(src)} type="image/webp" />
+                        <source srcset={roomSrcset(src) ?? webpOf(src)} sizes={roomSrcset(src) ? ROOM_SIZES : undefined} type="image/webp" />
                         <img src={src} alt={roomAlt(r.name, idx)} loading="lazy" decoding="async" />
                       </picture>
                     </figure>

@@ -78,8 +78,8 @@ async function main() {
       .toFile(path.join(OUT, `${c.slug}.jpg`));
     console.log("✓", c.slug + ".jpg");
   }
-  // Dérivés webp pour les cartes (voir gen-cover-webp.mjs).
-  const { genCoverWebp } = await import("./gen-cover-webp.mjs");
+  // Dérivés webp pour les cartes (voir gen-derives-webp.mjs).
+  const { genCoverWebp } = await import("./gen-derives-webp.mjs");
   await genCoverWebp();
 }
 

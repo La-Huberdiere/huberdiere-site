@@ -9,7 +9,7 @@
     "preview": "astro preview",
     "check:calendrier": "node scripts/check-calendrier.mjs",
     "check:quota": "node scripts/check-quota-mensuel.mjs",
-    "prebuild": "node scripts/check-calendrier.mjs || true; node scripts/gen-cover-webp.mjs; node scripts/check-quota-mensuel.mjs && node scripts/check-liens-articles.mjs",
+    "prebuild": "node scripts/check-calendrier.mjs || true; node scripts/gen-derives-webp.mjs; node scripts/check-quota-mensuel.mjs && node scripts/check-liens-articles.mjs",
     "check:liens": "node scripts/check-liens-articles.mjs",
     "captures": "node --experimental-strip-types scripts/captures.mjs",
     "captures:diff": "node --experimental-strip-types scripts/captures.mjs --diff",

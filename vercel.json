@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "node scripts/check-quota-mensuel.mjs && node scripts/check-liens-articles.mjs && node scripts/gen-cover-webp.mjs && astro build && node scripts/patch-vercel-404.mjs",
+  "buildCommand": "node scripts/check-quota-mensuel.mjs && node scripts/check-liens-articles.mjs && node scripts/gen-derives-webp.mjs && astro build && node scripts/patch-vercel-404.mjs",
   "crons": [
     {
       "path": "/api/cron/rapport",
