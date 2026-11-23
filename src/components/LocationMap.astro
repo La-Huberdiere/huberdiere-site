@@ -200,7 +200,7 @@ const directions = `https://www.google.com/maps/dir/?api=1&destination=${encodeU
   }
   .hub-map :global(.leaflet-control-attribution) {
     background: rgba(255, 255, 255, 0.78);
-    color: rgba(33, 33, 33, 0.6);
+    color: rgba(33, 33, 33, 0.8); /* 0.6 donnait 4,24:1 sur la carte, sous AA */
     font-size: 12px;
   }
   .hub-map :global(.leaflet-control-attribution a) {

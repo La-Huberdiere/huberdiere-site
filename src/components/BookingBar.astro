@@ -196,7 +196,7 @@ const calLegend = {
         setWarn(TPL[LANG][conflicts.length === 1 ? "one" : "many"].replace("{list}", joinDates(conflicts)));
         return;
       }
-      // NB : pas de garde "durée max" — vérifié, des séjours de 7 nuits passent
+      // NB : pas de garde "durée max" : vérifié, des séjours de 7 nuits passent
       // (ex. 13→20 juil.). Les refus type 20→24 viennent de nuits déjà réservées
       // (inventaire), que le calendrier widget n'expose pas. Source de vérité = moteur.
       setWarn(null);

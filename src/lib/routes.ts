@@ -1,4 +1,4 @@
-// Slugs localisés EN/IT — table de correspondance centrale.
+// Slugs localisés EN/IT : table de correspondance centrale.
 //
 // Le FR reste la référence (URL sans préfixe, slug = id canonique). EN et IT
 // portent un slug dans leur langue, calé sur le mot-clé cible de la page. Tout le
