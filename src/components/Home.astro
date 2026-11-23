@@ -24,9 +24,9 @@ import g6 from "../assets/SD_5.jpg";
 
 // Libellés localisés de la carte de localisation (composant LocationMap).
 const mapCopy = {
-  fr: { place: "Nazelles-Négron, Touraine", cta: "Itinéraire" },
-  en: { place: "Nazelles-Négron, Touraine", cta: "Directions" },
-  it: { place: "Nazelles-Négron, Touraine", cta: "Come arrivare" },
+  fr: { place: "Nazelles-Négron, Touraine", cta: "Itinéraire", mapLabel: "Carte de localisation : " },
+  en: { place: "Nazelles-Négron, Touraine", cta: "Directions", mapLabel: "Location map: " },
+  it: { place: "Nazelles-Négron, Touraine", cta: "Come arrivare", mapLabel: "Mappa della posizione: " },
 };
 
 // Contenu (textes) passé en props selon la langue ; images partagées et optimisées.
@@ -41,13 +41,44 @@ const heroAlt: Record<string, string> = {
   en: "Château de la Huberdière seen from the pond, near Amboise",
   it: "Château de la Huberdière visto dallo stagno, vicino ad Amboise",
 };
-const actAlts = [
-  "Chambre du château aux murs poudrés",
-  "Entrée fleurie du château aux beaux jours",
-  "Salle de travail aux boiseries d'époque",
-  "Grand salon du château avec cheminée",
-  "Salon lumineux et chaises en rotin",
-];
+// Textes alternatifs des autres photos, localisés : les pages EN et IT les servaient en français.
+const ALTS = {
+  fr: {
+    acts: [
+      "Chambre du château aux murs poudrés",
+      "Entrée fleurie du château aux beaux jours",
+      "Salle de travail aux boiseries d'époque",
+      "Grand salon du château avec cheminée",
+      "Salon lumineux et chaises en rotin",
+    ],
+    intro: "Façade du château et son escalier en balustrade",
+    g: ["Façade et cour du château", "Piscine et parasols dans le parc", "Salle à manger aux boiseries", "Salon avec cheminée de marbre", "Table dressée en terrasse", "Piscine et jardins du domaine"],
+  },
+  en: {
+    acts: [
+      "A château bedroom with powder-toned walls",
+      "The château's flower-lined entrance in summer",
+      "A meeting room with period panelling",
+      "The château's grand drawing room and fireplace",
+      "A bright sitting room with rattan chairs",
+    ],
+    intro: "The château façade and its balustraded staircase",
+    g: ["The château façade and courtyard", "The pool and parasols in the park", "The panelled dining room", "A drawing room with a marble fireplace", "A table laid on the terrace", "The pool and gardens of the estate"],
+  },
+  it: {
+    acts: [
+      "Una camera del castello dalle pareti cipria",
+      "L'ingresso fiorito del castello nella bella stagione",
+      "Una sala di lavoro con boiserie d'epoca",
+      "Il grande salone del castello con il camino",
+      "Un salotto luminoso con sedie in rattan",
+    ],
+    intro: "La facciata del castello e la sua scalinata a balaustra",
+    g: ["La facciata e il cortile del castello", "La piscina e gli ombrelloni nel parco", "La sala da pranzo con boiserie", "Un salotto con camino in marmo", "Una tavola apparecchiata in terrazza", "La piscina e i giardini della tenuta"],
+  },
+};
+const A = ALTS[lang as "fr" | "en" | "it"] ?? ALTS.fr;
+const actAlts = A.acts;
 const actIds = ["sejour", "mariage", "seminaire", "famille", "retraite"];
 
 // Hero en direction artistique : la photo est un paysage 4/3, un téléphone est un
@@ -98,7 +129,7 @@ const actIds = ["sejour", "mariage", "seminaire", "famille", "retraite"];
       <div class="sign">{c.intro.sign}</div>
     </div>
     <div class="visual reveal">
-      <Image quality={68} src={intro} alt="Façade du château et son escalier en balustrade" widths={[500, 900, 1200]} sizes="(max-width:960px) 100vw, 45vw" />
+      <Image quality={68} src={intro} alt={A.intro} widths={[500, 900, 1200]} sizes="(max-width:960px) 100vw, 45vw" />
     </div>
   </div>
 </section>
@@ -152,12 +183,12 @@ const actIds = ["sejour", "mariage", "seminaire", "famille", "retraite"];
     <h2 class="section-title">{c.galleryHead.titlePlain}<span class="italic">{c.galleryHead.titleItalic}</span></h2>
   </div>
   <div class="gallery-grid">
-    <figure class="g1 reveal"><Image quality={68} src={g1} alt="Façade et cour du château" widths={[600, 1000, 1400]} sizes="50vw" /></figure>
-    <figure class="g2 reveal"><Image quality={68} src={g2} alt="Piscine et parasols dans le parc" widths={[600, 1000, 1400]} sizes="50vw" /></figure>
-    <figure class="g3 reveal"><Image quality={68} src={g3} alt="Salle à manger aux boiseries" widths={[400, 700, 900]} sizes="40vw" /></figure>
-    <figure class="g4 reveal"><Image quality={68} src={g4} alt="Salon avec cheminée de marbre" widths={[300, 500, 700]} sizes="25vw" /></figure>
-    <figure class="g5 reveal"><Image quality={68} src={g5} alt="Table dressée en terrasse" widths={[400, 700, 900]} sizes="40vw" /></figure>
-    <figure class="g6 reveal"><Image quality={68} src={g6} alt="Piscine et jardins du domaine" widths={[600, 1000, 1400]} sizes="60vw" /></figure>
+    <figure class="g1 reveal"><Image quality={68} src={g1} alt={A.g[0]} widths={[600, 1000, 1400]} sizes="50vw" /></figure>
+    <figure class="g2 reveal"><Image quality={68} src={g2} alt={A.g[1]} widths={[600, 1000, 1400]} sizes="50vw" /></figure>
+    <figure class="g3 reveal"><Image quality={68} src={g3} alt={A.g[2]} widths={[400, 700, 900]} sizes="40vw" /></figure>
+    <figure class="g4 reveal"><Image quality={68} src={g4} alt={A.g[3]} widths={[300, 500, 700]} sizes="25vw" /></figure>
+    <figure class="g5 reveal"><Image quality={68} src={g5} alt={A.g[4]} widths={[400, 700, 900]} sizes="40vw" /></figure>
+    <figure class="g6 reveal"><Image quality={68} src={g6} alt={A.g[5]} widths={[600, 1000, 1400]} sizes="60vw" /></figure>
   </div>
 </section>
 
@@ -183,6 +214,7 @@ const actIds = ["sejour", "mariage", "seminaire", "famille", "retraite"];
       label="Château de la Huberdière"
       place={mapCopy[lang]?.place ?? mapCopy.fr.place}
       cta={mapCopy[lang]?.cta ?? mapCopy.fr.cta}
+      mapLabel={mapCopy[lang]?.mapLabel ?? mapCopy.fr.mapLabel}
     />
   </div>
 </section>

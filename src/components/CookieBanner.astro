@@ -5,10 +5,13 @@ const { lang = "fr" } = Astro.props;
 // Texte éditable depuis Keystatic (singleton « Textes du site »).
 import siteTexts from "../data/site-texts.json";
 const t = ((siteTexts as any)[lang] ?? (siteTexts as any).fr).cookies;
-const policyHref = "/politique-de-confidentialite";
+import { localizePath } from "../lib/routes";
+// Le lien menait à la politique FR depuis les pages EN et IT.
+const policyHref = localizePath("/politique-de-confidentialite", lang);
+const bannerLabel = { fr: "Consentement cookies", en: "Cookie consent", it: "Consenso ai cookie" }[lang as "fr" | "en" | "it"] ?? "Consentement cookies";
 ---
 
-<div id="cookieBanner" class="cookie-banner" role="dialog" aria-live="polite" aria-label="Consentement cookies" hidden>
+<div id="cookieBanner" class="cookie-banner" role="dialog" aria-live="polite" aria-label={bannerLabel} hidden>
   <p class="cookie-text">
     {t.text} <a href={policyHref}>{t.link}</a>
   </p>

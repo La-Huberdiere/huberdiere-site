@@ -58,4 +58,9 @@ const lines = ratings.map(
     margin-right: 14px;
     opacity: 0.45;
   }
+  /* Sur téléphone, une note par ligne : le point finissait en début de ligne. */
+  @media (max-width: 560px) {
+    .rating-lines-inline { flex-direction: column; align-items: center; gap: 2px; }
+    .rl-item + .rl-item::before { content: none; }
+  }
 </style>

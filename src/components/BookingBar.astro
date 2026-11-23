@@ -72,11 +72,29 @@ const calLegend = {
       if (removed) sel.dataset.huberTrimmed = "1";
       return removed > 0;
     }
+    // Les libellés injectés par Octorate (« Adultes »…) ne sont reliés à aucun
+    // champ : un lecteur d'écran annonçait un sélecteur sans nom. On les relie.
+    function labelWidget() {
+      var root = document.querySelector(".octorate-widget");
+      if (!root) return;
+      root.querySelectorAll(".octobookpax, .octobooksubmit").forEach(function (box, i) {
+        var field = box.querySelector("select, input:not([type=hidden])");
+        var label = box.querySelector("label");
+        if (!field || field.getAttribute("aria-labelledby") || field.getAttribute("aria-label")) return;
+        if (label && label.textContent.trim()) {
+          label.id = label.id || "octo-label-" + i;
+          field.setAttribute("aria-labelledby", label.id);
+        } else if (field.value) {
+          field.setAttribute("aria-label", field.value);
+        }
+      });
+    }
     // Le select est injecté par le script d'Octorate : on attend son arrivée.
-    var paxObserver = new MutationObserver(function () { if (trimPax()) paxObserver.disconnect(); });
+    var paxObserver = new MutationObserver(function () { labelWidget(); if (trimPax()) paxObserver.disconnect(); });
     paxObserver.observe(document.documentElement, { childList: true, subtree: true });
     setTimeout(function () { paxObserver.disconnect(); }, 15000);
     trimPax();
+    labelWidget();
 
     var pad = function (n) { return String(n).padStart(2, "0"); };
     var key = function (y, m, d) { return y + "-" + pad(m) + "-" + pad(d); }; // m 1-based

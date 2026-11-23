@@ -1,12 +1,12 @@
 {
   "fr": {
     "title": "Louer un château pour un grand groupe · Val de Loire | La Huberdière",
-    "description": "Louez un château entier pour réunir famille ou amis : 21 couchages en 10 suites privatives, parc de 14 hectares et table d'hôtes maison. Grande capacité d'accueil, à 2 h 20 de Paris.",
+    "description": "Louez un château entier pour réunir famille ou amis : 21 couchages en 10 suites privatives, parc de 14 hectares et table d'hôtes maison. Grande capacité d'accueil, à 2 h 20 de Paris.",
     "hero": {
       "eyebrow": "Louer le château · Val de Loire",
       "titleLine1": "Louer un château",
       "titleLine2Italic": "pour réunir les siens.",
-      "lead": "Le château privatisé rien que pour votre groupe : 21 couchages, parc de quatorze hectares et grande table conviviale. De quoi réunir toute la famille au même endroit. À 2 h 20 de Paris."
+      "lead": "Le château privatisé rien que pour votre groupe : 21 couchages, parc de quatorze hectares et grande table conviviale. De quoi réunir toute la famille au même endroit. À 2 h 20 de Paris."
     },
     "intro": [
       "Entre Amboise et Chenonceau, louez le château entier pour votre tribu : vingt et un couchages dans dix suites de prestige, chacune avec sa salle de bain privative. Une grande capacité d'accueil pour réunir toutes les générations au même endroit, sans compromis sur l'intimité.",
@@ -47,7 +47,7 @@
         "lbl": "de parc boisé"
       },
       {
-        "big": "2 h 20",
+        "big": "2 h 20",
         "lbl": "de Paris"
       }
     ],
@@ -70,7 +70,7 @@
       },
       {
         "label": "Situation",
-        "value": "Près d'Amboise, à 2 h 20 de Paris."
+        "value": "Près d'Amboise, à 2 h 20 de Paris."
       },
       {
         "label": "Tarif",
@@ -165,7 +165,7 @@
       },
       {
         "q": "À quelle distance de Paris ?",
-        "a": "Environ 2 h 20 de Paris, en Touraine, près d'Amboise, au cœur des Châteaux de la Loire."
+        "a": "Environ 2 h 20 de Paris, en Touraine, près d'Amboise, au cœur des Châteaux de la Loire."
       }
     ],
     "testimonial": {

@@ -11,6 +11,7 @@ const {
   label = "Château de la Huberdière",
   place = "Nazelles-Négron, Touraine",
   cta = "Itinéraire",
+  mapLabel = "Carte de localisation : ",
 } = Astro.props;
 
 // Itinéraire ouvert dans Google Maps (destination par nom pour afficher la fiche).
@@ -24,7 +25,7 @@ const directions = `https://www.google.com/maps/dir/?api=1&destination=${encodeU
     id="hub-map"
     class="hub-map"
     role="img"
-    aria-label={`Carte de localisation : ${label}, ${place}`}
+    aria-label={`${mapLabel}${label}, ${place}`}
     data-lat={lat}
     data-lon={lon}
     data-label={label}
@@ -49,8 +50,14 @@ const directions = `https://www.google.com/maps/dir/?api=1&destination=${encodeU
       const lat = parseFloat(el.dataset.lat || "47.44645");
       const lon = parseFloat(el.dataset.lon || "0.93489");
 
+      // Molette coupée : en défilant la page, la souris passait sur la carte et
+      // zoomait au lieu de descendre. Les boutons + et − restent.
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const map = L.map(el, {
-        scrollWheelZoom: true,
+        scrollWheelZoom: false,
+        fadeAnimation: !reduce,
+        zoomAnimation: !reduce,
+        markerZoomAnimation: !reduce,
         zoomControl: true,
         attributionControl: true,
       }).setView([lat, lon], 13);

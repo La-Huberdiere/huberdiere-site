@@ -6,7 +6,7 @@ const { lang = "fr" } = Astro.props;
 const prefix = lang === "fr" ? "" : `/${lang}`;
 const nf = ((siteTexts as any)[lang] ?? (siteTexts as any).fr).notFound;
 ---
-<main class="notfound">
+<div class="notfound">
   <p class="nf-eyebrow">{nf.eyebrow}</p>
   <h1>{nf.title}</h1>
   <p class="nf-text">{nf.text}</p>
@@ -14,7 +14,7 @@ const nf = ((siteTexts as any)[lang] ?? (siteTexts as any).fr).notFound;
   <nav class="nf-links" aria-label="Pages">
     {nf.links.map((l) => <a href={`${prefix}${l.href}`}>{l.label}</a>)}
   </nav>
-</main>
+</div>
 
 <style>
   .notfound {

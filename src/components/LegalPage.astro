@@ -4,10 +4,10 @@
 // Choisie quand la page a le champ « Type de mise en page » = Sobre dans Keystatic.
 const { entry, html } = Astro.props;
 ---
-<main class="legal">
+<div class="legal">
   <h1>{entry.title}</h1>
   <div class="legal-prose" set:html={html} />
-</main>
+</div>
 
 <style>
   .legal {

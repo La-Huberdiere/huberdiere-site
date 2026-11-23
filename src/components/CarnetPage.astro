@@ -15,7 +15,7 @@ const siteHref = (s: string) => "https://" + s;
 const siteLabel = (s: string) => s.replace(/^www\./, "");
 ---
 
-<main class="carnet" lang={lang}>
+<div class="carnet" lang={lang}>
   <header class="c-head">
     <div class="c-head-text">
       <p class="c-mark">Château de la Huberdière</p>
@@ -151,7 +151,7 @@ const siteLabel = (s: string) => s.replace(/^www\./, "");
   <footer class="c-pied">
     <a href="https://www.chateaudelahuberdiere.com/?utm_source=carnet&utm_medium=pied&utm_campaign=satisfaction">{c.pied}</a>
   </footer>
-</main>
+</div>
 
 <script is:inline define:vars={{ query: CARNET_PARTAGE_QUERY, titre: c.partageTitre, texte: c.partageTexte, copie: c.lienCopie, proche: c.proche }}>
   (function () {

@@ -34,6 +34,11 @@ const reserveLink = octorateUrl();
 // En-tête de l'encart « En bref » (fiche factuelle en tête de page). C'est un
 // libellé d'interface, localisé ici ; les faits, eux, vivent dans les données.
 const briefLabel = { fr: "En bref", en: "In brief", it: "In breve" }[lang];
+const fallbackAlts = {
+  fr: ["Entrée fleurie du château", "Grande salle dressée pour un dîner"],
+  en: ["The château's flower-lined entrance", "The great hall laid for dinner"],
+  it: ["L'ingresso fiorito del castello", "Il grande salone apparecchiato per una cena"],
+}[lang];
 
 // Renvoi vers la page galerie, sous la bande de photos de chaque landing.
 const galleryHref = localizePath("/galerie", lang);
@@ -375,8 +380,8 @@ const midCtaLead = {
 ) : (
   <section class="gallery">
     <div class="gallery-grid" style="grid-template-columns:repeat(2,1fr);grid-auto-rows:300px">
-      <figure class="reveal" style="grid-column:1/2;grid-row:1/2"><Image quality={68} src={v1} alt="Entrée fleurie du château" widths={[600, 1000, 1400]} sizes="50vw" /></figure>
-      <figure class="reveal" style="grid-column:2/3;grid-row:1/2"><Image quality={68} src={v2} alt="Grande salle dressée pour un dîner" widths={[600, 1000, 1400]} sizes="50vw" /></figure>
+      <figure class="reveal" style="grid-column:1/2;grid-row:1/2"><Image quality={68} src={v1} alt={fallbackAlts[0]} widths={[600, 1000, 1400]} sizes="50vw" /></figure>
+      <figure class="reveal" style="grid-column:2/3;grid-row:1/2"><Image quality={68} src={v2} alt={fallbackAlts[1]} widths={[600, 1000, 1400]} sizes="50vw" /></figure>
     </div>
     <p class="gallery-more reveal">
       <a href={galleryHref}>{galleryCtaLabel}</a>

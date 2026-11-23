@@ -76,6 +76,8 @@ const pvL = ({
   it: { label: "Foto ingrandita", close: "Chiudi", prev: "Foto precedente", next: "Foto successiva" },
 } as Record<string, { label: string; close: string; prev: string; next: string }>)[lang] ?? { label: "Photo", close: "Fermer", prev: "Précédente", next: "Suivante" };
 
+const skipLabel = ({ fr: "Aller au contenu", en: "Skip to content", it: "Vai al contenuto" } as Record<string, string>)[lang] ?? "Aller au contenu";
+
 const defaults = {
   fr: {
     title: "Château de la Huberdière · Hôtel de charme près d'Amboise, mariage & séminaire en Val de Loire",
@@ -309,8 +311,13 @@ const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
     {GTM_ID && (
       <noscript set:html={`<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`} />
     )}
+    {/* Lien d'évitement et repère <main> : aucune page n'en avait, un lecteur
+        d'écran ou un clavier devait traverser tout l'en-tête à chaque page. */}
+    <a class="skip-link" href="#contenu">{skipLabel}</a>
     {!bare && <Header settings={s} lang={lang} langs={langs} ctaKind={ctaKind} ctaHref={ctaHrefOverride} />}
-    <slot />
+    <main id="contenu" tabindex="-1">
+      <slot />
+    </main>
     {!bare && <Footer settings={s} lang={lang} />}
     <CookieBanner lang={lang} />
     {showStickyCta && <StickyCta ctaKind={ctaKind} ctaHref={ctaHrefOverride} lang={lang} settings={s} />}

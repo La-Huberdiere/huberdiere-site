@@ -1,6 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import { getAuthor } from "../lib/authors";
+import { coverSrcset } from "../lib/covers";
 import { categoryLabel, formatDate, CATEGORY_ORDER, BLOG_UI, lp, type Lang } from "../lib/blog";
 import { breadcrumbSchema } from "../lib/seo";
 
@@ -28,7 +29,7 @@ const schemas = [
 ---
 <Base title={T.metaTitle} description={T.metaDesc} lang={lang} path="/blog" schemas={schemas}>
   <section class="blog-hero reveal">
-    <nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <nav class="breadcrumb" aria-label={({ fr: "Fil d'Ariane", en: "Breadcrumb", it: "Percorso" } as Record<string, string>)[lang]}>
       <ol>
         <li><a href={lp(lang, "/")}>{T.home}</a></li>
         <li aria-current="page">{T.journal}</li>
@@ -60,7 +61,7 @@ const schemas = [
   {featured && (
     <a class="featured reveal" href={lp(lang, `/blog/${featured.slug}`)} data-cat={featured.category || "art-de-vivre"} data-search={searchIndex(featured)}>
       <div class="featured-media">
-        {featured.cover && <img src={featured.cover} alt={featured.title} width="760" height="460" loading="eager" />}
+        {featured.cover && <img src={featured.cover} srcset={coverSrcset(featured.cover)} sizes="(max-width:960px) 100vw, 760px" alt={featured.title} width="760" height="460" loading="eager" />}
         <span class="featured-flag">{T.flag}</span>
       </div>
       <div class="featured-body">
@@ -78,7 +79,7 @@ const schemas = [
   <div class="blog-list" id="blogList">
     {rest.map((a) => (
       <a class="blog-card reveal" href={lp(lang, `/blog/${a.slug}`)} data-cat={a.category || "art-de-vivre"} data-search={searchIndex(a)}>
-        {a.cover && <img src={a.cover} alt={a.title} width="600" height="340" loading="lazy" />}
+        {a.cover && <img src={a.cover} srcset={coverSrcset(a.cover)} sizes="(max-width:640px) 100vw, (max-width:960px) 50vw, 360px" alt={a.title} width="600" height="340" loading="lazy" />}
         <div class="blog-card-body">
           <span class="blog-cat">{categoryLabel(a.category, lang)}</span>
           <h2>{a.title}</h2>
@@ -181,7 +182,7 @@ const schemas = [
     .chip {
       font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 0.78rem; letter-spacing: 0.02em; color: #646464;
       background: transparent; border: 1px solid #e2dccc; padding: 8px 16px; border-radius: 0;
-      cursor: pointer; transition: all 0.18s ease; white-space: nowrap;
+      cursor: pointer; transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease; white-space: nowrap;
     }
     .chip:hover { border-color: #8b0000; color: #8b0000; }
     .chip.is-active { background: #8b0000; border-color: #8b0000; color: #fff; }
@@ -191,8 +192,7 @@ const schemas = [
       display: grid; grid-template-columns: 1.15fr 1fr; gap: 0; text-decoration: none; color: inherit;
     }
     .featured-media { position: relative; overflow: hidden; min-height: 340px; background: #ece6d8; }
-    .featured-media img { width: 100%; height: 100%; min-height: 340px; object-fit: cover; display: block; transition: transform 0.5s ease; }
-    .featured:hover .featured-media img { transform: scale(1.04); }
+    .featured-media img { width: 100%; height: 100%; min-height: 340px; object-fit: cover; display: block; }
     .featured-flag {
       position: absolute; top: 16px; left: 16px; background: #8b0000; color: #fff;
       font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 12px; letter-spacing: 0.14em;
@@ -234,7 +234,7 @@ const schemas = [
     .blog-more {
       font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase;
       color: #8b0000; background: transparent; border: 1px solid #8b0000; border-radius: 0; padding: 14px 34px;
-      cursor: pointer; transition: all 0.18s ease;
+      cursor: pointer; transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
     }
     .blog-more:hover { background: #8b0000; color: #fff; }
     .blog-empty { max-width: 1100px; margin: 40px auto 0; padding: 0 24px 60px; text-align: center; font-family: "Montserrat", "Montserrat Fallback", sans-serif; color: #646464; }

@@ -1,6 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import { getAuthor } from "../lib/authors";
+import { coverSrcset } from "../lib/covers";
 import { categoryLabel, readingTime, formatDate, wordCount, BLOG_UI, lp, type Lang, type TocItem } from "../lib/blog";
 import RatingLines from "./RatingLines.astro";
 import { articleSchema, breadcrumbSchema, faqSchema } from "../lib/seo";
@@ -84,7 +85,7 @@ const schemas = [
   <div class="reading-progress" id="readProgress" aria-hidden="true"></div>
 
   <article class="article">
-    <nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <nav class="breadcrumb" aria-label={({ fr: "Fil d'Ariane", en: "Breadcrumb", it: "Percorso" } as Record<string, string>)[lang]}>
       <ol>
         <li><a href={lp(lang, "/")}>{T.home}</a></li>
         <li><a href={lp(lang, "/blog")}>{T.journal}</a></li>
@@ -102,14 +103,14 @@ const schemas = [
       <p class="article-byline">{T.by} <a href={authorPath}>{author.fullName}</a>, {author.role}</p>
     </header>
 
-    {entry.cover && <img class="article-cover reveal" src={entry.cover} alt={entry.title} width="1200" height="630" />}
+    {entry.cover && <img class="article-cover reveal" src={entry.cover} srcset={coverSrcset(entry.cover)} sizes="(max-width:860px) 100vw, 820px" alt={entry.title} width="1200" height="630" />}
 
     <div class="article-layout">
       <div class="article-main">
         <div class="article-body prose reveal" set:html={html} />
 
         {keywords.length > 0 && (
-          <div class="article-tags reveal" aria-label="Mots-clés">
+          <div class="article-tags reveal" aria-label={({ fr: "Mots-clés", en: "Keywords", it: "Parole chiave" } as Record<string, string>)[lang]}>
             {keywords.map((k) => <a class="tag" href={`${lp(lang, "/blog")}?q=${encodeURIComponent(k)}`}>{k}</a>)}
           </div>
         )}
@@ -169,7 +170,7 @@ const schemas = [
             <div class="related-grid">
               {related.map((r) => (
                 <a class="related-card" href={lp(lang, `/blog/${r.slug}`)}>
-                  {r.cover && <img src={r.cover} alt={r.title} loading="lazy" />}
+                  {r.cover && <img src={r.cover} srcset={coverSrcset(r.cover)} sizes="(max-width:640px) 100vw, 330px" alt={r.title} loading="lazy" />}
                   <span class="related-cat">{categoryLabel(r.category, lang)}</span>
                   <span class="related-title">{r.title}</span>
                 </a>
@@ -349,7 +350,7 @@ const schemas = [
   .article-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 30px 0 0; }
   .article-tags .tag {
     font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 0.78rem; color: #646464; background: #f1ede2;
-    border: 1px solid #e2dccc; padding: 5px 13px; border-radius: 0; text-decoration: none; transition: all 0.15s ease;
+    border: 1px solid #e2dccc; padding: 5px 13px; border-radius: 0; text-decoration: none; transition: border-color 0.15s ease, color 0.15s ease;
   }
   .article-tags .tag:hover { color: #8b0000; border-color: #8b0000; }
   .article-updated { font-size: 0.82rem; color: #6b6b6b; font-style: italic; margin-top: 26px; }

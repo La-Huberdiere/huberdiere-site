@@ -80,7 +80,7 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display', 'Playfair Display Fallback',Georg
 .nav a:hover{opacity:1;color:var(--burgundy)}
 .nav .book{
   background:var(--burgundy);color:#fff;border:1px solid var(--burgundy);
-  padding:11px 22px;letter-spacing:.2em;transition:all .35s;
+  padding:11px 22px;letter-spacing:.2em;transition:background-color .35s,border-color .35s,color .35s;
 }
 .nav .book:hover{background:#6e0808;border-color:#6e0808;color:#fff}
 /* Bouton « Réserver » persistant dans la barre : masqué en desktop (celui du nav suffit),
@@ -88,7 +88,7 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display', 'Playfair Display Fallback',Georg
    (sinon il disparaissait dans le panneau, cf. retour Patrick 06/07). */
 .book--bar{display:none;background:var(--burgundy);color:#fff;border:1px solid var(--burgundy);
   font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:12px;font-weight:400;text-transform:uppercase;
-  letter-spacing:.2em;text-decoration:none;padding:11px 22px;transition:all .35s}
+  letter-spacing:.2em;text-decoration:none;padding:11px 22px;transition:background-color .35s,border-color .35s,color .35s}
 .book--bar:hover{background:#6e0808;border-color:#6e0808;color:#fff}
 /* « Demander un devis » est deux fois plus long que « Réserver » : sans ces
    réglages il passe à la ligne et déforme la barre sur un écran de 390 px. */
@@ -248,8 +248,7 @@ section{padding:112px 48px;position:relative}
 .act{display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center}
 .act:nth-child(even) .act-visual{order:2}
 .act-visual{aspect-ratio:4/3;overflow:hidden;position:relative}
-.act-visual img{width:100%;height:100%;object-fit:cover;transition:transform 1.6s ease}
-.act:hover .act-visual img{transform:scale(1.035)}
+.act-visual img{width:100%;height:100%;object-fit:cover}
 .act-text .num{font-family:'Playfair Display', 'Playfair Display Fallback',serif;font-style:italic;font-size:18px;color:var(--burgundy);margin-bottom:20px;display:flex;align-items:center;gap:14px}
 .act-text .num::before{content:"";width:32px;height:1px;background:var(--burgundy)}
 .act-text h3{font-family:'Playfair Display', 'Playfair Display Fallback',serif;font-weight:400;font-size:clamp(32px,3.6vw,46px);line-height:1.12;margin-bottom:24px;color:var(--ink)}
@@ -272,8 +271,7 @@ section{padding:112px 48px;position:relative}
 .gallery{background:var(--bg)}
 .gallery-grid{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:140px;gap:20px;max-width:1440px;margin:0 auto}
 .gallery-grid figure{margin:0;overflow:hidden;position:relative}
-.gallery-grid img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s ease;filter:saturate(.96)}
-.gallery-grid figure:hover img{transform:scale(1.05)}
+.gallery-grid img{width:100%;height:100%;object-fit:cover;filter:saturate(.96)}
 .g1{grid-column:1/4;grid-row:1/4}
 .g2{grid-column:4/7;grid-row:1/3}
 .g3{grid-column:4/6;grid-row:3/5}
@@ -337,6 +335,10 @@ section{padding:112px 48px;position:relative}
   .pins{flex-direction:column;align-items:flex-start;gap:22px}
   .pin{padding-right:0;margin-right:0;border-right:none}
   .footer-grid{grid-template-columns:1fr;gap:40px}
+  /* Cibles tactiles : les liens du pied faisaient 16 px de haut. Zone portée à 32 px
+     par un padding vertical, l'écart visuel entre lignes reste le même. */
+  .site-footer ul{gap:0}
+  .site-footer ul a,.site-footer p a{display:inline-block;padding:7px 0}
 }
 
 /* Mobile : le hero passe en hauteur auto et le contenu en flux normal pour ne pas
@@ -444,6 +446,8 @@ section{padding:112px 48px;position:relative}
   font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:12.5px;line-height:1.5;color:#5c574c}
 .form-trust a{color:var(--burgundy)}
 .form-trust > *+ *::before{content:"·";margin-right:12px;opacity:.45}
+/* Sous 560 px chaque mention prend sa ligne : le point de séparation finissait en début de ligne. */
+@media(max-width:560px){.form-trust{flex-direction:column;align-items:center;gap:4px}.form-trust > *+ *::before{content:none}}
 .lead-form input::placeholder,.lead-form textarea::placeholder{color:#6b6b6b}
 .lead-form .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 /* « Comment nous avez-vous connus ? » : facultatif, donc posé sous le message et
@@ -479,15 +483,27 @@ section{padding:112px 48px;position:relative}
 .pv-prev{left:22px}
 .pv-next{right:22px}
 .pv-count{position:absolute;bottom:20px;left:0;right:0;text-align:center;color:#f4f2ec;font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:.8rem;letter-spacing:.1em}
-@media(prefers-reduced-motion:reduce){.pv-img{animation:none}}
+/* Lien d'évitement : invisible jusqu'à la tabulation, puis en haut à gauche, au-dessus de l'en-tête. */
+.skip-link{position:absolute;left:12px;top:-100px;z-index:1000;background:var(--burgundy);color:#fff;padding:12px 18px;font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:14px;text-decoration:none}
+.skip-link:focus{top:12px}
+#contenu:focus{outline:none}
+/* « Réduire les animations » : tout mouvement s'arrête, aucun contenu ne disparaît.
+   Les transitions gardent une durée quasi nulle pour que transitionend se déclenche encore. */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important;scroll-behavior:auto!important}
+  .pv-img{animation:none}
+  .scroll-hint::after{animation:none;transform:none}
+  .hero img,.hero.loaded img{transition:none;transform:scaleX(-1)}
+}
 @media(max-width:640px){.pv-nav{width:44px;height:44px;font-size:26px}.pv-prev{left:10px}.pv-next{right:10px}.pv-img{max-width:96vw;max-height:82vh}.pv-close{top:12px;right:12px}}
 
 /* Barre d'action fixe (StickyCta) : sous 960 px elle occupe 52 px en bas d'écran.
    Sans cette réserve, elle recouvre les mentions légales et le crédit du footer.
    Le décalage du bandeau cookies vit dans CookieBanner.astro : le style scopé
    d'Astro y est plus spécifique qu'une règle de feuille globale. */
+/* :has : sur les pages sans barre (contact, légal), la réserve laissait une bande crème sous le pied. */
 @media (max-width:960px){
-  body{padding-bottom:calc(52px + env(safe-area-inset-bottom,0px))}
+  body:has(#stickyCta){padding-bottom:calc(52px + env(safe-area-inset-bottom,0px))}
 }
 @media (max-width:960px) and (max-height:420px){
   body{padding-bottom:0}
