@@ -39,6 +39,7 @@ const COVERS = [
   { slug: "mariage-intimiste-30-60-invites", dir: PUBLIC, photo: "images/bibliotheque/mariage/mariage-05.jpg" },
   { slug: "table-hotes-touraine-chateau", dir: PUBLIC, photo: "images/bibliotheque/restauration/restauration-06.jpg" },
   { slug: "cuisine-terroir-touraine", dir: PUBLIC, photo: "images/bibliotheque/restauration/restauration-05.jpg" },
+  { slug: "mariage-touraine-10-lieux", dir: PUBLIC, photo: "images/bibliotheque/mariage/mariage-06.jpg" },
   { slug: "loire-a-velo-depuis-amboise", dir: PUBLIC, photo: "images/bibliotheque/chateau-exterieur/chateau-exterieur-24.jpg" },
   { slug: "ceremonie-laique-parc-chateau", dir: PUBLIC, photo: "images/bibliotheque/mariage/mariage-07.jpg" },
   { slug: "checklist-mariage-retroplanning", dir: PUBLIC, photo: "images/bibliotheque/mariage/mariage-04.jpg" },

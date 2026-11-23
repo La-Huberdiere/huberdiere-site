@@ -42,6 +42,7 @@ export const ARTICLE_SLUGS: Record<string, { en: string; it: string }> = {
   "loire-a-velo-depuis-amboise": { en: "loire-valley-cycling-amboise", it: "loira-in-bicicletta-amboise" },
   "louer-chateau-entre-amis-famille": { en: "rent-chateau-group-weekend", it: "affittare-castello-weekend" },
   "mariage-printemps-chateau": { en: "spring-wedding-chateau-loire", it: "matrimonio-primavera-castello" },
+  "mariage-touraine-10-lieux": { en: "wedding-venues-touraine", it: "location-matrimonio-touraine" },
   "mariage-intimiste-30-60-invites": { en: "intimate-wedding-chateau-loire", it: "matrimonio-intimo-castello" },
   "organiser-mariage-au-chateau": { en: "chateau-wedding-planning", it: "organizzare-matrimonio-castello" },
   "organiser-retraite-yoga-chateau": { en: "yoga-retreat-chateau", it: "ritiro-yoga-castello-loira" },
