@@ -59,7 +59,7 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display', 'Playfair Display Fallback',Georg
    hauteur reste constante, c'est le logo qui se met à l'échelle. */
 .site-header.anim{transition:box-shadow .4s,background .4s}
 .site-header.anim .brand-logo{transition:transform .4s;transform-origin:left center}
-.site-header.solid{box-shadow:0 2px 14px rgba(0,0,0,.07)}
+.site-header.solid{box-shadow:0 1px 0 var(--line-soft)}
 .brand{display:flex;align-items:center}
 .brand-logo{height:58px;width:auto;display:block}
 .site-header.solid .brand-logo{transform:scale(.83)}
@@ -73,14 +73,14 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display', 'Playfair Display Fallback',Georg
 .lang-switch a.active{opacity:1;font-weight:600}
 .lang-switch a:hover{opacity:1}
 .lang-switch .sep{opacity:.35}
-.nav a{font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:400;opacity:.92;transition:opacity .3s}
+.nav a{font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:13px;letter-spacing:.01em;font-weight:400;opacity:.92;transition:opacity .3s}
 /* Le bouton d'action ne se met pas en retrait : l'opacité 0,92 héritée des liens
    du menu rognait le blanc sur bordeaux du seul bouton persistant du site. */
 .nav .book,.book--bar{opacity:1}
 .nav a:hover{opacity:1;color:var(--burgundy)}
 .nav .book{
   background:var(--burgundy);color:#fff;border:1px solid var(--burgundy);
-  padding:11px 22px;letter-spacing:.2em;transition:background-color .35s,border-color .35s,color .35s;
+  padding:11px 22px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;transition:background-color .35s,border-color .35s,color .35s;
 }
 .nav .book:hover{background:#6e0808;border-color:#6e0808;color:#fff}
 /* Bouton « Réserver » persistant dans la barre : masqué en desktop (celui du nav suffit),
@@ -88,7 +88,7 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display', 'Playfair Display Fallback',Georg
    (sinon il disparaissait dans le panneau, cf. retour Patrick 06/07). */
 .book--bar{display:none;background:var(--burgundy);color:#fff;border:1px solid var(--burgundy);
   font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:12px;font-weight:400;text-transform:uppercase;
-  letter-spacing:.2em;text-decoration:none;padding:11px 22px;transition:background-color .35s,border-color .35s,color .35s}
+  letter-spacing:.12em;text-decoration:none;padding:11px 22px;transition:background-color .35s,border-color .35s,color .35s}
 .book--bar:hover{background:#6e0808;border-color:#6e0808;color:#fff}
 /* « Demander un devis » est deux fois plus long que « Réserver » : sans ces
    réglages il passe à la ligne et déforme la barre sur un écran de 390 px. */
@@ -114,7 +114,7 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display', 'Playfair Display Fallback',Georg
   .site-header{padding:16px 22px}
   .site-header.nav-open{background:var(--bg);color:var(--ink)}
   .menu-toggle{display:flex;margin-left:14px}
-  .book--bar{display:inline-flex;align-items:center;margin-left:auto;padding:10px 18px;letter-spacing:.16em}
+  .book--bar{display:inline-flex;align-items:center;margin-left:auto;padding:10px 18px;letter-spacing:.12em}
   /* En burger, on garde le CTA dans la barre : on retire le doublon du panneau. */
   .nav .book{display:none}
   .nav{
@@ -176,13 +176,13 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display', 'Playfair Display Fallback',Georg
 .hero p.lead{font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-weight:300;font-size:clamp(14px,1.4vw,16px);max-width:560px;margin:0 0 40px;letter-spacing:.04em;line-height:1.85}
 .hero-cta{display:flex;gap:30px;align-items:center;justify-content:flex-start;flex-wrap:wrap;margin-bottom:40px}
 /* CTA secondaire en lien souligné discret (réutilise le registre .act-link, sur fond sombre). */
-.hero-cta .hero-link{display:inline-flex;align-items:center;gap:12px;font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:12px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:#fff;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.6);transition:all .3s}
+.hero-cta .hero-link{display:inline-flex;align-items:center;gap:12px;font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:#fff;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.6);transition:all .3s}
 .hero-cta .hero-link::after{content:"→";font-family:Georgia,serif;font-size:14px;letter-spacing:0;transition:transform .3s}
 .hero-cta .hero-link:hover{border-color:#fff}
 .hero-cta .hero-link:hover::after{transform:translateX(4px)}
 
 /* Boutons */
-.btn-primary,.btn-ghost,.btn-burgundy{font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-weight:500;font-size:12px;letter-spacing:.26em;text-transform:uppercase;padding:18px 38px;cursor:pointer;transition:all .35s;border:1px solid;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+.btn-primary,.btn-ghost,.btn-burgundy{font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-weight:500;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:18px 38px;cursor:pointer;transition:all .35s;border:1px solid;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
 /* Le bouton de demande de devis prend la couleur d'action du site. Au premier
    écran, quatre appels à l'action se disputaient l'attention et le plus saturé,
    le bouton Recherche du moteur, menait au tunnel le moins rentable : 296 clics
@@ -194,7 +194,7 @@ h1,h2,h3,h4,h5{font-family:'Playfair Display', 'Playfair Display Fallback',Georg
 .btn-burgundy{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
 .btn-burgundy:hover{background:transparent;color:var(--burgundy)}
 
-.scroll-hint{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);z-index:2;color:#fff;font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:12px;letter-spacing:.44em;text-transform:uppercase;opacity:.9;display:flex;flex-direction:column;align-items:center;gap:12px}
+.scroll-hint{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);z-index:2;color:#fff;font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:13px;letter-spacing:.01em;opacity:.9;display:flex;flex-direction:column;align-items:center;gap:12px}
 .scroll-hint::after{content:"";display:block;width:1px;height:42px;background:currentColor;animation:scrollLine 2.6s ease-in-out infinite}
 @keyframes scrollLine{0%,100%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1)}}
 
@@ -239,7 +239,7 @@ section{padding:112px 48px;position:relative}
 .intro .sign::before{content:"";width:48px;height:1px;background:var(--burgundy)}
 
 /* ---------- ORNEMENT ---------- */
-.ornament{display:flex;align-items:center;justify-content:center;gap:18px;color:var(--burgundy);font-family:'Playfair Display', 'Playfair Display Fallback',serif;font-style:italic;font-size:14px;letter-spacing:.3em;text-transform:uppercase;padding:40px 0}
+.ornament{display:flex;align-items:center;justify-content:center;gap:18px;color:var(--burgundy);font-family:'Playfair Display', 'Playfair Display Fallback',serif;font-style:italic;font-size:14px;letter-spacing:.01em;padding:40px 0}
 .ornament::before,.ornament::after{content:"";width:80px;height:1px;background:var(--burgundy);opacity:.4}
 
 /* ---------- ACTIVITES ---------- */
@@ -256,7 +256,7 @@ section{padding:112px 48px;position:relative}
 .act-text .list{list-style:none;padding:0;margin:0 0 36px;display:grid;gap:8px;font-size:13.5px;color:var(--muted);font-weight:300}
 .act-text .list li{display:flex;gap:14px;align-items:flex-start}
 .act-text .list li::before{content:"·";color:var(--burgundy);font-weight:700}
-.act-link{display:inline-flex;align-items:center;gap:16px;font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:12px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:var(--ink);padding-bottom:8px;border-bottom:1px solid var(--ink);transition:all .3s}
+.act-link{display:inline-flex;align-items:center;gap:16px;font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);padding-bottom:8px;border-bottom:1px solid var(--ink);transition:all .3s}
 .act-link::after{content:"→";font-family:Georgia,serif;font-size:14px;letter-spacing:0;transition:transform .3s}
 .act-link:hover{color:var(--burgundy);border-color:var(--burgundy)}
 .act-link:hover::after{transform:translateX(4px)}
@@ -264,7 +264,7 @@ section{padding:112px 48px;position:relative}
 /* ---------- QUOTE ---------- */
 .quote{background:var(--bg-deep);padding:180px 48px;text-align:center;position:relative}
 .quote blockquote{margin:0 auto;max-width:920px;font-family:'Playfair Display', 'Playfair Display Fallback',serif;font-size:clamp(30px,4vw,52px);line-height:1.32;font-style:italic;font-weight:400;color:var(--ink)}
-.quote cite{display:inline-flex;align-items:center;gap:18px;margin-top:42px;font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-style:normal;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--burgundy)}
+.quote cite{display:inline-flex;align-items:center;gap:18px;margin-top:42px;font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-style:normal;font-size:13px;letter-spacing:.01em;color:var(--burgundy)}
 .quote cite::before{content:"";width:48px;height:1px;background:var(--burgundy)}
 
 /* ---------- GALERIE ---------- */
@@ -295,7 +295,7 @@ section{padding:112px 48px;position:relative}
 /* Ces libellés portent les chiffres canoniques du lieu (14 hectares, 2 h 20 de
    Paris, 10 minutes d'Amboise) : ils méritent d'être lus, pas suggérés.
    L'opacité 0,8 sur des capitales fines très espacées les rendait pâles. */
-.pin .lbl{font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;margin-top:14px;font-weight:400}
+.pin .lbl{font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:13px;letter-spacing:.01em;margin-top:14px;font-weight:400}
 .location .visual{aspect-ratio:4/5;overflow:hidden;position:relative}
 .location .visual img{width:100%;height:100%;object-fit:cover}
 
@@ -313,7 +313,7 @@ section{padding:112px 48px;position:relative}
 .footer-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:60px;align-items:start}
 .site-footer .name{font-family:'Playfair Display', 'Playfair Display Fallback',serif;font-size:22px;color:#fff;margin-bottom:16px}
 .site-footer p{font-size:13px;line-height:1.9;margin:0 0 6px}
-.site-footer h3{font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:0 0 18px;font-weight:500}
+.site-footer h3{font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:13px;letter-spacing:.01em;color:var(--gold);margin:0 0 18px;font-weight:500}
 .site-footer ul{list-style:none;padding:0;margin:0;display:grid;gap:10px}
 .site-footer ul a{font-size:13px;opacity:.85;transition:opacity .3s}
 .site-footer ul a:hover{opacity:1;color:#fff}
@@ -442,12 +442,11 @@ section{padding:112px 48px;position:relative}
 .lead-form .field-error{margin:7px 0 0;font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:12.5px;line-height:1.45;color:var(--burgundy)}
 .lead-form [aria-invalid="true"]{border-color:var(--burgundy)}
 /* Rassurance au point d'envoi, dans le même bloc que le bouton. */
-.form-trust{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 12px;margin:16px 0 0;
+.form-trust{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 26px;margin:16px 0 0;
   font-family:'Montserrat', 'Montserrat Fallback',sans-serif;font-size:12.5px;line-height:1.5;color:#5c574c}
 .form-trust a{color:var(--burgundy)}
-.form-trust > *+ *::before{content:"·";margin-right:12px;opacity:.45}
-/* Sous 560 px chaque mention prend sa ligne : le point de séparation finissait en début de ligne. */
-@media(max-width:560px){.form-trust{flex-direction:column;align-items:center;gap:4px}.form-trust > *+ *::before{content:none}}
+/* Pas de point séparateur : au retour à la ligne il ouvrait la ligne suivante, à toutes les largeurs. */
+@media(max-width:560px){.form-trust{flex-direction:column;align-items:center;gap:4px}}
 .lead-form input::placeholder,.lead-form textarea::placeholder{color:#6b6b6b}
 .lead-form .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 /* « Comment nous avez-vous connus ? » : facultatif, donc posé sous le message et

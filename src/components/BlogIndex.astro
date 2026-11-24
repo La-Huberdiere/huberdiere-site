@@ -195,8 +195,7 @@ const schemas = [
     .featured-media img { width: 100%; height: 100%; min-height: 340px; object-fit: cover; display: block; }
     .featured-flag {
       position: absolute; top: 16px; left: 16px; background: #8b0000; color: #fff;
-      font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 12px; letter-spacing: 0.14em;
-      text-transform: uppercase; padding: 6px 14px; border-radius: 0;
+      font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size:13px; letter-spacing:.01em; padding: 6px 14px; border-radius: 0;
     }
     .featured-body {
       background: #fbfaf6; border: 1px solid #e2dccc; border-left: none;
@@ -207,7 +206,7 @@ const schemas = [
       font-size: clamp(1.5rem, 2.4vw, 2rem); color: #212121; line-height: 1.18; margin: 12px 0 12px;
     }
     .featured-body p { color: #646464; line-height: 1.7; margin: 0 0 18px; }
-    .featured-link { font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 0.82rem; letter-spacing: 0.08em; color: #8b0000; text-transform: uppercase; margin-top: 6px; }
+    .featured-link { font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 0.82rem; letter-spacing:.01em; color: #8b0000; margin-top: 6px; }
 
     .blog-list {
       max-width: 1100px; margin: 40px auto 0; padding: 0 24px;
@@ -216,9 +215,9 @@ const schemas = [
     .blog-card {
       display: flex; flex-direction: column; text-decoration: none; color: inherit;
       border: 1px solid #e2dccc; overflow: hidden; background: #fbfaf6;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: border-color 0.2s ease;
     }
-    .blog-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+    .blog-card:hover { border-color: #8b0000; }
     .blog-card img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; }
     .blog-card-body { padding: 20px 22px 24px; display: flex; flex-direction: column; flex: 1; }
     .blog-cat {
@@ -232,7 +231,7 @@ const schemas = [
 
     .blog-more-wrap { text-align: center; margin: 40px auto 0; }
     .blog-more {
-      font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase;
+      font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 0.8rem; letter-spacing:.12em; text-transform: uppercase;
       color: #8b0000; background: transparent; border: 1px solid #8b0000; border-radius: 0; padding: 14px 34px;
       cursor: pointer; transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
     }

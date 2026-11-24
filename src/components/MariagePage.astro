@@ -470,7 +470,7 @@ const midCtaLead = {
   }
   .brief-label {
     display: block; font-family: "Montserrat", "Montserrat Fallback", sans-serif;
-    font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase;
+    font-size:13px; letter-spacing:.01em;
     color: #8b0000; margin-bottom: 18px;
   }
   .brief-list { margin: 0; }
@@ -479,27 +479,34 @@ const midCtaLead = {
     padding: 16px 0; border-bottom: 1px solid #e6dfce; align-items: baseline;
   }
   .brief-row dt {
-    font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 12px; letter-spacing: 0.12em;
-    text-transform: uppercase; color: #6b6558; margin: 0;
+    font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size:13px; letter-spacing:.01em; color: #6b6558; margin: 0;
   }
   .brief-row dd {
     margin: 0; color: #2e3a48; font-size: 1rem; line-height: 1.55;
   }
 
-  .stats-band { padding: 56px 24px; background: #fbfaf6; border-bottom: 1px solid #ece6d8; }
+  /* Chiffres en ligne, ferrés à gauche sur la ligne de base : pas de rangée de gros
+     chiffres centrés (tell de gabarit). Le contenu reste celui du CMS. */
+  .stats-band { padding: 40px 24px; border-bottom: 1px solid #ece6d8; }
   .stats-row {
-    max-width: 980px; margin: 0 auto;
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
+    max-width: 940px; margin: 0 auto;
+    display: flex; flex-wrap: wrap; gap: 18px 0;
   }
-  .stat { text-align: center; }
+  .stat { display: flex; align-items: baseline; gap: 12px; padding: 0 32px; border-left: 1px solid #d9cfbd; }
+  .stat:first-child { padding-left: 0; border-left: 0; }
   .stat .big {
     font-family: "Playfair Display", "Playfair Display Fallback", Georgia, serif;
-    font-size: clamp(34px, 4vw, 50px); color: #8b0000; line-height: 1;
+    font-size: clamp(26px, 2.6vw, 34px); color: #8b0000; line-height: 1; white-space: nowrap;
   }
   .stat .lbl {
-    margin-top: 12px; color: #646464;
-    font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 0.82rem;
-    letter-spacing: 0.04em; line-height: 1.5;
+    color: #2e3a48;
+    font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  @media (max-width: 760px) {
+    .stats-row { flex-direction: column; gap: 0; }
+    .stat { padding: 12px 0; border-left: 0; border-top: 1px solid #e6dfce; }
+    .stat:first-child { border-top: 0; padding-top: 0; }
   }
 
   .extras { padding: 110px 24px 20px; }
@@ -605,25 +612,22 @@ const midCtaLead = {
   }
   .room-field { padding: 10px 0; border-bottom: 1px solid #e6dfce; }
   .room-field dt {
-    font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 12px; letter-spacing: 0.14em;
-    text-transform: uppercase; color: #6b6558; margin-bottom: 3px;
+    font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size:13px; letter-spacing:.01em; color: #6b6558; margin-bottom: 3px;
   }
   .room-field dd { margin: 0; font-size: 0.9rem; color: #2e3a48; }
   .room-fine { font-size: 12px; color: #736d5f; margin: 0 0 10px; font-style: italic; letter-spacing: 0.01em; }
   .room-amenities { font-size: 0.82rem; color: #646464; margin: 0 0 16px; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
   .room-amenities span {
-    font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 12px; letter-spacing: 0.14em;
-    text-transform: uppercase; color: #6b6558; font-weight: 600; white-space: nowrap;
+    font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size:13px; letter-spacing:.01em; color: #6b6558; font-weight: 600; white-space: nowrap;
   }
   .room-desc { color: #646464; line-height: 1.75; margin: 0 0 16px; }
   .room-know {
     display: flex; gap: 10px; align-items: baseline; margin: 0;
-    background: #faf4ee; border-left: 2px solid #8b0000; padding: 9px 14px;
+    border-top: 1px solid #8b0000; padding: 10px 0 0;
     font-size: 0.86rem; color: #212121; line-height: 1.55;
   }
   .room-know span {
-    font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 12px; letter-spacing: 0.14em;
-    text-transform: uppercase; color: #8b0000; font-weight: 600; white-space: nowrap;
+    font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size:13px; letter-spacing:.01em; color: #8b0000; font-weight: 600; white-space: nowrap;
   }
   .rooms-cta {
     max-width: 1040px; margin: 40px auto 0; text-align: center;
@@ -659,7 +663,7 @@ const midCtaLead = {
   }
   .mid-cta__hint {
     font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 0.78rem;
-    letter-spacing: 0.12em; text-transform: uppercase; color: #8b0000;
+    letter-spacing:.01em; color: #8b0000;
   }
 
   /* Galerie éditoriale par cible : 1re photo large, rythme asymétrique de magazine. */
@@ -686,7 +690,7 @@ const midCtaLead = {
   .gallery-more a {
     display: inline-flex; align-items: center; gap: 10px;
     font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 0.82rem;
-    letter-spacing: 0.12em; text-transform: uppercase; color: #8b0000;
+    letter-spacing:.01em; color: #8b0000;
     text-decoration: none; padding-bottom: 4px; border-bottom: 1px solid #8b0000;
     transition: opacity 0.2s ease;
   }
@@ -707,7 +711,7 @@ const midCtaLead = {
   .testimonial cite {
     display: block; margin-top: 26px; font-style: normal;
     font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 0.82rem;
-    letter-spacing: 0.12em; text-transform: uppercase; color: #8b0000;
+    letter-spacing:.01em; color: #8b0000;
   }
 
   .faq { padding: 90px 24px 30px; }
@@ -750,12 +754,12 @@ const midCtaLead = {
     display: flex; flex-direction: column; gap: 12px;
     background: #fbfaf6; border: 1px solid #ece6d8;
     padding: 30px 28px; text-decoration: none;
-    transition: border-color 0.2s ease, transform 0.2s ease;
+    transition: border-color 0.2s ease;
   }
-  .read-card:hover { border-color: #8b0000; transform: translateY(-2px); }
+  .read-card:hover { border-color: #8b0000; }
   .read-kicker {
-    font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size: 12px;
-    letter-spacing: 0.1em; text-transform: uppercase; color: #8b0000;
+    font-family: "Montserrat", "Montserrat Fallback", sans-serif; font-size:13px;
+    letter-spacing:.01em; color: #8b0000;
   }
   .read-title {
     font-family: "Playfair Display", "Playfair Display Fallback", Georgia, serif; font-size: 1.25rem;
@@ -770,7 +774,6 @@ const midCtaLead = {
     .brief { padding: 44px 22px 4px; }
     .brief-row { grid-template-columns: 1fr; gap: 4px; padding: 14px 0; }
     .brief-row dd { font-size: 0.96rem; }
-    .stats-row { grid-template-columns: 1fr; gap: 24px; }
     .extras-grid { grid-template-columns: 1fr; }
     .extras { padding: 70px 22px 10px; }
     .activities-list { grid-template-columns: 1fr; gap: 0 0; }
